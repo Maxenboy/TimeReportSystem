@@ -18,7 +18,7 @@ public class ProjectGroup {
 		this.endWeek = endWeek;
 		this.estimatedTime = estimatedTime;
 	}
-	
+
 	public ProjectGroup(String projectName, int startWeek, int endWeek,
 			int estimatedTime) {
 		this.projectName = projectName;
@@ -27,8 +27,6 @@ public class ProjectGroup {
 		this.estimatedTime = estimatedTime;
 		this.active = true;
 	}
-
-
 
 	public int getId() {
 		return id;
