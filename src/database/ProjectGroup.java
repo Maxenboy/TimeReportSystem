@@ -11,7 +11,6 @@ public class ProjectGroup {
 
 	public ProjectGroup(int id, String projectName, boolean active,
 			int startWeek, int endWeek, int estimatedTime) {
-		super();
 		this.id = id;
 		this.projectName = projectName;
 		this.active = active;
