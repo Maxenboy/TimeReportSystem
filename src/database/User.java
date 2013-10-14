@@ -1,14 +1,14 @@
 package database;
 
 public class User {
-	public static int ROLE_ADMIN = 1;
-	public static int ROLE_PROJECT_LEADER = 2;
-	public static int ROLE_NO_ROLE = 3;
-	public static int ROLE_SYSTEM_GROUP = 4;
-	public static int ROLE_SYSTEM_LEADER = 5;
-	public static int ROLE_DEVELOPMENT_GROUP = 6;
-	public static int ROLE_TEST_GROUP = 7;
-	public static int ROLE_TEST_LEADER = 8;
+	public static final int ROLE_ADMIN = 1;
+	public static final int ROLE_PROJECT_LEADER = 2;
+	public static final int ROLE_NO_ROLE = 3;
+	public static final int ROLE_SYSTEM_GROUP = 4;
+	public static final int ROLE_SYSTEM_LEADER = 5;
+	public static final int ROLE_DEVELOPMENT_GROUP = 6;
+	public static final int ROLE_TEST_GROUP = 7;
+	public static final int ROLE_TEST_LEADER = 8;
 
 	public int id;
 	public String username;
