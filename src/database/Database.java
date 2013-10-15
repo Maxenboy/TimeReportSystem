@@ -497,7 +497,7 @@ public class Database {
 
 	}
 	
-	HashMap<String, ArrayList<String>>getStatistics(int projectGroupId, ArrayList<String>usernames, ArrayList<Integer>roles, ArrayList<Integer>activities, ArrayList<Integer>weeks) {
+	public HashMap<String, ArrayList<String>>getStatistics(int projectGroupId, ArrayList<String>usernames, ArrayList<Integer>roles, ArrayList<Integer>activities, ArrayList<Integer>weeks) {
 		return null;
 	}
 
