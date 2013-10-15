@@ -69,10 +69,105 @@ public class TestUserMethods {
 		assertEquals(u.getProjectGroup(), 0);
 	}
 	
+	@Test
 	public void testAddSameUserTwice() {
 		User u = new User("User");
 		db.addUser(u);
 		assertFalse(db.addUser(u));
 	}
-
+	
+	@Test
+	public void testLoginAdmin() {
+		assertNotNull(db.loginUser("admin", "adminp"));
+	}
+	
+	@Test
+	public void testLoginAdminWrongPassword() {
+		assertNull(db.loginUser("admin", "wrongpassword"));
+	}
+	
+	@Test
+	public void testUserLogin() {
+		db.addUser(new User("User"));
+		User u = db.getUser("User");
+		assertNotNull(db.loginUser("User", u.getPassword()));
+	}
+	
+	@Test
+	public void testUserLoginWrongPassword() {
+		db.addUser(new User("User"));
+		assertNull(db.loginUser("User", "wrongpassword"));
+	}
+	
+	@Test
+	public void testGetUserByUsername() {
+		db.addUser(new User("User"));
+		User u = db.getUser("User");
+		assertEquals("User", u.getUsername());
+	}
+	
+	@Test
+	public void testGetUserByUsernameThatDoesNotExist() {
+		assertNull(db.getUser("User"));
+	}
+	
+	@Test
+	public void testGetUsersEmpty() {
+		assertEquals(db.getUsers().size(), 0);
+	}
+	
+	@Test
+	public void testGetUsersWithTwoUsers() {
+		db.addUser(new User("User1"));
+		db.addUser(new User("User2"));
+		assertEquals(2, db.getUsers().size());
+	}
+	
+	@Test
+	public void testGetUsersWithTwentyUsers() {
+		for(int i = 0; i < 20; i++) {
+			String name = "User";
+			name += i;
+			db.addUser(new User(name));
+		}
+		assertEquals(20, db.getUsers().size());
+	}
+	
+	@Test
+	public void testGetUserById() {
+		db.addUser(new User("User"));
+		assertNotNull(db.getUser(2));
+	}
+	
+	@Test
+	public void testGetUserByIdThatDoesNotExist() {
+		assertNull(db.getUser(2));
+	}
+	
+	@Test
+	public void testActivateUserByIdThatDoesNotExist() {
+		assertFalse(db.activateUser(2));
+	}
+	
+	@Test
+	public void testActivateUser() {
+		db.addUser(new User("User"));
+		assertTrue(db.activateUser(2));
+	}
+	
+	@Test
+	public void testActivateUserActiveSet() {
+		db.addUser(new User("User"));
+		db.activateUser(2);
+		User u = db.getUser(2);
+		assertTrue(u.isActive());
+	}
+	
+	@Test
+	public void testDeActivateUser() {
+		db.addUser(new User("User"));
+		assertTrue(db.deactivateUser(2));
+	}
+	
+	
 }
