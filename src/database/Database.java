@@ -404,8 +404,7 @@ public class Database {
 	}
 
 	// TimeReport-metoder
-	public ArrayList<TimeReport> getTimeReportsForProjectGroupId(
-			int projectGroupId) {
+	public ArrayList<TimeReport> getTimeReportsForProjectGroupId(int projectGroupId) {
 		return null;
 
 	}
@@ -464,10 +463,13 @@ public class Database {
 	}
 
 	// Statistics-metoder
-	public HashMap<String, ArrayList<String>> getStatisticsFilter(
-			int projectGroupId) {
+	public HashMap<String, ArrayList<String>> getStatisticsFilter(int projectGroupId) {
 		return null;
 
+	}
+	
+	HashMap<String, ArrayList<String>>getStatistics(int projectGroupId, ArrayList<String>usernames, ArrayList<Integer>roles, ArrayList<Integer>activities, ArrayList<Integer>weeks) {
+		return null;
 	}
 
 	public HashMap<String, Integer> getTimePerWeek(int projectGroupId) {
