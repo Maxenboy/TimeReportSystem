@@ -2,12 +2,12 @@ package database;
 
 
 
+import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import java.sql.Connection;
 
 public class Database {
 	private Connection conn;
@@ -69,23 +69,21 @@ public class Database {
 
 	public boolean addProjectGroup(ProjectGroup projectGroup) {
 		boolean resultOK = true;
-//		try{
-//			String insertTableSQL = "INSERT INTO project"
-//					+ "(name, operationalperformance, technicalperformance, projectschedule, onbudget, complexity, purpose) VALUES"
-//					+ "(?,?,?,?,?,?,?)";
-//			PreparedStatement preparedStatement = conn.prepareStatement(insertTableSQL);
-//			preparedStatement.setString(1, name);
-//			preparedStatement.setInt(2, operationalPerformance);
-//			preparedStatement.setInt(3, technicalPerformance);
-//			preparedStatement.setInt(4, projectSchedule);
-//			preparedStatement.setInt(5, onBudget);
-//			preparedStatement.setString(6, complexity);
-//			preparedStatement.setString(7, purpose);
-//			preparedStatement.executeUpdate();
-//			preparedStatement.close();
-//		} catch (SQLException ex) {
-//		    resultOK = false;  // one reason may be that the name is already in the database
-//		}
+		try{
+			String insertTableSQL = "INSERT INTO project_groups"
+					+ "(project_name, active, start_week, end_week, estimated_time) VALUES"
+					+ "(?,?,?,?,?)";
+			PreparedStatement preparedStatement = conn.prepareStatement(insertTableSQL);
+			preparedStatement.setString(1, projectGroup.getProjectName());
+			preparedStatement.setBoolean(2, projectGroup.isActive());
+			preparedStatement.setInt(3, projectGroup.getStartWeek());
+			preparedStatement.setInt(4, projectGroup.getEndWeek());
+			preparedStatement.setInt(5, projectGroup.getEstimatedTime());
+			preparedStatement.executeUpdate();
+			preparedStatement.close();
+		} catch (SQLException ex) {
+		    resultOK = false;  // one reason may be that the name is already in the database
+		}
 		return resultOK;
 	}
 
