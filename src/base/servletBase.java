@@ -45,8 +45,8 @@ public class servletBase extends HttpServlet {
 	 */
     public servletBase() {
     	try{
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/base?" +
-            "user=martin&password=");			
+			conn = DriverManager.getConnection("jdbc:mysql://vm26.cs.lth.se/puss1302?" +
+		            "user=puss1302&password=jks78ww2");			
 			       
 						
 			// Display the contents of the database in the console. 
