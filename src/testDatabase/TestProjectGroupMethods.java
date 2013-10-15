@@ -12,7 +12,7 @@ import database.Database;
 import database.ProjectGroup;
 
 
-public class testDatabase {
+public class TestProjectGroupMethods {
 	
 	private Connection conn;
 	private Database db;
