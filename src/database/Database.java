@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class Database {
 	private Connection conn;
@@ -182,15 +184,47 @@ public class Database {
 			}
 			
 		} catch (SQLException ex) {
-			System.err.println(ex);
+//			System.err.println(ex);
 			resultOk = false;
 		}
 		return resultOk;
 	}
 
 	public boolean setUserRoles(HashMap<Integer, Integer> roles) {
-		return false;
-
+		boolean resultOk = true;
+		for (Map.Entry<Integer, Integer> entry : roles.entrySet()) {
+		    resultOk = setUserRole(entry.getKey(), entry.getValue());
+		    if(!resultOk) {
+		    	break;
+		    }
+		}
+		return resultOk;
+	}
+	
+	private boolean setUserRole(int userId, int role) {
+		boolean resultOk = true;
+		try {
+			String checkIfUserIdExistsSQL = "SELECT active FROM users WHERE id = ? LIMIT 1";
+			PreparedStatement preparedStatement = conn.prepareStatement(checkIfUserIdExistsSQL);
+			preparedStatement.setInt(1, userId);
+			ResultSet res = preparedStatement.executeQuery();
+			if(res.next()) {
+				String insertIntoSQL = "UPDATE users SET role=? WHERE id=?";
+				preparedStatement = conn.prepareStatement(insertIntoSQL);
+				preparedStatement.setInt(1, role);
+				preparedStatement.setInt(2, userId);
+				preparedStatement.executeUpdate();
+				preparedStatement.close();
+			} else {
+				resultOk = false;
+				preparedStatement.close();
+			}
+			
+		} catch (SQLException ex) {
+//			System.err.println(ex);
+			resultOk = false;
+		}
+		return resultOk;
 	}
 
 	// ProjectGroup-metoder

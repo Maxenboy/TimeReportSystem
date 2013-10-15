@@ -1,11 +1,17 @@
 package testDatabase;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
@@ -167,6 +173,35 @@ public class TestUserMethods {
 	public void testDeActivateUser() {
 		db.addUser(new User("User"));
 		assertTrue(db.deactivateUser(2));
+	}
+	
+	@Test
+	public void testSetUsersRoles() {
+		db.addUser(new User("User1"));
+		User u = db.getUser("User1");
+		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+		map.put(u.getId(), User.ROLE_DEVELOPMENT_GROUP);
+		assertTrue(db.setUserRoles(map));
+		assertEquals(User.ROLE_DEVELOPMENT_GROUP, db.getUser("User1").getRole());
+	}
+	
+	@Test
+	public void testSetUsersRolesMultiple() {
+		db.addUser(new User("User1"));
+		db.addUser(new User("User2"));
+		db.addUser(new User("User3"));
+		db.addUser(new User("User4"));
+		
+		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+		map.put(2, User.ROLE_DEVELOPMENT_GROUP);
+		map.put(3, User.ROLE_PROJECT_LEADER);
+		map.put(4, User.ROLE_SYSTEM_GROUP);
+		map.put(5, User.ROLE_SYSTEM_LEADER);
+		assertTrue(db.setUserRoles(map));
+		assertEquals(User.ROLE_DEVELOPMENT_GROUP, db.getUser("User1").getRole());
+		assertEquals(User.ROLE_PROJECT_LEADER, db.getUser("User2").getRole());
+		assertEquals(User.ROLE_SYSTEM_GROUP, db.getUser("User3").getRole());
+		assertEquals(User.ROLE_SYSTEM_LEADER, db.getUser("User4").getRole());
 	}
 	
 	
