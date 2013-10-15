@@ -4,4 +4,6 @@ Databas får sättas upp på vm-servern precis som på labben eller lokalt. Addr
 
   mysql --user=puss1302 --password=jks78ww2 < lib/setup_db.sql
 
+KÖR INTE DATABASTESTER OM NI HAR SAKER I DATABASEN SOM INTE FÅR FÖRSVINNA!
+
 /UG1
