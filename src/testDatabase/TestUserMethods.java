@@ -24,6 +24,7 @@ public class TestUserMethods {
 
 	private Connection conn;
 	private Database db;
+	private User u;
 	@Before
 	public void setup() {
 		db = new Database();
@@ -41,6 +42,7 @@ public class TestUserMethods {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		u = new User("User");
 	}
 
 	@After
@@ -59,13 +61,11 @@ public class TestUserMethods {
 
 	@Test
 	public void testAddUser() {
-		User u = new User("User");
 		assertTrue(db.addUser(u));
 	}
 	
 	@Test
 	public void testAddUserPropertiesSet() {
-		User u = new User("User");
 		assertTrue(db.addUser(u));
 		assertNotNull(u.getId());
 		assertNotNull(u.getUsername());
@@ -77,7 +77,6 @@ public class TestUserMethods {
 	
 	@Test
 	public void testAddSameUserTwice() {
-		User u = new User("User");
 		db.addUser(u);
 		assertFalse(db.addUser(u));
 	}
@@ -94,20 +93,20 @@ public class TestUserMethods {
 	
 	@Test
 	public void testUserLogin() {
-		db.addUser(new User("User"));
+		db.addUser(u);
 		User u = db.getUser("User");
 		assertNotNull(db.loginUser("User", u.getPassword()));
 	}
 	
 	@Test
 	public void testUserLoginWrongPassword() {
-		db.addUser(new User("User"));
+		db.addUser(u);
 		assertNull(db.loginUser("User", "wrongpassword"));
 	}
 	
 	@Test
 	public void testGetUserByUsername() {
-		db.addUser(new User("User"));
+		db.addUser(u);
 		User u = db.getUser("User");
 		assertEquals("User", u.getUsername());
 	}
@@ -141,7 +140,7 @@ public class TestUserMethods {
 	
 	@Test
 	public void testGetUserById() {
-		db.addUser(new User("User"));
+		db.addUser(u);
 		assertNotNull(db.getUser(2));
 	}
 	
@@ -157,13 +156,13 @@ public class TestUserMethods {
 	
 	@Test
 	public void testActivateUser() {
-		db.addUser(new User("User"));
+		db.addUser(u);
 		assertTrue(db.activateUser(2));
 	}
 	
 	@Test
 	public void testActivateUserActiveSet() {
-		db.addUser(new User("User"));
+		db.addUser(u);
 		db.activateUser(2);
 		User u = db.getUser(2);
 		assertTrue(u.isActive());
@@ -171,18 +170,18 @@ public class TestUserMethods {
 	
 	@Test
 	public void testDeActivateUser() {
-		db.addUser(new User("User"));
+		db.addUser(u);
 		assertTrue(db.deactivateUser(2));
 	}
 	
 	@Test
 	public void testSetUsersRoles() {
-		db.addUser(new User("User1"));
-		User u = db.getUser("User1");
+		db.addUser(u);
+		User u1 = db.getUser("User");
 		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
-		map.put(u.getId(), User.ROLE_DEVELOPMENT_GROUP);
+		map.put(u1.getId(), User.ROLE_DEVELOPMENT_GROUP);
 		assertTrue(db.setUserRoles(map));
-		assertEquals(User.ROLE_DEVELOPMENT_GROUP, db.getUser("User1").getRole());
+		assertEquals(User.ROLE_DEVELOPMENT_GROUP, db.getUser("User").getRole());
 	}
 	
 	@Test
