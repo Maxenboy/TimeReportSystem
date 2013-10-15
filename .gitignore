@@ -13,6 +13,8 @@ local.properties
 .settings/
 .loadpath
 *.class
+build/
+build/*/*
 build/*
 
 # External tool builders
