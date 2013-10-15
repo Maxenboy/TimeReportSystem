@@ -88,4 +88,6 @@ public class Activity {
 		this.timeReportId = timeReportId;
 	}
 	
+	//TODO: Override equals
+	//TODO: Override toString
 }

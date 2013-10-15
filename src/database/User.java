@@ -96,4 +96,6 @@ public class User {
 		return dat;
 	}
 
+	//TODO: Override equals
+	//TODO: Override toString
 }
