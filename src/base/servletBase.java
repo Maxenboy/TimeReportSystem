@@ -52,13 +52,14 @@ public class servletBase extends HttpServlet {
 			conn = DriverManager
 					.getConnection("jdbc:mysql://vm26.cs.lth.se/puss1302?"
 							+ "user=puss1302&password=jks78ww2");
+			
 
 			// Display the contents of the database in the console.
 			// This should be removed in the final version
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("select * from users");
 			while (rs.next()) {
-				String name = rs.getString("name");
+				String name = rs.getString("username");
 				System.out.println("base " + name);
 			}
 

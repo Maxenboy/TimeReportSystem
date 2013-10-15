@@ -1,5 +1,7 @@
 package database;
 
+
+
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -12,28 +14,42 @@ public class Database {
 
 	public Database() {
 		try {
-			conn = DriverManager
-					.getConnection("jdbc:mysql://localhost:8888/puss1302?"
-							+ "user=root&password=root");
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:8889/puss1302?user=puss1302&password=puss1302");
+			// conn =
+			// DriverManager.getConnection("jdbc:mysql://vm26.cs.lth.se/puss1302?"
+			// + "user=puss1302&password=jks78ww2");
 
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	public User loginUser(String username, String password) {
+		
+		// select * FROM users WHERE username = " + username
 		return null;
 	}
 
 	public boolean addUser(User user) {
+		boolean resultOK = true;
+//		try{
+//			Statement stmt = conn.createStatement();
+//		    stmt.executeUpdate("insert into Respondents (name) values('" + name + "')"); 
+//		    stmt.close();
+//		} catch (SQLException ex) {
+//		    resultOK = false;  // one reason may be that the name is already in the database
+//		}
 		return false;
 
 	}
 
 	public boolean activateUser(int userId) {
 		return false;
-
 	}
 
 	public boolean deactivateUser(int userId) {
@@ -52,8 +68,25 @@ public class Database {
 	}
 
 	public boolean addProjectGroup(ProjectGroup projectGroup) {
-		return false;
-
+		boolean resultOK = true;
+//		try{
+//			String insertTableSQL = "INSERT INTO project"
+//					+ "(name, operationalperformance, technicalperformance, projectschedule, onbudget, complexity, purpose) VALUES"
+//					+ "(?,?,?,?,?,?,?)";
+//			PreparedStatement preparedStatement = conn.prepareStatement(insertTableSQL);
+//			preparedStatement.setString(1, name);
+//			preparedStatement.setInt(2, operationalPerformance);
+//			preparedStatement.setInt(3, technicalPerformance);
+//			preparedStatement.setInt(4, projectSchedule);
+//			preparedStatement.setInt(5, onBudget);
+//			preparedStatement.setString(6, complexity);
+//			preparedStatement.setString(7, purpose);
+//			preparedStatement.executeUpdate();
+//			preparedStatement.close();
+//		} catch (SQLException ex) {
+//		    resultOK = false;  // one reason may be that the name is already in the database
+//		}
+		return resultOK;
 	}
 
 	public boolean addUserToProjectGroup(int userId, int projectGroupId) {
