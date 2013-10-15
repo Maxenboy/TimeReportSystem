@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import org.junit.After;
 import org.junit.Before;
@@ -143,6 +144,25 @@ public class TestProjectGroupMethods {
 	@Test
 	public void testRemoveUserFromProjectGroupThatDoesNotExist() {
 		assertFalse(db.removeUserFromProjectGroup(3, 2));
+	}
+	
+	@Test
+	public void testGetProjectGroupsWithOneProjectGroup() {
+		db.addProjectGroup(pg);
+		ArrayList<ProjectGroup> sup = db.getProjectGroups();
+		assertEquals(sup.size(), 1);
+		assertEquals(sup.get(0).getProjectName(), pg.getProjectName());
+	}
+	
+	@Test
+	public void testGetProjectGroupsWithTwentyProjectGroups() {
+		for(int i = 0; i < 20; i++) {
+			String name = "PG";
+			name += i;
+			System.out.println(name);
+			db.addProjectGroup(new ProjectGroup(name, 1, 7, 3000));
+		}
+		assertEquals(20, db.getProjectGroups().size());
 	}
 	@After
 	public void tearDown() {

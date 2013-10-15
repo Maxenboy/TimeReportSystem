@@ -386,8 +386,21 @@ public class Database {
 	}
 
 	public ArrayList<ProjectGroup> getProjectGroups() {
-		return null;
-
+		ArrayList<ProjectGroup> list = new ArrayList<ProjectGroup>();
+		try {
+			String getTableSQL = "SELECT * FROM project_groups";
+			PreparedStatement preparedStatement = conn.prepareStatement(getTableSQL);
+			preparedStatement.executeQuery();
+			ResultSet res = preparedStatement.getResultSet();
+			while (res.next()) {
+				list.add(new ProjectGroup(res.getInt(1), res.getString(2), res.getBoolean(3), res.getInt(4), res.getInt(5), res.getInt(6)));
+			}
+			res.close();
+			preparedStatement.close();
+		} catch (SQLException ex) {
+			// System.err.println(ex);
+		}
+		return list;
 	}
 
 	// TimeReport-metoder
