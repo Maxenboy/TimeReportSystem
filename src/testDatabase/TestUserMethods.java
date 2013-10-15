@@ -2,18 +2,20 @@ package testDatabase;
 
 import static org.junit.Assert.*;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import database.Database;
-import database.ProjectGroup;
+import database.User;
 
+public class TestUserMethods {
 
-public class TestProjectGroupMethods {
-	
 	private Connection conn;
 	private Database db;
 	@Before
@@ -34,30 +36,7 @@ public class TestProjectGroupMethods {
 			e.printStackTrace();
 		}
 	}
-	@Test
-	public void testAddNewProjectGroup() {
-		assertTrue(db.addProjectGroup(new ProjectGroup("TestName", 0, 7, 12)));
-	}
-	
-	@Test
-	public void testAddExistingProjectGroup() {
-		ProjectGroup pg = new ProjectGroup("TestName", 0, 7, 12);
-		db.addProjectGroup(pg);
-		assertFalse(db.addProjectGroup(pg));
-	}
-	
-	@Test
-	public void testAddNewProjectGroupIdSet() {
-		ProjectGroup pg = new ProjectGroup("TestName", 0, 7, 12);
-		db.addProjectGroup(pg);
-		assertEquals(1, pg.getId());
-	}
-	
-	@Test
-	public void testActivateProjectGroup() {
-		assertTrue(false);
-	}
-		
+
 	@After
 	public void tearDown() {
 		try{
@@ -71,4 +50,29 @@ public class TestProjectGroupMethods {
 		} catch (SQLException ex) {
 		}
 	}
+
+	@Test
+	public void testAddUser() {
+		User u = new User("User");
+		assertTrue(db.addUser(u));
+	}
+	
+	@Test
+	public void testAddUserPropertiesSet() {
+		User u = new User("User");
+		assertTrue(db.addUser(u));
+		assertNotNull(u.getId());
+		assertNotNull(u.getUsername());
+		assertNotNull(u.getPassword());
+		assertNotNull(u.isActive());
+		assertNotNull(u.getRole());
+		assertEquals(u.getProjectGroup(), 0);
+	}
+	
+	public void testAddSameUserTwice() {
+		User u = new User("User");
+		db.addUser(u);
+		assertFalse(db.addUser(u));
+	}
+
 }

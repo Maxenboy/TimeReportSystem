@@ -1,5 +1,7 @@
 package database;
 
+import java.util.Random;
+
 public class User {
 	public static final int ROLE_ADMIN = 1;
 	public static final int ROLE_PROJECT_LEADER = 2;
@@ -29,6 +31,7 @@ public class User {
 
 	public User(String username) {
 		this.username = username;
+		password = generatePassword();
 	}
 
 	public int getId() {
@@ -77,6 +80,20 @@ public class User {
 
 	public void setProjectGroup(int projectGroup) {
 		this.projectGroup = projectGroup;
+	}
+	
+	private String generatePassword() {
+		Random ran = new Random();
+		int top = 5;
+		char data = ' ';
+		String dat = "";
+
+		for (int i=0; i<=top; i++) {
+		  data = (char)(ran.nextInt(25)+97);
+		  dat = data + dat;
+		}
+		
+		return dat;
 	}
 
 }
