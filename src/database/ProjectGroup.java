@@ -1,7 +1,6 @@
 package database;
 
 public class ProjectGroup {
-
 	public int id;
 	public String projectName;
 	public boolean active;
@@ -76,4 +75,6 @@ public class ProjectGroup {
 		this.estimatedTime = estimatedTime;
 	}
 
+	//TODO: Override equals
+	//TODO: Override toString
 }

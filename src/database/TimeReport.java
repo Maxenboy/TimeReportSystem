@@ -62,4 +62,6 @@ public class TimeReport {
 		this.projectGroupId = projectGroupId;
 	}
 
+	//TODO: Override equals
+	//TODO: Override toString
 }
