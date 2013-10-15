@@ -117,7 +117,6 @@ public class Database {
 			preparedStatement.executeQuery();
 			ResultSet res = preparedStatement.getResultSet();
 			User u = null;
-			res.next();
 			while (res.next()) {
 				u = new User(res.getInt(1), res.getString(2), res.getString(3),
 						res.getBoolean(4), res.getInt(5), res.getInt(6));

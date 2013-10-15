@@ -118,14 +118,14 @@ public class TestUserMethods {
 	
 	@Test
 	public void testGetUsersEmpty() {
-		assertEquals(db.getUsers().size(), 0);
+		assertEquals(db.getUsers().size(), 1); // 1 since admin always is there
 	}
 	
 	@Test
 	public void testGetUsersWithTwoUsers() {
 		db.addUser(new User("User1"));
 		db.addUser(new User("User2"));
-		assertEquals(2, db.getUsers().size());
+		assertEquals(3, db.getUsers().size()); // 3 since admin always is there
 	}
 	
 	@Test
@@ -135,7 +135,7 @@ public class TestUserMethods {
 			name += i;
 			db.addUser(new User(name));
 		}
-		assertEquals(20, db.getUsers().size());
+		assertEquals(21, db.getUsers().size()); // 21 since admin always is there
 	}
 	
 	@Test
