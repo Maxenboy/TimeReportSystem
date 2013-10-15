@@ -5,7 +5,8 @@ import java.util.*;
 
 public class ProjectGroups {
 	private String name, startweek, endweek, estimatedHours;
-	private HashMap<Integer, User> users;
+	private HashMap<Integer,ProjectGroup> projectGroups;
+	private HashMap<Integer,User> users;
 
 	public ProjectGroups(String name, String startWeek, String endWeek,
 			String estimatedHours) {
@@ -14,6 +15,7 @@ public class ProjectGroups {
 		this.name = name;
 		this.startweek = startWeek;
 		this.estimatedHours = estimatedHours;
+		projectGroups= new HashMap<Integer, ProjectGroup>();
 		users = new HashMap<Integer, User>();
 	}
 
@@ -31,10 +33,10 @@ public class ProjectGroups {
 
 	public boolean toggleActiveProjectGroup(int id, boolean active) {
 		boolean result = false;
-		User u = users.get(id);
-		if (u != null) {
-			u.setActive(active);
-			result = true;
+		ProjectGroup pg=projectGroups.get(id);
+		if(pg!=null){
+			pg.setActive(active);
+			result=true;
 		}
 		return result;
 	}
