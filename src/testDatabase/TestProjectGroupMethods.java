@@ -16,6 +16,7 @@ public class TestProjectGroupMethods {
 	
 	private Connection conn;
 	private Database db;
+	private ProjectGroup pg;
 	@Before
 	public void setup() {
 		db = new Database();
@@ -33,29 +34,58 @@ public class TestProjectGroupMethods {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		pg = new ProjectGroup("TestName", 0, 7, 12);
 	}
 	@Test
 	public void testAddNewProjectGroup() {
-		assertTrue(db.addProjectGroup(new ProjectGroup("TestName", 0, 7, 12)));
+		assertTrue(db.addProjectGroup(pg));
 	}
 	
 	@Test
 	public void testAddExistingProjectGroup() {
-		ProjectGroup pg = new ProjectGroup("TestName", 0, 7, 12);
 		db.addProjectGroup(pg);
 		assertFalse(db.addProjectGroup(pg));
 	}
 	
 	@Test
 	public void testAddNewProjectGroupIdSet() {
-		ProjectGroup pg = new ProjectGroup("TestName", 0, 7, 12);
 		db.addProjectGroup(pg);
 		assertEquals(1, pg.getId());
 	}
 	
 	@Test
+	public void testGetProjectGroup() {
+		db.addProjectGroup(pg);
+		assertNotNull(db.getProjectGroup(1));
+	}
+	
+	@Test
+	public void testGetProjectGroupThatDoesNotExist() {
+		assertNull(db.getProjectGroup(1));
+	}
+	
+	@Test
 	public void testActivateProjectGroup() {
-		assertTrue(false);
+		db.addProjectGroup(pg);
+		assertTrue(db.activateProjectGroup(1));
+		assertTrue(db.getProjectGroup(1).isActive());
+	}
+	
+	@Test
+	public void testActivateProjectGroupWithIdThatDoesNotExist() {
+		assertFalse(db.activateProjectGroup(33));
+	}
+	
+	@Test
+	public void testDeActivateProjectGroup() {
+		db.addProjectGroup(pg);
+		assertTrue(db.deactivateProjectGroup(1));
+		assertFalse(db.getProjectGroup(1).isActive());
+	}
+	
+	@Test
+	public void testDeActivateProjectGroupWithIdThatDoesNotExist() {
+		assertFalse(db.deactivateProjectGroup(33));
 	}
 		
 	@After

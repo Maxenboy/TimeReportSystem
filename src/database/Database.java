@@ -230,13 +230,39 @@ public class Database {
 	// ProjectGroup-metoder
 
 	public boolean activateProjectGroup(int projectGroupId) {
-		return false;
+		return activateProjectGroupHelpMethod(projectGroupId, 1);
 
 	}
 
 	public boolean deactivateProjectGroup(int projectGroupId) {
-		return false;
+		return activateProjectGroupHelpMethod(projectGroupId, 0);
 
+	}
+	
+	private boolean activateProjectGroupHelpMethod(int projectGroupId, int active) {
+		boolean resultOk = true;
+		try {
+			String checkIfUserIdExistsSQL = "SELECT active FROM project_groups WHERE id = ? LIMIT 1";
+			PreparedStatement preparedStatement = conn.prepareStatement(checkIfUserIdExistsSQL);
+			preparedStatement.setInt(1, projectGroupId);
+			ResultSet res = preparedStatement.executeQuery();
+			if(res.next()) {
+				String insertIntoSQL = "UPDATE project_groups SET active=? WHERE id=?";
+				preparedStatement = conn.prepareStatement(insertIntoSQL);
+				preparedStatement.setInt(1, active);
+				preparedStatement.setInt(2, projectGroupId);
+				preparedStatement.executeUpdate();
+				preparedStatement.close();
+			} else {
+				resultOk = false;
+				preparedStatement.close();
+			}
+			
+		} catch (SQLException ex) {
+//			System.err.println(ex);
+			resultOk = false;
+		}
+		return resultOk;
 	}
 
 	public boolean addProjectGroup(ProjectGroup projectGroup) {
@@ -282,8 +308,23 @@ public class Database {
 	}
 
 	public ProjectGroup getProjectGroup(int projectGroupId) {
-		return null;
-
+		ProjectGroup pg = null;
+		try {
+			String getTableSQL = "SELECT * FROM project_groups WHERE id = ? LIMIT 1";
+			PreparedStatement preparedStatement = conn
+					.prepareStatement(getTableSQL);
+			preparedStatement.setInt(1, projectGroupId);
+			preparedStatement.executeQuery();
+			ResultSet res = preparedStatement.getResultSet();
+			while (res.next()) {
+				pg = new ProjectGroup(res.getInt(1), res.getString(2), res.getBoolean(3), res.getInt(4), res.getInt(5), res.getInt(6));
+			}
+			res.close();
+			preparedStatement.close();
+		} catch (SQLException ex) {
+			// System.err.println(ex);
+		}
+		return pg;
 	}
 
 	public ArrayList<ProjectGroup> getProjectGroups() {
