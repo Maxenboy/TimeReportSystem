@@ -26,23 +26,23 @@ public class Activity {
 	public static final String ACTIVITY_TYPE_REWORK = "O";
 	
 	private int id;
-	private int activity;
+	private int activityNr;
 	private String activityType;
 	private int time;
 	private int timeReportId;
 	
-	public Activity(int id, int activity, String activityType, int time,
+	public Activity(int id, int activityNr, String activityType, int time,
 			int timeReportId) {
 		this.id = id;
-		this.activity = activity;
+		this.activityNr = activityNr;
 		this.activityType = activityType;
 		this.time = time;
 		this.timeReportId = timeReportId;
 	}
 
-	public Activity(int activity, String activityType, int time,
+	public Activity(int activityNr, String activityType, int time,
 			int timeReportId) {
-		this.activity = activity;
+		this.activityNr = activityNr;
 		this.activityType = activityType;
 		this.time = time;
 		this.timeReportId = timeReportId;
@@ -56,12 +56,12 @@ public class Activity {
 		this.id = id;
 	}
 
-	public int getActivity() {
-		return activity;
+	public int getActivityNr() {
+		return activityNr;
 	}
 
-	public void setActivity(int activity) {
-		this.activity = activity;
+	public void setActivityNr(int activityNr) {
+		this.activityNr = activityNr;
 	}
 
 	public String getActivityType() {
