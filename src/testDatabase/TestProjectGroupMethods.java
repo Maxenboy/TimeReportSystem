@@ -1,8 +1,15 @@
 package testDatabase;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import org.junit.After;
 import org.junit.Before;
@@ -10,6 +17,7 @@ import org.junit.Test;
 
 import database.Database;
 import database.ProjectGroup;
+import database.User;
 
 
 public class TestProjectGroupMethods {
@@ -17,6 +25,7 @@ public class TestProjectGroupMethods {
 	private Connection conn;
 	private Database db;
 	private ProjectGroup pg;
+	private User u;
 	@Before
 	public void setup() {
 		db = new Database();
@@ -35,6 +44,8 @@ public class TestProjectGroupMethods {
 			e.printStackTrace();
 		}
 		pg = new ProjectGroup("TestName", 0, 7, 12);
+		u = new User("User");
+		
 	}
 	@Test
 	public void testAddNewProjectGroup() {
@@ -88,6 +99,51 @@ public class TestProjectGroupMethods {
 		assertFalse(db.deactivateProjectGroup(33));
 	}
 		
+	@Test
+	public void testAddUserToProjectGroup() {
+		db.addProjectGroup(pg);
+		db.addUser(u);
+		u = db.getUser(u.getUsername());
+		assertTrue(db.addUserToProjectGroup(u.getId(), 1));
+	}
+	
+	@Test
+	public void testAddUserThatDoesNotExistToProjectGroup() {
+		db.addProjectGroup(pg);
+		assertFalse(db.addUserToProjectGroup(33, 1));	
+	}
+	
+	@Test
+	public void testAddExistingUserToProjectGroupThatDoesNotExist() {
+		db.addUser(u);
+		u = db.getUser(u.getUsername());
+		assertFalse(db.addUserToProjectGroup(u.getId(), 33));
+	}
+	
+	@Test
+	public void testAddUserThatDoesNotExistToProjectGroupThatDoesNotExist() {
+		assertFalse(db.addUserToProjectGroup(33, 33));
+	}
+	
+	@Test
+	public void testRemoveUserFromProjectGroup() {
+		db.addUser(u);
+		u = db.getUser(u.getUsername());
+		db.addProjectGroup(pg);
+		db.addUserToProjectGroup(u.getId(), 1);
+		assertTrue(db.removeUserFromProjectGroup(u.getId(), 1));
+	}
+	
+	@Test
+	public void testRemoveUserThatDoesNotExistFromProjectGroup() {
+		db.addProjectGroup(pg);
+		assertFalse(db.removeUserFromProjectGroup(3, 1));
+	}
+	
+	@Test
+	public void testRemoveUserFromProjectGroupThatDoesNotExist() {
+		assertFalse(db.removeUserFromProjectGroup(3, 2));
+	}
 	@After
 	public void tearDown() {
 		try{

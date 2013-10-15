@@ -297,13 +297,72 @@ public class Database {
 	}
 
 	public boolean addUserToProjectGroup(int userId, int projectGroupId) {
-		return false;
-
+		boolean resultOk = true;
+		try {
+			String checkIfProjectGroupIdExistsSQL = "SELECT * FROM project_groups WHERE id = ? LIMIT 1";
+			PreparedStatement preparedStatement = conn.prepareStatement(checkIfProjectGroupIdExistsSQL);
+			preparedStatement.setInt(1, projectGroupId);
+			ResultSet res = preparedStatement.executeQuery();
+			if(res.next()) {
+				String checkIfUserIdExistsSQL = "SELECT * FROM users WHERE id = ? LIMIT 1";
+				preparedStatement = conn.prepareStatement(checkIfUserIdExistsSQL);
+				preparedStatement.setInt(1, userId);
+				ResultSet res2 = preparedStatement.executeQuery();
+				if(res2.next()) {
+					String insertIntoSQL = "UPDATE users SET project_group_id=? WHERE id=?";
+					preparedStatement = conn.prepareStatement(insertIntoSQL);
+					preparedStatement.setInt(1, projectGroupId);
+					preparedStatement.setInt(2, userId);
+					preparedStatement.executeUpdate();
+					preparedStatement.close();
+				} else {
+					resultOk = false;
+					preparedStatement.close();
+				}
+			} else {
+				resultOk = false;
+				preparedStatement.close();
+			}
+			
+		} catch (SQLException ex) {
+//			System.err.println(ex);
+			resultOk = false;
+		}
+		return resultOk;
 	}
 
 	public boolean removeUserFromProjectGroup(int userId, int projectGroupId) {
-		return false;
-
+		boolean resultOk = true;
+		try {
+			String checkIfProjectGroupIdExistsSQL = "SELECT * FROM project_groups WHERE id = ? LIMIT 1";
+			PreparedStatement preparedStatement = conn.prepareStatement(checkIfProjectGroupIdExistsSQL);
+			preparedStatement.setInt(1, projectGroupId);
+			ResultSet res = preparedStatement.executeQuery();
+			if(res.next()) {
+				String checkIfUserIdExistsSQL = "SELECT * FROM users WHERE id = ? LIMIT 1";
+				preparedStatement = conn.prepareStatement(checkIfUserIdExistsSQL);
+				preparedStatement.setInt(1, userId);
+				ResultSet res2 = preparedStatement.executeQuery();
+				if(res2.next()) {
+					String insertIntoSQL = "UPDATE users SET project_group_id='0' WHERE id=?";
+					preparedStatement = conn.prepareStatement(insertIntoSQL);
+					preparedStatement.setInt(1, userId);
+					preparedStatement.executeUpdate();
+					preparedStatement.close();
+				} else {
+					resultOk = false;
+					preparedStatement.close();
+				}
+			} else {
+				resultOk = false;
+				preparedStatement.close();
+			}
+			
+		} catch (SQLException ex) {
+//			System.err.println(ex);
+			resultOk = false;
+		}
+		return resultOk;
 	}
 
 	public ProjectGroup getProjectGroup(int projectGroupId) {
