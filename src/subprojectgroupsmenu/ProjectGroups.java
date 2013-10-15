@@ -5,8 +5,7 @@ import java.util.*;
 
 public class ProjectGroups {
 	private String name, startweek, endweek, estimatedHours;
-	private HashMap<Integer,ProjectGroup> projectGroups;
-	private HashMap<Integer,User> users;
+	private Database db;
 
 	public ProjectGroups(String name, String startWeek, String endWeek,
 			String estimatedHours) {
@@ -15,8 +14,7 @@ public class ProjectGroups {
 		this.name = name;
 		this.startweek = startWeek;
 		this.estimatedHours = estimatedHours;
-		projectGroups= new HashMap<Integer, ProjectGroup>();
-		users = new HashMap<Integer, User>();
+		db = new Database();
 	}
 
 	public String addUserForm() {
@@ -32,24 +30,35 @@ public class ProjectGroups {
 	}
 
 	public boolean toggleActiveProjectGroup(int id, boolean active) {
-		boolean result = false;
-		ProjectGroup pg=projectGroups.get(id);
-		if(pg!=null){
-			pg.setActive(active);
-			result=true;
-		}
-		return result;
+		return (active) ? db.activateProjectGroup(id) : db
+				.deactivateProjectGroup(id);
 	}
 
 	public boolean removeUserFromProjectGroup(String name, int id) {
-		return false;
+		ArrayList<User> users = db.getUsers();
+		int userID = 0;
+		for (User u : users) {
+			if (name.equals(u.getUsername())) {
+				userID = u.getId();
+			}
+
+		}
+		return db.removeUserFromProjectGroup(userID, id);
 	}
 
 	public boolean addUserToProjectGroup(String name, int id) {
-		return false;
+		ArrayList<User> users = db.getUsers();
+		int userID = 0;
+		for (User u : users) {
+			if (name.equals(u.getUsername())) {
+				userID = u.getId();
+			}
+		}
+		return db.addUserToProjectGroup(userID, id);
 	}
 
 	public void makeProjectLeader(String name, int id) {
+	
 	}
 
 	public void removeProjectLeader(String name, int id) {
