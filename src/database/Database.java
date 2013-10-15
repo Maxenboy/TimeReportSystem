@@ -14,7 +14,8 @@ public class Database {
 	public Database() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mysql://localhost:8889/puss1302?user=puss1302&password=jks78ww2");
+			conn = DriverManager
+					.getConnection("jdbc:mysql://localhost:8889/puss1302?user=puss1302&password=jks78ww2");
 			// conn =
 			// DriverManager.getConnection("jdbc:mysql://vm26.cs.lth.se/puss1302?"
 			// + "user=puss1302&password=jks78ww2");
@@ -28,6 +29,7 @@ public class Database {
 		}
 	}
 
+	// User-metoder
 	public User loginUser(String username, String password) {
 
 		// select * FROM users WHERE username = " + username
@@ -36,17 +38,34 @@ public class Database {
 
 	public boolean addUser(User user) {
 		boolean resultOK = true;
-		// try{
-		// Statement stmt = conn.createStatement();
-		// stmt.executeUpdate("insert into Respondents (name) values('" + name +
-		// "')");
-		// stmt.close();
-		// } catch (SQLException ex) {
-		// resultOK = false; // one reason may be that the name is already in
-		// the database
-		// }
-		return false;
-
+		try {
+			String insertTableSQL = "INSERT INTO users"
+					+ "(username, password) VALUES"
+					+ "(?,?)";
+			PreparedStatement preparedStatement = conn
+					.prepareStatement(insertTableSQL);
+			preparedStatement.setString(1, user.getUsername());
+			preparedStatement.setString(2, user.getPassword());
+			preparedStatement.executeUpdate();
+			preparedStatement.close();
+			String getTableSQL = "SELECT * FROM users WHERE username = ? LIMIT 1";
+			preparedStatement = conn.prepareStatement(getTableSQL);
+			preparedStatement.setString(1, user.getUsername());
+			preparedStatement.executeQuery();
+			ResultSet res = preparedStatement.getResultSet();
+			while (res.next()) {
+				user.setId(res.getInt(1));
+				user.setActive(res.getBoolean(4));
+				user.setRole(res.getInt(5));
+				user.setProjectGroup(res.getInt(6));
+			}
+			res.close();
+			preparedStatement.close();
+		} catch (SQLException ex) {
+			// System.err.println(ex);
+			resultOK = false;
+		} 
+		return resultOK;
 	}
 
 	public boolean activateUser(int userId) {
@@ -57,6 +76,33 @@ public class Database {
 		return false;
 
 	}
+
+	public boolean setUserRoles(HashMap<Integer, Integer> roles) {
+		return false;
+
+	}
+
+	public ArrayList<User> getUsers() {
+		return null;
+
+	}
+
+	public ArrayList<User> getUsers(int projectGroupId) {
+		return null;
+
+	}
+
+	public User getUser(int userId) {
+		return null;
+
+	}
+
+	public User getUser(String username) {
+		return null;
+
+	}
+	
+	//ProjectGroup-metoder
 
 	public boolean activateProjectGroup(int projectGroupId) {
 		return false;
@@ -88,14 +134,14 @@ public class Database {
 			preparedStatement.setString(1, projectGroup.getProjectName());
 			preparedStatement.executeQuery();
 			ResultSet res = preparedStatement.getResultSet();
-			while(res.next()) {
+			while (res.next()) {
 				projectGroup.setId(res.getInt(1));
 			}
 			res.close();
 			preparedStatement.close();
 		} catch (SQLException ex) {
-//			System.err.println(ex);
-			resultOK = false; 
+			// System.err.println(ex);
+			resultOK = false;
 		}
 		return resultOK;
 	}
@@ -110,11 +156,17 @@ public class Database {
 
 	}
 
-	public boolean setUserRoles(HashMap<Integer, Integer> roles) {
-		return false;
+	public ProjectGroup getProjectGroup(int projectGroupId) {
+		return null;
 
 	}
 
+	public ArrayList<ProjectGroup> getProjectGroups() {
+		return null;
+
+	}
+
+	// TimeReport-metoder
 	public ArrayList<TimeReport> getTimeReportsForProjectGroupId(
 			int projectGroupId) {
 		return null;
@@ -133,16 +185,6 @@ public class Database {
 
 	public boolean unsignTimeReports(ArrayList<TimeReport> timeReports) {
 		return false;
-
-	}
-
-	public ArrayList<User> getUsers() {
-		return null;
-
-	}
-
-	public ArrayList<User> getUsers(int projectGroupId) {
-		return null;
 
 	}
 
@@ -168,27 +210,13 @@ public class Database {
 
 	}
 
-	public ArrayList<Activity> getActivities(int timeReportId) {
-		return null;
-
-	}
-
-	public User getUser(int userId) {
-		return null;
-
-	}
-
-	public User getUser(String username) {
-		return null;
-
-	}
-
-	public ProjectGroup getProjectGroup(int projectGroupId) {
-		return null;
-
-	}
-
 	public TimeReport getTimeReport(int timeReportId) {
+		return null;
+
+	}
+
+	// Activity-metoder
+	public ArrayList<Activity> getActivities(int timeReportId) {
 		return null;
 
 	}
@@ -198,11 +226,7 @@ public class Database {
 
 	}
 
-	public ArrayList<ProjectGroup> getProjectGroups() {
-		return null;
-
-	}
-
+	// Statistics-metoder
 	public HashMap<String, ArrayList<String>> getStatisticsFilter(
 			int projectGroupId) {
 		return null;
@@ -213,11 +237,11 @@ public class Database {
 		return null;
 
 	}
-	
-//	public static void main(String[] args) {
-//		Database db = new Database();
-//		ProjectGroup pg = new ProjectGroup("TestName3", 0, 7, 12);
-//		db.addProjectGroup(pg);
-//		System.out.println("main " + pg.getId());
-//	}
+
+	// public static void main(String[] args) {
+	// Database db = new Database();
+	// ProjectGroup pg = new ProjectGroup("TestName3", 0, 7, 12);
+	// db.addProjectGroup(pg);
+	// System.out.println("main " + pg.getId());
+	// }
 }
