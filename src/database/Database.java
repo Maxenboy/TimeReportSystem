@@ -21,27 +21,43 @@ public class Database {
 			// + "user=puss1302&password=jks78ww2");
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	// User-metoder
 	public User loginUser(String username, String password) {
-
-		// select * FROM users WHERE username = " + username
-		return null;
+		User u = null;
+		try {
+			String getTableSQL = "SELECT * FROM users WHERE username = ? LIMIT 1";
+			PreparedStatement preparedStatement = conn
+					.prepareStatement(getTableSQL);
+			preparedStatement.setString(1, username);
+			preparedStatement.executeQuery();
+			ResultSet res = preparedStatement.getResultSet();
+			while (res.next()) {
+				if (res.getString(3).equals(password)) {
+					u = new User(res.getInt(1), res.getString(2),
+							res.getString(3), res.getBoolean(4), res.getInt(5),
+							res.getInt(6));
+				}
+			}
+			res.close();
+			preparedStatement.close();
+		} catch (SQLException ex) {
+			// ex.printStackTrace();
+			// System.err.println(ex);
+		}
+		return u;
 	}
 
 	public boolean addUser(User user) {
 		boolean resultOK = true;
 		try {
 			String insertTableSQL = "INSERT INTO users"
-					+ "(username, password) VALUES"
-					+ "(?,?)";
+					+ "(username, password) VALUES" + "(?,?)";
 			PreparedStatement preparedStatement = conn
 					.prepareStatement(insertTableSQL);
 			preparedStatement.setString(1, user.getUsername());
@@ -64,17 +80,112 @@ public class Database {
 		} catch (SQLException ex) {
 			// System.err.println(ex);
 			resultOK = false;
-		} 
+		}
 		return resultOK;
 	}
 
+	public User getUser(String username) {
+		User u = null;
+		try {
+			String getTableSQL = "SELECT * FROM users WHERE username = ? LIMIT 1";
+			PreparedStatement preparedStatement = conn
+					.prepareStatement(getTableSQL);
+			preparedStatement.setString(1, username);
+			preparedStatement.executeQuery();
+			ResultSet res = preparedStatement.getResultSet();
+			while (res.next()) {
+				u = new User(res.getInt(1), res.getString(2), res.getString(3),
+						res.getBoolean(4), res.getInt(5), res.getInt(6));
+			}
+			res.close();
+			preparedStatement.close();
+		} catch (SQLException ex) {
+			// System.err.println(ex);
+		}
+		return u;
+
+	}
+
+	public ArrayList<User> getUsers() {
+		ArrayList<User> list = new ArrayList<User>();
+		try {
+			String getUsersSQL = "SELECT * FROM users";
+			PreparedStatement preparedStatement = conn
+					.prepareStatement(getUsersSQL);
+			preparedStatement.executeQuery();
+			ResultSet res = preparedStatement.getResultSet();
+			User u = null;
+			res.next();
+			while (res.next()) {
+				u = new User(res.getInt(1), res.getString(2), res.getString(3),
+						res.getBoolean(4), res.getInt(5), res.getInt(6));
+				list.add(u);
+			}
+		} catch (SQLException ex) {
+			// System.err.println(ex);
+		}
+		return list;
+
+	}
+
+	public ArrayList<User> getUsers(int projectGroupId) {
+		return null;
+	}
+
+	public User getUser(int userId) {
+		User u = null;
+		try {
+			String getTableSQL = "SELECT * FROM users WHERE id = ? LIMIT 1";
+			PreparedStatement preparedStatement = conn
+					.prepareStatement(getTableSQL);
+			preparedStatement.setInt(1, userId);
+			preparedStatement.executeQuery();
+			ResultSet res = preparedStatement.getResultSet();
+			while (res.next()) {
+				u = new User(res.getInt(1), res.getString(2), res.getString(3),
+						res.getBoolean(4), res.getInt(5), res.getInt(6));
+			}
+			res.close();
+			preparedStatement.close();
+		} catch (SQLException ex) {
+			// System.err.println(ex);
+		}
+		return u;
+
+	}
+
 	public boolean activateUser(int userId) {
-		return false;
+		return activateUserHelpMethod(userId, 1);
 	}
 
 	public boolean deactivateUser(int userId) {
-		return false;
-
+		return activateUserHelpMethod(userId, 0);
+	}
+	
+	private boolean activateUserHelpMethod(int userId, int active) {
+		boolean resultOk = true;
+		try {
+			String checkIfUserIdExistsSQL = "SELECT active FROM users WHERE id = ? LIMIT 1";
+			PreparedStatement preparedStatement = conn.prepareStatement(checkIfUserIdExistsSQL);
+			preparedStatement.setInt(1, userId);
+			ResultSet res = preparedStatement.executeQuery();
+			if(res.next()) {
+				String insertIntoSQL = "UPDATE users SET active=? WHERE id=?";
+				preparedStatement = conn.prepareStatement(insertIntoSQL);
+				preparedStatement.setInt(1, active);
+				preparedStatement.setInt(2, userId);
+				preparedStatement.executeUpdate();
+				preparedStatement.close();
+			} else {
+				resultOk = false;
+				preparedStatement.close();
+			}
+			
+		} catch (SQLException ex) {
+			System.err.println(ex);
+			resultOk = false;
+		}
+		return resultOk;
 	}
 
 	public boolean setUserRoles(HashMap<Integer, Integer> roles) {
@@ -82,27 +193,7 @@ public class Database {
 
 	}
 
-	public ArrayList<User> getUsers() {
-		return null;
-
-	}
-
-	public ArrayList<User> getUsers(int projectGroupId) {
-		return null;
-
-	}
-
-	public User getUser(int userId) {
-		return null;
-
-	}
-
-	public User getUser(String username) {
-		return null;
-
-	}
-	
-	//ProjectGroup-metoder
+	// ProjectGroup-metoder
 
 	public boolean activateProjectGroup(int projectGroupId) {
 		return false;
