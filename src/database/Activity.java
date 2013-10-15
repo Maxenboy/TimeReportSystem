@@ -88,7 +88,4 @@ public class Activity {
 		this.timeReportId = timeReportId;
 	}
 	
-	
-	
-	
 }

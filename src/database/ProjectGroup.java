@@ -1,7 +1,6 @@
 package database;
 
 public class ProjectGroup {
-
 	public int id;
 	public String projectName;
 	public boolean active;
