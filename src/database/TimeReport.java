@@ -62,6 +62,39 @@ public class TimeReport {
 		this.projectGroupId = projectGroupId;
 	}
 
-	//TODO: Override equals
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		result = prime * result + projectGroupId;
+		result = prime * result + (signed ? 1231 : 1237);
+		result = prime * result + userId;
+		result = prime * result + week;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TimeReport other = (TimeReport) obj;
+		if (id != other.id)
+			return false;
+		if (projectGroupId != other.projectGroupId)
+			return false;
+		if (signed != other.signed)
+			return false;
+		if (userId != other.userId)
+			return false;
+		if (week != other.week)
+			return false;
+		return true;
+	}
+
 	//TODO: Override toString
 }

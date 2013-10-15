@@ -142,10 +142,9 @@ public class Database {
 			preparedStatement.setInt(1, userId);
 			preparedStatement.executeQuery();
 			ResultSet res = preparedStatement.getResultSet();
-			while (res.next()) {
-				u = new User(res.getInt(1), res.getString(2), res.getString(3),
+			res.next();
+			u = new User(res.getInt(1), res.getString(2), res.getString(3),
 						res.getBoolean(4), res.getInt(5), res.getInt(6));
-			}
 			res.close();
 			preparedStatement.close();
 		} catch (SQLException ex) {
@@ -409,6 +408,10 @@ public class Database {
 		return null;
 
 	}
+	
+	public ArrayList<TimeReport> getUnsignedTimeReports(int projectGroupId) {
+		return null;
+	}
 
 	public ArrayList<TimeReport> getSignedTimeReports(int projectGroupId) {
 		return null;
@@ -441,26 +444,52 @@ public class Database {
 
 	}
 
-	public boolean addTimeReport(TimeReport timeReport,
-			ArrayList<Activity> activities) {
+	public boolean addTimeReport(TimeReport timeReport, ArrayList<Activity> activities) {
 		return false;
-
 	}
 
 	public TimeReport getTimeReport(int timeReportId) {
 		return null;
-
 	}
 
 	// Activity-metoder
 	public ArrayList<Activity> getActivities(int timeReportId) {
-		return null;
+		ArrayList<Activity> list = new ArrayList<Activity>();
+		try {
+			String getUsersSQL = "SELECT * FROM activities where time_report_id = ? order by id";
+			PreparedStatement preparedStatement = conn.prepareStatement(getUsersSQL);
+			preparedStatement.setInt(1, timeReportId);
+			preparedStatement.executeQuery();
+			ResultSet res = preparedStatement.getResultSet();
+			Activity activity = null;
+			while (res.next()) {
+				activity = new Activity(res.getInt(1), res.getInt(2), res.getString(3), res.getInt(4), res.getInt(5));
+				list.add(activity);
+			}
+		} catch (SQLException ex) {
+			// System.err.println(ex);
+		}
+		return list;
 
 	}
 
 	public Activity getActivity(int activityId) {
-		return null;
-
+		Activity activity;
+		try {
+			String getTableSQL = "SELECT * FROM activities WHERE id = ? LIMIT 1";
+			PreparedStatement preparedStatement = conn.prepareStatement(getTableSQL);
+			preparedStatement.setInt(1, activityId);
+			preparedStatement.executeQuery();
+			ResultSet res = preparedStatement.getResultSet();
+			res.next();
+			activity = new Activity(res.getInt(1), res.getInt(2), res.getString(3), res.getInt(4), res.getInt(5));
+			res.close();
+			preparedStatement.close();
+		} catch (SQLException ex) {
+			// System.err.println(ex);
+			return null;
+		}
+		return activity;
 	}
 
 	// Statistics-metoder
@@ -475,10 +504,4 @@ public class Database {
 
 	}
 
-	// public static void main(String[] args) {
-	// Database db = new Database();
-	// ProjectGroup pg = new ProjectGroup("TestName3", 0, 7, 12);
-	// db.addProjectGroup(pg);
-	// System.out.println("main " + pg.getId());
-	// }
 }
