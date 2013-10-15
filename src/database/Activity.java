@@ -25,11 +25,11 @@ public class Activity {
 	public static final String ACTIVITY_TYPE_FORMAL_REVIEW = "F";
 	public static final String ACTIVITY_TYPE_REWORK = "O";
 	
-	public int id;
-	public int activity;
-	public String activityType;
-	public int time;
-	public int timeReportId;
+	private int id;
+	private int activity;
+	private String activityType;
+	private int time;
+	private int timeReportId;
 	
 	public Activity(int id, int activity, String activityType, int time,
 			int timeReportId) {

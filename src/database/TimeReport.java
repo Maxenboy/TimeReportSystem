@@ -1,11 +1,11 @@
 package database;
 
 public class TimeReport {
-	public int id;
-	public int week;
-	public boolean signed;
-	public int userId;
-	public int projectGroupId;
+	private int id;
+	private int week;
+	private boolean signed;
+	private int userId;
+	private int projectGroupId;
 
 	public TimeReport(int id, int week, boolean signed, int userId,
 			int projectGroupId) {

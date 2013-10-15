@@ -12,12 +12,12 @@ public class User {
 	public static final int ROLE_TEST_GROUP = 7;
 	public static final int ROLE_TEST_LEADER = 8;
 
-	public int id;
-	public String username;
-	public String password;
-	public boolean active;
-	public int role;
-	public int projectGroup;
+	private int id;
+	private String username;
+	private String password;
+	private boolean active;
+	private int role;
+	private int projectGroup;
 
 	public User(int id, String username, String password, boolean active,
 			int role, int projectGroup) {

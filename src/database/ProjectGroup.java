@@ -1,12 +1,12 @@
 package database;
 
 public class ProjectGroup {
-	public int id;
-	public String projectName;
-	public boolean active;
-	public int startWeek;
-	public int endWeek;
-	public int estimatedTime;
+	private int id;
+	private String projectName;
+	private boolean active;
+	private int startWeek;
+	private int endWeek;
+	private int estimatedTime;
 
 	public ProjectGroup(int id, String projectName, boolean active,
 			int startWeek, int endWeek, int estimatedTime) {
