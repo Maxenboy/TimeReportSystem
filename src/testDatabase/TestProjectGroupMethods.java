@@ -159,7 +159,6 @@ public class TestProjectGroupMethods {
 		for(int i = 0; i < 20; i++) {
 			String name = "PG";
 			name += i;
-			System.out.println(name);
 			db.addProjectGroup(new ProjectGroup(name, 1, 7, 3000));
 		}
 		assertEquals(20, db.getProjectGroups().size());
