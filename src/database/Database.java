@@ -1,10 +1,9 @@
 package database;
 
-
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +14,8 @@ public class Database {
 	public Database() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mysql://localhost:8889/puss1302?user=puss1302&password=puss1302");
+			conn = DriverManager
+					.getConnection("jdbc:mysql://localhost:8889/puss1302?user=puss1302&password=puss1302");
 			// conn =
 			// DriverManager.getConnection("jdbc:mysql://vm26.cs.lth.se/puss1302?"
 			// + "user=puss1302&password=jks78ww2");
@@ -30,20 +30,22 @@ public class Database {
 	}
 
 	public User loginUser(String username, String password) {
-		
+
 		// select * FROM users WHERE username = " + username
 		return null;
 	}
 
 	public boolean addUser(User user) {
 		boolean resultOK = true;
-//		try{
-//			Statement stmt = conn.createStatement();
-//		    stmt.executeUpdate("insert into Respondents (name) values('" + name + "')"); 
-//		    stmt.close();
-//		} catch (SQLException ex) {
-//		    resultOK = false;  // one reason may be that the name is already in the database
-//		}
+		// try{
+		// Statement stmt = conn.createStatement();
+		// stmt.executeUpdate("insert into Respondents (name) values('" + name +
+		// "')");
+		// stmt.close();
+		// } catch (SQLException ex) {
+		// resultOK = false; // one reason may be that the name is already in
+		// the database
+		// }
 		return false;
 
 	}
@@ -69,11 +71,12 @@ public class Database {
 
 	public boolean addProjectGroup(ProjectGroup projectGroup) {
 		boolean resultOK = true;
-		try{
+		try {
 			String insertTableSQL = "INSERT INTO project_groups"
 					+ "(project_name, active, start_week, end_week, estimated_time) VALUES"
 					+ "(?,?,?,?,?)";
-			PreparedStatement preparedStatement = conn.prepareStatement(insertTableSQL);
+			PreparedStatement preparedStatement = conn
+					.prepareStatement(insertTableSQL);
 			preparedStatement.setString(1, projectGroup.getProjectName());
 			preparedStatement.setBoolean(2, projectGroup.isActive());
 			preparedStatement.setInt(3, projectGroup.getStartWeek());
@@ -81,8 +84,19 @@ public class Database {
 			preparedStatement.setInt(5, projectGroup.getEstimatedTime());
 			preparedStatement.executeUpdate();
 			preparedStatement.close();
+			String getTableSQL = "SELECT id FROM project_groups WHERE project_name = ? LIMIT 1";
+			preparedStatement = conn.prepareStatement(getTableSQL);
+			preparedStatement.setString(1, projectGroup.getProjectName());
+			preparedStatement.executeQuery();
+			ResultSet res = preparedStatement.getResultSet();
+			while(res.next()) {
+				projectGroup.setId(res.getInt(1));
+			}
+			res.close();
+			preparedStatement.close();
 		} catch (SQLException ex) {
-		    resultOK = false;  // one reason may be that the name is already in the database
+//			System.err.println(ex);
+			resultOK = false; 
 		}
 		return resultOK;
 	}
@@ -200,4 +214,11 @@ public class Database {
 		return null;
 
 	}
+	
+//	public static void main(String[] args) {
+//		Database db = new Database();
+//		ProjectGroup pg = new ProjectGroup("TestName3", 0, 7, 12);
+//		db.addProjectGroup(pg);
+//		System.out.println("main " + pg.getId());
+//	}
 }

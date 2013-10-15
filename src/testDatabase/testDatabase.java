@@ -46,6 +46,13 @@ public class testDatabase {
 		assertFalse(db.addProjectGroup(pg));
 	}
 	
+	@Test
+	public void testAddNewProjectGroupIdSet() {
+		ProjectGroup pg = new ProjectGroup("TestName", 0, 7, 12);
+		db.addProjectGroup(pg);
+		assertEquals(1, pg.getId());
+	}
+		
 	@After
 	public void tearDown() {
 		try{
