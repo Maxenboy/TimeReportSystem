@@ -914,17 +914,15 @@ public class Database {
 		return null;
 	}
 
-	/*
-	 * Returnerar en HashMap med veckonumer som nyckel och tiden som lagts under
-	 * denna vecka som värde, från projektgruppen med id projectGroupId. Även en
-	 * nyckel som motsvarar total tid för hela projektet.
-	 */
 	/**
 	 * Calculates the total spend time per week as well as the total spend time 
 	 * for all weeks for project group.
 	 * @param projectGroupId The id of the project group.
 	 * @return A HashMap with week as key and time as value. There is also the 
-	 * key "totalProjectTime" which contains the total project time.
+	 * key "totalProjectTime" which contains the total project time. If the 
+	 * project group did not contain any time reports and activities, or the 
+	 * project group was not found, the map will only contain the 
+	 * "totalProjectTime" key with value 0. 
 	 */
 	public HashMap<String, Integer> getTimePerWeek(int projectGroupId) {
 		HashMap<String, Integer> timePerWeek = new HashMap<String, Integer>();
