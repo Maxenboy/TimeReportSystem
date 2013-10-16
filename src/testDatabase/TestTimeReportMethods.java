@@ -137,7 +137,7 @@ public class TestTimeReportMethods {
 		db.signTimeReports(timeReports);
 		assertEquals(timeReports, db.getSignedTimeReports(projectGroup.getId()));
 	}
-
+	
 	@Test
 	public void testGetSignedTimeReportsEmpty() {
 		ProjectGroup projectGroup = new ProjectGroup("puss1302", 1, 10, 8000);

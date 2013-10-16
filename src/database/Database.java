@@ -465,7 +465,7 @@ public class Database {
 	public boolean signTimeReports(ArrayList<TimeReport> timeReports) {
 		boolean resultOk = true;
 		for (TimeReport tr : timeReports) {
-		    resultOk = signTimeReportsHelperMethod(tr.getId(), 1);
+		    resultOk = signTimeReportsHelperMethod(tr, true);
 		    if(!resultOk) {
 		    	break;
 		    }
@@ -473,20 +473,21 @@ public class Database {
 		return resultOk;
 	}
 	
-	private boolean signTimeReportsHelperMethod(int timeReportId, int signed) {
+	private boolean signTimeReportsHelperMethod(TimeReport timeReport, boolean signed) {
 		boolean resultOk = true;
 		try {
 			String checkIfTimeReportExists = "SELECT signed FROM time_reports WHERE id = ? LIMIT 1";
 			PreparedStatement preparedStatement = conn.prepareStatement(checkIfTimeReportExists);
-			preparedStatement.setInt(1, timeReportId);
+			preparedStatement.setInt(1, timeReport.getId());
 			ResultSet res = preparedStatement.executeQuery();
 			if(res.next()) {
 				String insertIntoSQL = "UPDATE time_reports SET signed=? WHERE id=?";
 				preparedStatement = conn.prepareStatement(insertIntoSQL);
-				preparedStatement.setInt(1, signed);
-				preparedStatement.setInt(2, timeReportId);
+				preparedStatement.setBoolean(1, signed);
+				preparedStatement.setInt(2, timeReport.getId());
 				preparedStatement.executeUpdate();
 				preparedStatement.close();
+				timeReport.setSigned(signed);
 			} else {
 				resultOk = false;
 				preparedStatement.close();
@@ -502,7 +503,7 @@ public class Database {
 	public boolean unsignTimeReports(ArrayList<TimeReport> timeReports) {
 		boolean resultOk = true;
 		for (TimeReport tr : timeReports) {
-		    resultOk = signTimeReportsHelperMethod(tr.getId(), 0);
+		    resultOk = signTimeReportsHelperMethod(tr, false);
 		    if(!resultOk) {
 		    	break;
 		    }
