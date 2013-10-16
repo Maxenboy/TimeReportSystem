@@ -618,10 +618,9 @@ public class Database {
 			preparedStatement.close();
 
 			for (Activity activity : activities) {
-				activity.setTimeReportId(timeReport.getId());
 				if (activity.getId() != 0) {
 					System.err
-							.println("addTimeReport: Activity id not 0. Adding it anyways");
+							.println("addTimeReport: Activity id not 0. Adding it anyways.");
 				}
 				String insertActivityTableSQL = "INSERT INTO activities (activity_nr, activity_type, time, time_report_id) VALUES (?,?,?,?)";
 				PreparedStatement preparedStatementActivity = conn
@@ -632,10 +631,11 @@ public class Database {
 						activity.getActivityType());
 				preparedStatementActivity.setInt(3, activity.getTime());
 				if (activity.getTimeReportId() != timeReport.getId()
-						|| activity.getTimeReportId() != 0) {
+						&& activity.getTimeReportId() != 0) {
 					System.err
 							.println("addTimeReport: The time report id of the Activity does not match that of the time report id. The id from the time report will be used.");
 				}
+				activity.setTimeReportId(timeReport.getId());
 				preparedStatementActivity.setInt(4, timeReport.getId());
 				preparedStatementActivity.executeUpdate();
 				ResultSet rsActivity = preparedStatementActivity
