@@ -7,6 +7,14 @@ public class TimeReport {
 	private int userId;
 	private int projectGroupId;
 
+	/**
+	 * Constructor used by database
+	 * @param id
+	 * @param week
+	 * @param signed
+	 * @param userId
+	 * @param projectGroupId
+	 */
 	public TimeReport(int id, int week, boolean signed, int userId,
 			int projectGroupId) {
 		this.id = id;
@@ -16,52 +24,91 @@ public class TimeReport {
 		this.projectGroupId = projectGroupId;
 	}
 
+	/**
+	 * Constructor used for creating a new record
+	 * @param week
+	 * @param userId
+	 * @param projectGroupId
+	 */
 	public TimeReport(int week, int userId, int projectGroupId) {
 		this.week = week;
 		this.userId = userId;
 		this.projectGroupId = projectGroupId;
 	}
 
+	/**
+	 * @return
+	 */
 	public int getId() {
 		return id;
 	}
 
+	/**
+	 * @param id
+	 */
 	public void setId(int id) {
 		this.id = id;
 	}
 
+	/**
+	 * @return
+	 */
 	public int getWeek() {
 		return week;
 	}
 
+	/**
+	 * @param week
+	 */
 	public void setWeek(int week) {
 		this.week = week;
 	}
 
+	/**
+	 * @return
+	 */
 	public boolean isSigned() {
 		return signed;
 	}
 
+	/**
+	 * @param signed
+	 */
 	public void setSigned(boolean signed) {
 		this.signed = signed;
 	}
 
+	/**
+	 * @return
+	 */
 	public int getUserId() {
 		return userId;
 	}
 
+	/**
+	 * @param userId
+	 */
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
 
+	/**
+	 * @return
+	 */
 	public int getProjectGroupId() {
 		return projectGroupId;
 	}
 
+	/**
+	 * @param projectGroupId
+	 */
 	public void setProjectGroupId(int projectGroupId) {
 		this.projectGroupId = projectGroupId;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -74,6 +121,9 @@ public class TimeReport {
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

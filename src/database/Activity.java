@@ -31,6 +31,16 @@ public class Activity {
 	private int time;
 	private int timeReportId;
 	
+	
+	
+	/**
+	 * Constructor used by database
+	 * @param id
+	 * @param activityNr
+	 * @param activityType
+	 * @param time
+	 * @param timeReportId
+	 */
 	public Activity(int id, int activityNr, String activityType, int time,
 			int timeReportId) {
 		this.id = id;
@@ -40,6 +50,13 @@ public class Activity {
 		this.timeReportId = timeReportId;
 	}
 
+	/**
+	 * Constructor used for adding a new record to the database
+	 * @param activityNr
+	 * @param activityType
+	 * @param time
+	 * @param timeReportId
+	 */
 	public Activity(int activityNr, String activityType, int time,
 			int timeReportId) {
 		this.activityNr = activityNr;
@@ -48,46 +65,79 @@ public class Activity {
 		this.timeReportId = timeReportId;
 	}
 
+	/**
+	 * @return
+	 */
 	public int getId() {
 		return id;
 	}
 
+	/**
+	 * @param id
+	 */
 	public void setId(int id) {
 		this.id = id;
 	}
 
+	/**
+	 * @return
+	 */
 	public int getActivityNr() {
 		return activityNr;
 	}
 
+	/**
+	 * @param activityNr
+	 */
 	public void setActivityNr(int activityNr) {
 		this.activityNr = activityNr;
 	}
 
+	/**
+	 * @return
+	 */
 	public String getActivityType() {
 		return activityType;
 	}
 
+	/**
+	 * @param activityType
+	 */
 	public void setActivityType(String activityType) {
 		this.activityType = activityType;
 	}
 
+	/**
+	 * @return
+	 */
 	public int getTime() {
 		return time;
 	}
 
+	/**
+	 * @param time
+	 */
 	public void setTime(int time) {
 		this.time = time;
 	}
 
+	/**
+	 * @return
+	 */
 	public int getTimeReportId() {
 		return timeReportId;
 	}
 
+	/**
+	 * @param timeReportId
+	 */
 	public void setTimeReportId(int timeReportId) {
 		this.timeReportId = timeReportId;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -101,6 +151,9 @@ public class Activity {
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
