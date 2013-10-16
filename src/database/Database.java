@@ -510,10 +510,35 @@ public class Database {
 		}
 		return resultOk;
 	}
-
+	
+	
 	public boolean removeTimeReport(int timeReportId) {
-		return false;
-
+		boolean resultOk = true;
+		try {
+			String checkIfTimeReportExists = "SELECT signed FROM time_reports WHERE id = ? LIMIT 1";
+			PreparedStatement preparedStatement = conn.prepareStatement(checkIfTimeReportExists);
+			preparedStatement.setInt(1, timeReportId);
+			ResultSet res = preparedStatement.executeQuery();
+			if(res.next()) {
+				String removeTimeReportSQL = "DELETE FROM time_reports WHERE id = ?";
+				preparedStatement = conn.prepareStatement(removeTimeReportSQL);
+				preparedStatement.setInt(1, timeReportId);
+				preparedStatement.executeUpdate();
+				String removeActivitiesRelatedToTimeReportSQL = "DELETE FROM activities WHERE time_report_id = ?";
+				preparedStatement = conn.prepareStatement(removeActivitiesRelatedToTimeReportSQL);
+				preparedStatement.setInt(1, timeReportId);
+				preparedStatement.executeUpdate();
+				preparedStatement.close();
+			} else {
+				resultOk = false;
+				preparedStatement.close();
+			}
+			
+		} catch (SQLException ex) {
+//			System.err.println(ex);
+			resultOk = false;
+		}
+		return resultOk;
 	}
 
 	public boolean updateTimeReport(TimeReport timeReport,
@@ -544,7 +569,7 @@ public class Database {
 	public boolean addTimeReport(TimeReport timeReport, ArrayList<Activity> activities) {
 		if (timeReport.getId() != 0) {
 			System.err.println("addTimeReport: TimeReport id not 0. Adding it anyways.");
-		}
+		} 
 		try {
 			String insertTableSQL = "INSERT INTO time_reports (week, signed, user_id, project_group_id) VALUES (?,?,?,?)";
 			PreparedStatement preparedStatement = conn.prepareStatement(insertTableSQL, Statement.RETURN_GENERATED_KEYS);
@@ -564,6 +589,7 @@ public class Database {
 			preparedStatement.close();
 			
 			for (Activity activity : activities) {
+				activity.setTimeReportId(timeReport.getId());
 				if (activity.getId() != 0) {
 					System.err.println("addTimeReport: Activity id not 0. Adding it anyways");
 				}
