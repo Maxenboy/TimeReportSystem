@@ -87,6 +87,7 @@ public class Users {
 		sb.append("<INPUT TYPE=" + formElement("submit") + "VALUE="
 				+ formElement("Get Users") + ">");
 		sb.append("</form>");
+		sb.append("</body></html>");
 		return sb.toString();
 	}
 
