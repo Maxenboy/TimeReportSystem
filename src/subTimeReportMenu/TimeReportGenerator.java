@@ -1,6 +1,8 @@
 package subTimeReportMenu;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import database.*;
 
 public class TimeReportGenerator {
@@ -84,15 +86,56 @@ public class TimeReportGenerator {
 		TimeReport tr = db.getTimeReport(reportId);
 		ProjectGroup pg = db.getProjectGroup(tr.getProjectGroupId());
 		StringBuilder sb = new StringBuilder();
-		
+		if(activities.isEmpty())
+			System.out.println("Something is very wrong");
 		//Table setup
 		sb.append("<table border=" + formElement("1") + ">");
 		sb.append("<tr>");
 		sb.append("<TD COLSPAN=2><B>Report id:</B></TD><TD COLSPAN=2>" + reportId + "</TD>");
-		sb.append("<TD COLSPAN=2><B>Week:</B></TD><TD COLSPAN=2>" + tr.getWeek() + "</TD>");
+		sb.append("<TD><B>Week:</B></TD><TD COLSPAN=2>" + tr.getWeek() + "</TD>");
 		sb.append("</tr>");
-		//sb.append("<TD COLSPAN=2><B>Project name:</B></TD><TD COLSPAN=2>" + pg.getProjectName() + "</TD>");
+		sb.append("<tr>");
+		sb.append("<TD COLSPAN=2><B>Project name:</B></TD><TD COLSPAN=2>" + pg.getProjectName() + "</TD>");
+		sb.append("<TD><B>Signed:</B></TD><TD COLSPAN=2>");
+		sb.append(tr.isSigned() ? "Y" : "N");
+		sb.append("</TD></tr>");
+		sb.append("<tr>");
+		sb.append("<TH>Activity Number</TH>" + 
+				"<TH WIDTH=75>D</TH><TH WIDTH=75>I</TH><TH WIDTH=75>F</TH>" + 
+					"<TH WIDTH=75>R</TH><TH WIDTH=75>Total time</TH></tr>");
+		HashMap<Integer,int[]> table = createTimeReportPresentationTable(activities);
+		for (int i = 11; i < 20; i++) {
+			int[] values = table.get(i);
+			if(values != null) {
+				sb.append("<td><i>" + i + "</i></td>");
+				int total = 0;
+				for (int j = 0; j < values.length; j++) {
+					sb.append("<td><i>" + values[j] + "</i></td>");
+					total += values[j];
+				}
+				sb.append("<td>" + total + "</td>");
+				sb.append("<tr>");
+			}
+		}
+		
 		sb.append("</table>");
 		return sb.toString();
+	}
+	
+	private HashMap<Integer,int[]> createTimeReportPresentationTable(ArrayList<Activity> activities) {
+		HashMap<Integer,int[]> table = new HashMap<Integer,int[]>();
+		for (int i = 0; i < activities.size(); i++) {
+			Activity a = activities.get(i);
+			if(table.containsKey(a.getActivityNr())) {
+				String type = a.getActivityType();
+				int[] workTime = table.get(a.getActivityNr());
+				workTime[a.mapActivityTypeToInt()] += a.getTime();
+			} else {
+				int[] workTime = new int[4];
+				workTime[a.mapActivityTypeToInt()] += a.getTime();
+				table.put(a.getActivityNr(), workTime);
+			}
+		}
+		return table;
 	}
 }

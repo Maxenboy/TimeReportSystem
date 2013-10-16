@@ -186,5 +186,19 @@ public class Activity {
 				+ ", timeReportId=" + timeReportId + "]";
 	}
 	
+	public int mapActivityTypeToInt() {
+		switch(activityType) {
+		case ACTIVITY_TYPE_DEVELOPMENT:
+			return 0;
+		case ACTIVITY_TYPE_INFORMAL_REVIEW:
+			return 1;
+		case ACTIVITY_TYPE_FORMAL_REVIEW:
+			return 2;
+		case ACTIVITY_TYPE_REWORK:
+			return 3;
+		}
+		
+		return 0;
+	}
 	
 }
