@@ -11,5 +11,6 @@ public class StatisticsMenu extends servletBase {
 		
 		return null; 
 	}
+	
 
 }

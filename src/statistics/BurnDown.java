@@ -1,5 +1,8 @@
 package statistics;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import base.servletBase;
 
 public class BurnDown extends StatisticsMenu {
@@ -13,5 +16,4 @@ public class BurnDown extends StatisticsMenu {
 	public void doPost() {
 		
 	}
-
 }

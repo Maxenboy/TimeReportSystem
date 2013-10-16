@@ -1,4 +1,7 @@
 package statistics;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import database.*;
 import base.servletBase; // OBS Ska extenda StatisticsMenu egentligen..!
 
@@ -23,4 +26,26 @@ public class Statistics extends StatisticsMenu {
 		return null; // returnera html-sträng.
 	}
 
+	
+	private HashMap<String, ArrayList<String>> getFilter(int projectGroup) {
+
+		return null;
+	}
+	
+	private HashMap<String, ArrayList<String>> getStats() {
+		//Metod som hämtar användarens inmatade filter. Anropar sedan i sin tur en metod i databasklassen som returnerar Map:en med önskad statistik.		
+		return null;
+	}
+	
+	private String printTable(HashMap<String, ArrayList<String>> table) {
+		// Metod som skriver ut önskad statistik på tabellform. 
+		return null;
+	}
+	
+	private String printGraph(HashMap<String, ArrayList<String>> table) {
+		//  Metod för att skriva ut ett stapeldiagram med vecka som x-axel och rapporterad tid på y-axeln.  
+		return null;
+	}
+
+	
 }
