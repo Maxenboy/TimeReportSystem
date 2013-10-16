@@ -731,8 +731,17 @@ public class Database {
 	 * värden för nycklarna.
 	 */
 	public HashMap<String, ArrayList<String>> getStatisticsFilter(int projectGroupId) {
+		ArrayList<String> users = new ArrayList<String>();
+		ArrayList<String> roles = new ArrayList<String>();
+		ArrayList<String> activities = new ArrayList<String>();
+		ArrayList<String> weeks = new ArrayList<String>();
+		HashMap<String, ArrayList<String>> map = new HashMap<String, ArrayList<String>>();
+		map.put("user", users);
+		map.put("role", roles);
+		map.put("activity", activities);
+		map.put("week", weeks);
 		
-		return null;
+		return map;
 	}
 
 	/*
