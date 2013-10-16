@@ -1,3 +1,5 @@
+// HALLÅ DÄR!
+
 package statistics;
 import java.util.ArrayList;
 import java.util.HashMap;
