@@ -1,9 +1,7 @@
 package subTimeReportMenu;
 
 import java.util.ArrayList;
-
-import database.Database;
-import database.TimeReport;
+import database.*;
 
 public class TimeReportGenerator {
 	private Database db;
@@ -16,7 +14,7 @@ public class TimeReportGenerator {
 		return '"' + par + '"';
 	}
 	
-	private String buildTable() {
+	private String buildShowTimeReportTable() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<table border=" + formElement("1") + ">");
 		sb.append("<tr>");
@@ -34,8 +32,8 @@ public class TimeReportGenerator {
 			return null;
 		}
 		StringBuilder sb = new StringBuilder();
-		sb.append("<form>");
-		sb.append(buildTable());
+		sb.append("<FORM METHOD=post ACTION="+formElement("ShowTimeReports")+">");
+		sb.append(buildShowTimeReportTable());
 		for (int i = 0; i < timeReports.size(); i++) {
 			TimeReport tr = timeReports.get(i);
 			sb.append("<tr>");
@@ -67,6 +65,9 @@ public class TimeReportGenerator {
 	}
 	
 	public String showChangeTimeReport(int reportId) {
+		ArrayList<Activity> activities = db.getActivities(reportId);
+		StringBuilder sb = new StringBuilder();
+		sb.append(reportId);
 		return null;
 	}
 	
@@ -78,7 +79,20 @@ public class TimeReportGenerator {
 		return null;
 	}
 	
-	public String showTimeReport(int reportId) {
-		return null;
+	public String showTimeReport(int reportId) {		
+		ArrayList<Activity> activities = db.getActivities(reportId);
+		TimeReport tr = db.getTimeReport(reportId);
+		ProjectGroup pg = db.getProjectGroup(tr.getProjectGroupId());
+		StringBuilder sb = new StringBuilder();
+		
+		//Table setup
+		sb.append("<table border=" + formElement("1") + ">");
+		sb.append("<tr>");
+		sb.append("<TD COLSPAN=2><B>Report id:</B></TD><TD COLSPAN=2>" + reportId + "</TD>");
+		sb.append("<TD COLSPAN=2><B>Week:</B></TD><TD COLSPAN=2>" + tr.getWeek() + "</TD>");
+		sb.append("</tr>");
+		//sb.append("<TD COLSPAN=2><B>Project name:</B></TD><TD COLSPAN=2>" + pg.getProjectName() + "</TD>");
+		sb.append("</table>");
+		return sb.toString();
 	}
 }
