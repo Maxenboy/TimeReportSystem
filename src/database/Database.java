@@ -232,12 +232,10 @@ public class Database {
 
 	public boolean activateProjectGroup(int projectGroupId) {
 		return activateProjectGroupHelpMethod(projectGroupId, 1);
-
 	}
 
 	public boolean deactivateProjectGroup(int projectGroupId) {
 		return activateProjectGroupHelpMethod(projectGroupId, 0);
-
 	}
 
 	private boolean activateProjectGroupHelpMethod(int projectGroupId,
@@ -564,10 +562,12 @@ public class Database {
 		return resultOk;
 	}
 
-	public boolean updateTimeReport(TimeReport timeReport,
-			ArrayList<Activity> activities) {
-		return false;
-
+	public boolean updateTimeReport(TimeReport timeReport, ArrayList<Activity> activities) {
+		if (removeTimeReport(timeReport.getId())) {
+			return addTimeReport(timeReport, activities);
+		} else {
+			return false;
+		}
 	}
 
 	public ArrayList<TimeReport> getTimeReportsForUserId(int userId) {
@@ -752,8 +752,25 @@ public class Database {
 	 * nyckel som motsvarar total tid för hela projektet.
 	 */
 	public HashMap<String, Integer> getTimePerWeek(int projectGroupId) {
-		return null;
-
+		HashMap<String, Integer> timePerWeek = new HashMap<String, Integer>();
+		ArrayList<TimeReport> timeReports = getTimeReportsForProjectGroupId(projectGroupId);
+		int totalTime = 0;
+		for (TimeReport timeReport : timeReports) {
+			String week = Integer.toString(timeReport.getWeek());
+			ArrayList<Activity> activities = getActivities(timeReport.getId());
+			int weekSum = 0;
+			for (Activity activity : activities) {
+				weekSum += activity.getTime();
+			}
+			totalTime += weekSum;
+			if (timePerWeek.get(week) == null) {
+				timePerWeek.put(week, weekSum);
+			} else {
+				timePerWeek.put(week, timePerWeek.get(week) + weekSum);
+			}
+		}
+		timePerWeek.put("totalProjectTime", totalTime);
+		return timePerWeek;
 	}
 
 }
