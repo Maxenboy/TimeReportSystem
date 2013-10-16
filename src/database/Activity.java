@@ -31,8 +31,6 @@ public class Activity {
 	private int time;
 	private int timeReportId;
 	
-	
-	
 	/**
 	 * Constructor used by database
 	 * @param id
@@ -41,8 +39,7 @@ public class Activity {
 	 * @param time
 	 * @param timeReportId
 	 */
-	public Activity(int id, int activityNr, String activityType, int time,
-			int timeReportId) {
+	public Activity(int id, int activityNr, String activityType, int time, int timeReportId) {
 		this.id = id;
 		this.activityNr = activityNr;
 		this.activityType = activityType;
@@ -57,8 +54,8 @@ public class Activity {
 	 * @param time
 	 * @param timeReportId
 	 */
-	public Activity(int activityNr, String activityType, int time,
-			int timeReportId) {
+	public Activity(int activityNr, String activityType, int time, int timeReportId) {
+		id = 0;
 		this.activityNr = activityNr;
 		this.activityType = activityType;
 		this.time = time;
@@ -178,6 +175,16 @@ public class Activity {
 			return false;
 		return true;
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Activity [id=" + id + ", activityNr=" + activityNr
+				+ ", activityType=" + activityType + ", time=" + time
+				+ ", timeReportId=" + timeReportId + "]";
+	}
 	
-	//TODO: Override toString
+	
 }

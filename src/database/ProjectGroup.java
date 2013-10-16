@@ -127,6 +127,63 @@ public class ProjectGroup {
 		this.estimatedTime = estimatedTime;
 	}
 
-	//TODO: Override equals
-	//TODO: Override toString
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (active ? 1231 : 1237);
+		result = prime * result + endWeek;
+		result = prime * result + estimatedTime;
+		result = prime * result + id;
+		result = prime * result
+				+ ((projectName == null) ? 0 : projectName.hashCode());
+		result = prime * result + startWeek;
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ProjectGroup other = (ProjectGroup) obj;
+		if (active != other.active)
+			return false;
+		if (endWeek != other.endWeek)
+			return false;
+		if (estimatedTime != other.estimatedTime)
+			return false;
+		if (id != other.id)
+			return false;
+		if (projectName == null) {
+			if (other.projectName != null)
+				return false;
+		} else if (!projectName.equals(other.projectName))
+			return false;
+		if (startWeek != other.startWeek)
+			return false;
+		return true;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "ProjectGroup [id=" + id + ", projectName=" + projectName
+				+ ", active=" + active + ", startWeek=" + startWeek
+				+ ", endWeek=" + endWeek + ", estimatedTime=" + estimatedTime
+				+ "]";
+	}
+
+	
 }

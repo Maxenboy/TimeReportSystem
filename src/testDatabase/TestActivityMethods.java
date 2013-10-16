@@ -42,7 +42,7 @@ public class TestActivityMethods {
 	@After
 	public void tearDown() throws Exception {
 		// Clear tables
-		try{
+		try {
 			Statement stmt = conn.createStatement();
 		    stmt.executeUpdate("TRUNCATE TABLE project_groups"); 
 		    stmt.executeUpdate("TRUNCATE TABLE users"); 

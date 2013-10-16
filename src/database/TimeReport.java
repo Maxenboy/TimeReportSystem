@@ -31,7 +31,9 @@ public class TimeReport {
 	 * @param projectGroupId
 	 */
 	public TimeReport(int week, int userId, int projectGroupId) {
+		id = 0;
 		this.week = week;
+		signed = false;
 		this.userId = userId;
 		this.projectGroupId = projectGroupId;
 	}
@@ -146,5 +148,15 @@ public class TimeReport {
 		return true;
 	}
 
-	//TODO: Override toString
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "TimeReport [id=" + id + ", week=" + week + ", signed=" + signed
+				+ ", userId=" + userId + ", projectGroupId=" + projectGroupId
+				+ "]";
+	}
+	
+	
 }

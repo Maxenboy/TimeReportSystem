@@ -3,7 +3,7 @@ package subTimeReportMenu;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class ChangeTimeReport {
+public class ChangeTimeReport extends TimeReportMenu{
 	public void doGet(HttpServletRequest request, HttpServletResponse response) {
 		
 	}
