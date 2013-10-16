@@ -40,7 +40,6 @@ public class Activity {
 		this.timeReportId = timeReportId;
 	}
 
-	// TODO: Remove timeReportId from constructor
 	public Activity(int activityNr, String activityType, int time,
 			int timeReportId) {
 		this.activityNr = activityNr;

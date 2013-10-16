@@ -397,15 +397,29 @@ public class Database {
 			res.close();
 			preparedStatement.close();
 		} catch (SQLException ex) {
-			// System.err.println(ex);
+//			 System.err.println(ex);
 		}
 		return list;
 	}
 
 	// TimeReport-metoder
 	public ArrayList<TimeReport> getTimeReportsForProjectGroupId(int projectGroupId) {
-		return null;
-
+		ArrayList<TimeReport> list = new ArrayList<TimeReport>();
+		try {
+			String getTableSQL = "SELECT * FROM time_reports WHERE project_group_id = ? ORDER BY id";
+			PreparedStatement preparedStatement = conn.prepareStatement(getTableSQL);
+			preparedStatement.setInt(1, projectGroupId);
+			preparedStatement.executeQuery();
+			ResultSet res = preparedStatement.getResultSet();
+			while (res.next()) {
+				list.add(new TimeReport(res.getInt(1), res.getInt(2), res.getBoolean(3), res.getInt(4), res.getInt(5)));
+			}
+			res.close();
+			preparedStatement.close();
+		} catch (SQLException ex) {
+//			 System.err.println(ex);
+		}
+		return list;
 	}
 	
 	public ArrayList<TimeReport> getUnsignedTimeReports(int projectGroupId) {
