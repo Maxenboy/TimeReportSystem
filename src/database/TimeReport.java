@@ -148,5 +148,15 @@ public class TimeReport {
 		return true;
 	}
 
-	//TODO: Override toString
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "TimeReport [id=" + id + ", week=" + week + ", signed=" + signed
+				+ ", userId=" + userId + ", projectGroupId=" + projectGroupId
+				+ "]";
+	}
+	
+	
 }

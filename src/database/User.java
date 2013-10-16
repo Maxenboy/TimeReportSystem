@@ -203,5 +203,17 @@ public class User {
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", username=" + username + ", password="
+				+ password + ", active=" + active + ", role=" + role
+				+ ", projectGroup=" + projectGroup + "]";
+	}
+	
+	
+
 	
 }
