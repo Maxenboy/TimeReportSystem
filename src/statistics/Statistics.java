@@ -1,9 +1,8 @@
 package statistics;
 import database.*;
-
 import base.servletBase; // OBS Ska extenda StatisticsMenu egentligen..!
 
-public class Statistics extends servletBase {
+public class Statistics extends StatisticsMenu {
 	public Statistics() {
 		//Database db = new Database();
 		
