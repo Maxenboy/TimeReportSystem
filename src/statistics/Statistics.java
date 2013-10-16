@@ -1,8 +1,9 @@
-// HALLÅ DÄR!
-
 package statistics;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import database.*;
 import base.servletBase; // OBS Ska extenda StatisticsMenu egentligen..!
@@ -14,12 +15,12 @@ public class Statistics extends StatisticsMenu {
 		// Konstruktor
 	}
 	
-	public void doGet() {
+	public void doGet(HttpServletRequest request, HttpServletResponse response) {
 		// 1. kolla vilken roll anv‰ndaren har. Om admin, lÂt admin v‰lja 
 		// hantera vad som h‰nder dÂ sidan laddas.
 	}
 	
-	public void doPost() {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) {
 		// hantera om anv. matat in val.
 	}
 	
