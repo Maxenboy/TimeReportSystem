@@ -353,11 +353,12 @@ public class Database {
 					resultOk = false;
 					preparedStatement.close();
 				}
+				res2.close();
 			} else {
 				resultOk = false;
 				preparedStatement.close();
 			}
-			
+			res.close();
 		} catch (SQLException ex) {
 //			System.err.println(ex);
 			resultOk = false;
