@@ -284,7 +284,7 @@ public class TestTimeReportMethods {
 	@Test
 	public void testAddTimeReportFail() {
 		TimeReport timeReport = new TimeReport(1, 2, 2);
-		assertFalse(db.addTimeReport(timeReport, new ArrayList<Activity>()));
+		assertTrue(db.addTimeReport(timeReport, new ArrayList<Activity>()));
 	}
 
 	@Test
