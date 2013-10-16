@@ -97,6 +97,10 @@ public class TestStatisticsMethods {
 	}
 
 	@Test
+	/**
+	 * Tests getting time for a project group with two users with three time
+	 * reports each.
+	 */
 	public void testGetTimePerWeek() {
 		db.addProjectGroup(pg);
 		User user1 = new User("ada10xyz");
@@ -153,5 +157,14 @@ public class TestStatisticsMethods {
 		expectedTimePerWeek.put("3", 210);
 		expectedTimePerWeek.put("totalProjectTime", 635);
 		assertEquals(expectedTimePerWeek, db.getTimePerWeek(pg.getId()));
+	}
+	
+	@Test
+	/**
+	 * Tests getting time for a project group that does not exist.
+	 */
+	public void testGetTimePerWeekEmpty() {
+		assertEquals(1, db.getTimePerWeek(2).size());
+		assertEquals(0, db.getTimePerWeek(2).get("totalProjectTime").intValue());
 	}
 }
