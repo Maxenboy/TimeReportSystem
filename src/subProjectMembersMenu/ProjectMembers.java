@@ -21,11 +21,25 @@ public class ProjectMembers {
 	 * @return
 	 */
 	public String showMembers(ArrayList<User> users) {
-		String result = null;
-		for (User u : users) {
-			result += u.getUsername() + " ";
+		if (users.isEmpty()) {
+			return null;
 		}
-		return result;
+		StringBuilder sb = new StringBuilder();
+		sb.append("<FORM METHOD=post ACTION=" + formElement("ShowUsers") + ">");
+		sb.append(buildShowUsersInGroupTable());
+		for (User u : users) {
+			sb.append("<tr>");
+			sb.append("<td>" + u.getUsername() + "</td>");
+			sb.append("<td>" + u.getProjectGroup() + "</td>");
+			sb.append("<td>" + u.getRole() + "</td>");
+			sb.append("<td>" + createRadio(u.getId()) + "</td>");
+			sb.append("</tr>");
+		}
+		sb.append("</table>");
+		sb.append("<INPUT TYPE=" + formElement("submit") + "VALUE="
+				+ formElement("Get Users") + ">");
+		sb.append("</form>");
+		return sb.toString();
 	}
 	
 	/**
@@ -57,6 +71,22 @@ public class ProjectMembers {
 	}
 	private String formElement(String par) {
 		return '"' + par + '"';
+	}
+	private String buildShowUsersInGroupTable() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("<table border=" + formElement("1") + ">");
+		sb.append("<tr>");
+		sb.append("<th>Username</th>");
+		sb.append("<th>Project group</th>");
+		sb.append("<th>Role</th>");
+		sb.append("<th>Select</th>");
+		sb.append("</tr>");
+		return sb.toString();
+	}
+	private String createRadio(int id) {
+		return "<input type=" + formElement("radio") + "name="
+				+ formElement("reportId") + "value="
+				+ formElement(Integer.toString(id)) + ">";
 	}
 	
 }
