@@ -423,12 +423,41 @@ public class Database {
 	}
 	
 	public ArrayList<TimeReport> getUnsignedTimeReports(int projectGroupId) {
-		return null;
+		ArrayList<TimeReport> list = new ArrayList<TimeReport>();
+		try {
+			String getTableSQL = "SELECT * FROM time_reports WHERE project_group_id = ? AND signed = 0 ORDER BY id";
+			PreparedStatement preparedStatement = conn.prepareStatement(getTableSQL);
+			preparedStatement.setInt(1, projectGroupId);
+			preparedStatement.executeQuery();
+			ResultSet res = preparedStatement.getResultSet();
+			while (res.next()) {
+				list.add(new TimeReport(res.getInt(1), res.getInt(2), res.getBoolean(3), res.getInt(4), res.getInt(5)));
+			}
+			res.close();
+			preparedStatement.close();
+		} catch (SQLException ex) {
+//			 System.err.println(ex);
+		}
+		return list;
 	}
 
 	public ArrayList<TimeReport> getSignedTimeReports(int projectGroupId) {
-		return null;
-
+		ArrayList<TimeReport> list = new ArrayList<TimeReport>();
+		try {
+			String getTableSQL = "SELECT * FROM time_reports WHERE project_group_id = ? AND signed = 1 ORDER BY id";
+			PreparedStatement preparedStatement = conn.prepareStatement(getTableSQL);
+			preparedStatement.setInt(1, projectGroupId);
+			preparedStatement.executeQuery();
+			ResultSet res = preparedStatement.getResultSet();
+			while (res.next()) {
+				list.add(new TimeReport(res.getInt(1), res.getInt(2), res.getBoolean(3), res.getInt(4), res.getInt(5)));
+			}
+			res.close();
+			preparedStatement.close();
+		} catch (SQLException ex) {
+//			 System.err.println(ex);
+		}
+		return list;
 	}
 
 	public boolean signTimeReports(ArrayList<TimeReport> timeReports) {
@@ -453,8 +482,22 @@ public class Database {
 	}
 
 	public ArrayList<TimeReport> getTimeReportsForUserId(int userId) {
-		return null;
-
+		ArrayList<TimeReport> list = new ArrayList<TimeReport>();
+		try {
+			String getTableSQL = "SELECT * FROM time_reports WHERE user_id = ? ORDER BY id";
+			PreparedStatement preparedStatement = conn.prepareStatement(getTableSQL);
+			preparedStatement.setInt(1, userId);
+			preparedStatement.executeQuery();
+			ResultSet res = preparedStatement.getResultSet();
+			while (res.next()) {
+				list.add(new TimeReport(res.getInt(1), res.getInt(2), res.getBoolean(3), res.getInt(4), res.getInt(5)));
+			}
+			res.close();
+			preparedStatement.close();
+		} catch (SQLException ex) {
+//			 System.err.println(ex);
+		}
+		return list;
 	}
 
 	public boolean addTimeReport(TimeReport timeReport, ArrayList<Activity> activities) {
