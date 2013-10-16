@@ -21,7 +21,6 @@ public class ActiveStatusForProjectGroup {
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) {
 		HttpSession session = request.getSession();
-		boolean active = session.get
 	}
 	
 	private String formElement(String par) {
