@@ -505,7 +505,22 @@ public class Database {
 	}
 
 	public TimeReport getTimeReport(int timeReportId) {
-		return null;
+		TimeReport report = null;
+		try {
+			String getTableSQL = "SELECT * FROM time_reports WHERE id = ? LIMIT 1";
+			PreparedStatement preparedStatement = conn.prepareStatement(getTableSQL);
+			preparedStatement.setInt(1, timeReportId);
+			preparedStatement.executeQuery();
+			ResultSet res = preparedStatement.getResultSet();
+			while (res.next()) {
+				report = new TimeReport(res.getInt(1), res.getInt(2), res.getBoolean(3), res.getInt(4), res.getInt(5));
+			}
+			res.close();
+			preparedStatement.close();
+		} catch (SQLException ex) {
+			 System.err.println(ex);
+		}
+		return report;
 	}
 
 	// Activity-metoder
