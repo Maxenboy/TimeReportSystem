@@ -36,7 +36,7 @@ public class ProjectMembers {
 	 */
 	public String changerole(User user, int role) {
 		db.getUser(user.getId()).setRole(role);
-		return " ";
+		return "true";
 		//vad ska returneras här?
 	}
 	
