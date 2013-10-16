@@ -31,8 +31,6 @@ public class Activity {
 	private int time;
 	private int timeReportId;
 	
-	
-	
 	/**
 	 * Constructor used by database
 	 * @param id
@@ -41,8 +39,7 @@ public class Activity {
 	 * @param time
 	 * @param timeReportId
 	 */
-	public Activity(int id, int activityNr, String activityType, int time,
-			int timeReportId) {
+	public Activity(int id, int activityNr, String activityType, int time, int timeReportId) {
 		this.id = id;
 		this.activityNr = activityNr;
 		this.activityType = activityType;
@@ -57,8 +54,8 @@ public class Activity {
 	 * @param time
 	 * @param timeReportId
 	 */
-	public Activity(int activityNr, String activityType, int time,
-			int timeReportId) {
+	public Activity(int activityNr, String activityType, int time, int timeReportId) {
+		id = 0;
 		this.activityNr = activityNr;
 		this.activityType = activityType;
 		this.time = time;
