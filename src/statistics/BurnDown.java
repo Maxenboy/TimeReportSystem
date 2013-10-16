@@ -16,4 +16,12 @@ public class BurnDown extends StatisticsMenu {
 	public void doPost() {
 		
 	}
+	private String projectGroupForm() {
+		
+		return null; // returnera html-sträng.
+	}
+	
+	private String printBurnDown(HashMap<String, Integer> burnDownData) {
+		return null;
+	}
 }

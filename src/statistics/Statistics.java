@@ -22,7 +22,7 @@ public class Statistics extends StatisticsMenu {
 	}
 	
 	private String projectGroupForm() {
-		
+		// Samam metod i BurnDown
 		return null; // returnera html-sträng.
 	}
 
