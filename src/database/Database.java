@@ -461,13 +461,51 @@ public class Database {
 	}
 
 	public boolean signTimeReports(ArrayList<TimeReport> timeReports) {
-		return false;
-
+		boolean resultOk = true;
+		for (TimeReport tr : timeReports) {
+		    resultOk = signTimeReportsHelperMethod(tr.getId(), 1);
+		    if(!resultOk) {
+		    	break;
+		    }
+		}
+		return resultOk;
+	}
+	
+	private boolean signTimeReportsHelperMethod(int timeReportId, int signed) {
+		boolean resultOk = true;
+		try {
+			String checkIfTimeReportExists = "SELECT signed FROM time_reports WHERE id = ? LIMIT 1";
+			PreparedStatement preparedStatement = conn.prepareStatement(checkIfTimeReportExists);
+			preparedStatement.setInt(1, timeReportId);
+			ResultSet res = preparedStatement.executeQuery();
+			if(res.next()) {
+				String insertIntoSQL = "UPDATE time_reports SET signed=? WHERE id=?";
+				preparedStatement = conn.prepareStatement(insertIntoSQL);
+				preparedStatement.setInt(1, signed);
+				preparedStatement.setInt(2, timeReportId);
+				preparedStatement.executeUpdate();
+				preparedStatement.close();
+			} else {
+				resultOk = false;
+				preparedStatement.close();
+			}
+			
+		} catch (SQLException ex) {
+//			System.err.println(ex);
+			resultOk = false;
+		}
+		return resultOk;
 	}
 
 	public boolean unsignTimeReports(ArrayList<TimeReport> timeReports) {
-		return false;
-
+		boolean resultOk = true;
+		for (TimeReport tr : timeReports) {
+		    resultOk = signTimeReportsHelperMethod(tr.getId(), 0);
+		    if(!resultOk) {
+		    	break;
+		    }
+		}
+		return resultOk;
 	}
 
 	public boolean removeTimeReport(int timeReportId) {
