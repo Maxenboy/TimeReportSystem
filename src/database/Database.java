@@ -8,7 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
+
+import com.mysql.jdbc.Statement;
 
 public class Database {
 	private Connection conn;
@@ -539,7 +540,58 @@ public class Database {
 	}
 
 	public boolean addTimeReport(TimeReport timeReport, ArrayList<Activity> activities) {
-		return false;
+		if (timeReport.getId() != 0) {
+			System.err.println("addTimeReport: TimeReport id not 0. Adding it anyways.");
+		}
+		try {
+			String insertTableSQL = "INSERT INTO time_reports (week, signed, user_id, project_group_id) VALUES (?,?,?,?)";
+			PreparedStatement preparedStatement = conn.prepareStatement(insertTableSQL, Statement.RETURN_GENERATED_KEYS);
+			preparedStatement.setInt(1, timeReport.getWeek());
+			preparedStatement.setBoolean(2, timeReport.isSigned());
+			preparedStatement.setInt(3, timeReport.getUserId());
+			preparedStatement.setInt(4, timeReport.getProjectGroupId());
+			preparedStatement.executeUpdate();
+			ResultSet rs = preparedStatement.getGeneratedKeys();
+			if (rs.next()) {
+			    timeReport.setId(rs.getInt(1));
+			} else {
+				System.err.println("addTimeReport: TimeReport: could not get id from database");
+				return false;
+			}
+			rs.close();
+			preparedStatement.close();
+			
+			for (Activity activity : activities) {
+				if (activity.getId() != 0) {
+					System.err.println("addTimeReport: Activity id not 0. Adding it anyways");
+				}
+				String insertActivityTableSQL = "INSERT INTO activities (activity_nr, activity_type, time, time_report_id) VALUES (?,?,?,?)";
+				PreparedStatement preparedStatementActivity = conn.prepareStatement(insertActivityTableSQL, Statement.RETURN_GENERATED_KEYS);
+				preparedStatementActivity.setInt(1, activity.getActivityNr());
+				preparedStatementActivity.setString(2, activity.getActivityType());
+				preparedStatementActivity.setInt(3, activity.getTime());
+				if (activity.getTimeReportId() != timeReport.getId() || activity.getTimeReportId() != 0) {
+					System.err.println("addTimeReport: The time report id of the Activity does not match that of the time report id. The id from the time report will be used.");
+				}
+				preparedStatementActivity.setInt(4, timeReport.getId());
+				preparedStatementActivity.executeUpdate();
+				ResultSet rsActivity = preparedStatementActivity.getGeneratedKeys();
+				if (rsActivity.next()) {
+				    activity.setId(rsActivity.getInt(1));
+				} else {
+					System.err.println("addTimeReport: Activity: could not get id from database");
+					rsActivity.close();
+					preparedStatementActivity.close();
+					return false;
+				}
+				rsActivity.close();
+				preparedStatementActivity.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	public TimeReport getTimeReport(int timeReportId) {

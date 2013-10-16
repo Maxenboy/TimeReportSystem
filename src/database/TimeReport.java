@@ -31,7 +31,9 @@ public class TimeReport {
 	 * @param projectGroupId
 	 */
 	public TimeReport(int week, int userId, int projectGroupId) {
+		id = 0;
 		this.week = week;
+		signed = false;
 		this.userId = userId;
 		this.projectGroupId = projectGroupId;
 	}

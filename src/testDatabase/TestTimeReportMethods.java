@@ -1,6 +1,9 @@
 package testDatabase;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -42,7 +45,7 @@ public class TestTimeReportMethods {
 	@After
 	public void tearDown() throws Exception {
 		// Clear tables
-		try{
+		try {
 			Statement stmt = conn.createStatement();
 		    stmt.executeUpdate("TRUNCATE TABLE project_groups"); 
 		    stmt.executeUpdate("TRUNCATE TABLE users"); 
