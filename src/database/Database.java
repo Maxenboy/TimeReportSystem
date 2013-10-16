@@ -730,10 +730,9 @@ public class Database {
 	 * databasen. Nyckel: user, role, activity och week. Värde: alla unika
 	 * värden för nycklarna.
 	 */
-	public HashMap<String, ArrayList<String>> getStatisticsFilter(
-			int projectGroupId) {
+	public HashMap<String, ArrayList<String>> getStatisticsFilter(int projectGroupId) {
+		
 		return null;
-
 	}
 
 	/*
