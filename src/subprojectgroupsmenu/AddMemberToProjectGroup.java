@@ -9,7 +9,6 @@ import database.Database;
 
 public class AddMemberToProjectGroup {
 
-
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
 		ProjectGroups groups = new ProjectGroups();
@@ -26,7 +25,8 @@ public class AddMemberToProjectGroup {
 							.parseInt(request.getParameter("groupid")))));
 			break;
 		case "false":
-			out.print(getPageIntro() + "Felaktig");
+			out.print(getPageIntro() + "$(alert(\"Incorrect input.\"))"
+					+ groups.addUserForm());
 		}
 	}
 
@@ -38,7 +38,8 @@ public class AddMemberToProjectGroup {
 		String user = request.getParameter("name");
 		String groupid = request.getParameter("groupid");
 		if (groups.addUserToProjectGroup(user, Integer.parseInt(groupid))) {
-			response.sendRedirect(request.getRequestURI() + "success=true&groupid="+groupid);
+			response.sendRedirect(request.getRequestURI()
+					+ "success=true&groupid=" + groupid);
 		} else {
 			response.sendRedirect(request.getRequestURI() + "sucess=false");
 		}
@@ -47,8 +48,12 @@ public class AddMemberToProjectGroup {
 	private String getPageIntro() {
 		String intro = "<html>"
 				+ "<head><title> Add member to project group </title>"
-				+ "</head>" + "<body>";
+				+ getPageJs() + "</head>" + "<body>";
 		return intro;
+	}
+
+	private String getPageJs() {
+		return "<script src=\"//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js\"></script>";
 	}
 
 }
