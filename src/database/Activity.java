@@ -201,4 +201,45 @@ public class Activity {
 		return 0;
 	}
 	
+	public static String mapActivityNrToString(int activityNbr) {
+		switch(activityNbr) {
+		case ACTIVITY_NR_SDP:
+			return "SDP";
+		case ACTIVITY_NR_SRS:
+			return "SRS";
+		case ACTIVITY_NR_SVVS:
+			return "SVVS";
+		case ACTIVITY_NR_STLDD:
+			return "STLDD";
+		case ACTIVITY_NR_SVVI:
+			return "SVVI";
+		case ACTIVITY_NR_SDDD:
+			return "SDDD";
+		case ACTIVITY_NR_SVVR:
+			return "SVVR";
+		case ACTIVITY_NR_SSD:
+			return "SSD";
+		case ACTIVITY_NR_FINAL_REPORT:
+			return "Final Report";
+		case ACTIVITY_NR_FUNTION_TEST:
+			return "Function Test";
+		case ACTIVITY_NR_SYSTEM_TEST:
+			return "System Test";
+		case ACTIVITY_NR_REGRESSION_TEST:
+			return "Regression Test";
+		case ACTIVITY_NR_MEETING:
+			return "Meeting";
+		case ACTIVITY_NR_LECTURE:
+			return "Lecture";
+		case ACTIVITY_NR_EXERCISE:
+			return "Exercise";
+		case ACTIVITY_NR_COMPUTER_EXERCISE:
+			return "Computer Exercise";
+		case ACTIVITY_NR_HOME_STUDIES:
+			return "Home Studies";
+		case ACTIVITY_NR_OTHER:
+			return "Other";
+		}
+		return null;
+	}
 }

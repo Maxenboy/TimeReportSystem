@@ -28,6 +28,32 @@ public class TimeReportGenerator {
 		return sb.toString();
 	}
 	
+	public String showUnsignedTimeReports(int projectGroupId) {
+		ArrayList<TimeReport> timeReports = db.getUnsignedTimeReports(projectGroupId);
+		if(timeReports.isEmpty()) {
+			return null;
+		}
+		StringBuilder sb = new StringBuilder();
+		sb.append("<FORM METHOD=post ACTION="+formElement("ShowTimeReports")+">");
+		sb.append(buildShowTimeReportTable());
+		for (int i = 0; i < timeReports.size(); i++) {
+			TimeReport tr = timeReports.get(i);
+			sb.append("<tr>");
+			sb.append("<td>" + tr.getId() + "</td>");
+			sb.append("<td>" + tr.getWeek() + "</td>");
+			if(tr.isSigned())
+				sb.append("<td>Y/td>");
+			else
+				sb.append("<td>N</td>");
+			sb.append("<td>" + createRadio(tr.getId())+ "</td>");
+			sb.append("</tr>");
+		}
+		sb.append("</table>");
+		sb.append("<INPUT TYPE="+ formElement("submit") + "VALUE=" + formElement("Get Report") +">");
+		sb.append("</form>");
+		return sb.toString();
+	}
+	
 	public String showTimeReports(int userId) {
 		ArrayList<TimeReport> timeReports = db.getTimeReportsForUserId(userId);
 		if(timeReports.isEmpty()) {
@@ -100,14 +126,15 @@ public class TimeReportGenerator {
 		sb.append(tr.isSigned() ? "Y" : "N");
 		sb.append("</TD></tr>");
 		sb.append("<tr>");
-		sb.append("<TH>Activity Number</TH>" + 
+		sb.append("<TH>Number</TH><TH>Activity</TH>" + 
 				"<TH WIDTH=75>D</TH><TH WIDTH=75>I</TH><TH WIDTH=75>F</TH>" + 
 					"<TH WIDTH=75>R</TH><TH WIDTH=75>Total time</TH></tr>");
 		HashMap<Integer,int[]> table = createTimeReportPresentationTable(activities);
 		for (int i = 11; i < 20; i++) {
 			int[] values = table.get(i);
 			if(values != null) {
-				sb.append("<td><i>" + i + "</i></td>");
+				sb.append("<td>" + i + "</td>");
+				sb.append("<td>" + Activity.mapActivityNrToString(i) + "</td>");
 				int total = 0;
 				for (int j = 0; j < values.length; j++) {
 					sb.append("<td><i>" + values[j] + "</i></td>");
@@ -117,7 +144,16 @@ public class TimeReportGenerator {
 				sb.append("<tr>");
 			}
 		}
-		
+		activities = removePrintedActivities(activities);
+		for (int i = 0; i < activities.size(); i++) {
+			Activity a = activities.get(i);
+			sb.append("<tr>");
+			sb.append("<td>" + a.getActivityNr() + "</td>");
+			sb.append("<TD COLSPAN = 5>" + 
+					Activity.mapActivityNrToString(a.getActivityNr()) + "</TD>");
+			sb.append("<td>" + a.getTime() + "</td>");
+			sb.append("</tr>");
+		}
 		sb.append("</table>");
 		return sb.toString();
 	}
@@ -126,16 +162,25 @@ public class TimeReportGenerator {
 		HashMap<Integer,int[]> table = new HashMap<Integer,int[]>();
 		for (int i = 0; i < activities.size(); i++) {
 			Activity a = activities.get(i);
-			if(table.containsKey(a.getActivityNr())) {
-				String type = a.getActivityType();
+			if(table.containsKey(a.getActivityNr()) && a.getActivityNr() < 20) {
 				int[] workTime = table.get(a.getActivityNr());
 				workTime[a.mapActivityTypeToInt()] += a.getTime();
-			} else {
+			} else if(a.getActivityNr() < 20) {
 				int[] workTime = new int[4];
 				workTime[a.mapActivityTypeToInt()] += a.getTime();
 				table.put(a.getActivityNr(), workTime);
 			}
 		}
 		return table;
+	}
+	
+	private ArrayList<Activity> removePrintedActivities(ArrayList<Activity> activities) {
+		ArrayList<Activity> nonPrintedActivities = new ArrayList<Activity>();
+		for(int i = 0; i < activities.size(); i++) {
+			if(activities.get(i).getActivityNr() > 20) {
+				nonPrintedActivities.add(activities.get(i));
+			}
+		}
+		return nonPrintedActivities;
 	}
 }
