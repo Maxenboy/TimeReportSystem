@@ -6,4 +6,6 @@ Databas får sättas upp på vm-servern precis som på labben eller lokalt. Addr
 
 KÖR INTE DATABASTESTER OM NI HAR SAKER I DATABASEN SOM INTE FÅR FÖRSVINNA!
 
+För att installera MySQL på Windows se lib/set_mysql_windows.txt.
+
 /UG1
