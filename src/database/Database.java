@@ -915,7 +915,6 @@ public class Database {
 			preparedStatement.executeQuery();
 			ResultSet res = preparedStatement.getResultSet();
 			while(res.next()) {
-				System.out.println("role");
 				roles.add(Integer.toString(res.getInt("role")));
 			}
 			res.close();
