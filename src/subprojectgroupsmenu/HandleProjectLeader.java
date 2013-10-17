@@ -29,7 +29,6 @@ public class HandleProjectLeader {
 			out.print(getPageIntro() + "$(alert(\"Incorrect input.\"))"
 					+ leaderForm() + getPageOutro());
 		}
-
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
