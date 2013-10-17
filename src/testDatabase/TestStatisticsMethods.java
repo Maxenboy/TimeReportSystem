@@ -31,7 +31,7 @@ public class TestStatisticsMethods {
 		pg = new ProjectGroup("TheProject", 1, 7, 180);
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mysql://localhost:8889/puss1302?user=puss1302&password=jks78ww2");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/puss1302?user=puss1302&password=jks78ww2");
 			// conn =
 			// DriverManager.getConnection("jdbc:mysql://vm26.cs.lth.se/puss1302?"
 			// + "user=puss1302&password=jks78ww2");
