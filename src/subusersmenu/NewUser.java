@@ -16,22 +16,27 @@ public class NewUser {
 		db = new Database();
 	}
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
 		HttpSession session = request.getSession(true);
 		PrintWriter out = response.getWriter();
 		out.print(getPageIntro());
 		String s = users.userForm();
-		if(s == null){
+		if (s == null) {
 			out.print("<p> Nothing to show </p>");
-		}else {
-			switch(request.getParameter("success")){
-			case "null": out.print(s);break;
-			case "true": out.print(users.showUsers(db.getUsers()));break;
-			case "false": out.print(getPageIntro()+"$(alert(\"incorrect syntax on the user name\"))"+s);
-			
+		} else {
+			switch (request.getParameter("success")) {
+			case "null":
+				out.print(s);
+				break;
+			case "true":
+				out.print(users.showUsers(db.getUsers()));
+				break;
+			case "false":
+				out.print(getPageIntro()
+						+ "$(alert(\"incorrect syntax on the user name\"))" + s);
 			}
-			
-	
+
 		}
 	}
 
@@ -41,6 +46,8 @@ public class NewUser {
 		String username = request.getParameter("username");
 		if (users.checkNewName(username)) {
 			users.addUser(username);
+			response.sendRedirect(request.getRequestURI() + "success=true");
+		} else {
 			response.sendRedirect(request.getRequestURI() + "success=true");
 		}
 
@@ -57,4 +64,5 @@ public class NewUser {
 		return "<script src=\"//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js\"></script>"
 				+ "$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"Are you sure?\");if (confirmed) {$(this).submit();}});";
 	}
+
 }
