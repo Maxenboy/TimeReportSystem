@@ -26,7 +26,7 @@ public class ProjectGroups {
 	}
 
 	/**
-	 * Generates a form for adding new users
+	 * Generates a form for adding users to a project group.
 	 * 
 	 * @return HTML code for the form
 	 */
@@ -40,7 +40,7 @@ public class ProjectGroups {
 				+ " groupid=" + formElement("groupid") + '>';
 		html += "<input type=" + formElement("submit") + "value="
 				+ formElement("Add user") + '>';
-		html += "</form>";
+		html += "</form>"+ "</body></html>";
 		return html;
 	}
 
