@@ -20,8 +20,11 @@ public class ShowTimeReports extends HttpServlet {
 		HttpSession session = request.getSession(true);
 		PrintWriter out = response.getWriter();
 		out.print(getPageIntro());
-		//TODO: Change the 1 into a variable!!
-		String s = trg.showTimeReports(1);
+		/**
+		 * Change 1 into variable. The second in-parameter should depend 
+		 * on user role
+		 */
+		String s = trg.showAllTimeReports(1,TimeReportGenerator.SHOW_USER_REPORTS);
 		if(s == null)
 			out.print("<p> Nothing to show </p>");
 		else 
