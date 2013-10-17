@@ -27,7 +27,7 @@ private Database db;
 	}
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		doGet(request,response);
+		
 	}
 	
 	private String getPageIntro() {
