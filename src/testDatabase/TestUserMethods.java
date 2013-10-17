@@ -17,6 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import database.Database;
+import database.ProjectGroup;
 import database.User;
 
 public class TestUserMethods {
@@ -151,6 +152,20 @@ public class TestUserMethods {
 	@Test
 	public void testActivateUserByIdThatDoesNotExist() {
 		assertFalse(db.activateUser(2));
+	}
+	
+	@Test
+	public void testGetUserByProjectIdThatDoesNotExist() {
+		assertEquals(0, db.getUsers(11).size());
+	}
+	
+	@Test
+	public void testGetUserByProjectId() {
+		ProjectGroup pg = new ProjectGroup("TheProject", 0, 7, 123);
+		db.addProjectGroup(pg);
+		db.addUser(u);
+		db.addUserToProjectGroup(u.getId(), pg.getId());
+		assertEquals(1, db.getUsers(pg.getId()).size());
 	}
 	
 	@Test

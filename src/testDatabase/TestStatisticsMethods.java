@@ -1,6 +1,6 @@
 package testDatabase;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.After;
 import org.junit.Before;
@@ -75,24 +76,33 @@ public class TestStatisticsMethods {
 		db.addUser(user1);
 		db.addUser(user2);
 		db.addUser(user3);
+		db.addUserToProjectGroup(user1.getId(), pg.getId());
+		db.addUserToProjectGroup(user2.getId(), pg.getId());
+		db.addUserToProjectGroup(user3.getId(), pg.getId());
 		HashMap<Integer, Integer> roles = new HashMap<Integer, Integer>();
 		roles.put(user1.getId(), User.ROLE_DEVELOPMENT_GROUP);
 		roles.put(user2.getId(), User.ROLE_PROJECT_LEADER);
 		roles.put(user3.getId(), User.ROLE_SYSTEM_GROUP);
 		db.setUserRoles(roles);
-		db.addUserToProjectGroup(user1.getId(), pg.getId());
-		db.addUserToProjectGroup(user2.getId(), pg.getId());
-		db.addUserToProjectGroup(user3.getId(), pg.getId());
 		TimeReport timeReport1 = new TimeReport(1, user1.getId(), pg.getId());
 		TimeReport timeReport2 = new TimeReport(2, user1.getId(), pg.getId());
 		TimeReport timeReport3 = new TimeReport(3, user1.getId(), pg.getId());
-		ArrayList<Activity> activities = new ArrayList<Activity>();
-		db.addTimeReport(timeReport1, activities);
-		db.addTimeReport(timeReport2, activities);
-		db.addTimeReport(timeReport3, activities);
-		HashMap<String, ArrayList<String>> map = db.getStatisticsFilter(33);
-		for (ArrayList<String> list : map.values()) {
-			assertEquals(3, list.size());
+		Activity activity1 = new Activity(Activity.ACTIVITY_NR_LECTURE, Activity.ACTIVITY_TYPE_OTHER, 90, timeReport1.getId());
+		Activity activity2 = new Activity(Activity.ACTIVITY_NR_EXERCISE, Activity.ACTIVITY_TYPE_OTHER, 100, timeReport2.getId());
+		Activity activity3 = new Activity(Activity.ACTIVITY_NR_SDP, Activity.ACTIVITY_TYPE_DEVELOPMENT, 200, timeReport3.getId());
+		ArrayList<Activity> activities1 = new ArrayList<Activity>();
+		ArrayList<Activity> activities2 = new ArrayList<Activity>();
+		ArrayList<Activity> activities3 = new ArrayList<Activity>();
+		activities1.add(activity1);
+		activities2.add(activity2);
+		activities3.add(activity3);
+		db.addTimeReport(timeReport1, activities1);
+		db.addTimeReport(timeReport2, activities2);
+		db.addTimeReport(timeReport3, activities3);
+		HashMap<String, ArrayList<String>> map = db.getStatisticsFilter(pg.getId());		
+		
+		for (Map.Entry<String, ArrayList<String>> entry : map.entrySet()) {
+		    assertEquals(3, entry.getValue().size());
 		}
 	}
 	
