@@ -15,9 +15,6 @@ import com.mysql.jdbc.Statement;
 public class Database {
 	private Connection conn;
 
-	/**
-	 * 
-	 */
 	public Database() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
