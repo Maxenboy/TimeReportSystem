@@ -4,8 +4,8 @@ if [%~2] == [] goto no_arg
 
 set database=%~1
 set sql_file=%~2
-REM set mysql_bin_dir=..\..\..\mysql-5.5.13-win32\bin\
 set mysql_bin_dir=
+REM set mysql_bin_dir=..\..\..\mysql-5.5.13-win32\bin\
 set db_user=puss1302
 set db_password=jks78ww2
 

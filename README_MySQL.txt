@@ -25,4 +25,4 @@
 # I katalogen db/windows finns .bat-filer för Windows för att snabbt tömma och läsa in en ny databas. Enklast är att dubbelklicka på dem för att köra dem.
 # Det går dock lika bra att köra kommandona själv:
   mysql --user=puss1302 --password=jks78ww2 puss1302 -e "DROP DATABASE puss1302"
-  mysql --user=puss1302 --password=jks78ww2 puss1302 < db/setup_db.sql
+  mysql --user=puss1302 --password=jks78ww2 puss1302 < db/empty_database.sql

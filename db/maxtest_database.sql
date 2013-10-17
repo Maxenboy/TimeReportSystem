@@ -1,8 +1,6 @@
+create database puss1302;
 use puss1302;
-DROP TABLE activities;
-DROP TABLE users;
-DROP TABLE project_groups;
-DROP TABLE time_reports;
+
 --
 -- Table structure for table `activities`
 --
