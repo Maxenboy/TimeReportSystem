@@ -154,7 +154,23 @@ public class Database {
 	 * @return
 	 */
 	public ArrayList<User> getUsers(int projectGroupId) {
-		return null;
+		ArrayList<User> list = new ArrayList<User>();
+		try {
+			String getUsersSQL = "SELECT * FROM users WHERE project_group_id = ?";
+			PreparedStatement preparedStatement = conn.prepareStatement(getUsersSQL);
+			preparedStatement.setInt(1, projectGroupId);
+			preparedStatement.executeQuery();
+			ResultSet res = preparedStatement.getResultSet();
+			User u = null;
+			while (res.next()) {
+				u = new User(res.getInt(1), res.getString(2), res.getString(3),
+						res.getBoolean(4), res.getInt(5), res.getInt(6));
+				list.add(u);
+			}
+		} catch (SQLException ex) {
+			// System.err.println(ex);
+		}
+		return list;
 	}
 
 	/**
@@ -887,6 +903,65 @@ public class Database {
 		ArrayList<String> activities = new ArrayList<String>();
 		ArrayList<String> weeks = new ArrayList<String>();
 		HashMap<String, ArrayList<String>> map = new HashMap<String, ArrayList<String>>();
+		ArrayList<User> list = getUsers(projectGroupId);
+		for(User u : list) {
+			users.add(u.getUsername());
+		}
+		
+		try {
+			String getTableSQL = "SELECT DISTINCT(role) FROM users WHERE project_group_id = ?";
+			PreparedStatement preparedStatement = conn.prepareStatement(getTableSQL);
+			preparedStatement.setInt(1, projectGroupId);
+			preparedStatement.executeQuery();
+			ResultSet res = preparedStatement.getResultSet();
+			while(res.next()) {
+				System.out.println("role");
+				roles.add(Integer.toString(res.getInt("role")));
+			}
+			res.close();
+			preparedStatement.close();
+		} catch (SQLException ex) {
+			// System.err.println(ex);
+		}
+		
+		try {
+			ArrayList<String> activityNr = new ArrayList<String>();
+			for(TimeReport tr : getTimeReportsForProjectGroupId(projectGroupId)) {
+				String getTableSQL = "SELECT DISTINCT(activity_nr) FROM activities WHERE time_report_id = ?";
+				PreparedStatement preparedStatement = conn.prepareStatement(getTableSQL);
+				preparedStatement.setInt(1, tr.getId());
+				preparedStatement.executeQuery();
+				ResultSet res = preparedStatement.getResultSet();
+				while(res.next()) {
+					if(!activityNr.contains(Integer.toString(res.getInt("activity_nr")))) {
+						activityNr.add(Integer.toString(res.getInt("activity_nr")));
+					}
+				}
+				res.close();
+				preparedStatement.close();
+			}
+			for(String s : activityNr) {
+				activities.add(s);
+			}
+		} catch (SQLException ex) {
+			// System.err.println(ex);
+		}
+		
+		try {
+			String getTableSQL = "SELECT DISTINCT(week) FROM time_reports WHERE project_group_id = ?";
+			PreparedStatement preparedStatement = conn.prepareStatement(getTableSQL);
+			preparedStatement.setInt(1, projectGroupId);
+			preparedStatement.executeQuery();
+			ResultSet res = preparedStatement.getResultSet();
+			while(res.next()) {
+				weeks.add(Integer.toString(res.getInt("week")));
+			}
+			res.close();
+			preparedStatement.close();
+		} catch (SQLException ex) {
+			// System.err.println(ex);
+		}
+		
 		map.put("user", users);
 		map.put("role", roles);
 		map.put("activity", activities);
