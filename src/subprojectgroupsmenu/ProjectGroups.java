@@ -31,6 +31,7 @@ public class ProjectGroups {
 	 * @return HTML code for the form
 	 */
 	public String addUserForm() {
+		
 		String html;
 		html = "<p> <form name=" + formElement("input") + "id=" + formElement("addusertogroup") + '>';
 		html += " method=" + formElement("get");
