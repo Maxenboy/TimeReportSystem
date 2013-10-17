@@ -48,7 +48,7 @@ public class NewUser {
 			users.addUser(username);
 			response.sendRedirect(request.getRequestURI() + "success=true");
 		} else {
-			response.sendRedirect(request.getRequestURI() + "success=true");
+			response.sendRedirect(request.getRequestURI() + "success=false");
 		}
 
 	}

@@ -15,16 +15,15 @@ public class AddMemberToProjectGroup {
 		HttpSession session = request.getSession(true);
 		Database db = new Database();
 		PrintWriter out = response.getWriter();
-		switch (request.getParameter("sucess")) {
-		case "null":
+		if(request.getParameter("sucess") == null) {
 			out.print(getPageIntro() + groups.addUserForm());
-			break;
-		case "true":
+		}
+		else if(request.getParameter("sucess").equals("true")) {
 			out.print(getPageIntro()
 					+ groups.showProjectGroup(db.getUsers(Integer
 							.parseInt(request.getParameter("groupid")))));
-			break;
-		case "false":
+		}
+		else if (request.getParameter("sucess").equals("false")) {
 			out.print(getPageIntro() + "$(alert(\"Incorrect input.\"))"
 					+ groups.addUserForm());
 		}
