@@ -746,8 +746,8 @@ public class Database {
 	public boolean addTimeReport(TimeReport timeReport,
 			ArrayList<Activity> activities) {
 		if (timeReport.getId() != 0) {
-			System.err
-					.println("addTimeReport: TimeReport id not 0. Adding it anyways.");
+//			System.err
+//					.println("addTimeReport: TimeReport id not 0. Adding it anyways.");
 		}
 		try {
 			String insertTableSQL = "INSERT INTO time_reports (week, signed, user_id, project_group_id) VALUES (?,?,?,?)";
@@ -762,8 +762,8 @@ public class Database {
 			if (rs.next()) {
 				timeReport.setId(rs.getInt(1));
 			} else {
-				System.err
-						.println("addTimeReport: TimeReport: could not get id from database");
+//				System.err
+//						.println("addTimeReport: TimeReport: could not get id from database");
 				return false;
 			}
 			rs.close();
@@ -771,8 +771,8 @@ public class Database {
 
 			for (Activity activity : activities) {
 				if (activity.getId() != 0) {
-					System.err
-							.println("addTimeReport: Activity id not 0. Adding it anyways.");
+//					System.err
+//							.println("addTimeReport: Activity id not 0. Adding it anyways.");
 				}
 				String insertActivityTableSQL = "INSERT INTO activities (activity_nr, activity_type, time, time_report_id) VALUES (?,?,?,?)";
 				PreparedStatement preparedStatementActivity = conn
@@ -784,8 +784,8 @@ public class Database {
 				preparedStatementActivity.setInt(3, activity.getTime());
 				if (activity.getTimeReportId() != timeReport.getId()
 						&& activity.getTimeReportId() != 0) {
-					System.err
-							.println("addTimeReport: The time report id of the Activity does not match that of the time report id. The id from the time report will be used.");
+//					System.err
+//							.println("addTimeReport: The time report id of the Activity does not match that of the time report id. The id from the time report will be used.");
 				}
 				activity.setTimeReportId(timeReport.getId());
 				preparedStatementActivity.setInt(4, timeReport.getId());
@@ -795,8 +795,8 @@ public class Database {
 				if (rsActivity.next()) {
 					activity.setId(rsActivity.getInt(1));
 				} else {
-					System.err
-							.println("addTimeReport: Activity: could not get id from database");
+//					System.err
+//							.println("addTimeReport: Activity: could not get id from database");
 					rsActivity.close();
 					preparedStatementActivity.close();
 					return false;
@@ -831,7 +831,7 @@ public class Database {
 			res.close();
 			preparedStatement.close();
 		} catch (SQLException ex) {
-			System.err.println(ex);
+//			System.err.println(ex);
 		}
 		return report;
 	}
@@ -1037,7 +1037,7 @@ public class Database {
 			}
 			stmt.close();
 			if (usersList.size() == 0) {
-				System.err.println("getStatistics: No matching users.");
+//				System.err.println("getStatistics: No matching users.");
 				return stats;
 			}
 
@@ -1047,17 +1047,19 @@ public class Database {
 			if (weeks == null) {
 			    timeReportsSql.append("SELECT id FROM time_reports WHERE project_group_id=? AND user_id IN ").append(getQuestionMarksForList(usersList));
 			    timeReportsStmt = conn.prepareStatement(timeReportsSql.toString());
+			    timeReportsStmt.setInt(1, projectGroupId);
 				for (int i = 0; i < usersList.size(); i++) {
-					timeReportsStmt.setInt(i + 1, usersList.get(i));
+					timeReportsStmt.setInt(i + 2, usersList.get(i));
 				}
 			} else {
 			    timeReportsSql.append("SELECT id FROM time_reports WHERE project_group_id=? AND week IN ").append(getQuestionMarksForList(weeks)).append(" AND user_id IN ").append(getQuestionMarksForList(usersList));
 			    timeReportsStmt = conn.prepareStatement(timeReportsSql.toString());
+			    timeReportsStmt.setInt(1, projectGroupId);
 				for (int i = 0; i < weeks.size(); i++) {
-					stmt.setInt(i + 1, weeks.get(i));
+					stmt.setInt(i + 2, weeks.get(i));
 				}
 				for (int j = 0; j < usersList.size(); j++) {
-					stmt.setInt(j + weeks.size() + 1, usersList.get(j));
+					stmt.setInt(j + weeks.size() + 2, usersList.get(j));
 				}
 			}
 			ResultSet timeReportsRes = timeReportsStmt.executeQuery();
@@ -1067,7 +1069,7 @@ public class Database {
 			}
 			timeReportsStmt.close();
 			if (timeReportsList.size() == 0) {
-				System.err.println("getStatistics: No matching time reports.");
+//				System.err.println("getStatistics: No matching time reports.");
 				return stats;
 			}
 			
@@ -1104,6 +1106,7 @@ public class Database {
 			activitiesStmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+//			System.err.println(e);
 		}
 		return stats;
 	}

@@ -107,6 +107,94 @@ public class TestStatisticsMethods {
 	}
 	
 	@Test
+	public void testGetStatistics() {
+		db.addProjectGroup(pg);
+		User user1 = new User("ada10xyz");
+		User user2 = new User("ain10xyz");
+		db.addUser(user1);
+		db.addUser(user2);
+		HashMap<Integer, Integer> roles = new HashMap<Integer, Integer>();
+		roles.put(user1.getId(), User.ROLE_DEVELOPMENT_GROUP);
+		roles.put(user2.getId(), User.ROLE_PROJECT_LEADER);
+		db.setUserRoles(roles);
+		db.addUserToProjectGroup(user1.getId(), pg.getId());
+		db.addUserToProjectGroup(user2.getId(), pg.getId());
+		
+		TimeReport timeReport11 = new TimeReport(1, user1.getId(), pg.getId());
+		TimeReport timeReport12 = new TimeReport(2, user1.getId(), pg.getId());
+		TimeReport timeReport13 = new TimeReport(3, user1.getId(), pg.getId());
+		
+		TimeReport timeReport21 = new TimeReport(1, user2.getId(), pg.getId());
+		TimeReport timeReport22 = new TimeReport(2, user2.getId(), pg.getId());
+		TimeReport timeReport23 = new TimeReport(3, user2.getId(), pg.getId());
+		
+		Activity activity111 = new Activity(Activity.ACTIVITY_NR_EXERCISE, Activity.ACTIVITY_TYPE_OTHER, 45, timeReport11.getId());
+		Activity activity121 = new Activity(Activity.ACTIVITY_NR_HOME_STUDIES, Activity.ACTIVITY_TYPE_OTHER, 60, timeReport12.getId());
+		Activity activity122 = new Activity(Activity.ACTIVITY_NR_SRS, Activity.ACTIVITY_TYPE_DEVELOPMENT, 200, timeReport12.getId());
+		Activity activity131 = new Activity(Activity.ACTIVITY_NR_EXERCISE, Activity.ACTIVITY_TYPE_OTHER, 90, timeReport13.getId());
+		ArrayList<Activity> activities11 = new ArrayList<Activity>();
+		activities11.add(activity111);
+		ArrayList<Activity> activities12 = new ArrayList<Activity>();
+		activities12.add(activity121);
+		activities12.add(activity122);
+		ArrayList<Activity> activities13 = new ArrayList<Activity>();
+		activities13.add(activity131);
+		
+		Activity activity211 = new Activity(Activity.ACTIVITY_NR_MEETING, Activity.ACTIVITY_TYPE_OTHER, 60, timeReport21.getId());
+		Activity activity221 = new Activity(Activity.ACTIVITY_NR_SRS, Activity.ACTIVITY_TYPE_DEVELOPMENT, 60, timeReport22.getId());
+		Activity activity231 = new Activity(Activity.ACTIVITY_NR_SRS, Activity.ACTIVITY_TYPE_REWORK, 120, timeReport23.getId());
+		ArrayList<Activity> activities21 = new ArrayList<Activity>();
+		activities21.add(activity211);
+		ArrayList<Activity> activities22 = new ArrayList<Activity>();
+		activities22.add(activity221);
+		ArrayList<Activity> activities23 = new ArrayList<Activity>();
+		activities23.add(activity231);
+		
+		db.addTimeReport(timeReport11, activities11);
+		db.addTimeReport(timeReport12, activities12);
+		db.addTimeReport(timeReport13, activities13);
+		db.addTimeReport(timeReport21, activities21);
+		db.addTimeReport(timeReport22, activities22);
+		db.addTimeReport(timeReport23, activities23);
+		
+		ArrayList<String> usernamesFilter = new ArrayList<String>();
+		usernamesFilter.add(user1.getUsername());
+		ArrayList<Integer> activitiesFilter = new ArrayList<Integer>();
+		activitiesFilter.add(Activity.ACTIVITY_NR_EXERCISE);
+		
+		// Expected map:
+		HashMap<String, ArrayList<String>> expectedStats = new HashMap<String, ArrayList<String>>();
+		
+		ArrayList<String> expectedUsernames = new ArrayList<String>();
+		expectedUsernames.add(user1.getUsername());
+		expectedUsernames.add(user1.getUsername());
+		
+		ArrayList<String> expectedRoles = new ArrayList<String>();
+		expectedRoles.add(Integer.toString(User.ROLE_DEVELOPMENT_GROUP));
+		expectedRoles.add(Integer.toString(User.ROLE_DEVELOPMENT_GROUP));
+		
+		ArrayList<String> expectedActivities = new ArrayList<String>();
+		expectedActivities.add(Integer.toString(Activity.ACTIVITY_NR_EXERCISE));
+		expectedActivities.add(Integer.toString(Activity.ACTIVITY_NR_EXERCISE));
+		
+		ArrayList<String> expectedWeeks = new ArrayList<String>();
+		expectedWeeks.add("1");
+		expectedWeeks.add("3");
+		
+		ArrayList<String> expectedTimes = new ArrayList<String>();
+		expectedTimes.add("45");
+		expectedTimes.add("90");
+		
+		expectedStats.put("username", expectedUsernames);
+		expectedStats.put("role", expectedRoles);
+		expectedStats.put("activity_nr", expectedActivities);
+		expectedStats.put("week", expectedWeeks);
+		expectedStats.put("time", expectedTimes);
+		
+		assertEquals(expectedStats, db.getStatistics(pg.getId(), usernamesFilter, null, activitiesFilter, null));
+	}
+	
+	@Test
 	/**
 	 * Tests getting time for a project group with two users with three time
 	 * reports each.
