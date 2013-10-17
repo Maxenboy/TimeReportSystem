@@ -17,6 +17,7 @@ build/
 build/*/*
 build/*
 build/*/*/*
+doc/*
 
 # External tool builders
 .externalToolBuilders/

@@ -294,7 +294,6 @@ public class Database {
 	}
 
 	// ProjectGroup-metoder
-
 	/**
 	 * Activates the project group with id projectGroupId
 	 * @param projectGroupId
@@ -379,7 +378,7 @@ public class Database {
 	}
 
 	/**
-	 * adds a user with id userId to the project group with id projectGroupId
+	 * Adds a user with id userId to the project group with id projectGroupId
 	 * @param userId
 	 * @param projectGroupId
 	 * @return true if successful, false otherwise
@@ -737,7 +736,7 @@ public class Database {
 	 * Adds a new time report and its activities to the database. The time report
 	 * and activity ids will be generated and will be changed in the User and 
 	 * Activity objects. The time report id of the activities will be set to
-	 * the id to the time report.
+	 * the id of the time report.
 	 * @param timeReport The time report.
 	 * @param activities A list containing the activities.
 	 * @return true if the time report and the activities was added successfully,
@@ -894,7 +893,7 @@ public class Database {
 	/**
 	 * Gets all unique roles, users, activities and weeks. 
 	 * @param projectGroupId
-	 * @return HashMap with keys "user", "role", "activity" and "week". Values are Arraylists
+	 * @return HashMap with keys "user", "role", "activity" and "week". Values are Arraylists.
 	 */
 	public HashMap<String, ArrayList<String>> getStatisticsFilter(int projectGroupId) {
 		ArrayList<String> users = new ArrayList<String>();
@@ -967,20 +966,22 @@ public class Database {
 		
 		return map;
 	}
-
-	/*
-	 * Returnerar en HashMap där nyckeln är users, roles, activites, weeks eller
-	 * time. Värdena är alla fält i databasen i ordning så att index i listorna
-	 * stämmer överrens mot varandra.
-	 */
+	
 	/**
-	 * 
-	 * @param projectGroupId
-	 * @param usernames
-	 * @param roles
-	 * @param activities
-	 * @param weeks
-	 * @return
+	 * Gets statistics by fetching the activities that matches the given 
+	 * parameters. The parameters act as a filter for the statistics. If a 
+	 * parameter is null or an empty list means that this filter is not set
+	 * and all values for this property will be accepted during the matching.
+	 * @param projectGroupId The project group id.
+	 * @param usernames The list of usernames to collect statistics for.
+	 * @param roles The list of roles to collect statistics for.
+	 * @param activities The list of activities to collect statistics for.
+	 * @param weeks The list of weeks to collect statistics for.
+	 * @return HashMap with keys "user", "role", "activity", "week" and "time" 
+	 * and ArrayList as value. The HashMap forms a table where the keys are
+	 * the columns and all the ArrayLists at equal indices are the rows. 
+	 * That means that all the values for a specific index in the ArrayLists 
+	 * corresponds to a matching activity for the given filter. 
 	 */
 	public HashMap<String, ArrayList<String>> getStatistics(int projectGroupId,
 			ArrayList<String> usernames, ArrayList<Integer> roles,
@@ -993,8 +994,6 @@ public class Database {
 		stats.put("week", new ArrayList<String>());
 		stats.put("time", new ArrayList<String>());
 		
-		// TODO: Fix for empty lists (not supported)
-		
 		/*
 		 * Basically what we want to run is:
 		 * SELECT * FROM activities WHERE activity_nr IN (?,...) AND time_report_id IN (SELECT id FROM time_reports WHERE project_group_id=? AND week IN (?,...) AND user_id IN (SELECT id FROM users WHERE username IN (?,...) AND role IN (?,...)));
@@ -1004,15 +1003,15 @@ public class Database {
 			// Users
 			StringBuilder usersSql = new StringBuilder();
 			PreparedStatement stmt;
-			if (usernames == null && roles == null) {
+			if ((usernames == null || usernames.isEmpty()) && (roles == null || roles.isEmpty())) {
 			    stmt = conn.prepareStatement("SELECT id FROM users");
-			} else if (usernames == null) {
+			} else if (usernames == null || usernames.isEmpty()) {
 				usersSql.append("SELECT id FROM users WHERE role IN ").append(getQuestionMarksForList(roles));	
 				stmt = conn.prepareStatement(usersSql.toString());
 				for (int i = 0; i < roles.size(); i++) {
 					stmt.setInt(i + 1, roles.get(i));
 				}
-			} else if (roles == null) {
+			} else if (roles == null || roles.isEmpty()) {
 			    usersSql.append("SELECT id FROM users WHERE username IN ").append(getQuestionMarksForList(usernames));
 			    stmt = conn.prepareStatement(usersSql.toString());
 				for (int i = 0; i < usernames.size(); i++) {
@@ -1042,7 +1041,7 @@ public class Database {
 			// Time reports
 			StringBuilder timeReportsSql = new StringBuilder();
 			PreparedStatement timeReportsStmt;
-			if (weeks == null) {
+			if (weeks == null || weeks.isEmpty()) {
 			    timeReportsSql.append("SELECT id FROM time_reports WHERE project_group_id=? AND user_id IN ").append(getQuestionMarksForList(usersList));
 			    timeReportsStmt = conn.prepareStatement(timeReportsSql.toString());
 			    timeReportsStmt.setInt(1, projectGroupId);
@@ -1074,7 +1073,7 @@ public class Database {
 			// Activities
 			StringBuilder activitiesSql = new StringBuilder();
 			PreparedStatement activitiesStmt;
-			if (activities == null) {
+			if (activities == null || activities.isEmpty()) {
 			    activitiesSql.append("SELECT * FROM activities WHERE time_report_id IN ").append(getQuestionMarksForList(timeReportsList));
 			    activitiesStmt = conn.prepareStatement(activitiesSql.toString());
 				for (int i = 0; i < timeReportsList.size(); i++) {
