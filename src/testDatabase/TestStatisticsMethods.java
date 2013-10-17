@@ -102,7 +102,6 @@ public class TestStatisticsMethods {
 		HashMap<String, ArrayList<String>> map = db.getStatisticsFilter(pg.getId());		
 		
 		for (Map.Entry<String, ArrayList<String>> entry : map.entrySet()) {
-		    System.out.println(entry.getKey() + " " + entry.getValue().size());
 		    assertEquals(3, entry.getValue().size());
 		}
 	}
