@@ -21,20 +21,19 @@ public class ActiveStatusForProjectGroup {
 		db = new Database();
 		HttpSession session = request.getSession(true);
 		PrintWriter out = response.getWriter();
-		switch (request.getParameter("sucess")) {
-		case "null":
+		if(request.getParameter("sucess") == null) {
 			out.print(getPageIntro() + groupForm() + getPageOutro());
-			break;
-		case "true":
+		}
+		else if (request.getParameter("sucess").equals("true")) {
 			out.print(getPageIntro() + "Sucess! </body></html>");
-			break;
-		case "false":
+		}
+		else if(request.getParameter("sucess").equals("false")) {
 			out.print(getPageIntro() + "$(alert(\"Incorrect input.\"))" + groupForm() + getPageOutro());
-			break;
 		}
 	}
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
 		HttpSession session = request.getSession();
 		String name = request.getParameter("name");
 		String status = request.getParameter("status");
@@ -70,11 +69,12 @@ public class ActiveStatusForProjectGroup {
 
 	private String getPageIntro() {
 		String intro = "<html>"
-				+ "<head><title> The Base Block System </title></head>"
+				+ "<head><title> The Base Block System </title>"
+				+ getPageJs() +"</head>"
 				+ "<body>";
 		return intro;
 	}
-	
+
 	private String getPageJs() {
 		return "<script src=\"//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js\"></script>";
 	}
