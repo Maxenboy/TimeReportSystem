@@ -7,6 +7,10 @@ import database.*;
 
 public class TimeReportGenerator {
 	private Database db;
+	public static final int SHOW_ALL = 1;
+	public static final int SHOW_USER_REPORTS = 2;
+	public static final int SHOW_SIGNED = 3;
+	public static final int SHOW_UNSIGNED = 4;
 	
 	public TimeReportGenerator(Database db) {
 		this.db = db;
@@ -28,12 +32,54 @@ public class TimeReportGenerator {
 		return sb.toString();
 	}
 	
-	public String showUnsignedTimeReports(int projectGroupId) {
-		ArrayList<TimeReport> timeReports = db.getUnsignedTimeReports(projectGroupId);
+	private String buildSignTimeReportTable() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("<table border=" + formElement("1") + ">");
+		sb.append("<tr>");
+		sb.append("<th>User</th>");
+		sb.append("<th>Report ID</th>");
+		sb.append("<th>Week</th>");
+		sb.append("<th>Select</th>");
+		sb.append("</tr>");
+		return sb.toString();
+	}
+	
+	public String showSignedOrUnsignedTimeReports(ArrayList<TimeReport> timeReports, boolean sign) {
 		if(timeReports.isEmpty()) {
 			return null;
 		}
 		StringBuilder sb = new StringBuilder();
+		String s;
+		s = sign ? "SignTimeReports" : "UnsignTimeReports";
+		sb.append("<FORM METHOD=post ACTION="+formElement(s)+">");
+		sb.append(buildSignTimeReportTable());
+		for (int i = 0; i < timeReports.size(); i++) {
+			TimeReport tr = timeReports.get(i);
+			sb.append("<tr>");
+			sb.append("<td>" + tr.getUserId() + "</td>");
+			sb.append("<td>" + tr.getId() + "</td>");
+			sb.append("<td>" + tr.getWeek() + "</td>");
+			sb.append("<td>" + createCheck(tr.getId())+ "</td>");
+			sb.append("</tr>");
+		}
+		sb.append("</table>");
+		String buttonName;
+		s = sign ? "Sign Reports" : "Unsign Reports"; 
+		sb.append("<INPUT TYPE="+ formElement("submit") + "VALUE=" + formElement(s) +">");
+		sb.append("</form>");
+		return sb.toString();
+	}
+	
+	private String createCheck(int id) {
+		return "<input type=" + formElement("checkbox") + "name=" + 
+				formElement("reportIds") + "value=" + formElement(Integer.toString(id))+">";
+	}
+	
+	private String showUserReports(ArrayList<TimeReport> timeReports) {
+		StringBuilder sb = new StringBuilder();
+		if(timeReports.isEmpty()) {
+			return null;
+		}
 		sb.append("<FORM METHOD=post ACTION="+formElement("ShowTimeReports")+">");
 		sb.append(buildShowTimeReportTable());
 		for (int i = 0; i < timeReports.size(); i++) {
@@ -54,30 +100,24 @@ public class TimeReportGenerator {
 		return sb.toString();
 	}
 	
-	public String showTimeReports(int userId) {
-		ArrayList<TimeReport> timeReports = db.getTimeReportsForUserId(userId);
-		if(timeReports.isEmpty()) {
-			return null;
+	public String showAllTimeReports(int ID, int state) {
+		ArrayList<TimeReport> timeReports = new ArrayList<TimeReport>();
+		String html = null;
+		switch(state) {
+		case SHOW_USER_REPORTS:
+			timeReports = db.getTimeReportsForUserId(ID);
+			html = showUserReports(timeReports);
+			break;
+		case SHOW_UNSIGNED:
+			timeReports = db.getUnsignedTimeReports(ID);
+			html = showSignedOrUnsignedTimeReports(timeReports,true);
+			break;
+		case SHOW_SIGNED:
+			timeReports = db.getSignedTimeReports(ID);
+			html = showSignedOrUnsignedTimeReports(timeReports, false);
+			break;
 		}
-		StringBuilder sb = new StringBuilder();
-		sb.append("<FORM METHOD=post ACTION="+formElement("ShowTimeReports")+">");
-		sb.append(buildShowTimeReportTable());
-		for (int i = 0; i < timeReports.size(); i++) {
-			TimeReport tr = timeReports.get(i);
-			sb.append("<tr>");
-			sb.append("<td>" + tr.getId() + "</td>");
-			sb.append("<td>" + tr.getWeek() + "</td>");
-			if(tr.isSigned())
-				sb.append("<td>Y/td>");
-			else
-				sb.append("<td>N</td>");
-			sb.append("<td>" + createRadio(tr.getId())+ "</td>");
-			sb.append("</tr>");
-		}
-		sb.append("</table>");
-		sb.append("<INPUT TYPE="+ formElement("submit") + "VALUE=" + formElement("Get Report") +">");
-		sb.append("</form>");
-		return sb.toString();
+		return html;
 	}
 	
 	private String createRadio(int id) {
@@ -182,5 +222,33 @@ public class TimeReportGenerator {
 			}
 		}
 		return nonPrintedActivities;
+	}
+	
+	/**
+	 * 
+	 * @param reportIds
+	 * @param sign
+	 * @return
+	 */
+	public String signOrUnsignReports(String[] reportIds, boolean sign) {
+		StringBuilder sb = new StringBuilder();
+		//Create dummy TimeReports
+		ArrayList<TimeReport> timeReports = new ArrayList<TimeReport>();
+		for(String ID: reportIds)
+			timeReports.add(new TimeReport(Integer.valueOf(ID), 0,false, 0, 0));
+		boolean success;
+		if(sign == true)
+			success = db.signTimeReports(timeReports);
+		else
+			success = db.unsignTimeReports(timeReports);
+		if(success) {
+			sb.append("<h3> The following time reports were signed:</h3>");
+			for(TimeReport tr: timeReports) {
+				sb.append(tr.getId() + "<br>");
+			}
+		} else {
+			return null;
+		}
+		return sb.toString();
 	}
 }
