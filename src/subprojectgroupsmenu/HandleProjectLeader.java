@@ -15,6 +15,10 @@ public class HandleProjectLeader {
 			throws IOException {
 		HttpSession session = request.getSession();
 		PrintWriter out = response.getWriter();
+		switch (request.getParameter("session")) {
+		case "null":
+			break;
+		}
 
 	}
 
@@ -22,16 +26,16 @@ public class HandleProjectLeader {
 
 	}
 
-	private String groupForm() {
+	private String leaderForm() {
 		String html;
 		html = "<p> <form name=" + formElement("input");
 		html += " method=" + formElement("get");
 		html += "<p> Which group : <input type=" + formElement("text")
 				+ " name=" + formElement("addname") + '>';
-		html += "<p> Which user : <input type=" + formElement("text") + " status="
-				+ formElement("status") + '>';
+		html += "<p> Which user : <input type=" + formElement("text") + " user="
+				+ formElement("user") + '>';
 		html += "<input type=" + formElement("submit") + "value="
-				+ formElement("Get group") + '>';
+				+ formElement("make leader") + '>';
 		html += "</form>";
 		return html;
 	}
