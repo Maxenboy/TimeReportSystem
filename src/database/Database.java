@@ -997,42 +997,42 @@ public class Database {
 		/*
 		 * Basically what we want to run is:
 		 * SELECT * FROM activities WHERE activity_nr IN (?,...) AND time_report_id IN (SELECT id FROM time_reports WHERE project_group_id=? AND week IN (?,...) AND user_id IN (SELECT id FROM users WHERE username IN (?,...) AND role IN (?,...)));
-		 * But since the lists can be null we also have to take care of those cases.
+		 * But since the lists can be null and empty we also have to take care of those cases.
 		 */
 		try {
 			// Users
 			StringBuilder usersSql = new StringBuilder();
-			PreparedStatement stmt;
+			PreparedStatement usersStmt;
 			if ((usernames == null || usernames.isEmpty()) && (roles == null || roles.isEmpty())) {
-			    stmt = conn.prepareStatement("SELECT id FROM users");
+			    usersStmt = conn.prepareStatement("SELECT id FROM users");
 			} else if (usernames == null || usernames.isEmpty()) {
 				usersSql.append("SELECT id FROM users WHERE role IN ").append(getQuestionMarksForList(roles));	
-				stmt = conn.prepareStatement(usersSql.toString());
+				usersStmt = conn.prepareStatement(usersSql.toString());
 				for (int i = 0; i < roles.size(); i++) {
-					stmt.setInt(i + 1, roles.get(i));
+					usersStmt.setInt(i + 1, roles.get(i));
 				}
 			} else if (roles == null || roles.isEmpty()) {
 			    usersSql.append("SELECT id FROM users WHERE username IN ").append(getQuestionMarksForList(usernames));
-			    stmt = conn.prepareStatement(usersSql.toString());
+			    usersStmt = conn.prepareStatement(usersSql.toString());
 				for (int i = 0; i < usernames.size(); i++) {
-					stmt.setString(i + 1, usernames.get(i));
+					usersStmt.setString(i + 1, usernames.get(i));
 				}
 			} else {
 			    usersSql.append("SELECT id FROM users WHERE username IN ").append(getQuestionMarksForList(usernames)).append(" AND role IN ").append(getQuestionMarksForList(roles));
-			    stmt = conn.prepareStatement(usersSql.toString());
+			    usersStmt = conn.prepareStatement(usersSql.toString());
 				for (int i = 0; i < usernames.size(); i++) {
-					stmt.setString(i + 1, usernames.get(i));
+					usersStmt.setString(i + 1, usernames.get(i));
 				}
 				for (int j = 0; j < roles.size(); j++) {
-					stmt.setInt(j + usernames.size() + 1, roles.get(j));
+					usersStmt.setInt(j + usernames.size() + 1, roles.get(j));
 				}
 			}
-			ResultSet usersRes = stmt.executeQuery();
+			ResultSet usersRes = usersStmt.executeQuery();
 			ArrayList<Integer> usersList = new ArrayList<Integer>();
 			while (usersRes.next()) {
 				usersList.add(usersRes.getInt("id"));
 			}
-			stmt.close();
+			usersStmt.close();
 			if (usersList.size() == 0) {
 //				System.err.println("getStatistics: No matching users.");
 				return stats;
@@ -1053,10 +1053,10 @@ public class Database {
 			    timeReportsStmt = conn.prepareStatement(timeReportsSql.toString());
 			    timeReportsStmt.setInt(1, projectGroupId);
 				for (int i = 0; i < weeks.size(); i++) {
-					stmt.setInt(i + 2, weeks.get(i));
+					timeReportsStmt.setInt(i + 2, weeks.get(i));
 				}
 				for (int j = 0; j < usersList.size(); j++) {
-					stmt.setInt(j + weeks.size() + 2, usersList.get(j));
+					timeReportsStmt.setInt(j + weeks.size() + 2, usersList.get(j));
 				}
 			}
 			ResultSet timeReportsRes = timeReportsStmt.executeQuery();
@@ -1074,13 +1074,13 @@ public class Database {
 			StringBuilder activitiesSql = new StringBuilder();
 			PreparedStatement activitiesStmt;
 			if (activities == null || activities.isEmpty()) {
-			    activitiesSql.append("SELECT * FROM activities WHERE time_report_id IN ").append(getQuestionMarksForList(timeReportsList));
+			    activitiesSql.append("SELECT * FROM activities WHERE time_report_id IN ").append(getQuestionMarksForList(timeReportsList)).append(" ORDER BY id");
 			    activitiesStmt = conn.prepareStatement(activitiesSql.toString());
 				for (int i = 0; i < timeReportsList.size(); i++) {
 					activitiesStmt.setInt(i + 1, timeReportsList.get(i));
 				}
 			} else {
-			    activitiesSql.append("SELECT * FROM activities WHERE activity_nr IN ").append(getQuestionMarksForList(activities)).append(" AND time_report_id IN ").append(getQuestionMarksForList(timeReportsList));
+			    activitiesSql.append("SELECT * FROM activities WHERE activity_nr IN ").append(getQuestionMarksForList(activities)).append(" AND time_report_id IN ").append(getQuestionMarksForList(timeReportsList)).append(" ORDER BY id");
 			    activitiesStmt = conn.prepareStatement(activitiesSql.toString());
 				for (int i = 0; i < activities.size(); i++) {
 					activitiesStmt.setInt(i + 1, activities.get(i));

@@ -106,8 +106,7 @@ public class TestStatisticsMethods {
 		}
 	}
 	
-	@Test
-	public void testGetStatistics() {
+	private void setUpTestGetStatistics() {
 		db.addProjectGroup(pg);
 		User user1 = new User("ada10xyz");
 		User user2 = new User("ain10xyz");
@@ -156,9 +155,14 @@ public class TestStatisticsMethods {
 		db.addTimeReport(timeReport21, activities21);
 		db.addTimeReport(timeReport22, activities22);
 		db.addTimeReport(timeReport23, activities23);
+	}
+	
+	@Test
+	public void testGetStatistics1() {
+		setUpTestGetStatistics();
 		
 		ArrayList<String> usernamesFilter = new ArrayList<String>();
-		usernamesFilter.add(user1.getUsername());
+		usernamesFilter.add("ada10xyz");
 		ArrayList<Integer> activitiesFilter = new ArrayList<Integer>();
 		activitiesFilter.add(Activity.ACTIVITY_NR_EXERCISE);
 		
@@ -166,8 +170,8 @@ public class TestStatisticsMethods {
 		HashMap<String, ArrayList<String>> expectedStats = new HashMap<String, ArrayList<String>>();
 		
 		ArrayList<String> expectedUsernames = new ArrayList<String>();
-		expectedUsernames.add(user1.getUsername());
-		expectedUsernames.add(user1.getUsername());
+		expectedUsernames.add("ada10xyz");
+		expectedUsernames.add("ada10xyz");
 		
 		ArrayList<String> expectedRoles = new ArrayList<String>();
 		expectedRoles.add(Integer.toString(User.ROLE_DEVELOPMENT_GROUP));
@@ -192,6 +196,241 @@ public class TestStatisticsMethods {
 		expectedStats.put("time", expectedTimes);
 		
 		assertEquals(expectedStats, db.getStatistics(pg.getId(), usernamesFilter, null, activitiesFilter, null));
+	}
+	
+	@Test
+	public void testGetStatistics2() {
+		setUpTestGetStatistics();
+		
+		ArrayList<Integer> rolesFilter = new ArrayList<Integer>();
+		rolesFilter.add(User.ROLE_PROJECT_LEADER);
+		ArrayList<Integer> activitiesFilter = new ArrayList<Integer>();
+		activitiesFilter.add(Activity.ACTIVITY_NR_SRS);
+		activitiesFilter.add(Activity.ACTIVITY_NR_MEETING);
+		activitiesFilter.add(Activity.ACTIVITY_NR_MEETING); // Testing duplicate value
+		ArrayList<Integer> weeksFilter = new ArrayList<Integer>();
+		weeksFilter.add(1);
+		weeksFilter.add(1); // Testing duplicate value
+		weeksFilter.add(3);
+		
+		// Expected map:
+		HashMap<String, ArrayList<String>> expectedStats = new HashMap<String, ArrayList<String>>();
+		
+		ArrayList<String> expectedUsernames = new ArrayList<String>();
+		expectedUsernames.add("ain10xyz");
+		expectedUsernames.add("ain10xyz");
+		
+		ArrayList<String> expectedRoles = new ArrayList<String>();
+		expectedRoles.add(Integer.toString(User.ROLE_PROJECT_LEADER));
+		expectedRoles.add(Integer.toString(User.ROLE_PROJECT_LEADER));
+		
+		ArrayList<String> expectedActivities = new ArrayList<String>();
+		expectedActivities.add(Integer.toString(Activity.ACTIVITY_NR_MEETING));
+		expectedActivities.add(Integer.toString(Activity.ACTIVITY_NR_SRS));
+		
+		ArrayList<String> expectedWeeks = new ArrayList<String>();
+		expectedWeeks.add("1");
+		expectedWeeks.add("3");
+		
+		ArrayList<String> expectedTimes = new ArrayList<String>();
+		expectedTimes.add("60");
+		expectedTimes.add("120");
+		
+		expectedStats.put("username", expectedUsernames);
+		expectedStats.put("role", expectedRoles);
+		expectedStats.put("activity_nr", expectedActivities);
+		expectedStats.put("week", expectedWeeks);
+		expectedStats.put("time", expectedTimes);
+		
+		assertEquals(expectedStats, db.getStatistics(pg.getId(), new ArrayList<String>(), rolesFilter, activitiesFilter, weeksFilter));
+	}
+	
+	@Test
+	public void testGetStatistics3() {
+		setUpTestGetStatistics();
+		
+		ArrayList<String> usersFilter = new ArrayList<String>();
+		usersFilter.add("ain10xyz");
+		ArrayList<Integer> rolesFilter = new ArrayList<Integer>();
+		rolesFilter.add(User.ROLE_PROJECT_LEADER);
+		ArrayList<Integer> activitiesFilter = new ArrayList<Integer>();
+		activitiesFilter.add(Activity.ACTIVITY_NR_SRS);
+		activitiesFilter.add(Activity.ACTIVITY_NR_MEETING);
+		activitiesFilter.add(Activity.ACTIVITY_NR_MEETING); // Testing duplicate value
+		ArrayList<Integer> weeksFilter = new ArrayList<Integer>();
+		weeksFilter.add(1);
+		weeksFilter.add(1); // Testing duplicate value
+		weeksFilter.add(3);
+		
+		// Expected map:
+		HashMap<String, ArrayList<String>> expectedStats = new HashMap<String, ArrayList<String>>();
+		
+		ArrayList<String> expectedUsernames = new ArrayList<String>();
+		expectedUsernames.add("ain10xyz");
+		expectedUsernames.add("ain10xyz");
+		
+		ArrayList<String> expectedRoles = new ArrayList<String>();
+		expectedRoles.add(Integer.toString(User.ROLE_PROJECT_LEADER));
+		expectedRoles.add(Integer.toString(User.ROLE_PROJECT_LEADER));
+		
+		ArrayList<String> expectedActivities = new ArrayList<String>();
+		expectedActivities.add(Integer.toString(Activity.ACTIVITY_NR_MEETING));
+		expectedActivities.add(Integer.toString(Activity.ACTIVITY_NR_SRS));
+		
+		ArrayList<String> expectedWeeks = new ArrayList<String>();
+		expectedWeeks.add("1");
+		expectedWeeks.add("3");
+		
+		ArrayList<String> expectedTimes = new ArrayList<String>();
+		expectedTimes.add("60");
+		expectedTimes.add("120");
+		
+		expectedStats.put("username", expectedUsernames);
+		expectedStats.put("role", expectedRoles);
+		expectedStats.put("activity_nr", expectedActivities);
+		expectedStats.put("week", expectedWeeks);
+		expectedStats.put("time", expectedTimes);
+		
+		assertEquals(expectedStats, db.getStatistics(pg.getId(), usersFilter, rolesFilter, activitiesFilter, weeksFilter));
+	}
+	
+	@Test
+	public void testGetStatisticsNoMatchingUsers() {
+		setUpTestGetStatistics();
+		
+		ArrayList<String> usersFilter = new ArrayList<String>();
+		usersFilter.add("ain11xyz");
+		
+		HashMap<String, ArrayList<String>> expectedStats = new HashMap<String, ArrayList<String>>();
+		ArrayList<String> expectedUsernames = new ArrayList<String>();
+		ArrayList<String> expectedRoles = new ArrayList<String>();
+		ArrayList<String> expectedActivities = new ArrayList<String>();
+		ArrayList<String> expectedWeeks = new ArrayList<String>();
+		ArrayList<String> expectedTimes = new ArrayList<String>();
+		
+		expectedStats.put("username", expectedUsernames);
+		expectedStats.put("role", expectedRoles);
+		expectedStats.put("activity_nr", expectedActivities);
+		expectedStats.put("week", expectedWeeks);
+		expectedStats.put("time", expectedTimes);
+		
+		assertEquals(expectedStats, db.getStatistics(pg.getId(), usersFilter, new ArrayList<Integer>(), null, null));
+	}
+	
+	@Test
+	public void testGetStatisticsNoMatchingActivities() {
+		setUpTestGetStatistics();
+		
+		ArrayList<Integer> rolesFilter = new ArrayList<Integer>();
+		rolesFilter.add(User.ROLE_PROJECT_LEADER);
+		ArrayList<Integer> weeksFilter = new ArrayList<Integer>();
+		weeksFilter.add(-1);
+		weeksFilter.add(4);
+		
+		HashMap<String, ArrayList<String>> expectedStats = new HashMap<String, ArrayList<String>>();
+		ArrayList<String> expectedUsernames = new ArrayList<String>();
+		ArrayList<String> expectedRoles = new ArrayList<String>();
+		ArrayList<String> expectedActivities = new ArrayList<String>();
+		ArrayList<String> expectedWeeks = new ArrayList<String>();
+		ArrayList<String> expectedTimes = new ArrayList<String>();
+		
+		expectedStats.put("username", expectedUsernames);
+		expectedStats.put("role", expectedRoles);
+		expectedStats.put("activity_nr", expectedActivities);
+		expectedStats.put("week", expectedWeeks);
+		expectedStats.put("time", expectedTimes);
+		
+		assertEquals(expectedStats, db.getStatistics(pg.getId(), null, rolesFilter, null, weeksFilter));
+	}
+	
+	@Test
+	public void testGetStatisticsProjectGroupId() {
+		setUpTestGetStatistics();
+		
+		HashMap<String, ArrayList<String>> expectedStats = new HashMap<String, ArrayList<String>>();
+		ArrayList<String> expectedUsernames = new ArrayList<String>();
+		ArrayList<String> expectedRoles = new ArrayList<String>();
+		ArrayList<String> expectedActivities = new ArrayList<String>();
+		ArrayList<String> expectedWeeks = new ArrayList<String>();
+		ArrayList<String> expectedTimes = new ArrayList<String>();
+		
+		expectedStats.put("username", expectedUsernames);
+		expectedStats.put("role", expectedRoles);
+		expectedStats.put("activity_nr", expectedActivities);
+		expectedStats.put("week", expectedWeeks);
+		expectedStats.put("time", expectedTimes);
+		
+		assertEquals(expectedStats, db.getStatistics(0, null, null, null, null));
+	}
+	
+	private HashMap<String, ArrayList<String>> setUpTestGetStatisticsNull() {
+		setUpTestGetStatistics();
+		
+		// Expected map:
+		HashMap<String, ArrayList<String>> expectedStats = new HashMap<String, ArrayList<String>>();
+		
+		ArrayList<String> expectedUsernames = new ArrayList<String>();
+		expectedUsernames.add("ada10xyz");
+		expectedUsernames.add("ada10xyz");
+		expectedUsernames.add("ada10xyz");
+		expectedUsernames.add("ada10xyz");
+		expectedUsernames.add("ain10xyz");
+		expectedUsernames.add("ain10xyz");
+		expectedUsernames.add("ain10xyz");
+		
+		ArrayList<String> expectedRoles = new ArrayList<String>();
+		expectedRoles.add(Integer.toString(User.ROLE_DEVELOPMENT_GROUP));
+		expectedRoles.add(Integer.toString(User.ROLE_DEVELOPMENT_GROUP));
+		expectedRoles.add(Integer.toString(User.ROLE_DEVELOPMENT_GROUP));
+		expectedRoles.add(Integer.toString(User.ROLE_DEVELOPMENT_GROUP));
+		expectedRoles.add(Integer.toString(User.ROLE_PROJECT_LEADER));
+		expectedRoles.add(Integer.toString(User.ROLE_PROJECT_LEADER));
+		expectedRoles.add(Integer.toString(User.ROLE_PROJECT_LEADER));
+		
+		ArrayList<String> expectedActivities = new ArrayList<String>();
+		expectedActivities.add(Integer.toString(Activity.ACTIVITY_NR_EXERCISE));
+		expectedActivities.add(Integer.toString(Activity.ACTIVITY_NR_HOME_STUDIES));
+		expectedActivities.add(Integer.toString(Activity.ACTIVITY_NR_SRS));
+		expectedActivities.add(Integer.toString(Activity.ACTIVITY_NR_EXERCISE));
+		expectedActivities.add(Integer.toString(Activity.ACTIVITY_NR_MEETING));
+		expectedActivities.add(Integer.toString(Activity.ACTIVITY_NR_SRS));
+		expectedActivities.add(Integer.toString(Activity.ACTIVITY_NR_SRS));
+		
+		ArrayList<String> expectedWeeks = new ArrayList<String>();
+		expectedWeeks.add("1");
+		expectedWeeks.add("2");
+		expectedWeeks.add("2");
+		expectedWeeks.add("3");
+		expectedWeeks.add("1");
+		expectedWeeks.add("2");
+		expectedWeeks.add("3");
+		
+		ArrayList<String> expectedTimes = new ArrayList<String>();
+		expectedTimes.add("45");
+		expectedTimes.add("60");
+		expectedTimes.add("200");
+		expectedTimes.add("90");
+		expectedTimes.add("60");
+		expectedTimes.add("60");
+		expectedTimes.add("120");
+		
+		expectedStats.put("username", expectedUsernames);
+		expectedStats.put("role", expectedRoles);
+		expectedStats.put("activity_nr", expectedActivities);
+		expectedStats.put("week", expectedWeeks);
+		expectedStats.put("time", expectedTimes);
+		
+		return expectedStats;
+	}
+	
+	@Test
+	public void testGetStatisticsNull() {
+		assertEquals(setUpTestGetStatisticsNull(), db.getStatistics(pg.getId(), null, null, null, null));
+	}
+	
+	@Test
+	public void testGetStatisticsEmpty() {
+		assertEquals(setUpTestGetStatisticsNull(), db.getStatistics(pg.getId(), new ArrayList<String>(), new ArrayList<Integer>(), new ArrayList<Integer>(), new ArrayList<Integer>()));
 	}
 	
 	@Test
