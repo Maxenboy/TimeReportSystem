@@ -20,6 +20,7 @@ public class ShowTimeReports extends HttpServlet {
 		HttpSession session = request.getSession(true);
 		PrintWriter out = response.getWriter();
 		out.print(getPageIntro());
+		//TODO: Change the 1 into a variable!!
 		String s = trg.showTimeReports(1);
 		if(s == null)
 			out.print("<p> Nothing to show </p>");
@@ -36,6 +37,10 @@ public class ShowTimeReports extends HttpServlet {
 		out.print(s);
 	}
 	
+	/**
+	 * Only for development purposes
+	 * @return
+	 */
 	private String getPageIntro() {
 		String intro = "<html>"
 				+ "<head><title> The Base Block System </title></head>"

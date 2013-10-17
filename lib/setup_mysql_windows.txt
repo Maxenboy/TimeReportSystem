@@ -20,9 +20,9 @@ GRANT ALL PRIVILEGES ON puss1302 . * TO 'puss1302'@'localhost';
 -------------------------------------------------------------------------------
 # För att ta bort existerande databas och läsa in en ny:
 
-mysql --user=puss1302 --password=jks78ww2 puss1302
+mysql --user=puss1302 --password=jks78ww2
 drop database  puss1302;
 
 # Tryck Ctrl+c för att komma ur mysql-prompten.
 
-mysql --user=puss1302 --password=jks78ww2 puss1302 < lib/setup_db.sql
+mysql --user=puss1302 --password=jks78ww2 < lib/setup_db.sql
