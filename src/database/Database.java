@@ -22,7 +22,7 @@ public class Database {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager
-					.getConnection("jdbc:mysql://localhost:8889/puss1302?user=puss1302&password=jks78ww2");
+					.getConnection("jdbc:mysql://localhost:3306/puss1302?user=puss1302&password=jks78ww2");
 			// conn =
 			// DriverManager.getConnection("jdbc:mysql://vm26.cs.lth.se/puss1302?"
 			// + "user=puss1302&password=jks78ww2");
@@ -36,9 +36,10 @@ public class Database {
 
 	// User-metoder
 	/**
+	 * Logins a user with the specified username and password. 
 	 * @param username
 	 * @param password
-	 * @return
+	 * @return null if username/password is wrong, the User-object otherwise
 	 */
 	public User loginUser(String username, String password) {
 		User u = null;
@@ -66,8 +67,9 @@ public class Database {
 	}
 
 	/**
+	 * Adds the user.
 	 * @param user
-	 * @return
+	 * @return true if successful, false otherwise
 	 */
 	public boolean addUser(User user) {
 		boolean resultOK = true;
@@ -101,8 +103,9 @@ public class Database {
 	}
 
 	/**
+	 * Gets the user with the username
 	 * @param username
-	 * @return
+	 * @return User-object if successful, null otherwise
 	 */
 	public User getUser(String username) {
 		User u = null;
@@ -127,7 +130,8 @@ public class Database {
 	}
 
 	/**
-	 * @return
+	 * Gets all users
+	 * @return ArrayList with all users
 	 */
 	public ArrayList<User> getUsers() {
 		ArrayList<User> list = new ArrayList<User>();
@@ -151,8 +155,9 @@ public class Database {
 	}
 
 	/**
+	 * Gets all users in a projectGroup with the id projectGroupId
 	 * @param projectGroupId
-	 * @return
+	 * @return ArrayList with all users
 	 */
 	public ArrayList<User> getUsers(int projectGroupId) {
 		ArrayList<User> list = new ArrayList<User>();
@@ -175,8 +180,9 @@ public class Database {
 	}
 
 	/**
+	 * Get a user by userId
 	 * @param userId
-	 * @return
+	 * @return User-object if successful, null otherwise
 	 */
 	public User getUser(int userId) {
 		User u = null;
@@ -200,26 +206,23 @@ public class Database {
 	}
 
 	/**
+	 * Activates the user with the id userId
 	 * @param userId
-	 * @return
+	 * @return true if successful, false otherwise
 	 */
 	public boolean activateUser(int userId) {
 		return activateUserHelpMethod(userId, 1);
 	}
 
 	/**
+	 * Deactivates the user with the id userId
 	 * @param userId
-	 * @return
+	 * @return true if successful, false otherwise
 	 */
 	public boolean deactivateUser(int userId) {
 		return activateUserHelpMethod(userId, 0);
 	}
 
-	/**
-	 * @param userId
-	 * @param active
-	 * @return
-	 */
 	private boolean activateUserHelpMethod(int userId, int active) {
 		boolean resultOk = true;
 		try {
@@ -248,8 +251,9 @@ public class Database {
 	}
 
 	/**
+	 * Set the roles for the userIds specified as keys and the values for that key is the role to set for the user
 	 * @param roles
-	 * @return
+	 * @return true if successful, false otherwise
 	 */
 	public boolean setUserRoles(HashMap<Integer, Integer> roles) {
 		boolean resultOk = true;
@@ -262,11 +266,6 @@ public class Database {
 		return resultOk;
 	}
 
-	/**
-	 * @param userId
-	 * @param role
-	 * @return
-	 */
 	private boolean setUserRole(int userId, int role) {
 		boolean resultOk = true;
 		try {
@@ -297,30 +296,23 @@ public class Database {
 	// ProjectGroup-metoder
 
 	/**
+	 * Activates the project group with id projectGroupId
 	 * @param projectGroupId
-	 * @return
-	 */
-	/**
-	 * @param projectGroupId
-	 * @return
+	 * @return true if successful, false otherwise
 	 */
 	public boolean activateProjectGroup(int projectGroupId) {
 		return activateProjectGroupHelpMethod(projectGroupId, 1);
 	}
 
 	/**
+	 * Deactivates the project group with id projectGroupId
 	 * @param projectGroupId
-	 * @return
+	 * @return true if successful, false otherwise
 	 */
 	public boolean deactivateProjectGroup(int projectGroupId) {
 		return activateProjectGroupHelpMethod(projectGroupId, 0);
 	}
 
-	/**
-	 * @param projectGroupId
-	 * @param active
-	 * @return
-	 */
 	private boolean activateProjectGroupHelpMethod(int projectGroupId,
 			int active) {
 		boolean resultOk = true;
@@ -350,8 +342,9 @@ public class Database {
 	}
 
 	/**
+	 * Adds a project group
 	 * @param projectGroup
-	 * @return
+	 * @return true if successful, false otherwise
 	 */
 	public boolean addProjectGroup(ProjectGroup projectGroup) {
 		boolean resultOK = true;
@@ -386,9 +379,10 @@ public class Database {
 	}
 
 	/**
+	 * adds a user with id userId to the project group with id projectGroupId
 	 * @param userId
 	 * @param projectGroupId
-	 * @return
+	 * @return true if successful, false otherwise
 	 */
 	public boolean addUserToProjectGroup(int userId, int projectGroupId) {
 		boolean resultOk = true;
@@ -428,9 +422,10 @@ public class Database {
 	}
 
 	/**
+	 * Removes the user with id userId from the project group with id projectGroupId
 	 * @param userId
 	 * @param projectGroupId
-	 * @return
+	 * @return true if successful, false otherwise
 	 */
 	public boolean removeUserFromProjectGroup(int userId, int projectGroupId) {
 		boolean resultOk = true;
@@ -470,8 +465,9 @@ public class Database {
 	}
 
 	/**
+	 * Get project group with id projectGroupId
 	 * @param projectGroupId
-	 * @return
+	 * @return the ProjectGroup if successful, null otherwise
 	 */
 	public ProjectGroup getProjectGroup(int projectGroupId) {
 		ProjectGroup pg = null;
@@ -496,7 +492,8 @@ public class Database {
 	}
 
 	/**
-	 * @return
+	 * Get all project groups
+	 * @return ArrayList with all project groups
 	 */
 	public ArrayList<ProjectGroup> getProjectGroups() {
 		ArrayList<ProjectGroup> list = new ArrayList<ProjectGroup>();
@@ -521,8 +518,9 @@ public class Database {
 
 	// TimeReport-metoder
 	/**
+	 * Get all time reports for project group with id projectGroupId
 	 * @param projectGroupId
-	 * @return
+	 * @return ArrayList with time reports
 	 */
 	public ArrayList<TimeReport> getTimeReportsForProjectGroupId(
 			int projectGroupId) {
@@ -547,8 +545,9 @@ public class Database {
 	}
 
 	/**
+	 * Get all unsigned reports for the project group with id projectGroupId
 	 * @param projectGroupId
-	 * @return
+	 * @return ArrayList with the TimeReports
 	 */
 	public ArrayList<TimeReport> getUnsignedTimeReports(int projectGroupId) {
 		ArrayList<TimeReport> list = new ArrayList<TimeReport>();
@@ -572,8 +571,9 @@ public class Database {
 	}
 
 	/**
+	 * Get all signed time reports for project group with id projectGroupId
 	 * @param projectGroupId
-	 * @return
+	 * @return ArrayList with the TimeReports
 	 */
 	public ArrayList<TimeReport> getSignedTimeReports(int projectGroupId) {
 		ArrayList<TimeReport> list = new ArrayList<TimeReport>();
@@ -597,8 +597,9 @@ public class Database {
 	}
 
 	/**
+	 * Sign time reports
 	 * @param timeReports
-	 * @return
+	 * @return true if successful, false otherwise
 	 */
 	public boolean signTimeReports(ArrayList<TimeReport> timeReports) {
 		boolean resultOk = true;
@@ -611,11 +612,6 @@ public class Database {
 		return resultOk;
 	}
 
-	/**
-	 * @param timeReport
-	 * @param signed
-	 * @return
-	 */
 	private boolean signTimeReportsHelperMethod(TimeReport timeReport,
 			boolean signed) {
 		boolean resultOk = true;
@@ -646,8 +642,9 @@ public class Database {
 	}
 
 	/**
+	 * Unsign timeReports
 	 * @param timeReports
-	 * @return
+	 * @return true if successful, false otherwise
 	 */
 	public boolean unsignTimeReports(ArrayList<TimeReport> timeReports) {
 		boolean resultOk = true;
@@ -661,8 +658,9 @@ public class Database {
 	}
 
 	/**
+	 * Removes the time report with id timeReportId and the associated activities
 	 * @param timeReportId
-	 * @return
+	 * @return true if successful, false otherwise
 	 */
 	public boolean removeTimeReport(int timeReportId) {
 		boolean resultOk = true;
@@ -696,9 +694,10 @@ public class Database {
 	}
 
 	/**
+	 * Updates the time report with the associating activities
 	 * @param timeReport
 	 * @param activities
-	 * @return
+	 * @return true if successful, false otherwise
 	 */
 	public boolean updateTimeReport(TimeReport timeReport, ArrayList<Activity> activities) {
 		if (removeTimeReport(timeReport.getId())) {
@@ -709,8 +708,9 @@ public class Database {
 	}
 
 	/**
+	 * Get all time reports for the user with id userId
 	 * @param userId
-	 * @return
+	 * @return ArrayList with TimeReports
 	 */
 	public ArrayList<TimeReport> getTimeReportsForUserId(int userId) {
 		ArrayList<TimeReport> list = new ArrayList<TimeReport>();
@@ -812,8 +812,9 @@ public class Database {
 	}
 
 	/**
+	 * Get the time report with id timeReportId
 	 * @param timeReportId
-	 * @return
+	 * @return the TimeReport, null if not found
 	 */
 	public TimeReport getTimeReport(int timeReportId) {
 		TimeReport report = null;
@@ -838,8 +839,9 @@ public class Database {
 
 	// Activity-metoder
 	/**
+	 * Get the activities associated with the time report with id timeReportId
 	 * @param timeReportId
-	 * @return
+	 * @return ArrayList with activities.
 	 */
 	public ArrayList<Activity> getActivities(int timeReportId) {
 		ArrayList<Activity> list = new ArrayList<Activity>();
@@ -864,8 +866,9 @@ public class Database {
 	}
 
 	/**
+	 * Get activity with id activityId
 	 * @param activityId
-	 * @return
+	 * @return the Activity
 	 */
 	public Activity getActivity(int activityId) {
 		Activity activity;
@@ -888,15 +891,10 @@ public class Database {
 		return activity;
 	}
 
-	// Statistics-metoder
-	/*
-	 * Returnerar alla unika roller, användare, aktiviteter och veckor ur
-	 * databasen. Nyckel: user, role, activity och week. Värde: alla unika
-	 * värden för nycklarna.
-	 */
 	/**
+	 * Gets all unique roles, users, activities and weeks. 
 	 * @param projectGroupId
-	 * @return
+	 * @return HashMap with keys "user", "role", "activity" and "week". Values are Arraylists
 	 */
 	public HashMap<String, ArrayList<String>> getStatisticsFilter(int projectGroupId) {
 		ArrayList<String> users = new ArrayList<String>();
@@ -1155,5 +1153,4 @@ public class Database {
 		timePerWeek.put("totalProjectTime", totalTime);
 		return timePerWeek;
 	}
-
 }
