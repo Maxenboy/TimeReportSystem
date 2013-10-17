@@ -25,69 +25,221 @@ public class Activity {
 	public static final String ACTIVITY_TYPE_FORMAL_REVIEW = "F";
 	public static final String ACTIVITY_TYPE_REWORK = "O";
 	
-	public int id;
-	public int activity;
-	public String activityType;
-	public int time;
-	public int timeReportId;
+	private int id;
+	private int activityNr;
+	private String activityType;
+	private int time;
+	private int timeReportId;
 	
-	public Activity(int id, int activity, String activityType, int time,
-			int timeReportId) {
+	/**
+	 * Constructor used by database
+	 * @param id
+	 * @param activityNr
+	 * @param activityType
+	 * @param time
+	 * @param timeReportId
+	 */
+	public Activity(int id, int activityNr, String activityType, int time, int timeReportId) {
 		this.id = id;
-		this.activity = activity;
+		this.activityNr = activityNr;
 		this.activityType = activityType;
 		this.time = time;
 		this.timeReportId = timeReportId;
 	}
 
-	public Activity(int activity, String activityType, int time,
-			int timeReportId) {
-		this.activity = activity;
+	/**
+	 * Constructor used for adding a new record to the database
+	 * @param activityNr
+	 * @param activityType
+	 * @param time
+	 * @param timeReportId
+	 */
+	public Activity(int activityNr, String activityType, int time, int timeReportId) {
+		id = 0;
+		this.activityNr = activityNr;
 		this.activityType = activityType;
 		this.time = time;
 		this.timeReportId = timeReportId;
 	}
 
+	/**
+	 * @return
+	 */
 	public int getId() {
 		return id;
 	}
 
+	/**
+	 * @param id
+	 */
 	public void setId(int id) {
 		this.id = id;
 	}
 
-	public int getActivity() {
-		return activity;
+	/**
+	 * @return
+	 */
+	public int getActivityNr() {
+		return activityNr;
 	}
 
-	public void setActivity(int activity) {
-		this.activity = activity;
+	/**
+	 * @param activityNr
+	 */
+	public void setActivityNr(int activityNr) {
+		this.activityNr = activityNr;
 	}
 
+	/**
+	 * @return
+	 */
 	public String getActivityType() {
 		return activityType;
 	}
 
+	/**
+	 * @param activityType
+	 */
 	public void setActivityType(String activityType) {
 		this.activityType = activityType;
 	}
 
+	/**
+	 * @return
+	 */
 	public int getTime() {
 		return time;
 	}
 
+	/**
+	 * @param time
+	 */
 	public void setTime(int time) {
 		this.time = time;
 	}
 
+	/**
+	 * @return
+	 */
 	public int getTimeReportId() {
 		return timeReportId;
 	}
 
+	/**
+	 * @param timeReportId
+	 */
 	public void setTimeReportId(int timeReportId) {
 		this.timeReportId = timeReportId;
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + activityNr;
+		result = prime * result
+				+ ((activityType == null) ? 0 : activityType.hashCode());
+		result = prime * result + id;
+		result = prime * result + time;
+		result = prime * result + timeReportId;
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Activity other = (Activity) obj;
+		if (activityNr != other.activityNr)
+			return false;
+		if (activityType == null) {
+			if (other.activityType != null)
+				return false;
+		} else if (!activityType.equals(other.activityType))
+			return false;
+		if (id != other.id)
+			return false;
+		if (time != other.time)
+			return false;
+		if (timeReportId != other.timeReportId)
+			return false;
+		return true;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Activity [id=" + id + ", activityNr=" + activityNr
+				+ ", activityType=" + activityType + ", time=" + time
+				+ ", timeReportId=" + timeReportId + "]";
+	}
 	
-	//TODO: Override equals
-	//TODO: Override toString
+	public int mapActivityTypeToInt() {
+		switch(activityType) {
+		case ACTIVITY_TYPE_DEVELOPMENT:
+			return 0;
+		case ACTIVITY_TYPE_INFORMAL_REVIEW:
+			return 1;
+		case ACTIVITY_TYPE_FORMAL_REVIEW:
+			return 2;
+		case ACTIVITY_TYPE_REWORK:
+			return 3;
+		}
+		
+		return 0;
+	}
+	
+	public static String mapActivityNrToString(int activityNbr) {
+		switch(activityNbr) {
+		case ACTIVITY_NR_SDP:
+			return "SDP";
+		case ACTIVITY_NR_SRS:
+			return "SRS";
+		case ACTIVITY_NR_SVVS:
+			return "SVVS";
+		case ACTIVITY_NR_STLDD:
+			return "STLDD";
+		case ACTIVITY_NR_SVVI:
+			return "SVVI";
+		case ACTIVITY_NR_SDDD:
+			return "SDDD";
+		case ACTIVITY_NR_SVVR:
+			return "SVVR";
+		case ACTIVITY_NR_SSD:
+			return "SSD";
+		case ACTIVITY_NR_FINAL_REPORT:
+			return "Final Report";
+		case ACTIVITY_NR_FUNTION_TEST:
+			return "Function Test";
+		case ACTIVITY_NR_SYSTEM_TEST:
+			return "System Test";
+		case ACTIVITY_NR_REGRESSION_TEST:
+			return "Regression Test";
+		case ACTIVITY_NR_MEETING:
+			return "Meeting";
+		case ACTIVITY_NR_LECTURE:
+			return "Lecture";
+		case ACTIVITY_NR_EXERCISE:
+			return "Exercise";
+		case ACTIVITY_NR_COMPUTER_EXERCISE:
+			return "Computer Exercise";
+		case ACTIVITY_NR_HOME_STUDIES:
+			return "Home Studies";
+		case ACTIVITY_NR_OTHER:
+			return "Other";
+		}
+		return null;
+	}
 }
