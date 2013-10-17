@@ -11,18 +11,24 @@ public class ProjectGroups {
 	/**
 	 * Constructor
 	 * 
+	 */
+	public ProjectGroups() {
+		db = new Database();
+	}
+	
+	/**
+	 * Creates a project group.
 	 * @param name
 	 * @param startWeek
 	 * @param endWeek
 	 * @param estimatedHours
+	 * @return
 	 */
-	public ProjectGroups() {
-
-		/*
-		 * this.endweek = endWeek; this.name = name; this.startweek = startWeek;
-		 * this.estimatedHours = estimatedHours;
-		 */
-		db = new Database();
+	public boolean createProjectGroup(String name, String startWeek, String endWeek, String estimatedHours) {
+		if(db.addProjectGroup(new ProjectGroup(1, name, true, Integer.parseInt(startWeek), Integer.parseInt(endWeek), Integer.parseInt(estimatedHours)))) {
+			return true;
+		}
+		return false;
 	}
 
 	/**

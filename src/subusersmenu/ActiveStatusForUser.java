@@ -38,7 +38,6 @@ public class ActiveStatusForUser {
 				out.print(getPageIntro()
 						+ "$(alert(\"incorrect syntax on the user name\"))" + s);
 			}
-
 		}
 	}
 
