@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.mysql.jdbc.Statement;
@@ -901,6 +902,7 @@ public class Database {
 	 * stämmer överrens mot varandra.
 	 */
 	/**
+	 * 
 	 * @param projectGroupId
 	 * @param usernames
 	 * @param roles
@@ -911,12 +913,143 @@ public class Database {
 	public HashMap<String, ArrayList<String>> getStatistics(int projectGroupId,
 			ArrayList<String> usernames, ArrayList<Integer> roles,
 			ArrayList<Integer> activities, ArrayList<Integer> weeks) {
-		return null;
-	}
+		
+		HashMap<String, ArrayList<String>> stats = new HashMap<String, ArrayList<String>>();
+		stats.put("username", new ArrayList<String>());
+		stats.put("role", new ArrayList<String>());
+		stats.put("activity_nr", new ArrayList<String>());
+		stats.put("week", new ArrayList<String>());
+		stats.put("time", new ArrayList<String>());
+		
+		// TODO: Fix for empty lists (not supported)
+		
+		/*
+		 * Basically what we want to run is:
+		 * SELECT * FROM activities WHERE activity_nr IN (?,...) AND time_report_id IN (SELECT id FROM time_reports WHERE project_group_id=? AND week IN (?,...) AND user_id IN (SELECT id FROM users WHERE username IN (?,...) AND role IN (?,...)));
+		 * But since the lists can be null we also have to take care of those cases.
+		 */
+		try {
+			// Users
+			StringBuilder usersSql = new StringBuilder();
+			PreparedStatement stmt;
+			if (usernames == null && roles == null) {
+			    stmt = conn.prepareStatement("SELECT id FROM users");
+			} else if (usernames == null) {
+				usersSql.append("SELECT id FROM users WHERE role IN ").append(getQuestionMarksForList(roles));	
+				stmt = conn.prepareStatement(usersSql.toString());
+				for (int i = 0; i < roles.size(); i++) {
+					stmt.setInt(i + 1, roles.get(i));
+				}
+			} else if (roles == null) {
+			    usersSql.append("SELECT id FROM users WHERE username IN ").append(getQuestionMarksForList(usernames));
+			    stmt = conn.prepareStatement(usersSql.toString());
+				for (int i = 0; i < usernames.size(); i++) {
+					stmt.setString(i + 1, usernames.get(i));
+				}
+			} else {
+			    usersSql.append("SELECT id FROM users WHERE username IN ").append(getQuestionMarksForList(usernames)).append(" AND role IN ").append(getQuestionMarksForList(roles));
+			    stmt = conn.prepareStatement(usersSql.toString());
+				for (int i = 0; i < usernames.size(); i++) {
+					stmt.setString(i + 1, usernames.get(i));
+				}
+				for (int j = 0; j < roles.size(); j++) {
+					stmt.setInt(j + usernames.size() + 1, roles.get(j));
+				}
+			}
+			ResultSet usersRes = stmt.executeQuery();
+			ArrayList<Integer> usersList = new ArrayList<Integer>();
+			while (usersRes.next()) {
+				usersList.add(usersRes.getInt("id"));
+			}
+			stmt.close();
+			if (usersList.size() == 0) {
+				System.err.println("getStatistics: No matching users.");
+				return stats;
+			}
 
+			// Time reports
+			StringBuilder timeReportsSql = new StringBuilder();
+			PreparedStatement timeReportsStmt;
+			if (weeks == null) {
+			    timeReportsSql.append("SELECT id FROM time_reports WHERE project_group_id=? AND user_id IN ").append(getQuestionMarksForList(usersList));
+			    timeReportsStmt = conn.prepareStatement(timeReportsSql.toString());
+				for (int i = 0; i < usersList.size(); i++) {
+					timeReportsStmt.setInt(i + 1, usersList.get(i));
+				}
+			} else {
+			    timeReportsSql.append("SELECT id FROM time_reports WHERE project_group_id=? AND week IN ").append(getQuestionMarksForList(weeks)).append(" AND user_id IN ").append(getQuestionMarksForList(usersList));
+			    timeReportsStmt = conn.prepareStatement(timeReportsSql.toString());
+				for (int i = 0; i < weeks.size(); i++) {
+					stmt.setInt(i + 1, weeks.get(i));
+				}
+				for (int j = 0; j < usersList.size(); j++) {
+					stmt.setInt(j + weeks.size() + 1, usersList.get(j));
+				}
+			}
+			ResultSet timeReportsRes = timeReportsStmt.executeQuery();
+			ArrayList<Integer> timeReportsList = new ArrayList<Integer>();
+			while (timeReportsRes.next()) {
+				timeReportsList.add(timeReportsRes.getInt("id"));
+			}
+			timeReportsStmt.close();
+			if (timeReportsList.size() == 0) {
+				System.err.println("getStatistics: No matching time reports.");
+				return stats;
+			}
+			
+			// Activities
+			StringBuilder activitiesSql = new StringBuilder();
+			PreparedStatement activitiesStmt;
+			if (activities == null) {
+			    activitiesSql.append("SELECT * FROM activities WHERE time_report_id IN ").append(getQuestionMarksForList(timeReportsList));
+			    activitiesStmt = conn.prepareStatement(activitiesSql.toString());
+				for (int i = 0; i < timeReportsList.size(); i++) {
+					activitiesStmt.setInt(i + 1, timeReportsList.get(i));
+				}
+			} else {
+			    activitiesSql.append("SELECT * FROM activities WHERE activity_nr IN ").append(getQuestionMarksForList(activities)).append(" AND time_report_id IN ").append(getQuestionMarksForList(timeReportsList));
+			    activitiesStmt = conn.prepareStatement(activitiesSql.toString());
+				for (int i = 0; i < activities.size(); i++) {
+					activitiesStmt.setInt(i + 1, activities.get(i));
+				}
+				for (int j = 0; j < timeReportsList.size(); j++) {
+					activitiesStmt.setInt(j + activities.size() + 1, timeReportsList.get(j));
+				}
+			}
+			ResultSet activitiesRes = activitiesStmt.executeQuery();
+			while (activitiesRes.next()) {
+				// Add values to the map's lists
+				TimeReport timeReport = getTimeReport(activitiesRes.getInt("time_report_id"));
+				User user = getUser(timeReport.getUserId());
+				stats.get("username").add(user.getUsername());
+				stats.get("role").add(Integer.toString(user.getRole()));
+				stats.get("activity_nr").add(activitiesRes.getString("activity_nr"));
+				stats.get("week").add(Integer.toString(timeReport.getWeek()));
+				stats.get("time").add(activitiesRes.getString("time"));
+			}
+			activitiesStmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return stats;
+	}
+	
+	private <T> String getQuestionMarksForList(List<T> list) {
+	    StringBuilder str = new StringBuilder();
+	    str.append("(");
+	    for (int i = 0; i < list.size(); i++) {
+	    	str.append("?");
+	    	if (i < list.size() - 1) {
+	    		str.append(", ");
+	    	}
+	    }
+	    str.append(")");
+	    return str.toString();
+	}
+	
 	/**
 	 * Calculates the total spend time per week as well as the total spend time 
-	 * for all weeks for project group.
+	 * for all weeks for a project group.
 	 * @param projectGroupId The id of the project group.
 	 * @return A HashMap with week as key and time as value. There is also the 
 	 * key "totalProjectTime" which contains the total project time. If the 

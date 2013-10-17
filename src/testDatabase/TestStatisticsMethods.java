@@ -95,7 +95,7 @@ public class TestStatisticsMethods {
 			assertEquals(3, list.size());
 		}
 	}
-
+	
 	@Test
 	/**
 	 * Tests getting time for a project group with two users with three time
