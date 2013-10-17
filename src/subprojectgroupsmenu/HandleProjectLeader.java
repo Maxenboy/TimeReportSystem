@@ -19,7 +19,6 @@ public class HandleProjectLeader {
 		case "null":
 			break;
 		}
-
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) {
