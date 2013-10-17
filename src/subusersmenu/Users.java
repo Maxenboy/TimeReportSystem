@@ -22,11 +22,10 @@ public class Users {
 	public String userForm() {
 		String html;
 		html = "<p> <form name=" + formElement("input");
-		html += " method=" + formElement("get");
+		html += " method=" + formElement("POST");
 		html += "<p> Username : <input type=" + formElement("text")
-				+ " name=" + formElement("addname") + '>';
-		html += "<input type=" + formElement("submit") + "value="
-				+ formElement("get username") + '>';
+				+ " name=" + formElement("username") + '>';
+		html += "<input type=" + formElement("submit")+ '>';
 		html += "</form>";
 		return html;
 	
@@ -144,7 +143,7 @@ public class Users {
 
 	private String createRadio(int id) {
 		return "<input type=" + formElement("radio") + "name="
-				+ formElement("reportId") + "value="
+				+ formElement("username") + "value="
 				+ formElement(Integer.toString(id)) + ">";
 	}
 

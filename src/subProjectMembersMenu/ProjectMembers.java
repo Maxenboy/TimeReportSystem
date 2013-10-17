@@ -1,4 +1,5 @@
 package subProjectMembersMenu;
+
 import java.util.*;
 import database.*;
 
@@ -8,15 +9,17 @@ public class ProjectMembers {
 
 	/**
 	 * Constructor
+	 * 
 	 * @param groupName
 	 */
 	public ProjectMembers(String groupName) {
-		this.groupName=Integer.parseInt(groupName);
-		db= new Database();
+		this.groupName = Integer.parseInt(groupName);
+		db = new Database();
 	}
-	
+
 	/**
 	 * Shows the users in a specific project group
+	 * 
 	 * @param users
 	 * @return
 	 */
@@ -42,9 +45,10 @@ public class ProjectMembers {
 		sb.append("</body></html>");
 		return sb.toString();
 	}
-	
+
 	/**
 	 * Changes the role of a user
+	 * 
 	 * @param user
 	 * @param role
 	 * @return
@@ -52,27 +56,29 @@ public class ProjectMembers {
 	public String changerole(User user, int role) {
 		db.getUser(user.getId()).setRole(role);
 		return "true";
-		//vad ska returneras h�r?
+		// vad ska returneras h�r?
 	}
-	
+
 	/**
 	 * Generates a form where it is possible to specify a project group.
+	 * 
 	 * @return
 	 */
 	public String groupForm() {
 		String html;
 		html = "<p> <form name=" + formElement("input");
-		html += " method=" + formElement("get");
-		html += "<p> Which group : <input type=" + formElement("text")
-				+ " name=" + formElement("addname") + '>';
-		html += "<input type=" + formElement("submit") + "value="
-				+ formElement("Get group") + '>';
+		html += " method=" + formElement("POST");
+		html += "<p> Username : <input type=" + formElement("text") + " name="
+				+ formElement("username") + '>';
+		html += "<input type=" + formElement("submit") + '>';
 		html += "</form>";
 		return html;
 	}
+
 	private String formElement(String par) {
 		return '"' + par + '"';
 	}
+
 	private String buildShowUsersInGroupTable() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<table border=" + formElement("1") + ">");
@@ -84,10 +90,11 @@ public class ProjectMembers {
 		sb.append("</tr>");
 		return sb.toString();
 	}
+
 	private String createRadio(int id) {
 		return "<input type=" + formElement("radio") + "name="
 				+ formElement("reportId") + "value="
 				+ formElement(Integer.toString(id)) + ">";
 	}
-	
+
 }

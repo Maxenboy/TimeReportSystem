@@ -16,30 +16,32 @@ public class ProjectGroups {
 	 * @param endWeek
 	 * @param estimatedHours
 	 */
-	public ProjectGroups(String name, String startWeek, String endWeek,
-			String estimatedHours) {
+	public ProjectGroups() {
 
-		this.endweek = endWeek;
-		this.name = name;
-		this.startweek = startWeek;
-		this.estimatedHours = estimatedHours;
+		/*
+		 * this.endweek = endWeek; this.name = name; this.startweek = startWeek;
+		 * this.estimatedHours = estimatedHours;
+		 */
 		db = new Database();
 	}
 
 	/**
-	 * Generates a form for adding new users
+	 * Generates a form for adding users to a project group.
 	 * 
 	 * @return HTML code for the form
 	 */
 	public String addUserForm() {
+		
 		String html;
-		html = "<p> <form name=" + formElement("input");
+		html = "<p> <form name=" + formElement("input") + "id=" + formElement("addusertogroup") + '>';
 		html += " method=" + formElement("get");
 		html += "<p> Add user name: <input type=" + formElement("text")
 				+ " name=" + formElement("addname") + '>';
+		html += "<p> Group id: <input type=" + formElement("text")
+				+ " groupid=" + formElement("groupid") + '>';
 		html += "<input type=" + formElement("submit") + "value="
 				+ formElement("Add user") + '>';
-		html += "</form>";
+		html += "</form>"+ "</body></html>";
 		return html;
 	}
 
