@@ -15,6 +15,8 @@ public class ActiveStatusForProjectGroup {
 
 	ProjectGroups group;
 	Database db;
+	
+	
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {

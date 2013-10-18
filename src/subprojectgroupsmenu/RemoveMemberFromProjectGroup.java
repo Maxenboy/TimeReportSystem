@@ -2,8 +2,7 @@ package subprojectgroupsmenu;
 import javax.servlet.http.*;
 public class RemoveMemberFromProjectGroup {
 
-	public void NewProjectGroup() {
-	}
+	
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) {
 		

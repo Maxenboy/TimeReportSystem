@@ -2,13 +2,13 @@ package subprojectgroupsmenu;
 
 import java.io.*;
 import java.util.*;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.*;
 
 import database.*;
 
 public class NewProjectGroup {
-
 
 	private ProjectGroups group = new ProjectGroups();
 	private Database db = new Database();
@@ -17,12 +17,18 @@ public class NewProjectGroup {
 			throws IOException {
 		HttpSession session = request.getSession();
 		PrintWriter out = response.getWriter();
-		if(request.getParameter("session") == null) {
+		if (request.getParameter("session") == null) {
 			out.print(getPageIntro() + addProjectGroupForm());
-		} else if(request.getParameter("session").equals("sucess")) {
+		} else if (request.getParameter("session").equals("sucess")) {
 			out.print(getPageIntro() + showProjectGroups());
 		} else {
-			out.print(getPageIntro() + "$(alert(\"Incorrect input.\"))" + addProjectGroupForm());
+			if(request.getParameter("inputname") == null) {
+				out.print(getPageIntro() + "$(alert(\"Information entered incorrectly.\"))"
+						+ addProjectGroupForm());
+			} else {
+			out.print(getPageIntro() + "$(alert(\"Couldn't add project group.\"))"
+					+ addProjectGroupForm());
+			}
 		}
 
 	}
@@ -34,11 +40,32 @@ public class NewProjectGroup {
 		String startWeek = request.getParameter("startweek");
 		String endWeek = request.getParameter("endweek");
 		String estimatedHours = request.getParameter("estimatedhours");
-		if(group.createProjectGroup(name, startWeek, endWeek, estimatedHours)) {
-			response.sendRedirect(request.getRequestURI() + "session=sucess");
+		if (validInput(name, startWeek, endWeek)) {
+			if (group.createProjectGroup(name, startWeek, endWeek,
+					estimatedHours)) {
+				response.sendRedirect(request.getRequestURI()
+						+ "session=sucess");
+			} else {
+				response.sendRedirect(request.getRequestURI() + "session=false");
+			}
 		} else {
-			response.sendRedirect(request.getRequestURI() + "session=false");
+			response.sendRedirect(request.getRequestURI() + "session=false&inputname=bad");
 		}
+	}
+
+	private boolean validInput(String projectname, String startweek,
+			String endweek) {
+		boolean notOk = false;
+		if (projectname.length() > 10 && !Pattern.matches("\\w", projectname)) {
+			notOk = true;
+		}
+		if (!Pattern.matches("\\d", startweek)) {
+			notOk = true;
+		}
+		if (!Pattern.matches("\\d", endweek)) {
+			notOk = true;
+		}
+		return !notOk;
 	}
 
 	private String addProjectGroupForm() {
@@ -59,15 +86,15 @@ public class NewProjectGroup {
 		html += "</form>" + "</body></html>";
 		return html;
 	}
-	
+
 	private String showProjectGroups() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<FORM METHOD=post ACTION=" + formElement("ShowUsers") + ">");
 		sb.append(buildProjectGroupsTable());
 		List<ProjectGroup> groups = db.getProjectGroups();
-		for (ProjectGroup g: groups) {
+		for (ProjectGroup g : groups) {
 			sb.append("<tr>");
-			sb.append("<td>" + g.getProjectName()+ "</td>");
+			sb.append("<td>" + g.getProjectName() + "</td>");
 			sb.append("<td>" + g.getStartWeek() + "</td>");
 			sb.append("<td>" + g.getEndWeek() + "</td>");
 			sb.append("<td>" + g.getEstimatedTime() + "</td>");
@@ -78,7 +105,7 @@ public class NewProjectGroup {
 		sb.append("</body></html>");
 		return sb.toString();
 	}
-	
+
 	private String buildProjectGroupsTable() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<table border=" + formElement("1") + ">");
@@ -90,7 +117,7 @@ public class NewProjectGroup {
 		sb.append("</tr>");
 		return sb.toString();
 	}
-	
+
 	private String formElement(String par) {
 		return '"' + par + '"';
 	}
