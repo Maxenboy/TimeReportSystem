@@ -25,17 +25,6 @@ public class SignTimeReports extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		out.print(getPageIntro());
 		
-		if(!session.isNew()) {
-		Object state = session.getAttribute("sign");
-			if(state != null) {
-				int sign = (Integer) state;
-				if(sign == UNSUCCESSFUL_SIGNING) {
-					out.print("<script>window.alert('Signing of time Reports was unsuccessful')</script>");
-				} else if(sign == NO_REPORTS_ENTERED) {
-					out.print("<script>window.alert('No reports entered')</script>");
-				}
-			}
-		}
 		//TODO: Change the 1 into a variable!!
 		String s = trg.showAllTimeReports(1, TimeReportGenerator.SHOW_UNSIGNED);
 		if(s == null)
@@ -48,18 +37,12 @@ public class SignTimeReports extends HttpServlet {
 		HttpSession session = request.getSession(true);
 		PrintWriter out = response.getWriter();
 		out.print(getPageIntro());
-		String[] reportIds = request.getParameterValues("reportIds");
-		if(reportIds != null) {
-			String s = trg.signOrUnsignReports(reportIds, false);
-			if(s != null) {
-				out.print(s);
-				session.invalidate();
-			} else {
-				session.setAttribute("sign", UNSUCCESSFUL_SIGNING);
-				doGet(request,response);
-			}
+		String reportId = request.getParameter("reportId");
+		if(reportId != null) {
+			String s = trg.showTimeReport(Integer.valueOf(reportId), TimeReportGenerator.SHOW_UNSIGNED);
+			out.print(getPageIntro());
+			out.print(s);
 		} else {
-			session.setAttribute("sign", NO_REPORTS_ENTERED);
 			doGet(request,response);
 		}
 	}

@@ -8,10 +8,12 @@ import database.*;
 public class TimeReportGenerator {
 	private Database db;
 	public static final int SHOW_ALL = 1;
-	public static final int SHOW_USER_REPORTS = 2;
+	public static final int SHOW_USER_REPORT = 2;
 	public static final int SHOW_SIGNED = 3;
 	public static final int SHOW_UNSIGNED = 4;
-	
+	public static final int REMOVE_USER_REPORT = 5;
+	public static final int REMOVE_PRJ_REPORTS = 6;
+	public static final int REMOVE_REPORT = 7;
 	public TimeReportGenerator(Database db) {
 		this.db = db;
 	}
@@ -44,13 +46,31 @@ public class TimeReportGenerator {
 		return sb.toString();
 	}
 	
-	public String showSignedOrUnsignedTimeReports(ArrayList<TimeReport> timeReports, boolean sign) {
+	private String showTimeReportsWithCheckBoxes(ArrayList<TimeReport> timeReports, int state) {
 		if(timeReports.isEmpty()) {
 			return null;
 		}
 		StringBuilder sb = new StringBuilder();
-		String s;
-		s = sign ? "SignTimeReports" : "UnsignTimeReports";
+		String s = new String();
+		String buttonName = new String();
+		switch(state) {
+		case SHOW_UNSIGNED:
+			buttonName = "Sign Reports";
+			s = "SignTimeReports";
+			break;
+		case SHOW_SIGNED:
+			buttonName = "Unsign Reports";
+			s = "UnsignReports";
+			break;
+		case REMOVE_PRJ_REPORTS:
+			buttonName = "Delete Reports";
+			s = "RemoveTimeReports";
+			break;
+		case REMOVE_USER_REPORT:
+			buttonName = "Delete Reports";
+			s = "RemoveTimeReports";
+			break;
+		}
 		sb.append("<FORM METHOD=post ACTION="+formElement(s)+">");
 		sb.append(buildSignTimeReportTable());
 		for (int i = 0; i < timeReports.size(); i++) {
@@ -63,9 +83,7 @@ public class TimeReportGenerator {
 			sb.append("</tr>");
 		}
 		sb.append("</table>");
-		String buttonName;
-		s = sign ? "Sign Reports" : "Unsign Reports"; 
-		sb.append("<INPUT TYPE="+ formElement("submit") + "VALUE=" + formElement(s) +">");
+		sb.append("<INPUT TYPE="+ formElement("submit") + "VALUE=" + formElement(buttonName) +">");
 		sb.append("</form>");
 		return sb.toString();
 	}
@@ -75,12 +93,31 @@ public class TimeReportGenerator {
 				formElement("reportIds") + "value=" + formElement(Integer.toString(id))+">";
 	}
 	
-	private String showUserReports(ArrayList<TimeReport> timeReports) {
+	/**
+	 * Helper method for showAllTimeReports
+	 * @param timeReports The time reports that should be listed
+	 * @param state Defines whether user is about to remove time reports or wants to view them.
+	 * @return
+	 */
+	private String listReports(ArrayList<TimeReport> timeReports, int state) {
 		StringBuilder sb = new StringBuilder();
 		if(timeReports.isEmpty()) {
 			return null;
 		}
-		sb.append("<FORM METHOD=post ACTION="+formElement("ShowTimeReports")+">");
+		switch(state) {
+		case REMOVE_REPORT:
+			sb.append("<FORM METHOD=post ACTION="+formElement("RemoveTimeReport")+">");
+			break;
+		case SHOW_USER_REPORT:
+			sb.append("<FORM METHOD=post ACTION="+formElement("ShowTimeReports")+">");
+			break;
+		case SHOW_UNSIGNED:
+			sb.append("<FORM METHOD=post ACTION="+formElement("SignTimeReports")+">");
+			break;
+		case SHOW_SIGNED:
+			sb.append("<FORM METHOD=post ACTION="+formElement("UnsignTimeReports")+">");
+			break;
+		}
 		sb.append(buildShowTimeReportTable());
 		for (int i = 0; i < timeReports.size(); i++) {
 			TimeReport tr = timeReports.get(i);
@@ -88,7 +125,7 @@ public class TimeReportGenerator {
 			sb.append("<td>" + tr.getId() + "</td>");
 			sb.append("<td>" + tr.getWeek() + "</td>");
 			if(tr.isSigned())
-				sb.append("<td>Y/td>");
+				sb.append("<td>Y</td>");
 			else
 				sb.append("<td>N</td>");
 			sb.append("<td>" + createRadio(tr.getId())+ "</td>");
@@ -99,23 +136,40 @@ public class TimeReportGenerator {
 		sb.append("</form>");
 		return sb.toString();
 	}
-	
+	/**
+	 * Lists all time reports belonging to a specific ID
+	 * @param ID could be project_group_ID or userId
+	 * @param state use these different values
+	 * SHOW_USER_REPORT Time reports for certain user
+	 * SHOW_UNSIGNED if user is proj-leader and wants to list all UNsigned reports for that project_group_id
+	 * SHOW_SIGNED if user is proj-leader and wants to list all signed reports for that project_group_id
+	 * REMOVE_PRJ_REPORTS if user is proj-leader and wants to remove unsigned time reports
+	 * REMOVE_USER_REPORT if user wants to remove a time report.
+	 * @return html-code 
+	 */
 	public String showAllTimeReports(int ID, int state) {
 		ArrayList<TimeReport> timeReports = new ArrayList<TimeReport>();
 		String html = null;
 		switch(state) {
-		case SHOW_USER_REPORTS:
+		case SHOW_USER_REPORT:
 			timeReports = db.getTimeReportsForUserId(ID);
-			html = showUserReports(timeReports);
+			html = listReports(timeReports, state);
 			break;
 		case SHOW_UNSIGNED:
 			timeReports = db.getUnsignedTimeReports(ID);
-			html = showSignedOrUnsignedTimeReports(timeReports,true);
+			html = listReports(timeReports,state);
 			break;
 		case SHOW_SIGNED:
 			timeReports = db.getSignedTimeReports(ID);
-			html = showSignedOrUnsignedTimeReports(timeReports, false);
+			html = listReports(timeReports, state);
 			break;
+		case REMOVE_PRJ_REPORTS:
+			timeReports = db.getUnsignedTimeReports(ID);
+			html = showTimeReportsWithCheckBoxes(timeReports, state);
+			break;
+		case REMOVE_USER_REPORT:
+			timeReports = db.getTimeReportsForUserId(ID);
+			html = listReports(timeReports, REMOVE_REPORT);
 		}
 		return html;
 	}
@@ -147,13 +201,18 @@ public class TimeReportGenerator {
 		return null;
 	}
 	
-	public String showTimeReport(int reportId) {		
+	/**
+	 * Shows all the information associated with a certain time report
+	 * @param reportId The ID of the time report the user wants to view
+	 * @param state If the user is about to remove the time report use
+	 * REMOVE_REPORT else use SHOW_USER_REPORT
+	 * @return
+	 */
+	public String showTimeReport(int reportId, int state) {		
 		ArrayList<Activity> activities = db.getActivities(reportId);
 		TimeReport tr = db.getTimeReport(reportId);
 		ProjectGroup pg = db.getProjectGroup(tr.getProjectGroupId());
 		StringBuilder sb = new StringBuilder();
-		if(activities.isEmpty())
-			System.out.println("Something is very wrong");
 		//Table setup
 		sb.append("<table border=" + formElement("1") + ">");
 		sb.append("<tr>");
@@ -184,6 +243,7 @@ public class TimeReportGenerator {
 				sb.append("<tr>");
 			}
 		}
+		//Print activities not associated with documents
 		activities = removePrintedActivities(activities);
 		for (int i = 0; i < activities.size(); i++) {
 			Activity a = activities.get(i);
@@ -195,6 +255,20 @@ public class TimeReportGenerator {
 			sb.append("</tr>");
 		}
 		sb.append("</table>");
+		//TODO: Fix this button to remove a time report after confirmation
+		//Create a button if user wants to remove a time report.
+		switch(state) {
+		case REMOVE_REPORT:
+			if(!tr.isSigned()) {
+				sb.append(confirmationBox(REMOVE_REPORT) + "<button onclick=" + 
+						formElement("confirmation()") + ">Remove Report</button>");
+			}
+			break;
+		case SHOW_UNSIGNED:
+			sb.append(confirmationBox(SHOW_UNSIGNED) + "<button onclick=" + 
+					formElement("confirmation()") + ">Sign Report</button>");
+			break;
+		}
 		return sb.toString();
 	}
 	
@@ -224,6 +298,24 @@ public class TimeReportGenerator {
 		return nonPrintedActivities;
 	}
 	
+	private String confirmationBox(int state) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("<script> function confirmation() { var x;");
+		sb.append("var r=confirm(");
+		switch(state) {
+		case REMOVE_REPORT:
+			sb.append(formElement("Do you want to remove this time report?)"));
+			break;
+		case SHOW_UNSIGNED:
+			sb.append(formElement("Do you want to sign this time report?)"));
+			break;
+		}
+		sb.append("if (r==true){ x= ;}");
+		sb.append("else{x= ;}");
+		sb.append("}</script>");
+		return sb.toString();
+	}
+	
 	/**
 	 * 
 	 * @param reportIds
@@ -245,6 +337,25 @@ public class TimeReportGenerator {
 			sb.append("<h3> The following time reports were signed:</h3>");
 			for(TimeReport tr: timeReports) {
 				sb.append(tr.getId() + "<br>");
+			}
+		} else {
+			return null;
+		}
+		return sb.toString();
+	}
+
+	public String removeTimeReports(String[] reportIds) {
+		StringBuilder sb = new StringBuilder();
+		boolean success = false;
+		for(String rId: reportIds) {
+			success = db.removeTimeReport(Integer.valueOf(rId));
+			if(!success)
+				break;
+		}
+		if(success) {
+			sb.append("<h3> The following time reports were deleted:</h3>");
+			for(String rId: reportIds) {
+				sb.append(rId + "<br>");
 			}
 		} else {
 			return null;

@@ -3,6 +3,7 @@ package subTimeReportMenu;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,7 +11,8 @@ import javax.servlet.http.HttpSession;
 
 import database.Database;
 
-public class DeleteTimeReport extends HttpServlet{
+@WebServlet("/RemoveTimeReport")
+public class RemoveTimeReport extends HttpServlet{
 	
 	/**
 	 * 
@@ -40,8 +42,7 @@ public class DeleteTimeReport extends HttpServlet{
 		 * This should be changed so it depends if user is proj-leader or regular
 		 * user.
 		 */
-		String s = null;
-		//trg.showUnsignedTimeReports(1);
+		String s = trg.showAllTimeReports(1, TimeReportGenerator.REMOVE_USER_REPORT);
 		if(s == null)
 			out.print("<p> Nothing to show </p>");
 		else 
@@ -50,22 +51,13 @@ public class DeleteTimeReport extends HttpServlet{
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession(true);
-		PrintWriter out = response.getWriter();
-		out.print(getPageIntro());
-		String[] reportIds = request.getParameterValues("reportIds");
-		if(reportIds != null) {
-			System.out.println("Reports");
-			//TODO: delete report-functionality
-			String s = null;
-			if(s != null) {
-				out.print(s);
-				session.invalidate();
-			} else {
-				session.setAttribute("sign", UNSUCCESSFUL_DELETION);
-				doGet(request,response);
-			}
+		String reportId = request.getParameter("reportId");
+		if(reportId != null) {
+			PrintWriter out = response.getWriter();
+			String s = trg.showTimeReport(Integer.valueOf(reportId), TimeReportGenerator.REMOVE_REPORT);
+			out.print(getPageIntro());
+			out.print(s);
 		} else {
-			session.setAttribute("sign", NO_REPORTS_ENTERED);
 			doGet(request,response);
 		}
 	}
