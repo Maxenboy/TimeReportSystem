@@ -69,7 +69,7 @@ public class ProjectMembers {
 		html = "<p> <form name=" + formElement("input");
 		html += " method=" + formElement("POST");
 		html += "<p> Username : <input type=" + formElement("text") + " name="
-				+ formElement("username") + '>';
+				+ formElement("groupname") + '>';
 		html += "<input type=" + formElement("submit") + '>';
 		html += "</form>";
 		return html;
