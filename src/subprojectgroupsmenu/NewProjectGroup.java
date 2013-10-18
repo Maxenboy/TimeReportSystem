@@ -41,25 +41,6 @@ public class NewProjectGroup {
 		}
 	}
 
-	private String addGroupForm() {
-		String html;
-		html = "<p> <form name=" + formElement("input") + "id="
-				+ formElement("addusertogroup") + '>';
-		html += " method=" + formElement("get");
-		html += "<p> Project name: <input type=" + formElement("text")
-				+ " name=" + formElement("name") + '>';
-		html += "<p> Startweek: <input type=" + formElement("text") + " name="
-				+ formElement("startweek") + '>';
-		html += "<p> Endweek: <input type=" + formElement("text") + " name="
-				+ formElement("endweek") + '>';
-		html += "<p> Estimated hours: <input type=" + formElement("text")
-				+ " name=" + formElement("estimatedhours") + '>';
-		html += "<input type=" + formElement("submit") + "value="
-				+ formElement("Add Group") + '>';
-		html += "</form>" + "</body></html>";
-		return html;
-	}
-
 	private String addProjectGroupForm() {
 		String html;
 		html = "<p> <form name=" + formElement("input") + "id="
@@ -125,8 +106,4 @@ public class NewProjectGroup {
 		return "<script src=\"//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js\"></script>";
 	}
 
-	private String getPageOutro() {
-		String outro = "</body></html>";
-		return outro;
-	}
 }
