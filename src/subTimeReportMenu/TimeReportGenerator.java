@@ -60,7 +60,7 @@ public class TimeReportGenerator {
 			break;
 		case SHOW_SIGNED:
 			buttonName = "Unsign Reports";
-			s = "UnsignReports";
+			s = "SignTimeReports";
 			break;
 		case REMOVE_PRJ_REPORTS:
 			buttonName = "Delete Reports";
@@ -115,7 +115,7 @@ public class TimeReportGenerator {
 			sb.append("<FORM METHOD=post ACTION="+formElement("SignTimeReports")+">");
 			break;
 		case SHOW_SIGNED:
-			sb.append("<FORM METHOD=post ACTION="+formElement("UnsignTimeReports")+">");
+			sb.append("<FORM METHOD=post ACTION="+formElement("SignTimeReports")+">");
 			break;
 		}
 		sb.append(buildShowTimeReportTable());
@@ -260,13 +260,17 @@ public class TimeReportGenerator {
 		switch(state) {
 		case REMOVE_REPORT:
 			if(!tr.isSigned()) {
-				sb.append(confirmationBox(REMOVE_REPORT) + "<button onclick=" + 
+				sb.append(confirmationBox(state) + "<button onclick=" + 
 						formElement("confirmation()") + ">Remove Report</button>");
 			}
 			break;
 		case SHOW_UNSIGNED:
-			sb.append(confirmationBox(SHOW_UNSIGNED) + "<button onclick=" + 
+			sb.append(confirmationBox(state) + "<button onclick=" + 
 					formElement("confirmation()") + ">Sign Report</button>");
+			break;
+		case SHOW_SIGNED:
+			sb.append(confirmationBox(state) + "<button onclick=" + 
+					formElement("confirmation()") + ">Unsign Report</button>");
 			break;
 		}
 		return sb.toString();
@@ -309,6 +313,8 @@ public class TimeReportGenerator {
 		case SHOW_UNSIGNED:
 			sb.append(formElement("Do you want to sign this time report?)"));
 			break;
+		case SHOW_SIGNED:
+			sb.append(formElement("Do you want to unsign this time report?)"));
 		}
 		sb.append("if (r==true){ x= ;}");
 		sb.append("else{x= ;}");
