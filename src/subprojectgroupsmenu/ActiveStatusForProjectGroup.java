@@ -11,8 +11,15 @@ import database.*;
 import subProjectMembersMenu.ProjectMembers;
 
 @WebServlet("/ActiveStatusForProjectGroup")
-public class ActiveStatusForProjectGroup {
+public class ActiveStatusForProjectGroup extends HttpServlet {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2713701817050035720L;
+	/**
+	 * 
+	 */
 	ProjectGroups group;
 	Database db;
 	

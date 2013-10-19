@@ -7,7 +7,12 @@ import javax.servlet.http.*;
 
 import database.Database;
 
-public class AddMemberToProjectGroup {
+public class AddMemberToProjectGroup extends HttpServlet {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1961915720341016655L;
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {

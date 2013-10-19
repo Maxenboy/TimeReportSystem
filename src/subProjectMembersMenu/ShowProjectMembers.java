@@ -2,13 +2,18 @@ package subProjectMembersMenu;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import database.Database;
 
-public class ShowProjectMembers {
+public class ShowProjectMembers  extends HttpServlet{
+/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6458493959837089759L;
 private ProjectMembers pm;
 private Database db;
 	public ShowProjectMembers() {

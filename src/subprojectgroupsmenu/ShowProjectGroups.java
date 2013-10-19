@@ -8,8 +8,12 @@ import javax.servlet.http.*;
 import database.Database;
 import database.ProjectGroup;
 
-public class ShowProjectGroups {
+public class ShowProjectGroups extends HttpServlet {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6869459061396740611L;
 	Database db = new Database();
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

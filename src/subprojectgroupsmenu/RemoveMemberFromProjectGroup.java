@@ -7,8 +7,12 @@ import javax.servlet.http.*;
 
 import database.*;
 
-public class RemoveMemberFromProjectGroup {
+public class RemoveMemberFromProjectGroup extends HttpServlet {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4921473121575805469L;
 	ProjectGroups group = new ProjectGroups();
 	Database db = new Database();
 

@@ -3,13 +3,18 @@ package subusersmenu;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import database.Database;
 
-public class ActiveStatusForUser {
+public class ActiveStatusForUser extends HttpServlet {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3023954127569399790L;
 	private Users users;
 	private Database db;
 

@@ -6,7 +6,11 @@ import javax.servlet.http.*;
 
 import database.Database;
 
-public class ShowUsers {
+public class ShowUsers extends HttpServlet{
+/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2190552005706112015L;
 private Users users;
 private Database db;
 	public ShowUsers() {

@@ -10,8 +10,12 @@ import com.mysql.jdbc.jdbc2.optional.SuspendableXAConnection;
 
 import database.*;
 
-public class HandleProjectLeader {
+public class HandleProjectLeader extends HttpServlet {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2692792293983643296L;
 	Database db = new Database();
 	ProjectGroups group = new ProjectGroups();
 

@@ -7,8 +7,12 @@ import javax.servlet.http.*;
 
 import database.*;
 
-public class HandleAdminRights {
+public class HandleAdminRights extends HttpServlet {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1859483135166153038L;
 	Users u = new Users();
 	Database db = new Database();
 

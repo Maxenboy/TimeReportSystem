@@ -9,8 +9,12 @@ import javax.servlet.http.*;
 import database.Database;
 import database.User;
 
-public class HandleProjectRoles {
+public class HandleProjectRoles extends HttpServlet {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	Database db = new Database();
 	ProjectMembers members;
 

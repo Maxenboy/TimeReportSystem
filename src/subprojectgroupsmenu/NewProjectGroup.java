@@ -8,8 +8,12 @@ import javax.servlet.http.*;
 
 import database.*;
 
-public class NewProjectGroup {
+public class NewProjectGroup extends HttpServlet{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ProjectGroups group = new ProjectGroups();
 	private Database db = new Database();
 
