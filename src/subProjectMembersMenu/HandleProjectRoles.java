@@ -74,7 +74,7 @@ public class HandleProjectRoles {
 		sb.append("<br> New project role: <input type=" + formElement("text")
 				+ "role=" + formElement("role") + ">");
 		sb.append("<INPUT TYPE=" + formElement("submit") + "VALUE="
-				+ formElement("Get Users") + ">");
+				+ formElement("Spara") + ">");
 		sb.append("</form>");
 		sb.append("</body></html>");
 		return sb.toString();

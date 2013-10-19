@@ -84,7 +84,7 @@ public class Users {
 		}
 		sb.append("</table>");
 		sb.append("<INPUT TYPE=" + formElement("submit") + "VALUE="
-				+ formElement("Get Users") + ">");
+				+ formElement("Spara") + ">");
 		sb.append("</form>");
 		sb.append("</body></html>");
 		return sb.toString();
