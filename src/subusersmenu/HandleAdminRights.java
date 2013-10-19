@@ -19,20 +19,31 @@ public class HandleAdminRights {
 		if (request.getParameter("session") == null) {
 			out.print(getPageIntro() + u.showUsers(db.getUsers()));
 		} else if (request.getParameter("session").equals("Success")) {
+			u.makeAdministrator(request.getParameter("userName"));
 			out.print(getPageIntro() + u.showUsers(db.getUsers())
-					+ "$(alert(\"Ändringar sparade.\"))");
+					+ "$(alert(\"Användaren är nu administratör. Ändringar sparade.\"))");
+		} else if (request.getParameter("session").equals("SuccessRemove")) {
+			u.unmakeAdministrator(request.getParameter("userName"));
+			out.print(getPageIntro() + u.showUsers(db.getUsers())
+					+ "$(alert(\"Användare är ej längre administratör. Ändringar sparade.\"))");
 		} else {
-			out.print(getPageIntro()
-					+ u.showUsers(db.getUsers())
-					+ "$(alert(\"Inte möjligt! Användaren är med i en projektgrupp!.\"))");
+			out.print(getPageIntro() + u.showUsers(db.getUsers())
+					+ "$(alert(\"Inte möjligt! Användare är med i en projektgrupp! \"))");
 		}
 	}
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
 		HttpSession session = request.getSession();
 		User u = db.getUser(Integer.parseInt(request.getParameter("name")));
-		if(u.getProjectGroup() == 0) {
-			response.sendRedirect(request.getRequestURI() + "session=Success");
+		if (u.getProjectGroup() == 0) {
+			if (u.getRole() == u.ROLE_ADMIN) {
+				response.sendRedirect(request.getRequestURI()
+						+ "session=SuccessRemove&userName=" + u.getUsername());
+			} else {
+				response.sendRedirect(request.getRequestURI()
+						+ "session=Success&userName=" + u.getUsername());
+			}
 		} else {
 			response.sendRedirect(request.getRequestURI() + "session=failure");
 		}
