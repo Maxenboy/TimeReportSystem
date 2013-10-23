@@ -9,7 +9,7 @@ public class TimeReportGenerator {
 	private Database db;
 	public static final int SHOW_ALL = 1;
 	public static final int SHOW_USER_REPORT = 2;
-	public static final int SHOW_SIGNED = 3;
+	public static final int SHOW_SIGN = 3;
 	public static final int SHOW_UNSIGNED = 4;
 	public static final int REMOVE_USER_REPORT = 5;
 	public static final int REMOVE_PRJ_REPORTS = 6;
@@ -45,7 +45,7 @@ public class TimeReportGenerator {
 		sb.append("</tr>");
 		return sb.toString();
 	}
-	
+
 	private String showTimeReportsWithCheckBoxes(ArrayList<TimeReport> timeReports, int state) {
 		if(timeReports.isEmpty()) {
 			return null;
@@ -54,14 +54,6 @@ public class TimeReportGenerator {
 		String s = new String();
 		String buttonName = new String();
 		switch(state) {
-		case SHOW_UNSIGNED:
-			buttonName = "Sign Reports";
-			s = "SignTimeReports";
-			break;
-		case SHOW_SIGNED:
-			buttonName = "Unsign Reports";
-			s = "SignTimeReports";
-			break;
 		case REMOVE_PRJ_REPORTS:
 			buttonName = "Delete Reports";
 			s = "RemoveTimeReports";
@@ -111,10 +103,7 @@ public class TimeReportGenerator {
 		case SHOW_USER_REPORT:
 			sb.append("<FORM METHOD=post ACTION="+formElement("ShowTimeReports")+">");
 			break;
-		case SHOW_UNSIGNED:
-			sb.append("<FORM METHOD=post ACTION="+formElement("SignTimeReports")+">");
-			break;
-		case SHOW_SIGNED:
+		case SHOW_SIGN:
 			sb.append("<FORM METHOD=post ACTION="+formElement("SignTimeReports")+">");
 			break;
 		}
@@ -159,7 +148,7 @@ public class TimeReportGenerator {
 			timeReports = db.getUnsignedTimeReports(ID);
 			html = listReports(timeReports,state);
 			break;
-		case SHOW_SIGNED:
+		case SHOW_SIGN:
 			timeReports = db.getSignedTimeReports(ID);
 			html = listReports(timeReports, state);
 			break;
@@ -260,17 +249,15 @@ public class TimeReportGenerator {
 		switch(state) {
 		case REMOVE_REPORT:
 			if(!tr.isSigned()) {
-				sb.append(confirmationBox(state) + "<button onclick=" + 
+				sb.append(confirmationButton(state) + "<button onclick=" + 
 						formElement("confirmation()") + ">Remove Report</button>");
 			}
 			break;
-		case SHOW_UNSIGNED:
-			sb.append(confirmationBox(state) + "<button onclick=" + 
-					formElement("confirmation()") + ">Sign Report</button>");
-			break;
-		case SHOW_SIGNED:
-			sb.append(confirmationBox(state) + "<button onclick=" + 
-					formElement("confirmation()") + ">Unsign Report</button>");
+		case SHOW_SIGN:
+			if(tr.isSigned()) 
+				sb.append(confirmationButton(SHOW_SIGN));
+			else if (tr.isSigned())
+				sb.append(confirmationButton(SHOW_UNSIGNED));
 			break;
 		}
 		return sb.toString();
@@ -302,23 +289,20 @@ public class TimeReportGenerator {
 		return nonPrintedActivities;
 	}
 	
-	private String confirmationBox(int state) {
+	private String confirmationButton(int state) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("<script> function confirmation() { var x;");
-		sb.append("var r=confirm(");
+		sb.append("<form method=" + formElement("post") + ">");
 		switch(state) {
 		case REMOVE_REPORT:
-			sb.append(formElement("Do you want to remove this time report?)"));
+			sb.append("<input type=" + formElement("submit") + "value=" + formElement("Go") +  "onclick=return confirm('Do you want to remove this time report')/>");
 			break;
 		case SHOW_UNSIGNED:
-			sb.append(formElement("Do you want to sign this time report?)"));
+			sb.append("<input type=" + formElement("submit") + "value=" + formElement("Go") +  "onclick=return confirm('Do you want to sign this time report')/>");
 			break;
-		case SHOW_SIGNED:
-			sb.append(formElement("Do you want to unsign this time report?)"));
+		case SHOW_SIGN:
+			sb.append("<input type=" + formElement("submit") + "value=" + formElement("Go") +  "onclick=return confirm('Do you want to unsign this time report')/>");
+			break;
 		}
-		sb.append("if (r==true){ x= ;}");
-		sb.append("else{x= ;}");
-		sb.append("}</script>");
 		return sb.toString();
 	}
 	

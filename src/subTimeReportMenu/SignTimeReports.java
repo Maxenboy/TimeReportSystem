@@ -26,10 +26,10 @@ public class SignTimeReports extends HttpServlet {
 		out.print(getPageIntro());
 		StringBuilder sb = new StringBuilder();
 		if(request.getParameter("sign") != null) {
-			sb.append(trg.showAllTimeReports(1, TimeReportGenerator.SHOW_SIGNED));
+			sb.append(trg.showAllTimeReports(1, TimeReportGenerator.SHOW_SIGN));
 			session.setAttribute("state", UNSIGN);
 		} else if(request.getParameter("unsign") != null) {
-			sb.append(trg.showAllTimeReports(1, TimeReportGenerator.SHOW_UNSIGNED));
+			sb.append(trg.showAllTimeReports(1, TimeReportGenerator.SHOW_SIGN));
 			session.setAttribute("state", SIGN);
 		} else {
 			sb.append("<form method=get action = SignTimeReports>");
@@ -44,20 +44,12 @@ public class SignTimeReports extends HttpServlet {
 	}
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		System.out.println("hello");
 		HttpSession session = request.getSession(true);
-		if(session.isNew())
-			System.out.println("hej");
 		PrintWriter out = response.getWriter();
 		out.print(getPageIntro());
-		if(request.getParameter("sign") != null) {
-			System.out.println("in here");
-		} else if(request.getParameter("unsign") != null) {
-			System.out.println("or in here");
-		}
 		String reportId = request.getParameter("reportId");
 		if(reportId != null) {
-			String s = trg.showTimeReport(Integer.valueOf(reportId), TimeReportGenerator.SHOW_UNSIGNED);
+			String s = trg.showTimeReport(Integer.valueOf(reportId), TimeReportGenerator.SHOW_SIGN);
 			out.print(getPageIntro());
 			out.print(s);
 		} else {
