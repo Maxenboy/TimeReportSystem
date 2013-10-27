@@ -1,20 +1,12 @@
-<FORM METHOD=post ACTION="e_puss">
+<FORM METHOD=post ACTION="NewTimeReport">
 <INPUT TYPE=hidden NAME="Command" VALUE="InsertNew">
 <INPUT TYPE=hidden NAME="State" VALUE="Time">
 <TABLE BORDER=1>
 <TR>
-<TD COLSPAN=2><B>Name:</B></TD><TD COLSPAN=2>ada08ml1 </TD>
-<TD COLSPAN=2><B>Date:</B></TD><TD>  </TD>
-</TR>
-<TR>
-<TD COLSPAN=2><B>Projectgroup</B>:</TD><TD COLSPAN=2>puss1302 </TD>
 <TD COLSPAN=2><B>Week:</B></TD><TD><INPUT TYPE="text" NAME="week" Value="" SIZE="3">
 </TD>
 </TR>
-<TR><TD COLSPAN=6 BGCOLOR="lightgrey"><FONT SIZE=+1><B>Part A: Total time this week (minutes)</B></FONT></TD><TD> </TD></TR>
-<TR><TD COLSPAN=7 BGCOLOR="lightgrey" NOWRAP><FONT SIZE=+1><B>Part B: Number of minutes per activity</B></FONT>
-<BR>(The sum of all separate activities are automatically summed up and entered above.)</TD></TR><TR>
-<TH>Number</TH><TH>Activity</TH><TH WIDTH=75>D</TH><TH WIDTH=75>I</TH><TH WIDTH=75>F</TH><TH WIDTH=75>R</TH><TH>Total time</TH>
+<TH>Number</TH><TH>Activity</TH><TH WIDTH=75>D</TH><TH WIDTH=75>I</TH><TH WIDTH=75>F</TH><TH WIDTH=75>R</TH>
 </TR>
 <!-- 9 --><TR>
 <TD>11</TD>
@@ -27,7 +19,6 @@
 </I></TD>
 <TD><I><INPUT TYPE="text" NAME="3" Value="" SIZE="3">
 </I></TD>
-<TD><I> </I></TD>
 </TR>
 <TR>
 <TD>12</TD>
@@ -40,7 +31,6 @@
 </I></TD>
 <TD><I><INPUT TYPE="text" NAME="7" Value="" SIZE="3">
 </I></TD>
-<TD><I> </I></TD>
 </TR>
 <TR>
 <TD>13</TD>
@@ -53,7 +43,6 @@
 </I></TD>
 <TD><I><INPUT TYPE="text" NAME="11" Value="" SIZE="3">
 </I></TD>
-<TD><I> </I></TD>
 </TR>
 <TR>
 <TD>14</TD>
@@ -66,7 +55,6 @@
 </I></TD>
 <TD><I><INPUT TYPE="text" NAME="15" Value="" SIZE="3">
 </I></TD>
-<TD><I> </I></TD>
 </TR>
 <TR>
 <TD>15</TD>
@@ -79,7 +67,6 @@
 </I></TD>
 <TD><I><INPUT TYPE="text" NAME="19" Value="" SIZE="3">
 </I></TD>
-<TD><I> </I></TD>
 </TR>
 <TR>
 <TD>16</TD>
@@ -92,7 +79,6 @@
 </I></TD>
 <TD><I><INPUT TYPE="text" NAME="23" Value="" SIZE="3">
 </I></TD>
-<TD><I> </I></TD>
 </TR>
 <TR>
 <TD>17</TD>
@@ -105,7 +91,6 @@
 </I></TD>
 <TD><I><INPUT TYPE="text" NAME="27" Value="" SIZE="3">
 </I></TD>
-<TD><I> </I></TD>
 </TR>
 <TR>
 <TD>18</TD>
@@ -118,7 +103,6 @@
 </I></TD>
 <TD><I><INPUT TYPE="text" NAME="31" Value="" SIZE="3">
 </I></TD>
-<TD><I> </I></TD>
 </TR>
 <TR>
 <TD>19</TD>
@@ -131,101 +115,85 @@
 </I></TD>
 <TD><I><INPUT TYPE="text" NAME="35" Value="" SIZE="3">
 </I></TD>
-<TD><I> </I></TD>
 </TR>
-<TH>Sum</TH>
-<TD BGCOLOR="lightgrey"><FONT COLOR="lightgrey">_</FONT></TD>
-<TD><I> </I></TD>
-<TD><I> </I></TD>
-<TD><I> </I></TD>
-<TD><I> </I></TD>
-<TD BGCOLOR="lightgrey"><FONT COLOR="lightgrey">_</FONT></TD>
+<TD COLSPAN=6 BGCOLOR="lightgrey"><FONT COLOR="lightgrey">_</FONT></TD>
 <!-- 9 --><TR>
 <TD>21</TD>
-<TD COLSPAN=5>Functional test</TD>
-<TD><I><INPUT TYPE="text" NAME="37" Value="" SIZE="3">
+<TD COLSPAN=4>Functional test</TD>
+<TD><I><INPUT TYPE="text" NAME="21 " Value="" SIZE="3">
 </I></TD>
 </TR>
 <TR>
 <TD>22</TD>
-<TD COLSPAN=5>System test</TD>
-<TD><I><INPUT TYPE="text" NAME="38" Value="" SIZE="3">
+<TD COLSPAN=4>System test</TD>
+<TD><I><INPUT TYPE="text" NAME="22 " Value="" SIZE="3">
 </I></TD>
 </TR>
 <TR>
 <TD>23</TD>
-<TD COLSPAN=5>Regression test</TD>
-<TD><I><INPUT TYPE="text" NAME="39" Value="" SIZE="3">
+<TD COLSPAN=4>Regression test</TD>
+<TD><I><INPUT TYPE="text" NAME="23 " Value="" SIZE="3">
 </I></TD>
 </TR>
 <TR>
 <TD>30</TD>
-<TD COLSPAN=5>Meeting</TD>
-<TD><I><INPUT TYPE="text" NAME="40" Value="" SIZE="3">
+<TD COLSPAN=4>Meeting</TD>
+<TD><I><INPUT TYPE="text" NAME="30 " Value="" SIZE="3">
 </I></TD>
 </TR>
 <TR>
 <TD>41</TD>
-<TD COLSPAN=5>Lecture</TD>
+<TD COLSPAN=4>Lecture</TD>
 <TD><I><INPUT TYPE="text" NAME="41" Value="" SIZE="3">
 </I></TD>
 </TR>
 <TR>
 <TD>42</TD>
-<TD COLSPAN=5>Exercise</TD>
+<TD COLSPAN=4>Exercise</TD>
 <TD><I><INPUT TYPE="text" NAME="42" Value="" SIZE="3">
 </I></TD>
 </TR>
 <TR>
 <TD>43</TD>
-<TD COLSPAN=5>Computer exercise</TD>
+<TD COLSPAN=4>Computer exercise</TD>
 <TD><I><INPUT TYPE="text" NAME="43" Value="" SIZE="3">
 </I></TD>
 </TR>
 <TR>
 <TD>44</TD>
-<TD COLSPAN=5>Home reading</TD>
+<TD COLSPAN=4>Home reading</TD>
 <TD><I><INPUT TYPE="text" NAME="44" Value="" SIZE="3">
 </I></TD>
 </TR>
 <TR>
 <TD>100</TD>
-<TD COLSPAN=5>Other</TD>
-<TD><I><INPUT TYPE="text" NAME="45" Value="" SIZE="3">
+<TD COLSPAN=4>Other</TD>
+<TD><I><INPUT TYPE="text" NAME="100" Value="" SIZE="3">
 </I></TD>
 </TR>
-<TR><TD COLSPAN=7 BGCOLOR="lightgrey" NOWRAP><B><FONT SIZE=+1>Part C: Time spent at different types of sub activities</FONT></B><BR>(The values are summed up automatically)</TD></TR>
-<TR><TH COLSPAN=2>Activity type</TH><TH>Activity code</TH><TH COLSPAN=3>Description</TH><TH>Sum</TH></TR>
+<TD COLSPAN=6 BGCOLOR="lightgrey"><FONT COLOR="lightgrey">_</FONT></TD>
+<TR><TH COLSPAN=2>Activity type</TH><TH>Activity code</TH><TH COLSPAN=3>Description</TH></TR>
 <!-- 4 --><TR>
 <TD COLSPAN=2>Development and<BR>documentation</TD>
 <TD>D</TD>
 <TD COLSPAN=3>Developing new code, test cases<BR>and documentation including<BR>documentation of the system</TD>
-<TD><I> </I></TD>
 </TR>
 <TR>
 <TD COLSPAN=2>Informal review</TD>
 <TD>I</TD>
 <TD COLSPAN=3>Time spent preparing and at<BR>meeting for informal reviews</TD>
-<TD><I> </I></TD>
 </TR>
 <TR>
 <TD COLSPAN=2>Formal reviews</TD>
 <TD>F</TD>
 <TD COLSPAN=3>Time spent preparing and at<BR>meeting for formal reviews</TD>
-<TD><I> </I></TD>
 </TR>
 <TR>
 <TD COLSPAN=2>Rework,<BR>improvement or<BR>correction</TD>
 <TD>R</TD>
 <TD COLSPAN=3>Time spent improving, revising<BR>or correction documents and design<BR>objects</TD>
-<TD><I> </I></TD>
-</TR>
-<TR>
-<TD COLSPAN=7 BGCOLOR="lightgrey"><FONT SIZE=+1><B>Part D: Signature</B></FONT></TD></TR>
-<TR>
-<TD COLSPAN=6><B>Signed by manager</B></TD><TD> </TD>
 </TR>
 </TABLE>
-<INPUT TYPE="hidden" NAME="FormFields" Value="0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,37,38,39,40,41,42,43,44,45,">
+<INPUT TYPE="hidden" NAME="FormFields" Value="0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,21 ,22 ,23 ,30 ,41,42,43,44,100,">
 <INPUT TYPE="submit" VALUE="Submit time report">
 </FORM>

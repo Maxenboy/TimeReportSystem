@@ -1,5 +1,10 @@
 package subTimeReportMenu;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -176,9 +181,23 @@ public class TimeReportGenerator {
 	/**
 	 * Creates the form where user can fill in an new TimeReport
 	 */
-	public String showNewTimeReport() {
-		
-		return null;
+	public String showNewTimeForm() {
+		File file = new File("git/puss/WebContent/NewTimeReport.html");
+		StringBuilder sb = new StringBuilder();
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			String s;
+			while((s = br.readLine()) != null) 
+				sb.append(s);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return sb.toString();
+	}
+	
+	public boolean addNewTimeReport(TimeReport timeReport, ArrayList<Activity> activities) {
+		return db.addTimeReport(timeReport, activities); 
 	}
 	
 	public String showChangeTimeReport(int reportId) {

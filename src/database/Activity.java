@@ -201,6 +201,20 @@ public class Activity {
 		return 0;
 	}
 	
+	public static String mapIntToActivityType(int typeInteger) {
+		switch(typeInteger) {
+		case 0:
+			return ACTIVITY_TYPE_DEVELOPMENT;
+		case 1:
+			return ACTIVITY_TYPE_INFORMAL_REVIEW;
+		case 2:
+			return ACTIVITY_TYPE_FORMAL_REVIEW;
+		case 3:
+			return ACTIVITY_TYPE_REWORK;
+		}
+		return null;
+	}
+	
 	public static String mapActivityNrToString(int activityNbr) {
 		switch(activityNbr) {
 		case ACTIVITY_NR_SDP:
