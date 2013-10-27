@@ -106,6 +106,9 @@ public class TimeReportGenerator {
 		case SHOW_SIGN:
 			sb.append("<FORM METHOD=post ACTION="+formElement("SignTimeReports")+">");
 			break;
+		case SHOW_UNSIGNED:
+			sb.append("<FORM METHOD=post ACTION="+formElement("SignTimeReports")+">");
+			break;
 		}
 		sb.append(buildShowTimeReportTable());
 		for (int i = 0; i < timeReports.size(); i++) {
@@ -124,6 +127,11 @@ public class TimeReportGenerator {
 		sb.append("<INPUT TYPE="+ formElement("submit") + "VALUE=" + formElement("Get Report") +">");
 		sb.append("</form>");
 		return sb.toString();
+	}
+	
+	private String createRadio(int id) {
+		return "<input type=" + formElement("radio") + "name=" + 
+				formElement("reportId") + "value=" + formElement(Integer.toString(id))+">";
 	}
 	/**
 	 * Lists all time reports belonging to a specific ID
@@ -163,15 +171,13 @@ public class TimeReportGenerator {
 		return html;
 	}
 	
-	private String createRadio(int id) {
-		return "<input type=" + formElement("radio") + "name=" + 
-				formElement("reportId") + "value=" + formElement(Integer.toString(id))+">";
-	}
+	
 	
 	/**
 	 * Creates the form where user can fill in an new TimeReport
 	 */
 	public String showNewTimeReport() {
+		
 		return null;
 	}
 	
@@ -249,15 +255,15 @@ public class TimeReportGenerator {
 		switch(state) {
 		case REMOVE_REPORT:
 			if(!tr.isSigned()) {
-				sb.append(confirmationButton(state) + "<button onclick=" + 
+				sb.append(confirmationButton(state,reportId) + "<button onclick=" + 
 						formElement("confirmation()") + ">Remove Report</button>");
 			}
 			break;
 		case SHOW_SIGN:
 			if(tr.isSigned()) 
-				sb.append(confirmationButton(SHOW_SIGN));
-			else if (tr.isSigned())
-				sb.append(confirmationButton(SHOW_UNSIGNED));
+				sb.append(confirmationButton(SHOW_SIGN,reportId));
+			else if (!tr.isSigned())
+				sb.append(confirmationButton(SHOW_UNSIGNED,reportId));
 			break;
 		}
 		return sb.toString();
@@ -289,20 +295,27 @@ public class TimeReportGenerator {
 		return nonPrintedActivities;
 	}
 	
-	private String confirmationButton(int state) {
+	private String confirmationButton(int state, int reportId) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("<form method=" + formElement("post") + ">");
 		switch(state) {
 		case REMOVE_REPORT:
-			sb.append("<input type=" + formElement("submit") + "value=" + formElement("Go") +  "onclick=return confirm('Do you want to remove this time report')/>");
+			sb.append("<script> function confirmation(){return confirm('Are you sure you want to remove this report?')}</script>");
+			sb.append("<form  method=\"get\" action=\"RemoveTimeReports\" onSubmit=\"confirmation()\">");
+			sb.append("<input type=\"submit\" name=\"confirmRemove\" value=\"Remove report\">");
 			break;
 		case SHOW_UNSIGNED:
-			sb.append("<input type=" + formElement("submit") + "value=" + formElement("Go") +  "onclick=return confirm('Do you want to sign this time report')/>");
+			sb.append("<script> function confirmation(){return confirm('Are you sure you want to sign this report?')}</script>");
+			sb.append("<form  method=\"get\" action=\"SignTimeReports\" onSubmit=\"confirmation()\">");
+			sb.append("<input type=" + formElement("submit") + "name=\"confirmUnsign\" value=\"Sign report\">");
 			break;
 		case SHOW_SIGN:
-			sb.append("<input type=" + formElement("submit") + "value=" + formElement("Go") +  "onclick=return confirm('Do you want to unsign this time report')/>");
+			sb.append("<script> function confirmation(){return confirm('Are you sure you want to unsign this report?')}</script>");
+			sb.append("<form  method=\"get\" action=\"SignTimeReports\" onSubmit=\"confirmation()\">");
+			sb.append("<input type=\"submit\" name=\"confirmSign\" value=\"Unsign report\">");
 			break;
 		}
+		sb.append("<input type=\"hidden\" name=\"reportId\" value=" + formElement(Integer.toString(reportId)) + ">");
+		sb.append("</form>");
 		return sb.toString();
 	}
 	
@@ -312,22 +325,20 @@ public class TimeReportGenerator {
 	 * @param sign
 	 * @return
 	 */
-	public String signOrUnsignReports(String[] reportIds, boolean sign) {
+	public String signOrUnsignReport(String reportId) {
 		StringBuilder sb = new StringBuilder();
 		//Create dummy TimeReports
+		TimeReport tr = db.getTimeReport(Integer.valueOf(reportId));
 		ArrayList<TimeReport> timeReports = new ArrayList<TimeReport>();
-		for(String ID: reportIds)
-			timeReports.add(new TimeReport(Integer.valueOf(ID), 0,false, 0, 0));
-		boolean success;
-		if(sign == true)
-			success = db.signTimeReports(timeReports);
-		else
+		timeReports.add(tr);
+		boolean success = false;
+		if(tr.isSigned())
 			success = db.unsignTimeReports(timeReports);
+		else
+			success = db.signTimeReports(timeReports);
 		if(success) {
-			sb.append("<h3> The following time reports were signed:</h3>");
-			for(TimeReport tr: timeReports) {
-				sb.append(tr.getId() + "<br>");
-			}
+			sb.append("<h3> The following time report was signed:</h3>");
+			sb.append(reportId + "<br>");
 		} else {
 			return null;
 		}
