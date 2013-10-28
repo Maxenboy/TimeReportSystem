@@ -19,10 +19,7 @@ import database.TimeReport;
 public class NewTimeReport extends HttpServlet{
 	private static final long serialVersionUID = 6091270182349510225L;
 	private static final int NEW_REPORT = 1;
-	private static final int FILLED_REPORT = 2;
 	private static final int NOT_ENOUGH_DATA = 3;
-	private static final int SUCCESSFUL_ADD = 4;
-	private static final int UNSUCCESSFUL_ADD = 5;
 	TimeReportGenerator trg = new TimeReportGenerator(new Database());
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -51,14 +48,9 @@ public class NewTimeReport extends HttpServlet{
 			}
 			break;
 		case NOT_ENOUGH_DATA:
-			s = trg.showNewTimeForm();
-			if(s == null) {
-				out.print("500 internal error");
-			} else { 
-				out.print(s);
-				session.setAttribute("state", NOT_ENOUGH_DATA);
-			}
-			out.println("<script> alert('Mandatory data has not been filled in. \n Please fill in week nr. and at least one activity') </script>");
+			session.setAttribute("state", NEW_REPORT);
+			out.print("<script> alert('Mandatory data has not been filled in. Please fill in week nr. and at least one activity') </script>");
+			doGet(request, response);
 			break;
 		}
 	}
@@ -90,7 +82,6 @@ public class NewTimeReport extends HttpServlet{
 					if(i < 36) {
 						activities.add(new Activity(activityNbr, Activity.mapIntToActivityType(i % 4), Integer.valueOf(time), timeReport.getId()));
 					} else {
-						System.out.println("outside of " + i);
 						activities.add(new Activity(Integer.valueOf(field.trim()), Activity.ACTIVITY_TYPE_DEVELOPMENT, Integer.valueOf(time), timeReport.getId()));
 					}
 				}
@@ -102,15 +93,15 @@ public class NewTimeReport extends HttpServlet{
 				//save in database
 				PrintWriter out = response.getWriter();
 				if(trg.addNewTimeReport(timeReport, activities)) {
-					out.print("<script>alert('Successfully saved time report') </script>");
+					out.print("<script>alert('Successfully saved time report.') </script>");
 					session.invalidate();
+					doGet(request, response);
 				} else {
-					out.print("<script>alert('Internal error - could not save time report') </script>");
+					out.print("<script>alert('Internal error - could not save time report.') </script>");
 					session.invalidate();
+					doGet(request, response);
 				}
 			}
-			
-			
 		}
 	}
 	

@@ -17,8 +17,10 @@ public class TimeReportGenerator {
 	public static final int SHOW_SIGN = 3;
 	public static final int SHOW_UNSIGNED = 4;
 	public static final int REMOVE_USER_REPORT = 5;
-	public static final int REMOVE_PRJ_REPORTS = 6;
+	public static final int REMOVE_PRJ_REPORT = 6;
 	public static final int REMOVE_REPORT = 7;
+	public static final int CHANGE_USER_REPORT = 8;
+	public static final int CHANGE_PRJ_REPORT = 9;
 	public TimeReportGenerator(Database db) {
 		this.db = db;
 	}
@@ -50,40 +52,6 @@ public class TimeReportGenerator {
 		sb.append("</tr>");
 		return sb.toString();
 	}
-
-	private String showTimeReportsWithCheckBoxes(ArrayList<TimeReport> timeReports, int state) {
-		if(timeReports.isEmpty()) {
-			return null;
-		}
-		StringBuilder sb = new StringBuilder();
-		String s = new String();
-		String buttonName = new String();
-		switch(state) {
-		case REMOVE_PRJ_REPORTS:
-			buttonName = "Delete Reports";
-			s = "RemoveTimeReports";
-			break;
-		case REMOVE_USER_REPORT:
-			buttonName = "Delete Reports";
-			s = "RemoveTimeReports";
-			break;
-		}
-		sb.append("<FORM METHOD=post ACTION="+formElement(s)+">");
-		sb.append(buildSignTimeReportTable());
-		for (int i = 0; i < timeReports.size(); i++) {
-			TimeReport tr = timeReports.get(i);
-			sb.append("<tr>");
-			sb.append("<td>" + tr.getUserId() + "</td>");
-			sb.append("<td>" + tr.getId() + "</td>");
-			sb.append("<td>" + tr.getWeek() + "</td>");
-			sb.append("<td>" + createCheck(tr.getId())+ "</td>");
-			sb.append("</tr>");
-		}
-		sb.append("</table>");
-		sb.append("<INPUT TYPE="+ formElement("submit") + "VALUE=" + formElement(buttonName) +">");
-		sb.append("</form>");
-		return sb.toString();
-	}
 	
 	private String createCheck(int id) {
 		return "<input type=" + formElement("checkbox") + "name=" + 
@@ -105,6 +73,9 @@ public class TimeReportGenerator {
 		case REMOVE_REPORT:
 			sb.append("<FORM METHOD=post ACTION="+formElement("RemoveTimeReport")+">");
 			break;
+		case REMOVE_PRJ_REPORT:
+			sb.append("<FORM METHOD=post ACTION="+formElement("RemoveTimeReport")+">");
+			break;
 		case SHOW_USER_REPORT:
 			sb.append("<FORM METHOD=post ACTION="+formElement("ShowTimeReports")+">");
 			break;
@@ -113,6 +84,12 @@ public class TimeReportGenerator {
 			break;
 		case SHOW_UNSIGNED:
 			sb.append("<FORM METHOD=post ACTION="+formElement("SignTimeReports")+">");
+			break;
+		case CHANGE_PRJ_REPORT:
+			sb.append("<FORM METHOD=post ACTION="+formElement("ChangeTimeReport")+">");
+			break;
+		case CHANGE_USER_REPORT:
+			sb.append("<FORM METHOD=post ACTION="+formElement("ChangeTimeReport")+">");
 			break;
 		}
 		sb.append(buildShowTimeReportTable());
@@ -165,34 +142,73 @@ public class TimeReportGenerator {
 			timeReports = db.getSignedTimeReports(ID);
 			html = listReports(timeReports, state);
 			break;
-		case REMOVE_PRJ_REPORTS:
+		case REMOVE_PRJ_REPORT:
 			timeReports = db.getUnsignedTimeReports(ID);
-			html = showTimeReportsWithCheckBoxes(timeReports, state);
+			html = listReports(timeReports, state);
 			break;
 		case REMOVE_USER_REPORT:
 			timeReports = db.getTimeReportsForUserId(ID);
 			html = listReports(timeReports, REMOVE_REPORT);
+			break;
+		case CHANGE_USER_REPORT:
+			timeReports = db.getTimeReportsForUserId(ID);
+			html = listReports(timeReports,CHANGE_USER_REPORT);
+			break;
+		case CHANGE_PRJ_REPORT:
+			timeReports = db.getUnsignedTimeReports(ID);
+			html = listReports(timeReports,CHANGE_PRJ_REPORT);
+			break;
 		}
 		return html;
 	}
-	
-	
 	
 	/**
 	 * Creates the form where user can fill in an new TimeReport
 	 */
 	public String showNewTimeForm() {
-		File file = new File("git/puss/WebContent/NewTimeReport.html");
 		StringBuilder sb = new StringBuilder();
-		try {
-			BufferedReader br = new BufferedReader(new FileReader(file));
-			String s;
-			while((s = br.readLine()) != null) 
-				sb.append(s);
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
+		sb.append("<FORM METHOD=post ACTION=\"NewTimeReport\">");
+		sb.append("<TABLE BORDER=1>");
+		sb.append("<TR><TD COLSPAN=1><B>Week:</B></TD><TD><INPUT TYPE=\"text\" NAME=\"week\" Value=\"\" SIZE=3></TD></TR>");
+		sb.append("<TR><TH>Number</TH><TH>Activity</TH><TH WIDTH=75>D</TH><TH WIDTH=75>I</TH><TH WIDTH=75>F</TH><TH WIDTH=75>R</TH></TR>");
+		int activityNbr = 11;
+		int formField = 0;
+		while(activityNbr < 20) {
+			sb.append("<TR><TD>" + activityNbr + "</TD><TD>" + Activity.mapActivityNrToString(activityNbr)  + "</TD>");
+			for(int i = 0; i < 4; i++) {
+				sb.append("<TD><I><INPUT TYPE=\"text\" NAME=" + formElement(Integer.toString(formField)) + " Value=\"\" SIZE=3></I></TD>");
+				formField++;
+			}
+			sb.append("</TR>");
+			activityNbr++;
 		}
+		activityNbr = 21;
+		sb.append("<TD BGCOLOR=\"lightgrey\" COLSPAN=6><FONT COLOR=\"lightgrey\">_</FONT></TD>");
+		while(activityNbr < 24) {
+			sb.append("<TR><TD>" + activityNbr + "</TD><TD COLSPAN=4>"+ Activity.mapActivityNrToString(activityNbr) + "</TD>");
+			sb.append("<TD><I><INPUT TYPE=\"text\" NAME=" + formElement(Integer.toString(activityNbr) + " ") +  " Value=\"\" SIZE=3>");
+			sb.append("</I></TD></TR>");
+			activityNbr++;
+		}
+		activityNbr = 30;
+		sb.append("<TR><TD>" + activityNbr + "</TD><TD COLSPAN=4>"+ Activity.mapActivityNrToString(activityNbr) + "</TD>");
+		sb.append("<TD><I><INPUT TYPE=\"text\" NAME=" + formElement(Integer.toString(activityNbr) + " ") +  " Value=\"\" SIZE=3>");
+		sb.append("</I></TD></TR>");
+		activityNbr = 41;
+		while(activityNbr < 45) {
+			sb.append("<TR><TD>" + activityNbr + "</TD><TD COLSPAN=4>"+ Activity.mapActivityNrToString(activityNbr) + "</TD>");
+			sb.append("<TD><I><INPUT TYPE=\"text\" NAME=" + formElement(Integer.toString(activityNbr)) +  " Value=\"\" SIZE=3>");
+			sb.append("</I></TD></TR>");
+			activityNbr++;
+		}
+		activityNbr = 100;
+		sb.append("<TR><TD>" + activityNbr + "</TD><TD COLSPAN=4>"+ Activity.mapActivityNrToString(activityNbr) + "</TD>");
+		sb.append("<TD><I><INPUT TYPE=\"text\" NAME=" + formElement(Integer.toString(activityNbr)) +  " Value=\"\" SIZE=3>");
+		sb.append("</I></TD></TR>");
+		sb.append("</TABLE>");
+		sb.append("<INPUT TYPE=\"hidden\" NAME=\"FormFields\" Value=\"0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,21 ,22 ,23 ,30 ,41,42,43,44,100,\">");
+		sb.append("<INPUT TYPE=\"submit\" VALUE=\"Submit time report\">");
+		sb.append("</FORM>");
 		return sb.toString();
 	}
 	
@@ -201,10 +217,103 @@ public class TimeReportGenerator {
 	}
 	
 	public String showChangeTimeReport(int reportId) {
-		ArrayList<Activity> activities = db.getActivities(reportId);
+		TimeReport tr = db.getTimeReport(reportId);
+		if(tr.isSigned())
+			return null;
 		StringBuilder sb = new StringBuilder();
-		sb.append(reportId);
-		return null;
+		ArrayList<Activity> activities = db.getActivities(reportId);
+		sb.append("<FORM METHOD=post ACTION=\"ChangeTimeReport\">");
+		sb.append("<TABLE BORDER=1>");
+		sb.append("<TR><TD COLSPAN=1><B>Week:</B></TD><TD><INPUT TYPE=\"text\" NAME=\"week\" Value=" + formElement(Integer.toString(tr.getWeek())) + "SIZE=3></TD></TR>");
+		sb.append("<TR><TH>Number</TH><TH>Activity</TH><TH WIDTH=75>D</TH><TH WIDTH=75>I</TH><TH WIDTH=75>F</TH><TH WIDTH=75>R</TH></TR>");
+		int activityNbr = 11;
+		int formField = 0;
+		while(activityNbr < 20) {
+			sb.append("<TR><TD>" + activityNbr + "</TD><TD>" + Activity.mapActivityNrToString(activityNbr)  + "</TD>");
+			for(int i = 0; i < 4; i++) {
+				boolean foundExistingActivity = false;
+				for(int j = 0; j < activities.size(); j++) {
+					Activity a = activities.get(j);
+					if(a.getActivityNr() == activityNbr && Activity.mapIntToActivityType(i).equals(a.getActivityType())) {
+						foundExistingActivity = true;
+						sb.append("<TD><I><INPUT TYPE=\"text\" NAME=" + formElement(Integer.toString(formField)) + " Value=" + formElement(Integer.toString(a.getTime())) + "SIZE=3></I></TD>");
+						break;
+					}
+				}
+				if(!foundExistingActivity)
+					sb.append("<TD><I><INPUT TYPE=\"text\" NAME=" + formElement(Integer.toString(formField)) + " Value=\"\" SIZE=3></I></TD>");
+				formField++;
+			}
+			sb.append("</TR>");
+			activityNbr++;
+		}
+		activityNbr = 21;
+		sb.append("<TD BGCOLOR=\"lightgrey\" COLSPAN=6><FONT COLOR=\"lightgrey\">_</FONT></TD>");
+		while(activityNbr < 24) {
+			sb.append("<TR><TD>" + activityNbr + "</TD><TD COLSPAN=4>"+ Activity.mapActivityNrToString(activityNbr) + "</TD>");
+			boolean foundExistingActivity = false;
+			for (int i = 0; i < activities.size(); i++) {
+				Activity a = activities.get(i);
+				if(a.getActivityNr() == activityNbr) {
+					foundExistingActivity = true;
+					sb.append("<TD><I><INPUT TYPE=\"text\" NAME=" + formElement(Integer.toString(formField)) + " Value=" + formElement(Integer.toString(a.getTime())) + "SIZE=3></I></TD>");
+					break;
+				}
+			}
+			if(!foundExistingActivity)
+				sb.append("<TD><I><INPUT TYPE=\"text\" NAME=" + formElement(Integer.toString(activityNbr) + " ") +  " Value=\"\" SIZE=3>");
+			sb.append("</I></TD></TR>");
+			activityNbr++;
+		}
+		activityNbr = 30;
+		sb.append("<TR><TD>" + activityNbr + "</TD><TD COLSPAN=4>"+ Activity.mapActivityNrToString(activityNbr) + "</TD>");
+		boolean foundExistingActivity = false;
+		for (int i = 0; i < activities.size(); i++) {
+			Activity a = activities.get(i);
+			if(a.getActivityNr() == activityNbr) {
+				foundExistingActivity = true;
+				sb.append("<TD><I><INPUT TYPE=\"text\" NAME=" + formElement(Integer.toString(formField)) + " Value=" + formElement(Integer.toString(a.getTime())) + "SIZE=3></I></TD>");
+				break;
+			}
+		}
+		if(!foundExistingActivity)
+			sb.append("<TD><I><INPUT TYPE=\"text\" NAME=" + formElement(Integer.toString(activityNbr) + " ") +  " Value=\"\" SIZE=3>");
+		sb.append("</I></TD></TR>");
+		activityNbr = 41;
+		while(activityNbr < 45) {
+			sb.append("<TR><TD>" + activityNbr + "</TD><TD COLSPAN=4>"+ Activity.mapActivityNrToString(activityNbr) + "</TD>");
+			foundExistingActivity = false;
+			for (int i = 0; i < activities.size(); i++) {
+				Activity a = activities.get(i);
+				if(a.getActivityNr() == activityNbr) {
+					foundExistingActivity = true;
+					sb.append("<TD><I><INPUT TYPE=\"text\" NAME=" + formElement(Integer.toString(formField)) + " Value=" + formElement(Integer.toString(a.getTime())) + "SIZE=3></I></TD>");
+					break;
+				}
+			}
+			if(!foundExistingActivity)
+				sb.append("<TD><I><INPUT TYPE=\"text\" NAME=" + formElement(Integer.toString(activityNbr) + " ") +  " Value=\"\" SIZE=3>");
+			sb.append("</I></TD></TR>");
+			activityNbr++;
+		}
+		activityNbr = 100;
+		sb.append("<TR><TD>" + activityNbr + "</TD><TD COLSPAN=4>"+ Activity.mapActivityNrToString(activityNbr) + "</TD>");
+		foundExistingActivity = false;
+		for (int i = 0; i < activities.size(); i++) {
+			Activity a = activities.get(i);
+			if(a.getActivityNr() == activityNbr) {
+				foundExistingActivity = true;
+				sb.append("<TD><I><INPUT TYPE=\"text\" NAME=" + formElement(Integer.toString(formField)) + " Value=" + formElement(Integer.toString(a.getTime())) + "SIZE=3></I></TD>");
+				break;
+			}
+		}
+		if(!foundExistingActivity)
+			sb.append("<TD><I><INPUT TYPE=\"text\" NAME=" + formElement(Integer.toString(activityNbr) + " ") +  " Value=\"\" SIZE=3>");
+		sb.append("</TABLE>");
+		sb.append("<INPUT TYPE=\"hidden\" NAME=\"FormFields\" Value=\"0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,21 ,22 ,23 ,30 ,41,42,43,44,100,\">");
+		sb.append("<INPUT TYPE=\"submit\" VALUE=\"Submit time report\">");
+		sb.append("</FORM>");
+		return sb.toString();
 	}
 	
 	public String showSuccess(int i) {
@@ -273,10 +382,8 @@ public class TimeReportGenerator {
 		//Create a button if user wants to remove a time report.
 		switch(state) {
 		case REMOVE_REPORT:
-			if(!tr.isSigned()) {
-				sb.append(confirmationButton(state,reportId) + "<button onclick=" + 
-						formElement("confirmation()") + ">Remove Report</button>");
-			}
+			if(!tr.isSigned())
+				sb.append(confirmationButton(REMOVE_REPORT,reportId));
 			break;
 		case SHOW_SIGN:
 			if(tr.isSigned()) 
@@ -319,7 +426,7 @@ public class TimeReportGenerator {
 		switch(state) {
 		case REMOVE_REPORT:
 			sb.append("<script> function confirmation(){return confirm('Are you sure you want to remove this report?')}</script>");
-			sb.append("<form  method=\"get\" action=\"RemoveTimeReports\" onSubmit=\"confirmation()\">");
+			sb.append("<form  method=\"post\" action=\"RemoveTimeReport\" onSubmit=\"confirmation()\">");
 			sb.append("<input type=\"submit\" name=\"confirmRemove\" value=\"Remove report\">");
 			break;
 		case SHOW_UNSIGNED:
@@ -364,22 +471,7 @@ public class TimeReportGenerator {
 		return sb.toString();
 	}
 
-	public String removeTimeReports(String[] reportIds) {
-		StringBuilder sb = new StringBuilder();
-		boolean success = false;
-		for(String rId: reportIds) {
-			success = db.removeTimeReport(Integer.valueOf(rId));
-			if(!success)
-				break;
-		}
-		if(success) {
-			sb.append("<h3> The following time reports were deleted:</h3>");
-			for(String rId: reportIds) {
-				sb.append(rId + "<br>");
-			}
-		} else {
-			return null;
-		}
-		return sb.toString();
+	public boolean removeTimeReport(String reportId) {
+		return db.removeTimeReport(Integer.valueOf(reportId));
 	}
 }

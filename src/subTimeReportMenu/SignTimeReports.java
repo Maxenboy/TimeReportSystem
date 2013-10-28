@@ -34,6 +34,7 @@ public class SignTimeReports extends HttpServlet {
 		}
 		switch(state) {
 		case FIRST:
+			//First time visiting page.
 			sb.append("<form method=get action = SignTimeReports>");
 			sb.append("<input type=" + formElement("submit") + 
 					" name=" + formElement("sign") + " value=" + formElement("Show signed time reports") + ">");
@@ -43,6 +44,7 @@ public class SignTimeReports extends HttpServlet {
 			session.setAttribute("state", LIST);
 			break;
 		case LIST:
+			//List signed or unsigned time reports
 			if(request.getParameter("sign") != null) {
 				sb.append(trg.showAllTimeReports(1, TimeReportGenerator.SHOW_SIGN));
 			} else if(request.getParameter("unsign") != null){
@@ -75,7 +77,7 @@ public class SignTimeReports extends HttpServlet {
 	}
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		System.out.println("doPost");
+		//Signing/unsigning of time reports
 		HttpSession session = request.getSession(true);
 		PrintWriter out = response.getWriter();
 		out.print(getPageIntro());
