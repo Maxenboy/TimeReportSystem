@@ -40,9 +40,14 @@ public class BurnDown extends HttpServlet { // extenda servlet eller statisticsm
 		case 1: // Administrator gets to choose project group.
 			out.append(projectGroupForm());
 		case 2:
-			out.append(printBurnDown(db.getTimePerWeek(projectGroupId)));
+			out.append(printBurnDown(db.getTimePerWeek(projectGroupId), projectGroupId));
+			break;
 		case 4:
-			out.append(printBurnDown(db.getTimePerWeek(projectGroupId)));
+			out.append(printBurnDown(db.getTimePerWeek(projectGroupId), projectGroupId));
+			break;
+		default:
+			out.append("Unexpected user permission level.");	
+			break;
 		}		
 	}
 	
@@ -53,12 +58,10 @@ public class BurnDown extends HttpServlet { // extenda servlet eller statisticsm
 		String[] projectGroup = request.getParameterValues("projectGroup");
 		
 		if(projectGroup[0] != null) {
-			out.append(printBurnDown(db.getTimePerWeek(Integer.parseInt(projectGroup[0]))));
+			out.append(printBurnDown(db.getTimePerWeek(Integer.parseInt(projectGroup[0])), Integer.parseInt(projectGroup[0])));
 		} else {
 			out.append("ERROR - No project group chosen by administrator." );
 		}
-		//Hit kommer man efter att admin har valt projektgrupp.
-		// Visa burndown
 	}
 	
 	/**
@@ -92,7 +95,7 @@ public class BurnDown extends HttpServlet { // extenda servlet eller statisticsm
 	 * @param burnDownData innehåller ***
 	 * @return Sträng som innehåller HTML-kod som visar BurnDown plotten.
 	 */
-	private String printBurnDown(HashMap<String, Integer> timePerWeek) {
+	private String printBurnDown(HashMap<String, Integer> timePerWeek, int projectGroupId) {
 		if(timePerWeek.get("totalProjectTime") == 0) {
 			return("Excpected total projet time is set to zero");
 		}
@@ -133,7 +136,7 @@ public class BurnDown extends HttpServlet { // extenda servlet eller statisticsm
 		"]);"
 
 		     + "var options = {"
-		       + "title: 'Burndown'"
+		       + "title: 'Burndown for projectID " + projectGroupId + "'"
 		      + "};"
 
 		      + "var chart = new google.visualization.LineChart(document.getElementById('chart_div'));"

@@ -32,7 +32,7 @@ public class Statistics extends HttpServlet { // extenda servlet eller statistic
 
 		HttpSession session = request.getSession(true);
 		
-		testSetSessionData(session);
+		testSetSessionData(session); // TEST! TA BORT!
 		
 		int userPermission = (Integer) session.getAttribute("user_Permissions");
 		int projectGroupId = (Integer) session.getAttribute("project_group_id");
@@ -47,6 +47,8 @@ public class Statistics extends HttpServlet { // extenda servlet eller statistic
 		case 4: // Ordinary user chooses week. 
 			out.append(printFilter(db.getStatisticsFilter(projectGroupId), userPermission));
 			break;
+		default:
+			out.append("Unexpected user permission level.");
 		}
 
 	}
@@ -213,7 +215,7 @@ public class Statistics extends HttpServlet { // extenda servlet eller statistic
 			Iterator<String> itr = users.iterator();
 
 			sb.append("<form method='POST'> "
-					+ "<table><tr><td> Users <br /><select name='users' multiple  style='width=100px'>"); 
+					+ "<table><tr><td> Users <br /><select name='users' multiple  style='width=200px; height=300px''>"); 
 			
 			while(itr.hasNext()) { // Iterates through the list with usernames to build up the first part of form.				
 				String username = itr.next();
@@ -227,11 +229,11 @@ public class Statistics extends HttpServlet { // extenda servlet eller statistic
 			ArrayList<String> roles = table.get("role");
 			itr = roles.iterator();
 
-			sb.append("Roles <br /><select name='roles' multiple  style='width=100px'>");
+			sb.append("Roles <br /><select name='roles' multiple  style='width=200px; height=300px''>");
 			while(itr.hasNext()) {
 				String role = itr.next();
 				sb.append("<option value='"
-						+ role + "'>" + role +
+						+ role + "'>" + translateRole(Integer.parseInt(role)) +
 						"</option>");				
 			}
 			sb.append("</select></td><td>"); // Role multiple select box is now done. On to the next one, Activity.
@@ -239,11 +241,11 @@ public class Statistics extends HttpServlet { // extenda servlet eller statistic
 			ArrayList<String> activities= table.get("activity");
 			itr = activities.iterator();
 
-			sb.append("Activities <br /><select name='activities' multiple  style='width=100px'>");
+			sb.append("Activities <br /><select name='activities' multiple  style='width=200px; height=300px''>");
 			while(itr.hasNext()) {
 				String activity = itr.next();
 				sb.append("<option value='"
-						+ activity + "'>" + activity +
+						+ activity + "'>" + translateActivity(activity) +
 						"</option>");				
 			}
 			sb.append("</select></td><td>"); // Activity multiple select box is now done. On to the last one, week.			
@@ -251,7 +253,7 @@ public class Statistics extends HttpServlet { // extenda servlet eller statistic
 			ArrayList<String> weeks= table.get("week");
 			itr = weeks.iterator();
 
-			sb.append("Weeks <br /><select name='weeks' multiple style='width=100px'>");
+			sb.append("Weeks <br /><select name='weeks' multiple style='width=200px; height=300px''>");
 			while(itr.hasNext()) {
 				String week = itr.next();
 				sb.append("<option value='"
@@ -269,7 +271,7 @@ public class Statistics extends HttpServlet { // extenda servlet eller statistic
 			ArrayList<String> weeks = table.get("week");
 			Iterator<String>  itr= weeks.iterator();
 
-			sb.append("Weeks <br /><select name='weeks' multiple style='width=100px'>");
+			sb.append("Weeks <br /><select name='weeks' multiple style='width=200px; height=300px'>");
 			while(itr.hasNext()) {
 				String week = itr.next();
 				sb.append("<option value='"
@@ -396,7 +398,7 @@ public class Statistics extends HttpServlet { // extenda servlet eller statistic
 			String activity_nr = listOfActivity_nr.get(i);
 			String week = listOfWeeks.get(i);
 			String time = listOfTime.get(i);	
-			htmlTable.append("['" + username + "',  '" + role + "', '" + activity_nr + "', '" + week + "', '" + time + "']");
+			htmlTable.append("['" + username + "',  '" + translateRole(Integer.parseInt(role)) + "', '" + translateActivity(activity_nr) + "', '" + week + "', '" + time + "']");
 			if (i + 1 < listOfUsernames.size()) {
 				htmlTable.append(",");
 			}
@@ -412,4 +414,91 @@ public class Statistics extends HttpServlet { // extenda servlet eller statistic
 		);
 		return htmlTable.toString();
 	}	
+	
+	/**
+	 * Translates a rolenumber into the corresponding string.
+	 * @param role
+	 * @return
+	 */
+	private String translateRole(int role) {
+		switch(role) {
+			case 1:
+				return("Administrator");
+			case 2:
+				return("Project Leader");
+			case 4: 
+				return("System Group");
+			case 5:
+				return("System Group Leader");
+			case 6:
+				return("Development Group");
+			case 7:
+				return("Test Group");
+			case 8:
+				return("Test Leader");
+			default:
+				return("Unknown Role");
+		}
+	}
+	
+	private String translateActivity(String activity) {
+		switch(activity) {
+		case "11":
+			return("SDP");
+		case "12":
+			return("SRS");
+		case "13":
+			return("SVVS");
+		case "14":
+			return("STLDD");
+		case "15":
+			return("SVVI");
+		case "16":
+			return("SDDD");
+		case "17":
+			return("SVVR");
+		case "18":
+			return("SSD");
+		case "19":
+			return("FINAL_REPORT");
+		case "21":
+			return("FUNTION_TEST");
+		case "22":
+			return("SYSTEM_TEST");
+		case "23":
+			return("REGRESSION_TEST");
+		case "30":
+			return("MEETING");
+		case "41":
+			return("LECTURE");
+		case "42":
+			return("EXERCISE");
+		case "43":
+			return("COMPUTER_EXERCISE");
+		case "44":
+			return("HOME_STUDIES");
+		case "100":
+			return("OTHER");
+		case "A":
+			return("OTHER");
+		case "U":
+			return("DEVELOPMENT");
+		case "I":
+			return("INFORMAL_REVIEW");
+		case "F":
+			return("FORMAL_REVIEW");
+		case "O":
+			return("REWORK");
+		default:
+			return("Unknown Activity");
+		}
+	}
+	
+
+
+	private void testSetSessionData(HttpSession session) {
+		session.setAttribute("user_Permissions", 4);
+		session.setAttribute("project_group_id", 1);
+		session.setAttribute("username","andsve");
+	}
 }
