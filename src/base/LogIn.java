@@ -13,6 +13,9 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import database.Database;
+import database.User;
+
 /**
  * Servlet implementation class LogIn
  * 
@@ -29,12 +32,14 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/LogIn")
 public class LogIn extends servletBase {
 	private static final long serialVersionUID = 1L;
+	private Database db;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
     public LogIn() {
         super();
+        db = new Database();
         // TODO Auto-generated constructor stub
     }
     
@@ -53,36 +58,37 @@ public class LogIn extends servletBase {
     }
     
     
-    /**
-     * Checks with the database if the user should be accepted
-     * @param name The name of the user
-     * @param password The password of the user
-     * @return true if the user should be accepted
-     */
-    private boolean checkUser(String name, String password) {
-		
-		boolean userOk = false;
-		boolean userChecked = false;
-		
-		try{
-			Statement stmt = conn.createStatement();		    
-		    ResultSet rs = stmt.executeQuery("select * from users"); 
-		    while (rs.next( ) && !userChecked) {
-		    	String nameSaved = rs.getString("username"); 
-		    	String passwordSaved = rs.getString("password");
-		    	if (name.equals(nameSaved)) {
-		    		userChecked = true;
-		    		userOk = password.equals(passwordSaved);
-		    	}
-		    }
-		    stmt.close();
-		} catch (SQLException ex) {
-		    System.out.println("SQLException: " + ex.getMessage());
-		    System.out.println("SQLState: " + ex.getSQLState());
-		    System.out.println("VendorError: " + ex.getErrorCode());
-		}
-		return userOk;
-	}
+//    /**
+//     * Checks with the database if the user should be accepted
+//     * @param name The name of the user
+//     * @param password The password of the user
+//     * @return true if the user should be accepted
+//     */
+//    private boolean checkUser(String name, String password) {
+//		
+//		boolean userOk = false;
+//		boolean userChecked = false;
+//		
+//		try{
+//			
+//			Statement stmt = conn.createStatement();		    
+//		    ResultSet rs = stmt.executeQuery("select * from users"); 
+//		    while (rs.next( ) && !userChecked) {
+//		    	String nameSaved = rs.getString("username"); 
+//		    	String passwordSaved = rs.getString("password");
+//		    	if (name.equals(nameSaved)) {
+//		    		userChecked = true;
+//		    		userOk = password.equals(passwordSaved);
+//		    	}
+//		    }
+//		    stmt.close();
+//		} catch (SQLException ex) {
+//		    System.out.println("SQLException: " + ex.getMessage());
+//		    System.out.println("SQLState: " + ex.getSQLState());
+//		    System.out.println("VendorError: " + ex.getErrorCode());
+//		}
+//		return userOk;
+//	}
 
     
     
@@ -116,18 +122,31 @@ public class LogIn extends servletBase {
 				
         name = request.getParameter("user"); // get the string that the user entered in the form
         password = request.getParameter("password"); // get the entered password
-        if (name != null && password != null) {
-        	if (checkUser(name, password)) {
+//        if (name != null && password != null) {
+        
+        User u = db.loginUser(name, password);
+        if(u != null) {
+        	if(u.isActive()) {
+//        	if (checkUser(name, password)) {
         		state = LOGIN_TRUE;
        			session.setAttribute("state", state);  // save the state in the session
        			session.setAttribute("name", name);  // save the name in the session
+       			session.setAttribute("id", u.getId());
+       			session.setAttribute("role", u.getRole());
+       			session.setAttribute("project_group_id", u.getProjectGroup());
+       			session.setAttribute("active", u.isActive());
        			response.sendRedirect("functionality.html");
-       		}
-       		else {
-       			out.println("<p>That was not a valid user name / password. </p>");
-       			out.println(loginRequestForm());
-       		}
+        	} else {
+        		out.println("<p>User is not active</p>");
+        		out.println(loginRequestForm());
+        	}
+//       		}
+//       		else {
+//       			out.println("<p>That was not a valid user name / password. </p>");
+//       			out.println(loginRequestForm());
+//       		}
        	}else{ // name was null, probably because no form has been filled out yet. Display form.
+//       		out.println("<p>That was not a valid user name / password. </p>");
        		out.println(loginRequestForm());
        	}
 		
