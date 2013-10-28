@@ -3,10 +3,10 @@ package base;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Random;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,7 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import java.util.Random;
+import database.Database;
+import database.User;
 
 /**
  * Servlet implementation class Administration. 
@@ -29,12 +30,14 @@ import java.util.Random;
 public class Administration extends servletBase {
 	private static final long serialVersionUID = 1L;
 	private static final int PASSWORD_LENGTH = 6;
+	private Database db;
        
     /**
      * @see servletBase#servletBase()
      */
     public Administration() {
         super();
+        db = new Database();
         // TODO Auto-generated constructor stub
     }
     
@@ -73,17 +76,17 @@ public class Administration extends servletBase {
     	return ok;
     }
     
-    /**
-     * Creates a random password.
-     * @return a randomly chosen password
-     */
-    private String createPassword() {
-    	String result = "";
-    	Random r = new Random();
-    	for (int i=0; i<PASSWORD_LENGTH; i++)
-    		result += (char)(r.nextInt(26)+97); // 122-97+1=26
-    	return result;
-    }
+//    /**
+//     * Creates a random password.
+//     * @return a randomly chosen password
+//     */
+//    private String createPassword() {
+//    	String result = "";
+//    	Random r = new Random();
+//    	for (int i=0; i<PASSWORD_LENGTH; i++)
+//    		result += (char)(r.nextInt(26)+97); // 122-97+1=26
+//    	return result;
+//    }
     
     
     /**
@@ -93,22 +96,22 @@ public class Administration extends servletBase {
      * because the name already exist in the database. 
      */
     private boolean addUser(String name) {
-    	boolean resultOk = true;
-    	try{
-			Statement stmt = conn.createStatement();
-			String statement = "insert into users (name, password) values('" + name + "', '" + 
-			                     createPassword() + "')";
-			System.out.println(statement);
-		    stmt.executeUpdate(statement); 
-		    stmt.close();
-			
-		} catch (SQLException ex) {
-		    resultOk = false;
-		    // System.out.println("SQLException: " + ex.getMessage());
-		    System.out.println("SQLState: " + ex.getSQLState());
-		    System.out.println("VendorError: " + ex.getErrorCode());
-		}
-    	return resultOk;
+//    	boolean resultOk = true;
+//    	try{
+//			Statement stmt = conn.createStatement();
+//			String statement = "insert into users (name, password) values('" + name + "', '" + 
+//			                     createPassword() + "')";
+//			System.out.println(statement);
+//		    stmt.executeUpdate(statement); 
+//		    stmt.close();
+//			
+//		} catch (SQLException ex) {
+//		    resultOk = false;
+//		    // System.out.println("SQLException: " + ex.getMessage());
+//		    System.out.println("SQLState: " + ex.getSQLState());
+//		    System.out.println("VendorError: " + ex.getErrorCode());
+//		}
+    	return db.addUser(new User(name));
     }
     
     /**
@@ -119,7 +122,7 @@ public class Administration extends servletBase {
     private void deleteUser(String name) {
     	try{
 			Statement stmt = conn.createStatement();
-			String statement = "delete from users where name='" + name + "'"; 
+			String statement = "delete from users where username='" + name + "'"; 
 			System.out.println(statement);
 		    stmt.executeUpdate(statement); 
 		    stmt.close();
@@ -180,34 +183,55 @@ public class Administration extends servletBase {
 						out.println("<p>Error: URL wrong</p>");
 				}
 				
-				try {
-					Statement stmt = conn.createStatement();		    
-				    ResultSet rs = stmt.executeQuery("select * from users order by name asc");
-				    out.println("<p>Registered users:</p>");
-				    out.println("<table border=" + formElement("1") + ">");
-				    out.println("<tr><td>NAME</td><td>PASSWORD</td><td></td></tr>");
-				    while (rs.next( )) {
-				    	String name = rs.getString("name");
-				    	String pw = rs.getString("password");
-				    	String deleteURL = "Administration?deletename="+name;
-				    	String deleteCode = "<a href=" + formElement(deleteURL) +
-				    			            " onclick="+formElement("return confirm('Are you sure you want to delete "+name+"?')") + 
-				    			            "> delete </a>";
-				    	if (name.equals("admin")) 
-				    		deleteCode = "";
-				    	out.println("<tr>");
-				    	out.println("<td>" + name + "</td>");
-				    	out.println("<td>" + pw + "</td>");
-				    	out.println("<td>" + deleteCode + "</td>");
-				    	out.println("</tr>");
-				    }
-				    out.println("</table>");
-				    stmt.close();
-				} catch (SQLException ex) {
-				    System.out.println("SQLException: " + ex.getMessage());
-				    System.out.println("SQLState: " + ex.getSQLState());
-				    System.out.println("VendorError: " + ex.getErrorCode());
-				}
+				ArrayList<User> list = db.getUsers();
+				out.println("<p>Registered users:</p>");
+			    out.println("<table border=" + formElement("1") + ">");
+			    out.println("<tr><td>NAME</td><td>PASSWORD</td><td></td></tr>");
+			    for(int i = 0; i < list.size(); i++) {
+			    	User u = list.get(i);
+			    	String deleteURL = "Administration?deletename="+u.getUsername();
+			    	String deleteCode = "<a href=" + formElement(deleteURL) +
+			    			            " onclick="+formElement("return confirm('Are you sure you want to delete "+u.getUsername()+"?')") + 
+			    			            "> delete </a>";
+			    	if (u.getUsername().equals("admin")) {
+			    		deleteCode = "";
+			    	}
+			    	out.println("<tr>");
+			    	out.println("<td>" + u.getUsername() + "</td>");
+			    	out.println("<td>" + u.getPassword() + "</td>");
+			    	out.println("<td>" + deleteCode + "</td>");
+			    	out.println("</tr>");
+			    	
+			    }
+				
+//				try {
+//					Statement stmt = conn.createStatement();		    
+//				    ResultSet rs = stmt.executeQuery("select * from users order by name asc");
+//				    out.println("<p>Registered users:</p>");
+//				    out.println("<table border=" + formElement("1") + ">");
+//				    out.println("<tr><td>NAME</td><td>PASSWORD</td><td></td></tr>");
+//				    while (rs.next( )) {
+//				    	String name = rs.getString("name");
+//				    	String pw = rs.getString("password");
+//				    	String deleteURL = "Administration?deletename="+name;
+//				    	String deleteCode = "<a href=" + formElement(deleteURL) +
+//				    			            " onclick="+formElement("return confirm('Are you sure you want to delete "+name+"?')") + 
+//				    			            "> delete </a>";
+//				    	if (name.equals("admin")) 
+//				    		deleteCode = "";
+//				    	out.println("<tr>");
+//				    	out.println("<td>" + name + "</td>");
+//				    	out.println("<td>" + pw + "</td>");
+//				    	out.println("<td>" + deleteCode + "</td>");
+//				    	out.println("</tr>");
+//				    }
+//				    out.println("</table>");
+//				    stmt.close();
+//				} catch (SQLException ex) {
+//				    System.out.println("SQLException: " + ex.getMessage());
+//				    System.out.println("SQLState: " + ex.getSQLState());
+//				    System.out.println("VendorError: " + ex.getErrorCode());
+//				}
 				out.println(addUserForm());
 				
 				out.println("<p><a href =" + formElement("functionality.html") + "> Functionality selection page </p>");
