@@ -4,12 +4,14 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import com.mysql.jdbc.jdbc2.optional.SuspendableXAConnection;
 
 import database.*;
 
+@WebServlet("/HandleProjectLeader")
 public class HandleProjectLeader extends HttpServlet {
 
 	/**
@@ -32,7 +34,7 @@ public class HandleProjectLeader extends HttpServlet {
 				group.showProjectGroup(list);
 			}
 		} else {
-			out.print(getPageIntro() + "$(alert(\"Incorrect input.\"))"
+			out.print(getPageIntro() + "<script>$(alert(\"Incorrect input.\"))</script"
 					+ leaderForm() + getPageOutro());
 		}
 	}
@@ -56,7 +58,7 @@ public class HandleProjectLeader extends HttpServlet {
 		html = "<p> <form name=" + formElement("input");
 		html += " method=" + formElement("get");
 		html += "<p> Which group : <input type=" + formElement("text")
-				+ " name=" + formElement("addname") + '>';
+				+ " name=" + formElement("name") + '>';
 		html += "<p> Which user : <input type=" + formElement("text")
 				+ " user=" + formElement("user") + '>';
 		html += "<input type=" + formElement("submit") + "value="

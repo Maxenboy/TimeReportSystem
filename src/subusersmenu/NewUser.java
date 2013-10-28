@@ -3,10 +3,12 @@ package subusersmenu;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import database.Database;
 
+@WebServlet("/NewUser")
 public class NewUser extends HttpServlet{
 	/**
 	 * 

@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import database.Database;
 import database.User;
 
+@WebServlet("/HandleProjectRoles")
 public class HandleProjectRoles extends HttpServlet {
 
 	/**
@@ -30,10 +32,10 @@ public class HandleProjectRoles extends HttpServlet {
 					+ showMembers(db.getUsers(Integer.parseInt(request
 							.getParameter("groupname")))));
 		} else if (request.getParameter("session").equals("failed")) {
-			out.print(getPageIntro() + "$(alert(\"Incorrect group id\"))"
+			out.print(getPageIntro() + "<script>$(alert(\"Incorrect group id\"))</script>"
 					+ groupForm());
 		} else {
-			out.print(getPageIntro() + "$(alert(\"Error\"))" + groupForm());
+			out.print(getPageIntro() + "<script>$(alert(\"Error\"))</script>" + groupForm());
 		}
 	}
 
@@ -47,7 +49,7 @@ public class HandleProjectRoles extends HttpServlet {
 			members.changerole(db.getUser(Integer.parseInt(id)),
 					Integer.parseInt(role));
 		} else {
-			String groupName = request.getParameter("name");
+			String groupName = request.getParameter("groupname");
 			if (db.getProjectGroup(Integer.parseInt(groupName)) != null) {
 				response.sendRedirect(request.getRequestURI()
 						+ "session=found&groupname=" + groupName);
@@ -113,7 +115,7 @@ public class HandleProjectRoles extends HttpServlet {
 		String html;
 		html = "<p> <form name=" + formElement("input");
 		html += " method=" + formElement("POST");
-		html += "<p> Username : <input type=" + formElement("text") + " name="
+		html += "<p> Groupname : <input type=" + formElement("text") + " name="
 				+ formElement("groupname") + '>';
 		html += "<input type=" + formElement("submit") + '>';
 		html += "</form>";

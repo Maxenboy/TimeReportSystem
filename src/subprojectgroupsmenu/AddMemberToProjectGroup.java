@@ -3,10 +3,12 @@ package subprojectgroupsmenu;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import database.Database;
 
+@WebServlet("/AddMemberToProjectGroup")
 public class AddMemberToProjectGroup extends HttpServlet {
 
 	/**
@@ -29,7 +31,7 @@ public class AddMemberToProjectGroup extends HttpServlet {
 							.parseInt(request.getParameter("groupid")))));
 		}
 		else if (request.getParameter("sucess").equals("false")) {
-			out.print(getPageIntro() + "$(alert(\"Incorrect input.\"))"
+			out.print(getPageIntro() + "<script>$(alert(\"Incorrect input.\"))</script>"
 					+ groups.addUserForm());
 		}
 	}

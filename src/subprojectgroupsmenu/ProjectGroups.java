@@ -4,6 +4,8 @@ import database.*;
 
 import java.util.*;
 
+import javax.servlet.annotation.WebServlet;
+
 public class ProjectGroups {
 	private String name, startweek, endweek, estimatedHours;
 	private Database db;
@@ -38,7 +40,7 @@ public class ProjectGroups {
 	 */
 	public String addUserForm() {
 		String html;
-		html = "<p> <form name=" + formElement("input") + "id=" + formElement("addusertogroup") + '>';
+		html = "<p> <form name=" + formElement("input") + "id=" + formElement("addusertogroup");
 		html += " method=" + formElement("get");
 		html += "<p> Add user name: <input type=" + formElement("text")
 				+ " name=" + formElement("addname") + '>';

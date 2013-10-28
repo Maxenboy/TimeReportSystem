@@ -3,6 +3,7 @@ package subusersmenu;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import database.Database;
 
+@WebServlet("/ActiveStatusForUser")
 public class ActiveStatusForUser extends HttpServlet {
 	/**
 	 * 
@@ -41,7 +43,7 @@ public class ActiveStatusForUser extends HttpServlet {
 				break;
 			case "false":
 				out.print(getPageIntro()
-						+ "$(alert(\"incorrect syntax on the user name\"))" + s);
+						+ "<script>$(alert(\"incorrect syntax on the user name\"))</script>" + s);
 			}
 		}
 	}

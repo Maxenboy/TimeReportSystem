@@ -3,11 +3,13 @@ package subprojectgroupsmenu;
 import java.io.*;
 import java.util.*;
 
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import database.Database;
 import database.ProjectGroup;
 
+@WebServlet("/ShowProjectGroups")
 public class ShowProjectGroups extends HttpServlet {
 	
 	/**

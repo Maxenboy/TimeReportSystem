@@ -3,10 +3,12 @@ package subusersmenu;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import database.*;
 
+@WebServlet("/HandleAdminRights")
 public class HandleAdminRights extends HttpServlet {
 
 	/**
@@ -25,14 +27,14 @@ public class HandleAdminRights extends HttpServlet {
 		} else if (request.getParameter("session").equals("Success")) {
 			u.makeAdministrator(request.getParameter("userName"));
 			out.print(getPageIntro() + u.showUsers(db.getUsers())
-					+ "$(alert(\"Användaren är nu administratör. Ändringar sparade.\"))");
+					+ "<script>$(alert(\"Användaren är nu administratör. Ändringar sparade.\"))</script>");
 		} else if (request.getParameter("session").equals("SuccessRemove")) {
 			u.unmakeAdministrator(request.getParameter("userName"));
 			out.print(getPageIntro() + u.showUsers(db.getUsers())
-					+ "$(alert(\"Användare är ej längre administratör. Ändringar sparade.\"))");
+					+ "<script>$(alert(\"Användare är ej längre administratör. Ändringar sparade.\"))</script>");
 		} else {
 			out.print(getPageIntro() + u.showUsers(db.getUsers())
-					+ "$(alert(\"Inte möjligt! Användare är med i en projektgrupp! \"))");
+					+ "<script>$(alert(\"Inte möjligt! Användare är med i en projektgrupp! \"))</script>");
 		}
 	}
 

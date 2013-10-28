@@ -3,10 +3,12 @@ package subprojectgroupsmenu;
 import java.io.*;
 import java.util.*;
 
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import database.*;
 
+@WebServlet("/RemoveMemberFromProjectGroup")
 public class RemoveMemberFromProjectGroup extends HttpServlet {
 
 	/**
@@ -28,7 +30,7 @@ public class RemoveMemberFromProjectGroup extends HttpServlet {
 							.parseInt(request.getParameter("groupid")))));
 		} else {
 			out.print(getPageIntro()
-					+ "$(alert(\"Couldn't add project group.\"))"
+					+ "<script>$(alert(\"Couldn't add project group.\"))</script>"
 					+ removeUserForm());
 		}
 
@@ -48,7 +50,7 @@ public class RemoveMemberFromProjectGroup extends HttpServlet {
 	private String removeUserForm() {
 		String html;
 		html = "<p> <form name=" + formElement("input") + "id="
-				+ formElement("removeuserfromgroup") + '>';
+				+ formElement("removeuserfromgroup");
 		html += " method=" + formElement("get");
 		html += "<p> User name: <input type=" + formElement("text") + " name="
 				+ formElement("name") + '>';

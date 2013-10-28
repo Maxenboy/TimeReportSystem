@@ -2,6 +2,7 @@ package subProjectMembersMenu;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import database.Database;
 
+@WebServlet("/ShowProjectMembers")
 public class ShowProjectMembers  extends HttpServlet{
 /**
 	 * 
@@ -29,7 +31,7 @@ private Database db;
 		if(s == null)
 			out.print("<p> Nothing to show </p>");
 		else if(request.getParameter("success").equals(false)){
-			out.print("<p> THe group specefied does not exist </p>");
+			out.print("<p> THe group specified does not exist </p>");
 			}else{
 				pm=new ProjectMembers(request.getParameter("groupname"));
 				out.print(pm.showMembers(db.getUsers(Integer.valueOf(request.getParameter("groupname")))));

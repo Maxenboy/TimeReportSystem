@@ -37,7 +37,7 @@ public class ActiveStatusForProjectGroup extends HttpServlet {
 			out.print(getPageIntro() + "Sucess! </body></html>");
 		}
 		else if(request.getParameter("sucess").equals("false")) {
-			out.print(getPageIntro() + "$(alert(\"Incorrect input.\"))" + groupForm() + getPageOutro());
+			out.print(getPageIntro() + "<script>$(alert(\"Incorrect input.\"))</script>" + groupForm() + getPageOutro());
 		}
 	}
 
@@ -47,7 +47,7 @@ public class ActiveStatusForProjectGroup extends HttpServlet {
 		String name = request.getParameter("name");
 		String status = request.getParameter("status");
 		if (checkGroup(name, status)) {
-			response.sendRedirect(request.getRequestURI() + "success=true");
+			response.sendRedirect(request.getRequestURI() + "sucess=true");
 		} else {
 			response.sendRedirect(request.getRequestURI() + "sucess=false");
 		}
@@ -98,7 +98,7 @@ public class ActiveStatusForProjectGroup extends HttpServlet {
 		html = "<p> <form name=" + formElement("input");
 		html += " method=" + formElement("get");
 		html += "<p> Which group : <input type=" + formElement("text")
-				+ " name=" + formElement("addname") + '>';
+				+ " name=" + formElement("name") + '>';
 		html += "<p> Status : <input type=" + formElement("text") + " status="
 				+ formElement("status") + '>';
 		html += "<input type=" + formElement("submit") + "value="

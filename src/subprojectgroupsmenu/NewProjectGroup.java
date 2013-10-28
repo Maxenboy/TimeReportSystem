@@ -4,10 +4,12 @@ import java.io.*;
 import java.util.*;
 import java.util.regex.Pattern;
 
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import database.*;
 
+@WebServlet("/NewProjectGroup")
 public class NewProjectGroup extends HttpServlet{
 
 	/**
@@ -27,10 +29,10 @@ public class NewProjectGroup extends HttpServlet{
 			out.print(getPageIntro() + showProjectGroups());
 		} else {
 			if(request.getParameter("inputname") == null) {
-				out.print(getPageIntro() + "$(alert(\"Information entered incorrectly.\"))"
+				out.print(getPageIntro() + "<script>$(alert(\"Information entered incorrectly.\"))</script>"
 						+ addProjectGroupForm());
 			} else {
-			out.print(getPageIntro() + "$(alert(\"Couldn't add project group.\"))"
+			out.print(getPageIntro() + "<script>$(alert(\"Couldn't add project group.\"))</script>"
 					+ addProjectGroupForm());
 			}
 		}
@@ -75,7 +77,7 @@ public class NewProjectGroup extends HttpServlet{
 	private String addProjectGroupForm() {
 		String html;
 		html = "<p> <form name=" + formElement("input") + "id="
-				+ formElement("addprojectgroup") + '>';
+				+ formElement("addprojectgroup");
 		html += " method=" + formElement("get");
 		html += "<p> Project name: <input type=" + formElement("text")
 				+ " projectname=" + formElement("addprojectname") + '>';
