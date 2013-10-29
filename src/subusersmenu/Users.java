@@ -77,8 +77,8 @@ public class Users {
 		for (User u : users) {
 			sb.append("<tr>");
 			sb.append("<td>" + u.getUsername() + "</td>");
-			sb.append("<td>" + u.getProjectGroup() + "</td>");
-			sb.append("<td>" + u.getRole() + "</td>");
+			sb.append("<td>" + db.getProjectGroup(u.getProjectGroup()).getProjectName() + "</td>");
+			sb.append("<td>" + translateRole(u.getRole()) + "</td>");
 			sb.append("<td>" + createRadio(u.getId()) + "</td>");
 			sb.append("</tr>");
 		}
@@ -88,6 +88,27 @@ public class Users {
 		sb.append("</form>");
 	
 		return sb.toString();
+	}
+	
+	private String translateRole(int role) {
+		switch(role) {
+			case 1:
+				return("Administrator");
+			case 2:
+				return("Project Leader");
+			case 4: 
+				return("System Group");
+			case 5:
+				return("System Group Leader");
+			case 6:
+				return("Development Group");
+			case 7:
+				return("Test Group");
+			case 8:
+				return("Test Leader");
+			default:
+				return("Unknown Role");
+		}
 	}
 
 	/**
