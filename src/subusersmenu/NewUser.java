@@ -35,8 +35,8 @@ public class NewUser extends UsersMenu {
 		PrintWriter out = response.getWriter();
 		out.print(getPageIntro());
 		// ÄNDRA TILL RÄTT ROLL I generateMainMenu (se servletBase.java för roller) 
-				out.print(generateMainMenu(1));
-				out.print(generateSubMenu(1));
+				out.print(generateMainMenu((int)session.getAttribute("user_permissions")));
+				out.print(generateSubMenu((int)session.getAttribute("user_permissions")));
 		String s = users.userForm();
 		if (s == null) {
 			out.print("<p> Nothing to show </p>");

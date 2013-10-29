@@ -148,6 +148,7 @@ public class LogIn extends servletBase {
         	} else {
         		out.println("<p>User is not active</p>");
         		out.println(loginRequestForm());
+        		
         	}
 //       		}
 //       		else {

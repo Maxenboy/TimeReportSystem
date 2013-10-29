@@ -30,8 +30,8 @@ public class HandleAdminRights extends UsersMenu {
 		out.print(getPageIntro());
 
 		// ÄNDRA TILL RÄTT ROLL I generateMainMenu (se servletBase.java för roller) 
-		out.print(generateMainMenu(1));
-		out.print(generateSubMenu(1));
+		out.print(generateMainMenu((int)session.getAttribute("user_permissions")));
+		out.print(generateSubMenu((int)session.getAttribute("user_permissions")));
 		
 		if (request.getParameter("session") == null) {
 			out.print(u.showUsers(db.getUsers()));
