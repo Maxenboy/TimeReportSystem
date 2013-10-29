@@ -11,7 +11,7 @@ import database.*;
 import subProjectMembersMenu.ProjectMembers;
 
 @WebServlet("/ActiveStatusForProjectGroup")
-public class ActiveStatusForProjectGroup extends HttpServlet {
+public class ActiveStatusForProjectGroup extends gui.ProjectGroupsMenu {
 
 	/**
 	 * 
@@ -30,15 +30,21 @@ public class ActiveStatusForProjectGroup extends HttpServlet {
 		db = new Database();
 		HttpSession session = request.getSession(true);
 		PrintWriter out = response.getWriter();
+		out.print(getPageIntro());
+		out.print(generateMainMenu((Integer) session
+				.getAttribute("user_permissions")));
+		out.print(generateSubMenu((Integer) session
+				.getAttribute("user_permissions")));
 		if(request.getParameter("sucess") == null) {
-			out.print(getPageIntro() + groupForm() + getPageOutro());
+			out.print(groupForm());
 		}
 		else if (request.getParameter("sucess").equals("true")) {
-			out.print(getPageIntro() + "Sucess! </body></html>");
+			out.print("Sucess!");
 		}
 		else if(request.getParameter("sucess").equals("false")) {
-			out.print(getPageIntro() + "<script>$(alert(\"Incorrect input.\"))</script>" + groupForm() + getPageOutro());
+			out.print("<script>$(alert(\"Incorrect input.\"))</script>" + groupForm());
 		}
+		out.print(getPageOutro());
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -72,26 +78,10 @@ public class ActiveStatusForProjectGroup extends HttpServlet {
 		return false;
 	}
 
-	private String formElement(String par) {
-		return '"' + par + '"';
-	}
-
-	private String getPageIntro() {
-		String intro = "<html>"
-				+ "<head><title> The Base Block System </title>"
-				+ getPageJs() +"</head>"
-				+ "<body>";
-		return intro;
-	}
-
 	private String getPageJs() {
 		return "<script src=\"//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js\"></script>";
 	}
 
-	private String getPageOutro() {
-		String outro = "</body></html>";
-		return outro;
-	}
 
 	private String groupForm() {
 		String html;

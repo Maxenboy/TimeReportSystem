@@ -11,7 +11,7 @@ import database.Database;
 import database.User;
 
 @WebServlet("/HandleProjectRoles")
-public class HandleProjectRoles extends HttpServlet {
+public class HandleProjectRoles extends gui.UsersMenu{
 
 	/**
 	 * 
@@ -24,19 +24,22 @@ public class HandleProjectRoles extends HttpServlet {
 			throws IOException {
 		HttpSession session = request.getSession();
 		PrintWriter out = response.getWriter();
+		out.print(getPageIntro());
+		out.print(generateMainMenu((Integer) session.getAttribute("user_permissions")));
+		out.print(generateSubMenu((Integer) session.getAttribute("user_permissions")));
 		if (request.getParameter("session") == null) {
-			out.print(getPageIntro() + groupForm());
+			out.print(groupForm());
 		} else if (request.getParameter("session").equals("found")) {
 			members = new ProjectMembers(request.getParameter("name"));
-			out.print(getPageIntro()
-					+ showMembers(db.getUsers(Integer.parseInt(request
+			out.print(showMembers(db.getUsers(Integer.parseInt(request
 							.getParameter("groupname")))));
 		} else if (request.getParameter("session").equals("failed")) {
-			out.print(getPageIntro() + "<script>$(alert(\"Incorrect group id\"))</script>"
+			out.print("<script>$(alert(\"Incorrect group id\"))</script>"
 					+ groupForm());
 		} else {
-			out.print(getPageIntro() + "<script>$(alert(\"Error\"))</script>" + groupForm());
+			out.print("<script>$(alert(\"Error\"))</script>" + groupForm());
 		}
+		out.print(getPageOutro());
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -82,13 +85,12 @@ public class HandleProjectRoles extends HttpServlet {
 		sb.append("<INPUT TYPE=" + formElement("submit") + "VALUE="
 				+ formElement("Spara") + ">");
 		sb.append("</form>");
-		sb.append("</body></html>");
 		return sb.toString();
 	}
 
 	private String buildShowUsersInGroupTable() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("<table border=" + formElement("1") + ">");
+		sb.append("<table class=\"table table-bordered table-hover\"" + ">");
 		sb.append("<tr>");
 		sb.append("<th>Username</th>");
 		sb.append("<th>Project group</th>");
@@ -104,13 +106,6 @@ public class HandleProjectRoles extends HttpServlet {
 				+ formElement(Integer.toString(id)) + ">";
 	}
 
-	private String getPageIntro() {
-		String intro = "<html>"
-				+ "<head><title> The Base Block System </title>" + getPageJs()
-				+ "</head>" + "<body>";
-		return intro;
-	}
-
 	private String groupForm() {
 		String html;
 		html = "<p> <form name=" + formElement("input");
@@ -120,10 +115,6 @@ public class HandleProjectRoles extends HttpServlet {
 		html += "<input type=" + formElement("submit") + '>';
 		html += "</form>";
 		return html;
-	}
-
-	private String formElement(String par) {
-		return '"' + par + '"';
 	}
 
 	private String getPageJs() {

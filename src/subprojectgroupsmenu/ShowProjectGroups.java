@@ -25,8 +25,11 @@ public class ShowProjectGroups extends ProjectGroupsMenu {
 		HttpSession session = request.getSession();
 		PrintWriter out = response.getWriter();
 		
-		// ÄNDRA TILL RÄTT ROLL I generateMainMenu (se servletBase.java för roller) 
-		out.print(getPageIntro() + generateMainMenu(1) + generateSubMenu(1) + showProjectGroups() + getPageOutro());
+		// ��NDRA TILL R��TT ROLL I generateMainMenu (se servletBase.java f��r roller) 
+		out.print(getPageIntro());
+		out.print(generateMainMenu((Integer) session.getAttribute("user_permissions")));
+		out.print(generateSubMenu((Integer) session.getAttribute("user_permissions")));
+		out.print(showProjectGroups() + getPageOutro());
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) {

@@ -30,9 +30,9 @@ private Database db;
 		PrintWriter out = response.getWriter();
 		out.print(getPageIntro());
 
-		// ÄNDRA TILL RÄTT ROLL I generateMainMenu (se servletBase.java för roller) 
-		out.print(generateMainMenu(1));
-		out.print(generateSubMenu(1));
+		// ��NDRA TILL R��TT ROLL I generateMainMenu (se servletBase.java f��r roller) 
+		out.print(generateMainMenu((Integer) session.getAttribute("user_permissions")));
+		out.print(generateSubMenu((Integer) session.getAttribute("user_permissions")));
 		
 		String s = groupForm();
 		if(s == null)

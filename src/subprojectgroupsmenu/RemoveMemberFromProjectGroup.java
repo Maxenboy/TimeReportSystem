@@ -9,7 +9,7 @@ import javax.servlet.http.*;
 import database.*;
 
 @WebServlet("/RemoveMemberFromProjectGroup")
-public class RemoveMemberFromProjectGroup extends HttpServlet {
+public class RemoveMemberFromProjectGroup extends gui.ProjectGroupsMenu {
 
 	/**
 	 * 
@@ -22,28 +22,33 @@ public class RemoveMemberFromProjectGroup extends HttpServlet {
 			throws IOException {
 		HttpSession session = request.getSession();
 		PrintWriter out = response.getWriter();
+		out.print(getPageIntro());
+		out.print(generateMainMenu((Integer) session.getAttribute("user_permissions")));
+		out.print(generateSubMenu((Integer) session.getAttribute("user_permissions")));
 		if (request.getParameter("session") == null) {
-			out.print(getPageIntro() + removeUserForm());
+			out.print(removeUserForm());
 		} else if (request.getParameter("session").equals("sucess")) {
-			out.print(getPageIntro()
-					+ group.showProjectGroup(db.getUsers(Integer
-							.parseInt(request.getParameter("groupid")))));
+			out.print(group.showProjectGroup(db.getUsers(Integer
+					.parseInt(request.getParameter("groupid")))));
 		} else {
-			out.print(getPageIntro()
-					+ "<script>$(alert(\"Couldn't add project group.\"))</script>"
+			out.print("<script>$(alert(\"Couldn't add project group.\"))</script>"
 					+ removeUserForm());
 		}
+		out.print(getPageOutro());
 
 	}
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
 		HttpSession session = request.getSession();
 		String userName = request.getParameter("name");
 		String groupId = request.getParameter("groupid");
-		if(group.removeUserFromProjectGroup(userName, Integer.parseInt(groupId))) {
+		if (group.removeUserFromProjectGroup(userName,
+				Integer.parseInt(groupId))) {
 			response.sendRedirect(request.getRequestURI() + "session=sucess");
 		} else {
-			response.sendRedirect(request.getRequestURI() + "session=false&groupid=" +groupId);
+			response.sendRedirect(request.getRequestURI()
+					+ "session=false&groupid=" + groupId);
 		}
 	}
 
@@ -58,19 +63,8 @@ public class RemoveMemberFromProjectGroup extends HttpServlet {
 				+ " groupid=" + formElement("groupid") + '>';
 		html += "<input type=" + formElement("submit") + "value="
 				+ formElement("Remove user") + '>';
-		html += "</form>" + "</body></html>";
+		html += "</form>";
 		return html;
-	}
-
-	private String formElement(String par) {
-		return '"' + par + '"';
-	}
-
-	private String getPageIntro() {
-		String intro = "<html>"
-				+ "<head><title> The Base Block System </title>" + getPageJs()
-				+ "</head>" + "<body>";
-		return intro;
 	}
 
 	private String getPageJs() {

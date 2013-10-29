@@ -9,7 +9,7 @@ import javax.servlet.http.*;
 import database.Database;
 
 @WebServlet("/AddMemberToProjectGroup")
-public class AddMemberToProjectGroup extends HttpServlet {
+public class AddMemberToProjectGroup extends gui.ProjectGroupsMenu {
 
 	/**
 	 * 
@@ -22,18 +22,23 @@ public class AddMemberToProjectGroup extends HttpServlet {
 		HttpSession session = request.getSession(true);
 		Database db = new Database();
 		PrintWriter out = response.getWriter();
+		out.print(getPageIntro());
+		out.print(generateMainMenu((Integer) session
+				.getAttribute("user_permissions")));
+		out.print(generateSubMenu((Integer) session
+				.getAttribute("user_permissions")));
 		if(request.getParameter("sucess") == null) {
-			out.print(getPageIntro() + groups.addUserForm());
+			out.print(groups.addUserForm());
 		}
 		else if(request.getParameter("sucess").equals("true")) {
-			out.print(getPageIntro()
-					+ groups.showProjectGroup(db.getUsers(Integer
+			out.print(groups.showProjectGroup(db.getUsers(Integer
 							.parseInt(request.getParameter("groupid")))));
 		}
 		else if (request.getParameter("sucess").equals("false")) {
-			out.print(getPageIntro() + "<script>$(alert(\"Incorrect input.\"))</script>"
+			out.print("<script>$(alert(\"Incorrect input.\"))</script>"
 					+ groups.addUserForm());
 		}
+		out.print(getPageOutro());
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -49,13 +54,6 @@ public class AddMemberToProjectGroup extends HttpServlet {
 		} else {
 			response.sendRedirect(request.getRequestURI() + "sucess=false");
 		}
-	}
-
-	private String getPageIntro() {
-		String intro = "<html>"
-				+ "<head><title> Add member to project group </title>"
-				+ getPageJs() + "</head>" + "<body>";
-		return intro;
 	}
 
 	private String getPageJs() {

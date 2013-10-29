@@ -48,7 +48,7 @@ public class ProjectGroups {
 				+ " groupid=" + formElement("groupid") + '>';
 		html += "<input type=" + formElement("submit") + "value="
 				+ formElement("Add user") + '>';
-		html += "</form>"+ "</body></html>";
+		html += "</form>";
 		return html;
 	}
 
@@ -77,7 +77,6 @@ public class ProjectGroups {
 		sb.append("<INPUT TYPE=" + formElement("submit") + "VALUE="
 				+ formElement("Get Users") + ">");
 		sb.append("</form>");
-		sb.append("</body></html>");
 		return sb.toString();
 	}
 
@@ -144,7 +143,7 @@ public class ProjectGroups {
 
 	private String buildShowUsersInGroupTable() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("<table border=" + formElement("1") + ">");
+		sb.append("<table class=\"table table-bordered table-hover\"");
 		sb.append("<tr>");
 		sb.append("<th>Username</th>");
 		sb.append("<th>Project group</th>");

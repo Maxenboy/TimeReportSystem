@@ -12,7 +12,7 @@ import com.mysql.jdbc.jdbc2.optional.SuspendableXAConnection;
 import database.*;
 
 @WebServlet("/HandleProjectLeader")
-public class HandleProjectLeader extends HttpServlet {
+public class HandleProjectLeader extends gui.ProjectGroupsMenu {
 
 	/**
 	 * 
@@ -25,8 +25,11 @@ public class HandleProjectLeader extends HttpServlet {
 			throws IOException {
 		HttpSession session = request.getSession();
 		PrintWriter out = response.getWriter();
+		out.print(getPageIntro());
+		out.print(generateMainMenu((Integer) session.getAttribute("user_permissions")));
+		out.print(generateSubMenu((Integer) session.getAttribute("user_permissions")));
 		if (request.getParameter("session") == null) {
-			out.print(getPageIntro() + leaderForm() + getPageOutro());
+			out.print(leaderForm());
 		} else if (request.getParameter("session").equals("one")) {
 			ArrayList<User> list = db.getUsers(Integer.parseInt(request
 					.getParameter("groupid")));
@@ -34,9 +37,10 @@ public class HandleProjectLeader extends HttpServlet {
 				group.showProjectGroup(list);
 			}
 		} else {
-			out.print(getPageIntro() + "<script>$(alert(\"Incorrect input.\"))</script"
-					+ leaderForm() + getPageOutro());
+			out.print("<script>$(alert(\"Incorrect input.\"))</script"
+					+ leaderForm());
 		}
+		out.print(getPageOutro());
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -67,23 +71,8 @@ public class HandleProjectLeader extends HttpServlet {
 		return html;
 	}
 
-	private String formElement(String par) {
-		return '"' + par + '"';
-	}
-
-	private String getPageIntro() {
-		String intro = "<html>"
-				+ "<head><title> The Base Block System </title>" + getPageJs()
-				+ "</head>" + "<body>";
-		return intro;
-	}
-
 	private String getPageJs() {
 		return "<script src=\"//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js\"></script>";
 	}
 
-	private String getPageOutro() {
-		String outro = "</body></html>";
-		return outro;
-	}
 }

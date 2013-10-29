@@ -10,7 +10,7 @@ import javax.servlet.http.*;
 import database.*;
 
 @WebServlet("/NewProjectGroup")
-public class NewProjectGroup extends HttpServlet{
+public class NewProjectGroup extends gui.ProjectGroupsMenu {
 
 	/**
 	 * 
@@ -23,19 +23,24 @@ public class NewProjectGroup extends HttpServlet{
 			throws IOException {
 		HttpSession session = request.getSession();
 		PrintWriter out = response.getWriter();
+		out.print(generateMainMenu((Integer) session
+				.getAttribute("user_permissions")));
+		out.print(generateSubMenu((Integer) session
+				.getAttribute("user_permissions")));
 		if (request.getParameter("session") == null) {
-			out.print(getPageIntro() + addProjectGroupForm());
+			out.print(addProjectGroupForm());
 		} else if (request.getParameter("session").equals("sucess")) {
-			out.print(getPageIntro() + showProjectGroups());
+			out.print(showProjectGroups());
 		} else {
-			if(request.getParameter("inputname") == null) {
-				out.print(getPageIntro() + "<script>$(alert(\"Information entered incorrectly.\"))</script>"
+			if (request.getParameter("inputname") == null) {
+				out.print("<script>$(alert(\"Information entered incorrectly.\"))</script>"
 						+ addProjectGroupForm());
 			} else {
-			out.print(getPageIntro() + "<script>$(alert(\"Couldn't add project group.\"))</script>"
-					+ addProjectGroupForm());
+				out.print("<script>$(alert(\"Couldn't add project group.\"))</script>"
+						+ addProjectGroupForm());
 			}
 		}
+		out.print(getPageOutro());
 
 	}
 
@@ -55,7 +60,8 @@ public class NewProjectGroup extends HttpServlet{
 				response.sendRedirect(request.getRequestURI() + "session=false");
 			}
 		} else {
-			response.sendRedirect(request.getRequestURI() + "session=false&inputname=bad");
+			response.sendRedirect(request.getRequestURI()
+					+ "session=false&inputname=bad");
 		}
 	}
 
@@ -89,7 +95,7 @@ public class NewProjectGroup extends HttpServlet{
 				+ " estimatedhours=" + formElement("estimatedhours") + '>';
 		html += "<input type=" + formElement("submit") + "value="
 				+ formElement("Spara") + '>';
-		html += "</form>" + "</body></html>";
+		html += "</form>";
 		return html;
 	}
 
@@ -108,13 +114,12 @@ public class NewProjectGroup extends HttpServlet{
 		}
 		sb.append("</table>");
 		sb.append("</form>");
-		sb.append("</body></html>");
 		return sb.toString();
 	}
 
 	private String buildProjectGroupsTable() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("<table border=" + formElement("1") + ">");
+		sb.append("<table class=\"table table-bordered table-hover\"" + ">");
 		sb.append("<tr>");
 		sb.append("<th>Project Group</th>");
 		sb.append("<th>Start Week</th>");
@@ -122,17 +127,6 @@ public class NewProjectGroup extends HttpServlet{
 		sb.append("<th>Estimated hours</th>");
 		sb.append("</tr>");
 		return sb.toString();
-	}
-
-	private String formElement(String par) {
-		return '"' + par + '"';
-	}
-
-	private String getPageIntro() {
-		String intro = "<html>"
-				+ "<head><title> The Base Block System </title>" + getPageJs()
-				+ "</head>" + "<body>";
-		return intro;
 	}
 
 	private String getPageJs() {
