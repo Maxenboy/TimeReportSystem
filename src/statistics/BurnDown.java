@@ -92,7 +92,7 @@ public class BurnDown extends gui.StatisticsMenu {
 		ArrayList<ProjectGroup> pg = db.getProjectGroups();
 		Iterator<ProjectGroup> itr = pg.iterator();
 
-		sb.append("<form method='POST'> Select project group<br />"
+		sb.append("<form method='POST'> Please select the project group you need a BurnDown for.<br />"
 				+ "<select name=projectgroup>");
 		while(itr.hasNext()) {
 			int projectgroup = itr.next().getId();
