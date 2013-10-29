@@ -1,10 +1,11 @@
 package subusersmenu;
 
+import gui.UsersMenu;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -12,7 +13,7 @@ import javax.servlet.http.HttpSession;
 import database.Database;
 
 @WebServlet("/ActiveStatusForUser")
-public class ActiveStatusForUser extends HttpServlet {
+public class ActiveStatusForUser extends UsersMenu {
 	/**
 	 * 
 	 */
@@ -30,6 +31,11 @@ public class ActiveStatusForUser extends HttpServlet {
 		HttpSession session = request.getSession(true);
 		PrintWriter out = response.getWriter();
 		out.print(getPageIntro());
+		
+		// ÄNDRA TILL RÄTT ROLL I generateMainMenu (se servletBase.java för roller) 
+				out.print(generateMainMenu(1));
+				out.print(generateSubMenu(1));
+				
 		String s = groupForm();
 		if (s == null) {
 			out.print("<p> Nothing to show </p>");
@@ -46,6 +52,7 @@ public class ActiveStatusForUser extends HttpServlet {
 						+ "<script>$(alert(\"incorrect syntax on the user name\"))</script>" + s);
 			}
 		}
+		out.print(getPageOutro());
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -66,13 +73,7 @@ public class ActiveStatusForUser extends HttpServlet {
 		
 	}
 
-	private String getPageIntro() {
-		String intro = "<html>"
-				+ "<head><title> Add member to project group </title>"
-				+ getPageJs() + "</head>" + "<body>";
-		return intro;
-	}
-
+	
 	private String getPageJs() {
 		return "<script src=\"//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js\"></script>"
 				+ "$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"Are you sure?\");if (confirmed) {$(this).submit();}});";
@@ -92,7 +93,5 @@ public class ActiveStatusForUser extends HttpServlet {
 
 	}
 
-	private String formElement(String par) {
-		return '"' + par + '"';
-	}
+	
 }

@@ -1,15 +1,20 @@
 package subusersmenu;
 
+import gui.UsersMenu;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import database.*;
+import database.Database;
+import database.User;
 
 @WebServlet("/HandleAdminRights")
-public class HandleAdminRights extends HttpServlet {
+public class HandleAdminRights extends UsersMenu {
 
 	/**
 	 * 
@@ -22,20 +27,27 @@ public class HandleAdminRights extends HttpServlet {
 			throws IOException {
 		HttpSession session = request.getSession();
 		PrintWriter out = response.getWriter();
+		out.print(getPageIntro());
+
+		// ÄNDRA TILL RÄTT ROLL I generateMainMenu (se servletBase.java för roller) 
+		out.print(generateMainMenu(1));
+		out.print(generateSubMenu(1));
+		
 		if (request.getParameter("session") == null) {
-			out.print(getPageIntro() + u.showUsers(db.getUsers()));
+			out.print(u.showUsers(db.getUsers()));
 		} else if (request.getParameter("session").equals("Success")) {
 			u.makeAdministrator(request.getParameter("userName"));
-			out.print(getPageIntro() + u.showUsers(db.getUsers())
+			out.print(u.showUsers(db.getUsers())
 					+ "<script>$(alert(\"Användaren är nu administratör. Ändringar sparade.\"))</script>");
 		} else if (request.getParameter("session").equals("SuccessRemove")) {
 			u.unmakeAdministrator(request.getParameter("userName"));
-			out.print(getPageIntro() + u.showUsers(db.getUsers())
+			out.print(u.showUsers(db.getUsers())
 					+ "<script>$(alert(\"Användare är ej längre administratör. Ändringar sparade.\"))</script>");
 		} else {
-			out.print(getPageIntro() + u.showUsers(db.getUsers())
+			out.print(u.showUsers(db.getUsers())
 					+ "<script>$(alert(\"Inte möjligt! Användare är med i en projektgrupp! \"))</script>");
 		}
+		out.print(getPageOutro());
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -55,12 +67,7 @@ public class HandleAdminRights extends HttpServlet {
 		}
 	}
 
-	private String getPageIntro() {
-		String intro = "<html>"
-				+ "<head><title> The Base Block System </title>" + getPageJs()
-				+ "</head>" + "<body>";
-		return intro;
-	}
+	
 
 	private String getPageJs() {
 		return "<script src=\"//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js\"></script>";

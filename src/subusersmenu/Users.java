@@ -86,7 +86,7 @@ public class Users {
 		sb.append("<INPUT TYPE=" + formElement("submit") + "VALUE="
 				+ formElement("Spara") + ">");
 		sb.append("</form>");
-		sb.append("</body></html>");
+	
 		return sb.toString();
 	}
 
@@ -149,7 +149,7 @@ public class Users {
 
 	private String buildShowUsersTable() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("<table border=" + formElement("1") + ">");
+		sb.append("<table class=\"table table-bordered table-hover\"");
 		sb.append("<tr>");
 		sb.append("<th>Username</th>");
 		sb.append("<th>Project group</th>");

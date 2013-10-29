@@ -1,15 +1,19 @@
 package subusersmenu;
 
+import gui.UsersMenu;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import database.Database;
 
 @WebServlet("/NewUser")
-public class NewUser extends HttpServlet{
+public class NewUser extends UsersMenu {
 	/**
 	 * 
 	 */
@@ -30,6 +34,9 @@ public class NewUser extends HttpServlet{
 		HttpSession session = request.getSession(true);
 		PrintWriter out = response.getWriter();
 		out.print(getPageIntro());
+		// ÄNDRA TILL RÄTT ROLL I generateMainMenu (se servletBase.java för roller) 
+				out.print(generateMainMenu(1));
+				out.print(generateSubMenu(1));
 		String s = users.userForm();
 		if (s == null) {
 			out.print("<p> Nothing to show </p>");
@@ -47,6 +54,7 @@ public class NewUser extends HttpServlet{
 			}
 
 		}
+		out.print(getPageOutro());
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -60,13 +68,6 @@ public class NewUser extends HttpServlet{
 			response.sendRedirect(request.getRequestURI() + "success=false");
 		}
 
-	}
-
-	private String getPageIntro() {
-		String intro = "<html>"
-				+ "<head><title> Add member to project group </title>"
-				+ getPageJs() + "</head>" + "<body>";
-		return intro;
 	}
 
 	private String getPageJs() {
