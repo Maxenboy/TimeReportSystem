@@ -1,22 +1,31 @@
 package subTimeReportMenu;
 
+import gui.TimeReportingMenu;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 
+import base.servletBase;
 import database.Database;
 
 @WebServlet("/ShowTimeReports")
-public class ShowTimeReports extends HttpServlet {
+public class ShowTimeReports extends TimeReportingMenu {
 	private static final long serialVersionUID = -1933766080948920247L;
 	TimeReportGenerator trg = new TimeReportGenerator(new Database());
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession(true);
+
 		PrintWriter out = response.getWriter();
 		out.print(getPageIntro());
+		
+		// ÄNDRA TILL RÄTT ROLL I generateMainMenu (se servletBase.java för roller) 
+		out.print(generateMainMenu(1));
+		out.print(generateSubMenu(1));
+		
 		/**
 		 * Change 1 into variable. The second in-parameter should depend 
 		 * on user role
@@ -40,16 +49,4 @@ public class ShowTimeReports extends HttpServlet {
 			doGet(request,response);
 		}
 	}
-	
-	/**
-	 * Only for development purposes
-	 * @return
-	 */
-	private String getPageIntro() {
-		String intro = "<html>"
-				+ "<head><title> The Base Block System </title></head>"
-				+ "<body>";
-		return intro;
-	}
-
 }

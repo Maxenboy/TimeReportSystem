@@ -1,7 +1,6 @@
 package base;
 
 import java.sql.Connection;
-
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -42,6 +41,14 @@ public class servletBase extends HttpServlet {
 	protected static final int LOGIN_TRUE = 1;
 	protected Connection conn = null;
 
+	
+	// User permissions
+	protected static final int PERMISSION_ADMIN = 			1;
+	protected static final int PERMISSION_PROJ_LEADER = 	2; 
+	protected static final int PERMISSION_WITHOUT_ROLE = 	3; 
+	protected static final int PERMISSION_OTHER_USERS = 	4; 
+	
+	
 	/**
 	 * Constructs a servlet and makes a connection to the database. It also
 	 * writes all user names on the console for test purpose.
@@ -91,7 +98,7 @@ public class servletBase extends HttpServlet {
 			state = (Integer) objectState;
 		return (state == LOGIN_TRUE);
 	}
-
+	
 	/**
 	 * Can be used to construct form elements.
 	 * 
@@ -110,9 +117,91 @@ public class servletBase extends HttpServlet {
 	 */
 	protected String getPageIntro() {
 		String intro = "<html>"
-				+ "<head><title> The Base Block System </title></head>"
+				+ "<head>"
+				+ "<title> The Base Block System </title>"
+				+ "<link href=\"bootstrap.min.css\" type=\"text/css\" rel=\"stylesheet\">"
+				+ "</head>"
 				+ "<body>";
 		return intro;
+	}
+	
+	protected String getPageOutro() {
+		String html = ""
+				+ "</section>"
+				+ "</div>"
+				+ "</div>"
+				+ "</section>"
+				+ "</body>"
+				+ "</html>"; 	
+		
+		return html;
+	}
+	
+	/** 
+	 * Constructs a main menu based on the current page
+	 * and the permission of the user
+	 * @param userPermission Check the final ints above
+	 * @return HTML code for the menu
+	 */
+	protected String generateMainMenu(int userPermission) {
+		String intro = ""
+				+ "<section class=\"main-menu container\">"
+				+ "<div class=\"row\">"
+				+ "<div class=\"col-lg-8\">"
+				+ "<ul class=\"nav nav-pills\">"; 
+		
+		switch(userPermission) {
+			case PERMISSION_ADMIN:
+				intro += ""
+						+ "<li><a href=\"ShowProjectGroups\">Projektgrupper</a></li>"
+						+ "<li><a href=\"ShowUsers\">Användare</a></li>"
+						+ "<li><a href=\"ShowProjectMembers\">Projektmedlemmar</a></li>"
+						+ "<li><a href=\"ShowTimeReports\">Tidrapportering</a></li>"
+						+ "<li><a href=\"Statistics\">Statistik</a></li>"; 
+				break; 
+				
+			case PERMISSION_PROJ_LEADER: 
+			case PERMISSION_OTHER_USERS: 
+				intro += ""
+						+ "<li><a href=\"ShowProjectMembers\">Projektmedlemmar</a></li>"
+						+ "<li><a href=\"ShowTimeReports\">Tidrapportering</a></li>"
+						+ "<li><a href=\"Statistics\">Statistik</a></li>"; 				
+				break;
+				
+			default:
+				// inget händer lol
+				break; 
+		}
+		
+		
+		String closure = ""
+				+ "</ul>"
+				+ "</div>"; 
+		
+		String userInfo = ""
+				+ "<div class=\"col-lg-4\">"
+				+ "<div class=\"row\">"
+				+ "<div class=\"col-lg-8\">"; 
+		
+		userInfo += ""
+				+ "<p>User: USERNAME</p>"
+				+ "<p>Group: GROUP"
+				+ "<p>Role: ROLE</p>"; 
+		
+		userInfo += ""
+				+ "</div>"
+				+ "<div class=\"col-lg-4\">"
+				+ "<a href=\"#\" class=\"btn btn-danger btn-block\">Log out</a>"
+				+ "</div>"
+				+ "</div>"
+				+ "</div>"; 
+ 
+		
+		String outro = ""
+				+ "</div>"
+				+ "</section>"; 
+		
+		return intro + closure + userInfo + outro; 
 	}
 
 }

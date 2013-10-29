@@ -14,7 +14,8 @@ import database.*;
 
 @WebServlet("/Statistics")
 
-public class Statistics extends HttpServlet { // extenda servlet eller statisticsmenu??
+public class Statistics extends StatisticsMenu { // extenda servlet eller statisticsmenu??
+	
 	public Statistics() {
 
 	}
@@ -32,7 +33,7 @@ public class Statistics extends HttpServlet { // extenda servlet eller statistic
 
 		HttpSession session = request.getSession(true);
 		
-		testSetSessionData(session); // TEST! TA BORT!
+		//testSetSessionData(session); // TEST! TA BORT!
 		
 		int userPermission = (Integer) session.getAttribute("user_Permissions");
 		int projectGroupId = (Integer) session.getAttribute("project_group_id");

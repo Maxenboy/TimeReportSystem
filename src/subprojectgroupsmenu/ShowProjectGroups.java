@@ -1,16 +1,19 @@
 package subprojectgroupsmenu;
 
+import gui.ProjectGroupsMenu;
+
 import java.io.*;
 import java.util.*;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
+import base.servletBase;
 import database.Database;
 import database.ProjectGroup;
 
 @WebServlet("/ShowProjectGroups")
-public class ShowProjectGroups extends HttpServlet {
+public class ShowProjectGroups extends ProjectGroupsMenu {
 	
 	/**
 	 * 
@@ -21,7 +24,9 @@ public class ShowProjectGroups extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession();
 		PrintWriter out = response.getWriter();
-		out.print(getPageIntro() + showProjectGroups());
+		
+		// ÄNDRA TILL RÄTT ROLL I generateMainMenu (se servletBase.java för roller) 
+		out.print(getPageIntro() + generateMainMenu(1) + generateSubMenu(1) + showProjectGroups() + getPageOutro());
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) {
@@ -57,16 +62,5 @@ public class ShowProjectGroups extends HttpServlet {
 		sb.append("<th>Estimated hours</th>");
 		sb.append("</tr>");
 		return sb.toString();
-	}
-
-	private String formElement(String par) {
-		return '"' + par + '"';
-	}
-
-	private String getPageIntro() {
-		String intro = "<html>"
-				+ "<head><title> The Base Block System </title>"
-				+ "</head>" + "<body>";
-		return intro;
 	}
 }

@@ -1,4 +1,6 @@
 package subProjectMembersMenu;
+import gui.ProjectGroupsMenu;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -11,7 +13,7 @@ import javax.servlet.http.HttpSession;
 import database.Database;
 
 @WebServlet("/ShowProjectMembers")
-public class ShowProjectMembers  extends HttpServlet{
+public class ShowProjectMembers  extends ProjectGroupsMenu {
 /**
 	 * 
 	 */
@@ -27,6 +29,11 @@ private Database db;
 		HttpSession session = request.getSession(true);
 		PrintWriter out = response.getWriter();
 		out.print(getPageIntro());
+
+		// ÄNDRA TILL RÄTT ROLL I generateMainMenu (se servletBase.java för roller) 
+		out.print(generateMainMenu(1));
+		out.print(generateSubMenu(1));
+		
 		String s = groupForm();
 		if(s == null)
 			out.print("<p> Nothing to show </p>");
@@ -36,6 +43,8 @@ private Database db;
 				pm=new ProjectMembers(request.getParameter("groupname"));
 				out.print(pm.showMembers(db.getUsers(Integer.valueOf(request.getParameter("groupname")))));
 			}
+		
+		out.print(getPageOutro());
 	}
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -47,12 +56,7 @@ private Database db;
 			response.sendRedirect(request.getRequestURI() + "success=false");
 		}
 	}
-	private String getPageIntro() {
-		String intro = "<html>"
-				+ "<head><title> Users </title></head>"
-				+ "<body>";
-		return intro;
-	}
+
 	private String groupForm() {
 		String html;
 		html = "<p> <form name=" + formElement("input");
@@ -62,9 +66,5 @@ private Database db;
 		html += "<input type=" + formElement("submit") + '>';
 		html += "</form>";
 		return html;
-	}
-
-	private String formElement(String par) {
-		return '"' + par + '"';
 	}
 }
