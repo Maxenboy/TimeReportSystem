@@ -21,7 +21,7 @@ public class StatisticsMenu extends servletBase {
 		case PERMISSION_PROJ_LEADER: 	
 		case PERMISSION_OTHER_USERS: 
 			html += ""
-					+ "<li><a href=\"ShowStatistics\">Show statistics</a></li>"
+					+ "<li><a href=\"Statistics\">Show statistics</a></li>"
 					+ "<li><a href=\"BurnDown\">Show burn-down-diagram</a></li>"; 			
 			break; 
 		
