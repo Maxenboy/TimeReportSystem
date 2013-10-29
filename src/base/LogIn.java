@@ -40,7 +40,6 @@ public class LogIn extends servletBase {
     public LogIn() {
         super();
         db = new Database();
-        // TODO Auto-generated constructor stub
     }
     
     /**
