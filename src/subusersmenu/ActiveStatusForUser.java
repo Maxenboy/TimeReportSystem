@@ -23,7 +23,7 @@ public class ActiveStatusForUser extends UsersMenu {
 
 	public ActiveStatusForUser() {
 		users = new Users();
-		db=new Database();
+		db = new Database();
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -31,25 +31,31 @@ public class ActiveStatusForUser extends UsersMenu {
 		HttpSession session = request.getSession(true);
 		PrintWriter out = response.getWriter();
 		out.print(getPageIntro());
-		
-		// ÄNDRA TILL RÄTT ROLL I generateMainMenu (se servletBase.java för roller) 
-				out.print(generateMainMenu((int)session.getAttribute("user_permissions")));
-				out.print(generateSubMenu((int)session.getAttribute("user_permissions")));
-				
+
+		// ÄNDRA TILL RÄTT ROLL I generateMainMenu (se servletBase.java för
+		// roller)
+		out.print(generateMainMenu((int) session
+				.getAttribute("user_permissions")));
+		out.print(generateSubMenu((int) session
+				.getAttribute("user_permissions")));
+
 		String s = groupForm();
 		if (s == null) {
 			out.print("<p> Nothing to show </p>");
 		} else {
 			switch (request.getParameter("success")) {
 			case "null":
+				out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"Are you sure?\");if (confirmed) {$(this).submit();}});</script>");
 				out.print(s);
 				break;
 			case "true":
+				out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"Are you sure?\");if (confirmed) {$(this).submit();}});</script>");
 				out.print(users.showUsers(db.getUsers()));
 				break;
 			case "false":
 				out.print(getPageIntro()
-						+ "<script>$(alert(\"incorrect syntax on the user name\"))</script>" + s);
+						+ "<script>$(alert(\"incorrect syntax on the user name\"))</script>"
+						+ s);
 			}
 		}
 		out.print(getPageOutro());
@@ -63,20 +69,14 @@ public class ActiveStatusForUser extends UsersMenu {
 		if (users.checkNewName(username)) {
 			if (activate.equals("true")) {
 				users.activateUser(username);
-			}else{
+			} else {
 				users.deactivateUser(username);
 			}
 			response.sendRedirect(request.getRequestURI() + "success=true");
-		}else{
+		} else {
 			response.sendRedirect(request.getRequestURI() + "success=false");
 		}
-		
-	}
 
-	
-	private String getPageJs() {
-		return "<script src=\"//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js\"></script>"
-				+ "$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"Are you sure?\");if (confirmed) {$(this).submit();}});";
 	}
 
 	public String groupForm() {
@@ -93,5 +93,4 @@ public class ActiveStatusForUser extends UsersMenu {
 
 	}
 
-	
 }

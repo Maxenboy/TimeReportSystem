@@ -43,9 +43,11 @@ public class NewUser extends UsersMenu {
 		} else {
 			switch (request.getParameter("success")) {
 			case "null":
+				out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"Are you sure?\");if (confirmed) {$(this).submit();}});</script>");
 				out.print(s);
 				break;
 			case "true":
+				out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"Are you sure?\");if (confirmed) {$(this).submit();}});</script>");
 				out.print(users.showUsers(db.getUsers()));
 				break;
 			case "false":
@@ -68,11 +70,6 @@ public class NewUser extends UsersMenu {
 			response.sendRedirect(request.getRequestURI() + "success=false");
 		}
 
-	}
-
-	private String getPageJs() {
-		return "<script src=\"//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js\"></script>"
-				+ "$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"Are you sure?\");if (confirmed) {$(this).submit();}});";
 	}
 
 }

@@ -29,10 +29,13 @@ public class HandleAdminRights extends UsersMenu {
 		PrintWriter out = response.getWriter();
 		out.print(getPageIntro());
 
-		// ÄNDRA TILL RÄTT ROLL I generateMainMenu (se servletBase.java för roller) 
-		out.print(generateMainMenu((int)session.getAttribute("user_permissions")));
-		out.print(generateSubMenu((int)session.getAttribute("user_permissions")));
-		
+		// ÄNDRA TILL RÄTT ROLL I generateMainMenu (se servletBase.java för
+		// roller)
+		out.print(generateMainMenu((int) session
+				.getAttribute("user_permissions")));
+		out.print(generateSubMenu((int) session
+				.getAttribute("user_permissions")));
+
 		if (request.getParameter("session") == null) {
 			out.print(u.showUsers(db.getUsers()));
 		} else if (request.getParameter("session").equals("Success")) {
@@ -67,9 +70,4 @@ public class HandleAdminRights extends UsersMenu {
 		}
 	}
 
-	
-
-	private String getPageJs() {
-		return "<script src=\"//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js\"></script>";
-	}
 }
