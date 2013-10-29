@@ -1,22 +1,17 @@
 package subTimeReportMenu;
 
+import gui.TimeReportingMenu;
 import java.io.IOException;
 import java.io.PrintWriter;
-
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import database.Database;
 
 @WebServlet("/RemoveTimeReport")
-public class RemoveTimeReport extends HttpServlet{
+public class RemoveTimeReport extends TimeReportingMenu{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 2619824858072375910L;
 	TimeReportGenerator trg = new TimeReportGenerator(new Database());
 	private static final int FIRST = 0;
@@ -24,32 +19,45 @@ public class RemoveTimeReport extends HttpServlet{
 	private static final int REMOVE_REPORT = 3;
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		System.out.println("doGet");
 		HttpSession session = request.getSession(true);
 		PrintWriter out = response.getWriter();
 		out.print(getPageIntro());
-
-		/**
-		 * This should be changed so it depends if user is proj-leader or regular
-		 * user.
-		 */
-		String s = trg.showAllTimeReports(1, TimeReportGenerator.REMOVE_USER_REPORT);
-		if(s == null)
-			out.print("<p> Nothing to show </p>");
-		else 
+		int permission = (Integer) session.getAttribute("user_permissions");
+		out.print(generateMainMenu(permission));
+		out.print(generateSubMenu(permission));
+		
+		int userId = (Integer) session.getAttribute("id");
+		int projId = (Integer) session.getAttribute("project_group_id");
+		String s = null;
+		switch(permission) {
+		case PERMISSION_ADMIN:
+		case PERMISSION_PROJ_LEADER:
+			s = trg.showAllTimeReports(projId, TimeReportGenerator.REMOVE_PRJ_REPORT);
+			break;
+		case PERMISSION_OTHER_USERS:
+			s = trg.showAllTimeReports(userId,TimeReportGenerator.REMOVE_USER_REPORT);
+			break;
+		}
+		if(s == null) {
+			out.print("<script> alert('There are no time reports in the system.</script>");
+		} else {
 			out.print(s);
-		session.setAttribute("state", REMOVE_REPORT);
+			session.setAttribute("removeReportState", REMOVE_REPORT);
+		}
+		out.print(getPageOutro());
 	}
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		System.out.println("doPost");
 		HttpSession session = request.getSession(true);
 		PrintWriter out = response.getWriter();
+		out.print(getPageIntro());
+		int permission = (Integer) session.getAttribute("user_permissions");
+		out.print(generateMainMenu(permission));
+		out.print(generateSubMenu(permission));
 		int state = FIRST;
 		String reportId;
-//		session.invalidate();
 		if(!session.isNew()) 
-			state = (Integer) session.getAttribute("state");
+			state = (Integer) session.getAttribute("removeReportState");
 		
 		switch(state) {
 		case FIRST:
@@ -59,10 +67,10 @@ public class RemoveTimeReport extends HttpServlet{
 			reportId = request.getParameter("reportId");
 			if(reportId != null) {
 				String s = trg.showTimeReport(Integer.valueOf(reportId), TimeReportGenerator.REMOVE_REPORT);
-				out.print(getPageIntro());
 				out.print(s);
-				session.setAttribute("state", DO_REMOVAL);
+				session.setAttribute("removeReportState", DO_REMOVAL);
 			} else {
+				session.setAttribute("removeReportState", FIRST);
 				doGet(request,response);
 			}
 			break;
@@ -73,17 +81,10 @@ public class RemoveTimeReport extends HttpServlet{
 			} else {
 				out.print("<script>alert('Internal error - could not remove report')</script>");
 			}
-			session.setAttribute("state", FIRST);
+			session.setAttribute("removeReportState", FIRST);
 			doGet(request, response);
 			break;
 		}
+		out.print(getPageOutro());
 	}
-	
-	private String getPageIntro() {
-		String intro = "<html>"
-				+ "<head><title> The Base Block System </title></head>"
-				+ "<body>";
-		return intro;
-	}
-
 }

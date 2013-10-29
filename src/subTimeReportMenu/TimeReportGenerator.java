@@ -1,13 +1,7 @@
 package subTimeReportMenu;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import database.*;
 
 public class TimeReportGenerator {
@@ -21,17 +15,26 @@ public class TimeReportGenerator {
 	public static final int REMOVE_REPORT = 7;
 	public static final int CHANGE_USER_REPORT = 8;
 	public static final int CHANGE_PRJ_REPORT = 9;
-	public TimeReportGenerator(Database db) {
-		this.db = db;
+	
+	/**
+	 * Constructor
+	 * @param dataBase The database that the TimeReportGenerator communicates with
+	 */
+	public TimeReportGenerator(Database dataBase) {
+		this.db = dataBase;
 	}
 	
 	private String formElement(String par) {
 		return '"' + par + '"';
 	}
 	
+	/**
+	 * Helper method for showAllTimeReports, constructs a html-table
+	 * @return a html-table
+	 */
 	private String buildShowTimeReportTable() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("<table border=" + formElement("1") + ">");
+		sb.append("<table class=\"table table-bordered table-hover\">");
 		sb.append("<tr>");
 		sb.append("<th>Report ID</th>");
 		sb.append("<th>Week</th>");
@@ -39,23 +42,6 @@ public class TimeReportGenerator {
 		sb.append("<th>Select</th>");
 		sb.append("</tr>");
 		return sb.toString();
-	}
-	
-	private String buildSignTimeReportTable() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("<table border=" + formElement("1") + ">");
-		sb.append("<tr>");
-		sb.append("<th>User</th>");
-		sb.append("<th>Report ID</th>");
-		sb.append("<th>Week</th>");
-		sb.append("<th>Select</th>");
-		sb.append("</tr>");
-		return sb.toString();
-	}
-	
-	private String createCheck(int id) {
-		return "<input type=" + formElement("checkbox") + "name=" + 
-				formElement("reportIds") + "value=" + formElement(Integer.toString(id))+">";
 	}
 	
 	/**
@@ -70,6 +56,9 @@ public class TimeReportGenerator {
 			return null;
 		}
 		switch(state) {
+		case SHOW_ALL:
+			sb.append("<FORM METHOD=post ACTION="+formElement("ShowTimeReports")+">");
+			break;
 		case REMOVE_REPORT:
 			sb.append("<FORM METHOD=post ACTION="+formElement("RemoveTimeReport")+">");
 			break;
@@ -111,25 +100,36 @@ public class TimeReportGenerator {
 		return sb.toString();
 	}
 	
+	/**
+	 * helper method for showAllTimeReports, constructs a html-radioButton
+	 * @param id, variable id for html-value
+	 * @return a html-radioButton
+	 */
 	private String createRadio(int id) {
 		return "<input type=" + formElement("radio") + "name=" + 
 				formElement("reportId") + "value=" + formElement(Integer.toString(id))+">";
 	}
+	
 	/**
 	 * Lists all time reports belonging to a specific ID
 	 * @param ID could be project_group_ID or userId
 	 * @param state use these different values
-	 * SHOW_USER_REPORT Time reports for certain user
-	 * SHOW_UNSIGNED if user is proj-leader and wants to list all UNsigned reports for that project_group_id
-	 * SHOW_SIGNED if user is proj-leader and wants to list all signed reports for that project_group_id
-	 * REMOVE_PRJ_REPORTS if user is proj-leader and wants to remove unsigned time reports
-	 * REMOVE_USER_REPORT if user wants to remove a time report.
+	 * SHOW_USER_REPORT show all of one users time reports
+	 * SHOW_UNSIGNED show all UNsigned time reports for a project (admin/prj_leader only)
+	 * SHOW_SIGNED show all SIGNED time reports for a project (admin/prj_leader only)
+	 * REMOVE_PRJ_REPORTS show all UNsigned time reports for a project and wants to REMOVE one of them (admin/prj_leader only)
+	 * REMOVE_USER_REPORT show all UNsigned time reports and user wants to REMOVE a time report
+	 * CHANGE_USER_REPORT show all UNsigned time reports and user wants to  CHANGE a time report
+	 * CHANGE_PRJ_REPORT  show all UNsigned time reports for a project and wants to CHANGE one of them (admin/prj_leader only)
 	 * @return html-code 
 	 */
 	public String showAllTimeReports(int ID, int state) {
 		ArrayList<TimeReport> timeReports = new ArrayList<TimeReport>();
 		String html = null;
 		switch(state) {
+		case SHOW_ALL:
+			timeReports = db.getTimeReportsForProjectGroupId(ID);
+			html = listReports(timeReports,state);
 		case SHOW_USER_REPORT:
 			timeReports = db.getTimeReportsForUserId(ID);
 			html = listReports(timeReports, state);
@@ -164,11 +164,12 @@ public class TimeReportGenerator {
 	
 	/**
 	 * Creates the form where user can fill in an new TimeReport
+	 * @return returns a form for the PrintWriter to print.
 	 */
 	public String showNewTimeForm() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<FORM METHOD=post ACTION=\"NewTimeReport\">");
-		sb.append("<TABLE BORDER=1>");
+		sb.append("<TABLE class=\"table table-bordered table-hover\">");
 		sb.append("<TR><TD COLSPAN=1><B>Week:</B></TD><TD><INPUT TYPE=\"text\" NAME=\"week\" Value=\"\" SIZE=3></TD></TR>");
 		sb.append("<TR><TH>Number</TH><TH>Activity</TH><TH WIDTH=75>D</TH><TH WIDTH=75>I</TH><TH WIDTH=75>F</TH><TH WIDTH=75>R</TH></TR>");
 		int activityNbr = 11;
@@ -212,10 +213,21 @@ public class TimeReportGenerator {
 		return sb.toString();
 	}
 	
+	/**
+	 * Adds a new timeReport to the database
+	 * @param timeReport the new timeReport to be added
+	 * @param activities the activities connected to the new time report
+	 * @return True if database added the time report, false if e.g. an error occured  
+	 */
 	public boolean addNewTimeReport(TimeReport timeReport, ArrayList<Activity> activities) {
 		return db.addTimeReport(timeReport, activities); 
 	}
 	
+	/**
+	 * Returns a form containing the values of a report the user wants to change
+	 * @param reportId, the report the user wants to change
+	 * @return a form for PrintWriter to print
+	 */
 	public String showChangeTimeReport(int reportId) {
 		TimeReport tr = db.getTimeReport(reportId);
 		if(tr.isSigned())
@@ -223,7 +235,7 @@ public class TimeReportGenerator {
 		StringBuilder sb = new StringBuilder();
 		ArrayList<Activity> activities = db.getActivities(reportId);
 		sb.append("<FORM METHOD=post ACTION=\"ChangeTimeReport\">");
-		sb.append("<TABLE BORDER=1>");
+		sb.append("<TABLE class=\"table table-bordered table-hover\">");
 		sb.append("<TR><TD COLSPAN=1><B>Week:</B></TD><TD><INPUT TYPE=\"text\" NAME=\"week\" Value=" + formElement(Integer.toString(tr.getWeek())) + "SIZE=3></TD></TR>");
 		sb.append("<TR><TH>Number</TH><TH>Activity</TH><TH WIDTH=75>D</TH><TH WIDTH=75>I</TH><TH WIDTH=75>F</TH><TH WIDTH=75>R</TH></TR>");
 		int activityNbr = 11;
@@ -338,7 +350,7 @@ public class TimeReportGenerator {
 		ProjectGroup pg = db.getProjectGroup(tr.getProjectGroupId());
 		StringBuilder sb = new StringBuilder();
 		//Table setup
-		sb.append("<table border=" + formElement("1") + ">");
+		sb.append("<table class=\"table table-bordered table-hover\">");
 		sb.append("<tr>");
 		sb.append("<TD COLSPAN=2><B>Report id:</B></TD><TD COLSPAN=2>" + reportId + "</TD>");
 		sb.append("<TD><B>Week:</B></TD><TD COLSPAN=2>" + tr.getWeek() + "</TD>");
@@ -395,7 +407,11 @@ public class TimeReportGenerator {
 		}
 		return sb.toString();
 	}
-	
+	/**
+	 * Helper method for showTimeReport
+	 * @param activities
+	 * @return
+	 */
 	private HashMap<Integer,int[]> createTimeReportPresentationTable(ArrayList<Activity> activities) {
 		HashMap<Integer,int[]> table = new HashMap<Integer,int[]>();
 		for (int i = 0; i < activities.size(); i++) {
@@ -412,6 +428,11 @@ public class TimeReportGenerator {
 		return table;
 	}
 	
+	/**
+	 * Helper method for showTimeReport
+	 * @param activities
+	 * @return
+	 */
 	private ArrayList<Activity> removePrintedActivities(ArrayList<Activity> activities) {
 		ArrayList<Activity> nonPrintedActivities = new ArrayList<Activity>();
 		for(int i = 0; i < activities.size(); i++) {
@@ -422,23 +443,26 @@ public class TimeReportGenerator {
 		return nonPrintedActivities;
 	}
 	
+	/**
+	 * Helper method for showTimeReport
+	 * @param state
+	 * @param reportId
+	 * @return
+	 */
 	private String confirmationButton(int state, int reportId) {
 		StringBuilder sb = new StringBuilder();
 		switch(state) {
 		case REMOVE_REPORT:
-			sb.append("<script> function confirmation(){return confirm('Are you sure you want to remove this report?')}</script>");
-			sb.append("<form  method=\"post\" action=\"RemoveTimeReport\" onSubmit=\"confirmation()\">");
-			sb.append("<input type=\"submit\" name=\"confirmRemove\" value=\"Remove report\">");
+			sb.append("<form  method=\"post\" action=\"RemoveTimeReport\" onclick=\"return confirm('Are you sure you want to remove this report?')\">");
+			sb.append("<input type=\"submit\" value=\"Remove report\" >");
 			break;
 		case SHOW_UNSIGNED:
-			sb.append("<script> function confirmation(){return confirm('Are you sure you want to sign this report?')}</script>");
-			sb.append("<form  method=\"get\" action=\"SignTimeReports\" onSubmit=\"confirmation()\">");
-			sb.append("<input type=" + formElement("submit") + "name=\"confirmUnsign\" value=\"Sign report\">");
+			sb.append("<form  method=\"get\" action=\"SignTimeReports\" onclick=\"return confirm('Are you sure you want to sign this report?')\">");
+			sb.append("<input type=\"submit\" value=\"Sign report\" >");
 			break;
 		case SHOW_SIGN:
-			sb.append("<script> function confirmation(){return confirm('Are you sure you want to unsign this report?')}</script>");
-			sb.append("<form  method=\"get\" action=\"SignTimeReports\" onSubmit=\"confirmation()\">");
-			sb.append("<input type=\"submit\" name=\"confirmSign\" value=\"Unsign report\">");
+			sb.append("<form  method=\"get\" action=\"SignTimeReports\" onclick=\"return confirm('Are you sure you want to unsign this report?')\">");
+			sb.append("<input type=\"submit\" value=\"Unsign report\">");
 			break;
 		}
 		sb.append("<input type=\"hidden\" name=\"reportId\" value=" + formElement(Integer.toString(reportId)) + ">");
@@ -447,13 +471,11 @@ public class TimeReportGenerator {
 	}
 	
 	/**
-	 * 
-	 * @param reportIds
-	 * @param sign
-	 * @return
+	 * Signs or unsigns a report.
+	 * @param reportId the report that the user wants to sign/unsign
+	 * @return true if success, false if e.g. there occurred an internal error 
 	 */
-	public String signOrUnsignReport(String reportId) {
-		StringBuilder sb = new StringBuilder();
+	public boolean signOrUnsignReport(String reportId) {
 		//Create dummy TimeReports
 		TimeReport tr = db.getTimeReport(Integer.valueOf(reportId));
 		ArrayList<TimeReport> timeReports = new ArrayList<TimeReport>();
@@ -463,19 +485,24 @@ public class TimeReportGenerator {
 			success = db.unsignTimeReports(timeReports);
 		else
 			success = db.signTimeReports(timeReports);
-		if(success) {
-			sb.append("<h3> The following time report was signed:</h3>");
-			sb.append(reportId + "<br>");
-		} else {
-			return null;
-		}
-		return sb.toString();
+
+		return success;
 	}
-	
+	/**
+	 * Tells the database to change a time report
+	 * @param timeReport the time report the user wants to update
+	 * @param activities the activities connected to the time report the user wants to update.
+	 * @return true if successful update, false if e.g. there occured an internal error
+	 */
 	public boolean changeTimeReport(TimeReport timeReport, ArrayList<Activity> activities) {
 		return db.updateTimeReport(timeReport, activities);
 	}
 
+	/**
+	 * Tells the database to remove a time report
+	 * @param reportId the report the user wants to remove
+	 * @return true if successful removal, false if e.g. there occurred an internal error.
+	 */
 	public boolean removeTimeReport(String reportId) {
 		return db.removeTimeReport(Integer.valueOf(reportId));
 	}

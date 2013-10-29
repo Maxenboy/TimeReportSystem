@@ -1,12 +1,11 @@
 package subTimeReportMenu;
 
+import gui.TimeReportingMenu;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-
-import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -16,30 +15,35 @@ import database.Database;
 import database.TimeReport;
 
 @WebServlet("/NewTimeReport")
-public class NewTimeReport extends HttpServlet{
+public class NewTimeReport extends TimeReportingMenu{
 	private static final long serialVersionUID = 6091270182349510225L;
-	private static final int NEW_REPORT = 1;
+	private static final int FIRST = 1;
 	private static final int NOT_ENOUGH_DATA = 3;
+	private static final int ILLEGAL_CHAR = 4;
 	TimeReportGenerator trg = new TimeReportGenerator(new Database());
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession(true);
 		PrintWriter out = response.getWriter();
 		out.print(getPageIntro());
-		/*
-		 *Check whether user has a role and member of a project.
-		 *if not, print "You are currently not assigned to a project" or "You are currently not assigned to a project role". 
-		 */
+		int permission = (Integer) session.getAttribute("user_permissions");
+		out.print(generateMainMenu(permission));
+		out.print(generateSubMenu(permission));
+		
+		if(permission == PERMISSION_WITHOUT_ROLE) {
+			out.print("<script> alert('You are currently not assigned to any role in the project" + 
+		" and are therefore unable to create a new time report. Please contact your project leader')");
+			response.sendRedirect("ShowTimeReports");
+		}
 		int state = 0;
-//		session.invalidate();
 		if(session.isNew()) {
-			state = NEW_REPORT;
+			state = FIRST;
 		} else {
-			state = (Integer) session.getAttribute("state");
+			state = (Integer) session.getAttribute("newReportState");
 		}
 		String s;
 		switch(state) {
-		case NEW_REPORT:
+		case FIRST:
 			s = trg.showNewTimeForm();
 			if(s == null) {
 				out.print("500 internal error");
@@ -48,25 +52,35 @@ public class NewTimeReport extends HttpServlet{
 			}
 			break;
 		case NOT_ENOUGH_DATA:
-			session.setAttribute("state", NEW_REPORT);
+			session.setAttribute("newReportState", FIRST);
 			out.print("<script> alert('Mandatory data has not been filled in. Please fill in week nr. and at least one activity') </script>");
 			doGet(request, response);
 			break;
+		case ILLEGAL_CHAR:
+			session.setAttribute("newReportState", FIRST);
+			out.print("<script> alert('Illegal character. Only numerical chararcters are allowed') </script>");
+			doGet(request, response);
+			break;
 		}
+		out.print(getPageOutro());
 	}
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		/*
-		 * Do shizzle 
-		 */
 		HttpSession session = request.getSession(true);
-		
+		PrintWriter out = response.getWriter();
+		out.print(getPageIntro());
+		int permission = (Integer) session.getAttribute("user_permissions");
+		out.print(generateMainMenu(permission));
+		out.print(generateSubMenu(permission));
 		String week = request.getParameter("week");
 		if(week.equals("")) {
-			session.setAttribute("state", NOT_ENOUGH_DATA);
+			session.setAttribute("newReportState", NOT_ENOUGH_DATA);
 			doGet(request,response);
 		} else {
-			//Change Time Report values into user id and project id.
+			if(!isNumeric(week)) {
+				session.setAttribute("newReportState", ILLEGAL_CHAR);
+				doGet(request, response);
+			}
 			TimeReport timeReport = new TimeReport(Integer.valueOf(week), 1, 1);
 			String[] fields = request.getParameter("FormFields").split(",");
 			ArrayList<Activity> activities = new ArrayList<Activity>();
@@ -78,6 +92,10 @@ public class NewTimeReport extends HttpServlet{
 				if(i % 4 == 0)
 					activityNbr++;
 				if(!time.equals("")) {
+					if(!isNumeric(time)) {
+						session.setAttribute("newReportState", ILLEGAL_CHAR);
+						doGet(request, response);
+					}
 					filledIn = true;
 					if(i < 36) {
 						activities.add(new Activity(activityNbr, Activity.mapIntToActivityType(i % 4), Integer.valueOf(time), timeReport.getId()));
@@ -87,33 +105,29 @@ public class NewTimeReport extends HttpServlet{
 				}
 			}
 			if(!filledIn) {
-				session.setAttribute("state", NOT_ENOUGH_DATA);
+				session.setAttribute("newReportState", NOT_ENOUGH_DATA);
 				doGet(request, response);
 			} else {
 				//save in database
-				PrintWriter out = response.getWriter();
 				if(trg.addNewTimeReport(timeReport, activities)) {
 					out.print("<script>alert('Successfully saved time report.') </script>");
-					session.invalidate();
+					session.setAttribute("newReportState", FIRST);
 					doGet(request, response);
 				} else {
 					out.print("<script>alert('Internal error - could not save time report.') </script>");
-					session.invalidate();
+					session.setAttribute("newReportState", FIRST);
 					doGet(request, response);
 				}
 			}
 		}
 	}
 	
-	private String formElement(String par) {
-		return '"' + par + '"';
+	private boolean isNumeric(String s) {
+		try {
+			Integer.parseInt(s);
+		} catch (NumberFormatException e) {
+			return false;
+		}
+		return true;
 	}
-	
-	private String getPageIntro() {
-		String intro = "<html>"
-				+ "<head><title> The Base Block System </title></head>"
-				+ "<body>";
-		return intro;
-	}
-
 }

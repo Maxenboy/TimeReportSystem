@@ -1,14 +1,10 @@
 package subTimeReportMenu;
 
 import gui.TimeReportingMenu;
-
 import java.io.IOException;
 import java.io.PrintWriter;
-
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
-
-import base.servletBase;
 import database.Database;
 
 @WebServlet("/ShowTimeReports")
@@ -21,32 +17,45 @@ public class ShowTimeReports extends TimeReportingMenu {
 
 		PrintWriter out = response.getWriter();
 		out.print(getPageIntro());
-		
-		// ÄNDRA TILL RÄTT ROLL I generateMainMenu (se servletBase.java för roller) 
-		out.print(generateMainMenu(1));
-		out.print(generateSubMenu(1));
-		
-		/**
-		 * Change 1 into variable. The second in-parameter should depend 
-		 * on user role
-		 */
-		String s = trg.showAllTimeReports(1,TimeReportGenerator.SHOW_USER_REPORT);
+		int permission = (Integer) session.getAttribute("user_permissions");
+		out.print(generateMainMenu(permission));
+		out.print(generateSubMenu(permission));
+
+		int userId = (Integer) session.getAttribute("id");
+		int projId = (Integer) session.getAttribute("project_group_id");
+		String s = null;
+		switch(permission) {
+		case PERMISSION_ADMIN:
+		case PERMISSION_PROJ_LEADER:
+			s = trg.showAllTimeReports(projId, TimeReportGenerator.SHOW_ALL);
+			break;
+		case PERMISSION_OTHER_USERS:
+		case PERMISSION_WITHOUT_ROLE:
+			s = trg.showAllTimeReports(userId,TimeReportGenerator.SHOW_USER_REPORT);
+			break;
+		}
 		if(s == null)
-			out.print("<p> Nothing to show </p>");
+			out.print("<script> alert('There are no time reports to show')");
 		else 
 			out.print(s);
+		out.print(getPageOutro());
 	}
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession(true);
+		PrintWriter out = response.getWriter();
+		out.print(getPageIntro());
+		int permission = (Integer) session.getAttribute("user_permissions");
+		out.print(generateMainMenu(permission));
+		out.print(generateSubMenu(permission));
 		String reportId = request.getParameter("reportId");
 		if(reportId != null) {
-			PrintWriter out = response.getWriter();
 			String s = trg.showTimeReport(Integer.valueOf(reportId), TimeReportGenerator.SHOW_USER_REPORT);
 			out.print(getPageIntro());
 			out.print(s);
 		} else {
 			doGet(request,response);
 		}
+		out.print(getPageOutro());
 	}
 }
