@@ -13,7 +13,7 @@ public class ProjectGroupsMenu extends servletBase {
 				+ "<section class=\"main-content container\">"
 				+ "<div class=\"row\">"
 				+ "<div class=\"col-lg-3\">"
-				+ "<ul class=\"nav nav-pills stacked\">"; 		
+				+ "<ul class=\"nav nav-pills nav-stacked\">";  		
 		
 		switch(role) {
 			case PERMISSION_ADMIN: 

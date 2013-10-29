@@ -18,7 +18,7 @@ public class TimeReportingMenu extends servletBase {
 				+ "<section class=\"main-content container\">"
 				+ "<div class=\"row\">"
 				+ "<div class=\"col-lg-3\">"
-				+ "<ul class=\"nav nav-pills\">"; 
+				+ "<ul class=\"nav nav-pills nav-stacked\">"; 
 		
 		
 		switch(role) {
