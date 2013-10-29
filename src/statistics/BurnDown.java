@@ -17,7 +17,7 @@ import database.ProjectGroup;
 
 
 @WebServlet("/BurnDown")
-public class BurnDown extends HttpServlet { // extenda servlet eller statisticsmenu??
+public class BurnDown extends gui.StatisticsMenu { // extenda servlet eller statisticsmenu??
 	public BurnDown() {
 		// Konstruktor
 	}
@@ -35,18 +35,27 @@ public class BurnDown extends HttpServlet { // extenda servlet eller statisticsm
 		HttpSession session = request.getSession(true);
 		int userPermission = (Integer) session.getAttribute("user_Permissions");
 		int projectGroupId = (Integer) session.getAttribute("project_group_id");
-		
+
+		out.append(getPageIntro());
+		out.append(generateMainMenu(userPermission));
+		out.append(generateSubMenu(userPermission));
+
 		switch(userPermission) {
 		case 1: // Administrator gets to choose project group.
 			out.append(projectGroupForm());
+			out.append(getPageOutro());
+			break;
 		case 2:
 			out.append(printBurnDown(db.getTimePerWeek(projectGroupId), projectGroupId));
+			out.append(getPageOutro());
 			break;
 		case 4:
 			out.append(printBurnDown(db.getTimePerWeek(projectGroupId), projectGroupId));
+			out.append(getPageOutro());
 			break;
 		default:
 			out.append("Unexpected user permission level.");	
+			out.append(getPageOutro());
 			break;
 		}		
 	}
@@ -54,14 +63,21 @@ public class BurnDown extends HttpServlet { // extenda servlet eller statisticsm
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		Database db = new Database();
 		PrintWriter out = response.getWriter();
+		HttpSession session = request.getSession(true);
 
-		String[] projectGroup = request.getParameterValues("projectGroup");
+		String[] projectGroup = request.getParameterValues("projectgroup");
+		int userPermission = (Integer) session.getAttribute("user_Permissions");
 		
+		out.append(getPageIntro());
+		out.append(generateMainMenu(userPermission));
+		out.append(generateSubMenu(userPermission));
+
 		if(projectGroup[0] != null) {
 			out.append(printBurnDown(db.getTimePerWeek(Integer.parseInt(projectGroup[0])), Integer.parseInt(projectGroup[0])));
 		} else {
 			out.append("ERROR - No project group chosen by administrator." );
 		}
+		out.append(getPageOutro());
 	}
 	
 	/**
@@ -76,7 +92,7 @@ public class BurnDown extends HttpServlet { // extenda servlet eller statisticsm
 		ArrayList<ProjectGroup> pg = db.getProjectGroups();
 		Iterator<ProjectGroup> itr = pg.iterator();
 
-		sb.append("<form method='POST'>"
+		sb.append("<form method='POST'> Select project group<br />"
 				+ "<select name=projectgroup>");
 		while(itr.hasNext()) {
 			int projectgroup = itr.next().getId();
@@ -84,7 +100,7 @@ public class BurnDown extends HttpServlet { // extenda servlet eller statisticsm
 					+ projectgroup + "'>" + projectgroup +
 					"</option>");
 		}
-
+		sb.append("</select> <br /><input type='SUBMIT' value='Submit' /> </form>");
 
 		return sb.toString();
 	}

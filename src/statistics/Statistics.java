@@ -14,7 +14,7 @@ import database.*;
 
 @WebServlet("/Statistics")
 
-public class Statistics extends StatisticsMenu { // extenda servlet eller statisticsmenu??
+public class Statistics extends gui.StatisticsMenu { // extenda servlet eller statisticsmenu??
 	
 	public Statistics() {
 
@@ -33,23 +33,30 @@ public class Statistics extends StatisticsMenu { // extenda servlet eller statis
 
 		HttpSession session = request.getSession(true);
 		
-		//testSetSessionData(session); // TEST! TA BORT!
+		testSetSessionData(session); // TEST! TA BORT!
 		
 		int userPermission = (Integer) session.getAttribute("user_Permissions");
 		int projectGroupId = (Integer) session.getAttribute("project_group_id");
-
+		
+		out.append(getPageIntro());
+		out.append(generateMainMenu(userPermission));
+		out.append(generateSubMenu(userPermission));
 		switch(userPermission) {
 		case 1: // Administrator gets to choose project group.
 			out.append(projectGroupForm());
+			out.append(getPageOutro());
 			break;
 		case 2: // Project leader chooses filters from the available users, activities, roles and weeks. 
 			out.append(printFilter(db.getStatisticsFilter(projectGroupId), userPermission));
+			out.append(getPageOutro());
 			break;
 		case 4: // Ordinary user chooses week. 
 			out.append(printFilter(db.getStatisticsFilter(projectGroupId), userPermission));
+			out.append(getPageOutro());
 			break;
 		default:
 			out.append("Unexpected user permission level.");
+			out.append(getPageOutro());
 		}
 
 	}
@@ -77,6 +84,11 @@ public class Statistics extends StatisticsMenu { // extenda servlet eller statis
 		String activities[] = request.getParameterValues("activities");
 		String weeks[] = request.getParameterValues("weeks");
 		int projectGroupId = (Integer) session.getAttribute("project_group_id");
+		
+
+		out.append(getPageIntro());
+		out.append(generateMainMenu(userPermission));
+		out.append(generateSubMenu(userPermission));
 
 		if(userPermission == 1) { //Admin
 
@@ -85,6 +97,7 @@ public class Statistics extends StatisticsMenu { // extenda servlet eller statis
 				Cookie cookie = new Cookie("projectGroup", projectGroup);
 				response.addCookie(cookie);
 				out.append(printFilter(db.getStatisticsFilter(Integer.parseInt(projectGroup)), userPermission));
+				out.append(getPageOutro());
 			}
 			else { // Admin has submitted filters. 
 				String projectGroup= getCookieValue(request);
@@ -92,6 +105,8 @@ public class Statistics extends StatisticsMenu { // extenda servlet eller statis
 					HashMap<String, ArrayList<String>> stats = db.getStatistics(Integer.parseInt(projectGroup), toStringArrayList(users), toIntegerArrayList(roles), toIntegerArrayList(activities), toIntegerArrayList(weeks));
 					out.append(printGraph(stats));
 					out.append(printTable(stats));
+
+					out.append(getPageOutro());
 					
 				} else { //
 					out.append("There seems to be a problem with the cookies");
@@ -102,6 +117,8 @@ public class Statistics extends StatisticsMenu { // extenda servlet eller statis
 			out.append(printGraph(stats));
 			out.append(printTable(stats));
 
+			out.append(getPageOutro());
+
 			
 		} else if(userPermission == 4) { // User has submitted weeks.
 
@@ -110,6 +127,8 @@ public class Statistics extends StatisticsMenu { // extenda servlet eller statis
 			HashMap<String, ArrayList<String>> stats = db.getStatistics(projectGroupId, toStringArrayList(username), null, null, toIntegerArrayList(weeks));
 			out.append(printGraph(stats));
 			out.append(printTable(stats));
+
+			out.append(getPageOutro());
 		}
 	}
 
@@ -363,11 +382,11 @@ public class Statistics extends StatisticsMenu { // extenda servlet eller statis
 	 * Creates a string with html and javascript code that creates a table when printed out.
 	 * @param stats HashMap with keys "user", "role", "activity", "week" and "time" 
 	 * and ArrayList as value.
-	 * @return String containing html and javascript that creates the table when printed out. If stats is equal to null, it returns the string "No, table to show. Using another filer might solve this.".
+	 * @return String containing html and javascript that creates the table when printed out. If stats is equal to null, it returns the string "No time report found with these filters.".
 	 */	
 	private String printTable(HashMap<String, ArrayList<String>> stats) {
 		if(stats.get("time").isEmpty()) {
-			return("No table or graph to show. Using another filter might solve this.");
+			return("No time report found with these filters.");
 		}
 		
 		StringBuilder htmlTable = new StringBuilder();
@@ -498,7 +517,7 @@ public class Statistics extends StatisticsMenu { // extenda servlet eller statis
 
 
 	private void testSetSessionData(HttpSession session) {
-		session.setAttribute("user_Permissions", 4);
+		session.setAttribute("user_Permissions", 1);
 		session.setAttribute("project_group_id", 1);
 		session.setAttribute("username","andsve");
 	}
