@@ -121,7 +121,7 @@ public class servletBase extends HttpServlet {
 				+ "<title> The Base Block System </title>"
 				+ "<link href=\"bootstrap.min.css\" type=\"text/css\" rel=\"stylesheet\">"
 				+ "</head>"
-				+ "<body>";
+				+ "<body style=\"padding-top: 80px\">";
 		return intro;
 	}
 	
