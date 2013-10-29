@@ -66,7 +66,7 @@ public class NewTimeReport extends HttpServlet{
 			session.setAttribute("state", NOT_ENOUGH_DATA);
 			doGet(request,response);
 		} else {
-			//Change the values to valid ones
+			//Change Time Report values into user id and project id.
 			TimeReport timeReport = new TimeReport(Integer.valueOf(week), 1, 1);
 			String[] fields = request.getParameter("FormFields").split(",");
 			ArrayList<Activity> activities = new ArrayList<Activity>();

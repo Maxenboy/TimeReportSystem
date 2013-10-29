@@ -256,7 +256,7 @@ public class TimeReportGenerator {
 				Activity a = activities.get(i);
 				if(a.getActivityNr() == activityNbr) {
 					foundExistingActivity = true;
-					sb.append("<TD><I><INPUT TYPE=\"text\" NAME=" + formElement(Integer.toString(formField)) + " Value=" + formElement(Integer.toString(a.getTime())) + "SIZE=3></I></TD>");
+					sb.append("<TD><I><INPUT TYPE=\"text\" NAME=" + formElement(Integer.toString(activityNbr) + " ") + " Value=" + formElement(Integer.toString(a.getTime())) + "SIZE=3></I></TD>");
 					break;
 				}
 			}
@@ -287,12 +287,12 @@ public class TimeReportGenerator {
 				Activity a = activities.get(i);
 				if(a.getActivityNr() == activityNbr) {
 					foundExistingActivity = true;
-					sb.append("<TD><I><INPUT TYPE=\"text\" NAME=" + formElement(Integer.toString(formField)) + " Value=" + formElement(Integer.toString(a.getTime())) + "SIZE=3></I></TD>");
+					sb.append("<TD><I><INPUT TYPE=\"text\" NAME=" + formElement(Integer.toString(activityNbr)) + " Value=" + formElement(Integer.toString(a.getTime())) + "SIZE=3></I></TD>");
 					break;
 				}
 			}
 			if(!foundExistingActivity)
-				sb.append("<TD><I><INPUT TYPE=\"text\" NAME=" + formElement(Integer.toString(activityNbr) + " ") +  " Value=\"\" SIZE=3>");
+				sb.append("<TD><I><INPUT TYPE=\"text\" NAME=" + formElement(Integer.toString(activityNbr)) +  " Value=\"\" SIZE=3>");
 			sb.append("</I></TD></TR>");
 			activityNbr++;
 		}
@@ -303,14 +303,15 @@ public class TimeReportGenerator {
 			Activity a = activities.get(i);
 			if(a.getActivityNr() == activityNbr) {
 				foundExistingActivity = true;
-				sb.append("<TD><I><INPUT TYPE=\"text\" NAME=" + formElement(Integer.toString(formField)) + " Value=" + formElement(Integer.toString(a.getTime())) + "SIZE=3></I></TD>");
+				sb.append("<TD><I><INPUT TYPE=\"text\" NAME=" + formElement(Integer.toString(activityNbr)) + " Value=" + formElement(Integer.toString(a.getTime())) + "SIZE=3></I></TD>");
 				break;
 			}
 		}
 		if(!foundExistingActivity)
-			sb.append("<TD><I><INPUT TYPE=\"text\" NAME=" + formElement(Integer.toString(activityNbr) + " ") +  " Value=\"\" SIZE=3>");
+			sb.append("<TD><I><INPUT TYPE=\"text\" NAME=" + formElement(Integer.toString(activityNbr)) +  " Value=\"\" SIZE=3>");
 		sb.append("</TABLE>");
 		sb.append("<INPUT TYPE=\"hidden\" NAME=\"FormFields\" Value=\"0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,21 ,22 ,23 ,30 ,41,42,43,44,100,\">");
+		sb.append("<INPUT TYPE=\"hidden\" NAME=\"reportId\" Value=" + formElement(Integer.toString(reportId)) + ">");
 		sb.append("<INPUT TYPE=\"submit\" VALUE=\"Submit time report\">");
 		sb.append("</FORM>");
 		return sb.toString();
@@ -469,6 +470,10 @@ public class TimeReportGenerator {
 			return null;
 		}
 		return sb.toString();
+	}
+	
+	public boolean changeTimeReport(TimeReport timeReport, ArrayList<Activity> activities) {
+		return db.updateTimeReport(timeReport, activities);
 	}
 
 	public boolean removeTimeReport(String reportId) {
