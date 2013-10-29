@@ -14,7 +14,7 @@ import database.*;
 
 @WebServlet("/Statistics")
 
-public class Statistics extends gui.StatisticsMenu { // extenda servlet eller statisticsmenu??
+public class Statistics extends gui.StatisticsMenu {
 	
 	public Statistics() {
 

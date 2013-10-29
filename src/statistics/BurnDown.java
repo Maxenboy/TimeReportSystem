@@ -17,7 +17,7 @@ import database.ProjectGroup;
 
 
 @WebServlet("/BurnDown")
-public class BurnDown extends gui.StatisticsMenu { // extenda servlet eller statisticsmenu??
+public class BurnDown extends gui.StatisticsMenu {
 	public BurnDown() {
 		// Konstruktor
 	}
