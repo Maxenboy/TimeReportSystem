@@ -217,8 +217,7 @@ public class Statistics extends gui.StatisticsMenu {
 				  + "<div id=\"chart_div\" style=\"width: 900px; height: 500px;\"></div>"
 	
 			
-				);
-			
+				);		
 		return htmlGraph.toString();		
 	}
 
@@ -235,7 +234,7 @@ public class Statistics extends gui.StatisticsMenu {
 			Iterator<String> itr = users.iterator();
 
 			sb.append("<form method='POST'> "
-					+ "<table><tr><td> Users <br /><select name='users' multiple  style='width=200px; height=300px''>"); 
+					+ "<table class='table table-bordered table-hover'><tr><td> Users <br /><select name='users' multiple>"); 
 			
 			while(itr.hasNext()) { // Iterates through the list with usernames to build up the first part of form.				
 				String username = itr.next();
@@ -249,7 +248,7 @@ public class Statistics extends gui.StatisticsMenu {
 			ArrayList<String> roles = table.get("role");
 			itr = roles.iterator();
 
-			sb.append("Roles <br /><select name='roles' multiple  style='width=200px; height=300px''>");
+			sb.append("Roles <br /><select name='roles' multiple>");
 			while(itr.hasNext()) {
 				String role = itr.next();
 				sb.append("<option value='"
@@ -261,7 +260,7 @@ public class Statistics extends gui.StatisticsMenu {
 			ArrayList<String> activities= table.get("activity");
 			itr = activities.iterator();
 
-			sb.append("Activities <br /><select name='activities' multiple  style='width=200px; height=300px''>");
+			sb.append("Activities <br /><select name='activities' multiple>");
 			while(itr.hasNext()) {
 				String activity = itr.next();
 				sb.append("<option value='"
@@ -273,7 +272,7 @@ public class Statistics extends gui.StatisticsMenu {
 			ArrayList<String> weeks= table.get("week");
 			itr = weeks.iterator();
 
-			sb.append("Weeks <br /><select name='weeks' multiple style='width=200px; height=300px''>");
+			sb.append("Weeks <br /><select name='weeks' multiple>");
 			while(itr.hasNext()) {
 				String week = itr.next();
 				sb.append("<option value='"
@@ -291,7 +290,7 @@ public class Statistics extends gui.StatisticsMenu {
 			ArrayList<String> weeks = table.get("week");
 			Iterator<String>  itr= weeks.iterator();
 
-			sb.append("Weeks <br /><select name='weeks' multiple style='width=200px; height=300px'>");
+			sb.append("Weeks <br /><select name='weeks' multiple>");
 			while(itr.hasNext()) {
 				String week = itr.next();
 				sb.append("<option value='"
@@ -432,6 +431,7 @@ public class Statistics extends gui.StatisticsMenu {
 				    + "</script>"
 				   + "<div id='table_div'></div>"
 		);
+		htmlTable.append("<br /><br />");
 		return htmlTable.toString();
 	}	
 	
