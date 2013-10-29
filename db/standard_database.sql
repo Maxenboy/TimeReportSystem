@@ -1,11 +1,16 @@
 create database puss1302;
 use puss1302;
+--
+-- Database: `puss1302`
+--
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `activities`
 --
 
-CREATE TABLE `activities` (
+CREATE TABLE IF NOT EXISTS `activities` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `activity_nr` int(11) NOT NULL,
   `activity_type` varchar(1) NOT NULL,
@@ -39,7 +44,7 @@ INSERT INTO `activities` (`id`, `activity_nr`, `activity_type`, `time`, `time_re
 -- Table structure for table `project_groups`
 --
 
-CREATE TABLE `project_groups` (
+CREATE TABLE IF NOT EXISTS `project_groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `project_name` varchar(10) NOT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1',
@@ -66,7 +71,7 @@ INSERT INTO `project_groups` (`id`, `project_name`, `active`, `start_week`, `end
 -- Table structure for table `time_reports`
 --
 
-CREATE TABLE `time_reports` (
+CREATE TABLE IF NOT EXISTS `time_reports` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `week` int(11) NOT NULL,
   `signed` tinyint(1) NOT NULL DEFAULT '0',
@@ -81,19 +86,19 @@ CREATE TABLE `time_reports` (
 --
 
 INSERT INTO `time_reports` (`id`, `week`, `signed`, `user_id`, `project_group_id`) VALUES
-(1, 2, 1, 3, 0),
-(2, 3, 0, 3, 0),
-(3, 4, 0, 5, 0),
-(4, 1, 0, 6, 0),
-(5, 5, 0, 7, 0),
-(6, 1, 0, 8, 0),
-(7, 2, 0, 9, 0),
-(8, 1, 0, 12, 0),
-(9, 1, 0, 13, 0),
-(10, 1, 0, 14, 0),
-(11, 1, 0, 15, 0),
-(12, 1, 0, 16, 0),
-(13, 1, 0, 17, 0);
+(1, 2, 1, 3, 1),
+(2, 3, 0, 3, 1),
+(3, 4, 0, 5, 1),
+(4, 1, 0, 6, 1),
+(5, 5, 0, 7, 1),
+(6, 1, 0, 8, 1),
+(7, 2, 0, 9, 1),
+(8, 1, 0, 12, 2),
+(9, 1, 0, 13, 2),
+(10, 1, 0, 14, 2),
+(11, 1, 0, 15, 2),
+(12, 1, 0, 16, 2),
+(13, 1, 0, 17, 2);
 
 -- --------------------------------------------------------
 
@@ -101,7 +106,7 @@ INSERT INTO `time_reports` (`id`, `week`, `signed`, `user_id`, `project_group_id
 -- Table structure for table `users`
 --
 
-CREATE TABLE `users` (
+CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(10) NOT NULL,
   `password` varchar(6) NOT NULL,
@@ -136,3 +141,7 @@ INSERT INTO `users` (`id`, `username`, `password`, `active`, `role`, `project_gr
 (17, 'svesve', 'hejsan', 1, 7, 2),
 (18, 'yvokar', 'hejsan', 0, 2, 3),
 (19, 'narema', 'hejsan', 0, 2, 4);
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
