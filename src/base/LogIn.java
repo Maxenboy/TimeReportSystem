@@ -135,10 +135,20 @@ public class LogIn extends servletBase {
        			session.setAttribute("role", u.getRole());
        			session.setAttribute("project_group_id", u.getProjectGroup());
        			session.setAttribute("active", u.isActive());
-       			response.sendRedirect("functionality.html");
+       			if(u.getRole() == User.ROLE_ADMIN) {
+       				session.setAttribute("user_permissions", 1);
+       			} else if (u.getRole() == User.ROLE_PROJECT_LEADER) {
+       				session.setAttribute("user_permissions", 2);
+       			} else if(u.getRole() == User.ROLE_NO_ROLE) {
+       				session.setAttribute("user_permissions", 3);
+       			} else {
+       				session.setAttribute("user_permissions", 4);
+       			}
+       			response.sendRedirect("ShowTimeReports");
         	} else {
         		out.println("<p>User is not active</p>");
         		out.println(loginRequestForm());
+        		
         	}
 //       		}
 //       		else {
