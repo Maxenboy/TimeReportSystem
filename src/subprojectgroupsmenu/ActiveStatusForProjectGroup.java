@@ -78,8 +78,6 @@ public class ActiveStatusForProjectGroup extends gui.ProjectGroupsMenu {
 		return false;
 	}
 
-	
-
 	private String groupForm() {
 		String html;
 		html = "<p> <form name=" + formElement("input");
