@@ -71,5 +71,4 @@ public class HandleProjectLeader extends gui.ProjectGroupsMenu {
 		return html;
 	}
 
-
 }
