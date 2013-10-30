@@ -26,8 +26,10 @@ public class HandleProjectLeader extends gui.ProjectGroupsMenu {
 		HttpSession session = request.getSession();
 		PrintWriter out = response.getWriter();
 		out.print(getPageIntro());
-		out.print(generateMainMenu((Integer) session.getAttribute("user_permissions")));
-		out.print(generateSubMenu((Integer) session.getAttribute("user_permissions")));
+		out.print(generateMainMenu((Integer) session
+				.getAttribute("user_permissions")));
+		out.print(generateSubMenu((Integer) session
+				.getAttribute("user_permissions")));
 		if (request.getParameter("session") == null) {
 			out.print(leaderForm());
 		} else if (request.getParameter("session").equals("one")) {
@@ -53,7 +55,11 @@ public class HandleProjectLeader extends gui.ProjectGroupsMenu {
 		} else {
 			id = request.getParameter("reportId");
 			User user = db.getUser(Integer.parseInt(id));
-			user.setRole(user.ROLE_PROJECT_LEADER);
+			if (user.getRole() == user.ROLE_PROJECT_LEADER) {
+				user.setRole(3);
+			} else {
+				user.setRole(user.ROLE_PROJECT_LEADER);
+			}
 		}
 	}
 
@@ -66,7 +72,7 @@ public class HandleProjectLeader extends gui.ProjectGroupsMenu {
 		html += "<p> Which user : <input type=" + formElement("text")
 				+ " user=" + formElement("user") + '>';
 		html += "<input type=" + formElement("submit") + "value="
-				+ formElement("make leader") + '>';
+				+ formElement("Toggle leader") + '>';
 		html += "</form>";
 		return html;
 	}
