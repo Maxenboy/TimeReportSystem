@@ -141,7 +141,3 @@ INSERT INTO `users` (`id`, `username`, `password`, `active`, `role`, `project_gr
 (17, 'svesve', 'hejsan', 1, 7, 2),
 (18, 'yvokar', 'hejsan', 0, 2, 3),
 (19, 'narema', 'hejsan', 0, 2, 4);
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
