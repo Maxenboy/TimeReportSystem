@@ -78,10 +78,7 @@ public class ActiveStatusForProjectGroup extends gui.ProjectGroupsMenu {
 		return false;
 	}
 
-	private String getPageJs() {
-		return "<script src=\"//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js\"></script>";
-	}
-
+	
 
 	private String groupForm() {
 		String html;
