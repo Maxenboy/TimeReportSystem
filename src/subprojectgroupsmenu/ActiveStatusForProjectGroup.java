@@ -89,7 +89,7 @@ public class ActiveStatusForProjectGroup extends gui.ProjectGroupsMenu {
 		html += "<p> Status : <input type=" + formElement("text") + " status="
 				+ formElement("status") + '>';
 		html += "<input type=" + formElement("submit") + "value="
-				+ formElement("Get group") + '>';
+				+ formElement("Toggle status") + '>';
 		html += "</form>";
 		return html;
 	}
