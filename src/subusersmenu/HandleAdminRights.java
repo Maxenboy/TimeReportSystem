@@ -32,38 +32,32 @@ public class HandleAdminRights extends UsersMenu {
 		out.print(generateSubMenu((int) session
 				.getAttribute("user_permissions")));
 
-		if (request.getParameter("session") == null) {
+		if (request.getParameter("username") == null) {
 			out.print(u.showUsers(db.getUsers()));
-		} else if (request.getParameter("session").equals("Success")) {
-			u.makeAdministrator(request.getParameter("userName"));
-			out.print(u.showUsers(db.getUsers())
-					+ "<script>$(alert(\"Anv��ndaren ��r nu administrat��r. ��ndringar sparade.\"))</script>");
-		} else if (request.getParameter("session").equals("SuccessRemove")) {
-			u.unmakeAdministrator(request.getParameter("userName"));
-			out.print(u.showUsers(db.getUsers())
-					+ "<script>$(alert(\"Anv��ndare ��r ej l��ngre administrat��r. ��ndringar sparade.\"))</script>");
 		} else {
-			out.print(u.showUsers(db.getUsers())
-					+ "<script>$(alert(\"Inte m��jligt! Anv��ndare ��r med i en projektgrupp! \"))</script>");
+			User user = db.getUser(Integer.parseInt(request
+					.getParameter("username")));
+			if (user.getProjectGroup() == 0) {
+				if (user.getRole() == user.ROLE_ADMIN) {
+					u.unmakeAdministrator(user.getUsername());
+					out.print(u.showUsers(db.getUsers())
+							+ "<script>$(alert(\"Anv��ndare ��r ej l��ngre administrat��r. ��ndringar sparade.\"))</script>");
+				} else {
+					u.makeAdministrator(user.getUsername());
+					out.print(u.showUsers(db.getUsers())
+							+ "<script>$(alert(\"Anv��ndaren ��r nu administrat��r. ��ndringar sparade.\"))</script>");
+				}
+			} else {
+				out.print(u.showUsers(db.getUsers())
+						+ "<script>$(alert(\"Inte m��jligt! Anv��ndare ��r med i en projektgrupp! \"))</script>");
+			}
 		}
 		out.print(getPageOutro());
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
-		HttpSession session = request.getSession();
-		User u = db.getUser(Integer.parseInt(request.getParameter("name")));
-		if (u.getProjectGroup() == 0) {
-			if (u.getRole() == u.ROLE_ADMIN) {
-				response.sendRedirect(request.getRequestURI()
-						+ "?session=SuccessRemove&userName=" + u.getUsername());
-			} else {
-				response.sendRedirect(request.getRequestURI()
-						+ "?session=Success&userName=" + u.getUsername());
-			}
-		} else {
-			response.sendRedirect(request.getRequestURI() + "?session=failure");
-		}
+
 	}
 
 }

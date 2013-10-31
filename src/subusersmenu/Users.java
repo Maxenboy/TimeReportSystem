@@ -77,7 +77,7 @@ public class Users {
 			return null;
 		}
 		StringBuilder sb = new StringBuilder();
-		sb.append("<FORM METHOD=post ACTION=" + formElement("ShowUsers") + ">");
+		sb.append("<FORM METHOD=post>");
 		sb.append(buildShowUsersTable());
 		for (User u : users) {
 			sb.append("<tr>");
