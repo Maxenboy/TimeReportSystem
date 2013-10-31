@@ -48,6 +48,7 @@ public class ActiveStatusForProjectGroup extends gui.ProjectGroupsMenu {
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
+
 	}
 
 	private boolean checkGroup(String name) {
