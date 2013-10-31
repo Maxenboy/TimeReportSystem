@@ -21,18 +21,18 @@ public class ProjectGroupsMenu extends servletBase {
 				 * Visa projektgrupper
 				 * Ny projektgrupp
 				 * Aktivera/inaktivera
-				 * Lägg till användare i projektgrupp
-				 * Ta bort användare i projektgrupp
+				 * L��gg till anv��ndare i projektgrupp
+				 * Ta bort anv��ndare i projektgrupp
 				 * Hantera projektledare
 				 */
 				
 				html += ""
 						+ "<li><a href=\"ShowProjectGroups\">Show project groups</a></li>"
 						+ "<li><a href=\"NewProjectGroup\">New project group</a></li>"
-						+ "<li><a href=\"HandleProjectLeader\">Activate/inactivate project groups</a></li>"
+						+ "<li><a href=\"ActiveStatusForProjectGroup\">Activate/inactivate project groups</a></li>"
 						+ "<li><a href=\"AddMemberToProjectGroup\">Add users to project groups</a></li>"
 						+ "<li><a href=\"RemoveMemberFromProjectGroup\">Remove a users from project groups</a></li>"
-						+ "<li><a href=\"RemoveMemberFromProjectGroup\">Manage project leaders</a></li>"; 
+						+ "<li><a href=\"HandleProjectLeader\">Manage project leaders</a></li>"; 
 				break; 
 		}
 		
