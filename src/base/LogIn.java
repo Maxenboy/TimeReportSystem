@@ -49,12 +49,12 @@ public class LogIn extends servletBase {
      * @return HTML code for the form
      */
     protected String loginRequestForm() {
-    	String html = "<p>Please enter your name and password in order to log in:</p>";
+    	String html = "<p>Ange användarnamn och lösenord:</p>";
     	html += "<p> <form name=" + formElement("input");
     	html += " method=" + formElement("post");
-    	html += "<p> Name: <input type=" + formElement("text") + " name=" + formElement("user") + '>'; 
-    	html += "<p> Password: <input type=" + formElement("password") + " name=" + formElement("password") + '>';  
-    	html += "<p> <input type=" + formElement("submit") + "value=" + formElement("Submit") + '>';
+    	html += "<p> Användarnamn: <input type=" + formElement("text") + " name=" + formElement("user") + '>'; 
+    	html += "<p> Lösenord: <input type=" + formElement("password") + " name=" + formElement("password") + '>';  
+    	html += "<p> <input type=" + formElement("submit") + "value=" + formElement("Logga In") + '>';
     	return html;
     }
     
