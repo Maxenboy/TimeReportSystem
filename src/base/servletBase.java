@@ -95,6 +95,7 @@ public class servletBase extends HttpServlet {
 		String intro = "<html>"
 				+ "<head>"
 				+ "<title> The Base Block System </title>"
+				+ "<script src=\"//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js\"></script>"
 				+ "<link href=\"bootstrap.min.css\" type=\"text/css\" rel=\"stylesheet\">"
 				+ "</head>"
 				+ "<body style=\"padding-top: 80px\">";

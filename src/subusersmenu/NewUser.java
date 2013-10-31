@@ -37,6 +37,7 @@ public class NewUser extends UsersMenu {
 		out.print(generateSubMenu((int) session
 				.getAttribute("user_permissions")));
 		String s = users.userForm();
+		out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"�r du s�ker?\");if (confirmed) {$(this).submit();}});</script>");
 		if (s == null) {
 			out.print("<p> Inget att visa </p>");
 		} else {
@@ -45,9 +46,13 @@ public class NewUser extends UsersMenu {
 				out.print(s);
 			} else if (request.getParameter("success").equals("true")) {
 				out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"�r du s�ker?\");if (confirmed) {$(this).submit();}});</script>");
+				String name = request.getParameter("user");
+				String pass = db.getUser(name).getPassword();
+				out.print("<script>$(alert(\"Lyckades! Användarnamn: " + name + " Lösenord: " + pass +"\"))</script>");
 				out.print(users.showUsers(db.getUsers()));
-			} else if(request.getParameter("success").equals("false")){
-				out.print("<script>$(alert(\"Inkorrekt syntax p� anv�ndarnamnet\"))</script>" + s);
+			} else if (request.getParameter("success").equals("false")) {
+				out.print("<script>$(alert(\"Inkorrekt syntax p� anv�ndarnamnet\"))</script>"
+						+ s);
 			}
 
 		}
@@ -60,7 +65,7 @@ public class NewUser extends UsersMenu {
 		String username = request.getParameter("username");
 		if (users.checkNewName(username)) {
 			users.addUser(username);
-			response.sendRedirect(request.getRequestURI() + "?success=true");
+			response.sendRedirect(request.getRequestURI() + "?success=true&user="+username);
 		} else {
 			response.sendRedirect(request.getRequestURI() + "?success=false");
 		}

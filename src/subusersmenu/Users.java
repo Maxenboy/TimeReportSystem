@@ -24,9 +24,10 @@ public class Users {
 		String html;
 		html = "<p> <form name=" + formElement("input");
 		html += " method=" + formElement("POST");
-		html += "<p> Användarnamn : <input type=" + formElement("text") + " name="
+		html += "<p> Anvï¿½ndarnamn : <input type=" + formElement("text") + " name="
 				+ formElement("username") + '>';
-		html += "<input type=" + formElement("Spara") + '>';
+		html += "<input type=" + formElement("submit") + "value="
+				+ formElement("Skapa anvï¿½ndare") + '>';
 		html += "</form>";
 		return html;
 
@@ -187,10 +188,10 @@ public class Users {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<table class=\"table table-bordered table-hover\"");
 		sb.append("<tr>");
-		sb.append("<th>Användarnamn</th>");
+		sb.append("<th>Anvï¿½ndarnamn</th>");
 		sb.append("<th>Projektgrupp</th>");
 		sb.append("<th>Roll</th>");
-		sb.append("<th>Välj</th>");
+		sb.append("<th>Vï¿½lj</th>");
 		sb.append("</tr>");
 		return sb.toString();
 	}

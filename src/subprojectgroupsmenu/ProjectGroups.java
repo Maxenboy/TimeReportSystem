@@ -88,8 +88,11 @@ public class ProjectGroups {
 	 * @return
 	 */
 	public boolean toggleActiveProjectGroup(int id, boolean active) {
-		return (active) ? db.activateProjectGroup(id) : db
-				.deactivateProjectGroup(id);
+		if(active) {
+			return db.activateProjectGroup(id);
+		} else {
+			return db.deactivateProjectGroup(id);
+		}
 	}
 
 	/**

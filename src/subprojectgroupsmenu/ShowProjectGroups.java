@@ -47,7 +47,6 @@ public class ShowProjectGroups extends ProjectGroupsMenu {
 		}
 		sb.append("</table>");
 		sb.append("</form>");
-		sb.append("</body></html>");
 		return sb.toString();
 	}
 

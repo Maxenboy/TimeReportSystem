@@ -30,7 +30,7 @@ public class RemoveMemberFromProjectGroup extends gui.ProjectGroupsMenu {
 			out.print(group.showProjectGroup(db.getUsers(Integer
 					.parseInt(request.getParameter("groupid")))));
 		} else {
-			out.print("<script>$(alert(\"Kunde inte l�gga till grupp\"))</script>"
+			out.print("<script>$(alert(\"Kunde inte lägga till grupp\"))</script>"
 					+ removeUserForm());
 		}
 		out.print(getPageOutro());
