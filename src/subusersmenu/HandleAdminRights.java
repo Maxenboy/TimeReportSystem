@@ -49,7 +49,7 @@ public class HandleAdminRights extends UsersMenu {
 							+ "<script>$(alert(\"Användaren är nu administratör. ändringar sparade.\"))</script>");
 				}
 			} else {
-				out.print(u.showUsers(db.getUsers())+ "<script>$(alert(\"Inte m��jligt! Anv��ndare ��r med i en projektgrupp! \"))</script>");
+				out.print(u.showUsers(db.getUsers())+ "<script>$(alert(\"Inte möjligt! Användare är med i en projektgrupp! \"))</script>");
 			}
 		}
 		out.print(getPageOutro());

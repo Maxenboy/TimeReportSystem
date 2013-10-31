@@ -42,7 +42,7 @@ public class ProjectGroups {
 		String html;
 		html = "<p> <form name=" + formElement("input") + "id=" + formElement("addusertogroup");
 		html += " method=" + formElement("get");
-		html += "<p> Ange anv�ndarnamn: <input type=" + formElement("text")
+		html += "<p> Ange användarnamn: <input type=" + formElement("text")
 				+ " name=" + formElement("addname") + '>';
 		html += "<p> Grupp id: <input type=" + formElement("text")
 				+ " groupid=" + formElement("groupid") + '>';
@@ -75,7 +75,7 @@ public class ProjectGroups {
 		}
 		sb.append("</table>");
 		sb.append("<INPUT TYPE=" + formElement("submit") + "VALUE="
-				+ formElement("H�mta anv�ndare") + ">");
+				+ formElement("Hämta användare") + ">");
 		sb.append("</form>");
 		return sb.toString();
 	}
@@ -169,10 +169,10 @@ public class ProjectGroups {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<table class=\"table table-bordered table-hover\"");
 		sb.append("<tr>");
-		sb.append("<th>Anv�ndarnamn</th>");
+		sb.append("<th>Användarnamn</th>");
 		sb.append("<th>Projectgrupp</th>");
 		sb.append("<th>Roll</th>");
-		sb.append("<th>V�lj</th>");
+		sb.append("<th>Välj</th>");
 		sb.append("</tr>");
 		return sb.toString();
 	}

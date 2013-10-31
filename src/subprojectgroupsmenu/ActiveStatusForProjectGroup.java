@@ -31,7 +31,7 @@ public class ActiveStatusForProjectGroup extends gui.ProjectGroupsMenu {
 		out.print(generateSubMenu((Integer) session
 				.getAttribute("user_permissions")));
 		if (request.getParameter("thegroup") == null) {
-			out.print("<script>$('#Activate/Inactivategroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"�r du s�ker?\");if (confirmed) {$(this).submit();}});</script>"
+			out.print("<script>$('#Activate/Inactivategroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"Är du säker?\");if (confirmed) {$(this).submit();}});</script>"
 					+ showProjectGroups());
 		} else {
 			if (checkGroup(request.getParameter("thegroup"))) {
@@ -39,7 +39,7 @@ public class ActiveStatusForProjectGroup extends gui.ProjectGroupsMenu {
 						+ showProjectGroups());
 			} else {
 				out.print("<script>$(alert(\"Inkorrekt input.\"))</script>"
-						+ "<script>$('#Activate/Inactivategroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"�r du s�ker?\");if (confirmed) {$(this).submit();}});</script>"
+						+ "<script>$('#Activate/Inactivategroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"Är du säker?\");if (confirmed) {$(this).submit();}});</script>"
 						+ showProjectGroups());
 			}
 		}

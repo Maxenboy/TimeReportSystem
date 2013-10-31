@@ -48,7 +48,7 @@ public class ActiveStatusForUser extends UsersMenu {
 				out.print(users.showUsers(db.getUsers()));
 			}else{
 				db.activateUser(user.getId());
-				out.print("<script>$(alert(\"Inkorrekt syntax p� an�ndarnamnet\"))</script>");
+				out.print("<script>$(alert(\"Inkorrekt syntax på användarnamnet\"))</script>");
 				out.print(users.showUsers(db.getUsers()));
 			}
 		}

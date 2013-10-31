@@ -42,16 +42,16 @@ public class NewUser extends UsersMenu {
 			out.print("<p> Inget att visa </p>");
 		} else {
 			if (request.getParameter("success") == null) {
-				out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"�r du s�ker?\");if (confirmed) {$(this).submit();}});</script>");
+				out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"Är du säker?\");if (confirmed) {$(this).submit();}});</script>");
 				out.print(s);
 			} else if (request.getParameter("success").equals("true")) {
-				out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"�r du s�ker?\");if (confirmed) {$(this).submit();}});</script>");
+				out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"Är du säker?\");if (confirmed) {$(this).submit();}});</script>");
 				String name = request.getParameter("user");
 				String pass = db.getUser(name).getPassword();
 				out.print("<script>$(alert(\"Lyckades! Användarnamn: " + name + " Lösenord: " + pass +"\"))</script>");
 				out.print(users.showUsers(db.getUsers()));
 			} else if (request.getParameter("success").equals("false")) {
-				out.print("<script>$(alert(\"Inkorrekt syntax p� anv�ndarnamnet\"))</script>"
+				out.print("<script>$(alert(\"Inkorrekt syntax på anv�ndarnamnet\"))</script>"
 						+ s);
 			}
 

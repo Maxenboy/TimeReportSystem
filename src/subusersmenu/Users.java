@@ -24,10 +24,10 @@ public class Users {
 		String html;
 		html = "<p> <form name=" + formElement("input");
 		html += " method=" + formElement("POST");
-		html += "<p> Anv�ndarnamn : <input type=" + formElement("text") + " name="
+		html += "<p> Användarnamn : <input type=" + formElement("text") + " name="
 				+ formElement("username") + '>';
 		html += "<input type=" + formElement("submit") + "value="
-				+ formElement("Skapa anv�ndare") + '>';
+				+ formElement("Skapa användare") + '>';
 		html += "</form>";
 		return html;
 
