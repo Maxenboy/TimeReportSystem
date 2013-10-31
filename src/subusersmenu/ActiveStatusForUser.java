@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import database.User;
+
 
 @WebServlet("/ActiveStatusForUser")
 public class ActiveStatusForUser extends UsersMenu {
@@ -33,54 +35,32 @@ public class ActiveStatusForUser extends UsersMenu {
 		out.print(generateSubMenu((int) session
 				.getAttribute("user_permissions")));
 
-		String s = groupForm();
-		if (s == null) {
-			out.print("<p> Inget att visa </p>");
+		
+		if (request.getParameter("username") == null) {
+			out.print(users.showUsers(db.getUsers()));
+			out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"Är du säker?\");if (confirmed) {$(this).submit();}});</script>");
 		} else {
-			if (request.getParameter("success") == null) {
-				out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"�r du s�ker?\");if (confirmed) {$(this).submit();}});</script>");
-				out.print(s);
-			} else if (request.getParameter("success").equals("true")) {
-				out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"�r du s�ker?\");if (confirmed) {$(this).submit();}});</script>");
+			User user = db.getUser(Integer.parseInt(request
+					.getParameter("username")));
+			if(user.isActive()){
+				db.deactivateUser(user.getId());
+				out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"Är du säker?\");if (confirmed) {$(this).submit();}});</script>");
 				out.print(users.showUsers(db.getUsers()));
-			} else if (request.getParameter("success").equals("false")) {
-				out.print("<script>$(alert(\"Inkorrekt syntax p� an�ndarnamnet\"))</script>"
-						+ s);
-			} 
+			}else{
+				db.activateUser(user.getId());
+				out.print("<script>$(alert(\"Inkorrekt syntax p� an�ndarnamnet\"))</script>");
+				out.print(users.showUsers(db.getUsers()));
+			}
 		}
 		out.print(getPageOutro());
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
-		HttpSession session = request.getSession(true);
-		String username = request.getParameter("username");
-		String activate = request.getParameter("active");
-		if (users.checkNewName(username)) {
-			if (activate.equals("true")) {
-				users.activateUser(username);
-			} else {
-				users.deactivateUser(username);
-			}
-			response.sendRedirect(request.getRequestURI() + "?success=true");
-		} else {
-			response.sendRedirect(request.getRequestURI() + "?success=false");
-		}
+		
 
 	}
 
-	public String groupForm() {
-		String html;
-		html = "<p> <form name=" + formElement("input");
-		html += " method=" + formElement("POST");
-		html += "<p> Anv�ndarnamn : <input type=" + formElement("text") + " name="
-				+ formElement("username") + '>';
-		html += "<p> Aktivera : <input type=" + formElement("text")
-				+ " active=" + formElement("active (true/false)") + '>';
-		html += "<input type=" + formElement("submit") + '>';
-		html += "</form>";
-		return html;
 
-	}
 
 }
