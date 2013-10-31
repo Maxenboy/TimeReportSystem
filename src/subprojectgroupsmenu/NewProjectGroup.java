@@ -23,6 +23,7 @@ public class NewProjectGroup extends gui.ProjectGroupsMenu {
 			throws IOException {
 		HttpSession session = request.getSession();
 		PrintWriter out = response.getWriter();
+		out.print(getPageIntro());
 		out.print(generateMainMenu((Integer) session
 				.getAttribute("user_permissions")));
 		out.print(generateSubMenu((Integer) session
@@ -55,13 +56,13 @@ public class NewProjectGroup extends gui.ProjectGroupsMenu {
 			if (group.createProjectGroup(name, startWeek, endWeek,
 					estimatedHours)) {
 				response.sendRedirect(request.getRequestURI()
-						+ "session=sucess");
+						+ "?session=sucess");
 			} else {
-				response.sendRedirect(request.getRequestURI() + "session=false");
+				response.sendRedirect(request.getRequestURI() + "?session=false");
 			}
 		} else {
 			response.sendRedirect(request.getRequestURI()
-					+ "session=false&inputname=bad");
+					+ "?session=false&inputname=bad");
 		}
 	}
 
@@ -128,7 +129,5 @@ public class NewProjectGroup extends gui.ProjectGroupsMenu {
 		sb.append("</tr>");
 		return sb.toString();
 	}
-
-	
 
 }

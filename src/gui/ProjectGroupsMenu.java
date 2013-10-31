@@ -21,8 +21,8 @@ public class ProjectGroupsMenu extends servletBase {
 				 * Visa projektgrupper
 				 * Ny projektgrupp
 				 * Aktivera/inaktivera
-				 * L��gg till anv��ndare i projektgrupp
-				 * Ta bort anv��ndare i projektgrupp
+				 * L������gg till anv������ndare i projektgrupp
+				 * Ta bort anv������ndare i projektgrupp
 				 * Hantera projektledare
 				 */
 				

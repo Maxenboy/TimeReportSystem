@@ -17,28 +17,30 @@ public class Users {
 
 	/**
 	 * Generates a form where it is possible to specify a new user.
+	 * 
 	 * @return
 	 */
 	public String userForm() {
 		String html;
 		html = "<p> <form name=" + formElement("input");
 		html += " method=" + formElement("POST");
-		html += "<p> Username : <input type=" + formElement("text")
-				+ " name=" + formElement("username") + '>';
-		html += "<input type=" + formElement("submit")+ '>';
+		html += "<p> Username : <input type=" + formElement("text") + " name="
+				+ formElement("username") + '>';
+		html += "<input type=" + formElement("submit") + '>';
 		html += "</form>";
 		return html;
-	
+
 	}
 
-	/** 
+	/**
 	 * Checks if the name is acceptable
+	 * 
 	 * @param name
 	 * @return
 	 */
 	public boolean checkNewName(String name) {
 		if (name.length() < 5 || name.length() > 10
-				|| !Pattern.matches("\\w", name)) {
+				|| Pattern.matches("\\W", name)) {
 			return false;
 		}
 		for (User u : db.getUsers()) {
@@ -51,6 +53,7 @@ public class Users {
 
 	/**
 	 * Creates a random password
+	 * 
 	 * @return
 	 */
 	public String createPassword() {
@@ -64,6 +67,7 @@ public class Users {
 
 	/**
 	 * Shows all the users
+	 * 
 	 * @param users
 	 * @return
 	 */
@@ -77,7 +81,13 @@ public class Users {
 		for (User u : users) {
 			sb.append("<tr>");
 			sb.append("<td>" + u.getUsername() + "</td>");
-			sb.append("<td>" + db.getProjectGroup(u.getProjectGroup()).getProjectName() + "</td>");
+			if (u.getProjectGroup() > 0) {
+				sb.append("<td>"
+						+ db.getProjectGroup(u.getProjectGroup())
+								.getProjectName() + "</td>");
+			} else {
+				sb.append("<td> Ingen projektgrupp </td>");
+			}
 			sb.append("<td>" + translateRole(u.getRole()) + "</td>");
 			sb.append("<td>" + createRadio(u.getId()) + "</td>");
 			sb.append("</tr>");
@@ -86,33 +96,34 @@ public class Users {
 		sb.append("<INPUT TYPE=" + formElement("submit") + "VALUE="
 				+ formElement("Spara") + ">");
 		sb.append("</form>");
-	
+
 		return sb.toString();
 	}
-	
+
 	private String translateRole(int role) {
-		switch(role) {
-			case 1:
-				return("Administrator");
-			case 2:
-				return("Project Leader");
-			case 4: 
-				return("System Group");
-			case 5:
-				return("System Group Leader");
-			case 6:
-				return("Development Group");
-			case 7:
-				return("Test Group");
-			case 8:
-				return("Test Leader");
-			default:
-				return("Unknown Role");
+		switch (role) {
+		case 1:
+			return ("Administrator");
+		case 2:
+			return ("Project Leader");
+		case 4:
+			return ("System Group");
+		case 5:
+			return ("System Group Leader");
+		case 6:
+			return ("Development Group");
+		case 7:
+			return ("Test Group");
+		case 8:
+			return ("Test Leader");
+		default:
+			return ("Unknown Role");
 		}
 	}
 
 	/**
 	 * Makes a user administrator
+	 * 
 	 * @param name
 	 */
 	public void makeAdministrator(String name) {
@@ -121,6 +132,7 @@ public class Users {
 
 	/**
 	 * Removes the role administrator from a user
+	 * 
 	 * @param name
 	 */
 	public void unmakeAdministrator(String name) {
@@ -129,6 +141,7 @@ public class Users {
 
 	/**
 	 * Deactivates a user
+	 * 
 	 * @param name
 	 * @return
 	 */
@@ -138,6 +151,7 @@ public class Users {
 
 	/**
 	 * Adds a user to the system
+	 * 
 	 * @param name
 	 * @return
 	 */
@@ -151,6 +165,7 @@ public class Users {
 
 	/**
 	 * Activates a user
+	 * 
 	 * @param name
 	 * @return
 	 */
