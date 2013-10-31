@@ -115,7 +115,7 @@ public class LogIn extends servletBase {
 		
 		if (loggedIn(request)) {
 			session.setAttribute("state", LOGIN_FALSE);
-			out.println("<p>You are now logged out</p>");
+			out.println("<p style='color: red;'>Du är nu utloggad!</p>");
 		}
 		
 		String name;
@@ -151,7 +151,7 @@ public class LogIn extends servletBase {
        			}
        			response.sendRedirect("ShowTimeReports");
         	} else {
-        		out.println("<p>User is not active</p>");
+        		out.println("<p style='color: red;'>Användaren är inaktiv</p>");
         		out.println(loginRequestForm());
         	
         	}
