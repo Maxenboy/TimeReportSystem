@@ -39,7 +39,7 @@ public class HandleProjectLeader extends gui.ProjectGroupsMenu {
 				group.showProjectGroup(list);
 			}
 		} else {
-			out.print("<script>$(alert(\"Incorrect input.\"))</script"
+			out.print("<script>$(alert(\"Inkorrekt input.\"))</script"
 					+ leaderForm());
 		}
 		out.print(getPageOutro());
@@ -72,7 +72,7 @@ public class HandleProjectLeader extends gui.ProjectGroupsMenu {
 		html += "<p> Which user : <input type=" + formElement("text")
 				+ " user=" + formElement("user") + '>';
 		html += "<input type=" + formElement("submit") + "value="
-				+ formElement("Toggle leader") + '>';
+				+ formElement("Toggla ledare") + '>';
 		html += "</form>";
 		return html;
 	}

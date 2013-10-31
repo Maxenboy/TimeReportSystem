@@ -42,7 +42,7 @@ public class ActiveStatusForProjectGroup extends gui.ProjectGroupsMenu {
 			out.print("Sucess!");
 		}
 		else if(request.getParameter("sucess").equals("false")) {
-			out.print("<script>$(alert(\"Incorrect input.\"))</script>" + groupForm());
+			out.print("<script>$(alert(\"Inkorrekt input.\"))</script>" + groupForm());
 		}
 		out.print(getPageOutro());
 	}
@@ -87,7 +87,7 @@ public class ActiveStatusForProjectGroup extends gui.ProjectGroupsMenu {
 		html += "<p> Status : <input type=" + formElement("text") + " status="
 				+ formElement("status") + '>';
 		html += "<input type=" + formElement("submit") + "value="
-				+ formElement("Toggle status") + '>';
+				+ formElement("Toggla status") + '>';
 		html += "</form>";
 		return html;
 	}

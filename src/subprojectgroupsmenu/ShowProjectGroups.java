@@ -59,10 +59,10 @@ public class ShowProjectGroups extends ProjectGroupsMenu {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<table border=" + formElement("1") + ">");
 		sb.append("<tr>");
-		sb.append("<th>Project Group</th>");
-		sb.append("<th>Start Week</th>");
-		sb.append("<th>End Week</th>");
-		sb.append("<th>Estimated hours</th>");
+		sb.append("<th>Projektgrupp</th>");
+		sb.append("<th>Starvecka</th>");
+		sb.append("<th>Slutvecka</th>");
+		sb.append("<th>Estimerat antal timmar</th>");
 		sb.append("</tr>");
 		return sb.toString();
 	}

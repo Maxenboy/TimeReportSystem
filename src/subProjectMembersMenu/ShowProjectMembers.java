@@ -42,10 +42,10 @@ public class ShowProjectMembers extends ProjectGroupsMenu {
 
 		String s = groupForm();
 		if (s == null)
-			out.print("<p> Nothing to show </p>");
+			out.print("<p> Inget att visa </p>");
 		else if (request.getParameter("sucsess") != null) {
 			if (request.getParameter("success").equals(false)) {
-				out.print("<p> THe group specified does not exist </p>");
+				out.print("<p> Den valda gruppen finns ej </p>");
 			} else {
 				pm = new ProjectMembers(request.getParameter("groupname"));
 				out.print(pm.showMembers(db.getUsers(Integer.valueOf(request
@@ -76,7 +76,7 @@ public class ShowProjectMembers extends ProjectGroupsMenu {
 		html += " method=" + formElement("POST");
 		html += "<p> Username : <input type=" + formElement("text") + " name="
 				+ formElement("groupname") + '>';
-		html += "<input type=" + formElement("submit") + '>';
+		html += "<input type=" + formElement("Spara") + '>';
 		html += "</form>";
 		return html;
 	}

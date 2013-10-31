@@ -28,12 +28,11 @@ private Database db;
 		PrintWriter out = response.getWriter();
 		out.print(getPageIntro());
 		
-		// ÄNDRA TILL RÄTT ROLL I generateMainMenu (se servletBase.java för roller) 
 		out.print(generateMainMenu((int)session.getAttribute("user_permissions")));
 		out.print(generateSubMenu((int)session.getAttribute("user_permissions")));
 		String s = users.showUsers(db.getUsers());
 		if(s == null)
-			out.print("<p> Nothing to show </p>");
+			out.print("<p> Inget att visa </p>");
 		else 
 			out.print(s);
 		

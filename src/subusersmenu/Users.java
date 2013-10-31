@@ -26,7 +26,7 @@ public class Users {
 		html += " method=" + formElement("POST");
 		html += "<p> Username : <input type=" + formElement("text") + " name="
 				+ formElement("username") + '>';
-		html += "<input type=" + formElement("submit") + '>';
+		html += "<input type=" + formElement("Spara") + '>';
 		html += "</form>";
 		return html;
 
@@ -187,10 +187,10 @@ public class Users {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<table class=\"table table-bordered table-hover\"");
 		sb.append("<tr>");
-		sb.append("<th>Username</th>");
-		sb.append("<th>Project group</th>");
-		sb.append("<th>Role</th>");
-		sb.append("<th>Select</th>");
+		sb.append("<th>Användarnamn</th>");
+		sb.append("<th>Projektgrupp</th>");
+		sb.append("<th>Roll</th>");
+		sb.append("<th>Välj</th>");
 		sb.append("</tr>");
 		return sb.toString();
 	}

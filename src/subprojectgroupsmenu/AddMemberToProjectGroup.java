@@ -34,8 +34,13 @@ public class AddMemberToProjectGroup extends gui.ProjectGroupsMenu {
 			out.print(groups.showProjectGroup(db.getUsers(Integer
 							.parseInt(request.getParameter("groupid")))));
 		}
+<<<<<<< HEAD
 		else if (request.getParameter("success").equals("false")) {
 			out.print("<script>$(alert(\"Incorrect input.\"))</script>"
+=======
+		else if (request.getParameter("sucess").equals("false")) {
+			out.print("<script>$(alert(\"Inkorrekt input.\"))</script>"
+>>>>>>> 69e5847e357c3d13a1894dfee0afd8dd8142f1fc
 					+ groups.addUserForm());
 		}
 		out.print(getPageOutro());

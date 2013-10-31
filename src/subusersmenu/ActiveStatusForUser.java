@@ -41,7 +41,7 @@ public class ActiveStatusForUser extends UsersMenu {
 
 		String s = groupForm();
 		if (s == null) {
-			out.print("<p> Nothing to show </p>");
+			out.print("<p> Inget att visa </p>");
 		} else {
 			if (request.getParameter("success") == null) {
 				out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"Are you sure?\");if (confirmed) {$(this).submit();}});</script>");

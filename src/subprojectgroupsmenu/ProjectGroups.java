@@ -47,7 +47,7 @@ public class ProjectGroups {
 		html += "<p> Group id: <input type=" + formElement("text")
 				+ " groupid=" + formElement("groupid") + '>';
 		html += "<input type=" + formElement("submit") + "value="
-				+ formElement("Add user") + '>';
+				+ formElement("Lägg till användare") + '>';
 		html += "</form>";
 		return html;
 	}
@@ -75,7 +75,7 @@ public class ProjectGroups {
 		}
 		sb.append("</table>");
 		sb.append("<INPUT TYPE=" + formElement("submit") + "VALUE="
-				+ formElement("Get Users") + ">");
+				+ formElement("Hämta användare") + ">");
 		sb.append("</form>");
 		return sb.toString();
 	}
@@ -145,10 +145,10 @@ public class ProjectGroups {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<table class=\"table table-bordered table-hover\"");
 		sb.append("<tr>");
-		sb.append("<th>Username</th>");
-		sb.append("<th>Project group</th>");
-		sb.append("<th>Role</th>");
-		sb.append("<th>Select</th>");
+		sb.append("<th>Användarnamn</th>");
+		sb.append("<th>Projectgrupp</th>");
+		sb.append("<th>Roll</th>");
+		sb.append("<th>Välj</th>");
 		sb.append("</tr>");
 		return sb.toString();
 	}
