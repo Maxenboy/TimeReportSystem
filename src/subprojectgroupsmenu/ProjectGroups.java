@@ -42,9 +42,9 @@ public class ProjectGroups {
 		String html;
 		html = "<p> <form name=" + formElement("input") + "id=" + formElement("addusertogroup");
 		html += " method=" + formElement("get");
-		html += "<p> Add user name: <input type=" + formElement("text")
+		html += "<p> Ange användarnamn: <input type=" + formElement("text")
 				+ " name=" + formElement("addname") + '>';
-		html += "<p> Group id: <input type=" + formElement("text")
+		html += "<p> Grupp id: <input type=" + formElement("text")
 				+ " groupid=" + formElement("groupid") + '>';
 		html += "<input type=" + formElement("submit") + "value="
 				+ formElement("Lägg till användare") + '>';

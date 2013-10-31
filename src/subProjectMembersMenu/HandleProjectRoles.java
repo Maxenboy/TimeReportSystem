@@ -80,7 +80,7 @@ public class HandleProjectRoles extends gui.UsersMenu{
 			sb.append("</tr>");
 		}
 		sb.append("</table>");
-		sb.append("<br> New project role: <input type=" + formElement("text")
+		sb.append("<br> Ny projektroll: <input type=" + formElement("text")
 				+ "role=" + formElement("role") + ">");
 		sb.append("<INPUT TYPE=" + formElement("submit") + "VALUE="
 				+ formElement("Spara") + ">");
@@ -110,7 +110,7 @@ public class HandleProjectRoles extends gui.UsersMenu{
 		String html;
 		html = "<p> <form name=" + formElement("input");
 		html += " method=" + formElement("POST");
-		html += "<p> Groupname : <input type=" + formElement("text") + " name="
+		html += "<p> Gruppnamn : <input type=" + formElement("text") + " name="
 				+ formElement("groupname") + '>';
 		html += "<input type=" + formElement("Spara") + '>';
 		html += "</form>";

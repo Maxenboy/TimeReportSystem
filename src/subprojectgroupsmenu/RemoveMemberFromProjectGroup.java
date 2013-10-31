@@ -57,9 +57,9 @@ public class RemoveMemberFromProjectGroup extends gui.ProjectGroupsMenu {
 		html = "<p> <form name=" + formElement("input") + "id="
 				+ formElement("removeuserfromgroup");
 		html += " method=" + formElement("get");
-		html += "<p> User name: <input type=" + formElement("text") + " name="
+		html += "<p> Användarnamn: <input type=" + formElement("text") + " name="
 				+ formElement("name") + '>';
-		html += "<p> Group id: <input type=" + formElement("text")
+		html += "<p> Grupp id: <input type=" + formElement("text")
 				+ " groupid=" + formElement("groupid") + '>';
 		html += "<input type=" + formElement("submit") + "value="
 				+ formElement("Ta bort anvï¿½ndare") + '>';
