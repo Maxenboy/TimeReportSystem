@@ -71,6 +71,7 @@ public class ShowUsers extends UsersMenu {
 				sb.append("<td> Ingen projektgrupp </td>");
 			}
 			sb.append("<td>" + translateRole(u.getRole()) + "</td>");
+			sb.append("<td>" + u.isActive() + "</td>");
 			sb.append("<td>" + u.getPassword() + "</td>");
 			sb.append("</tr>");
 		}
@@ -108,6 +109,7 @@ public class ShowUsers extends UsersMenu {
 		sb.append("<th>Användarnamn</th>");
 		sb.append("<th>Projektgrupp</th>");
 		sb.append("<th>Roll</th>");
+		sb.append("<th>Aktiv</th>");
 		sb.append("<th>Lösenord</th>");
 		sb.append("</tr>");
 		return sb.toString();

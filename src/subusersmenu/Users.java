@@ -196,7 +196,7 @@ public class Users {
 		sb.append("<th>Användarnamn</th>");
 		sb.append("<th>Projektgrupp</th>");
 		sb.append("<th>Roll</th>");
-		sb.append("<th> Status</th>");
+		sb.append("<th>Aktiv</th>");
 		sb.append("<th>Välj</th>");
 		sb.append("</tr>");
 		return sb.toString();

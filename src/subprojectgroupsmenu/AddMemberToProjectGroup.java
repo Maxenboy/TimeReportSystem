@@ -33,35 +33,19 @@ public class AddMemberToProjectGroup extends gui.ProjectGroupsMenu {
 		} else {
 			if(request.getParameter("reportid") == null) {
 				out.print(groups.showProjectGroup(db.getUsers(Integer.parseInt(request.getParameter("thegroup")))));
+			} else {
+				if(groups.addUserToProjectGroup(db.getUser(request.getParameter("reportid")).getUsername(), Integer.parseInt(request.getParameter("thegroup")))) {
+					out.print(groups.showProjectGroup(db.getUsers(Integer.parseInt(request.getParameter("thegroup")))));
+				} else {
+					out.print("<script>$(alert(\"Användaren är redan med i en projektgrupp!\"))</script>" + groups.showProjectGroup(db.getUsers(Integer.parseInt(request.getParameter("thegroup")))));
+				}
 			}
 		}
-		/*if(request.getParameter("success") == null) {
-			out.print(groups.addUserForm());
-		}
-		else if(request.getParameter("success").equals("true")) {
-			out.print(groups.showProjectGroup(db.getUsers(Integer
-							.parseInt(request.getParameter("groupid")))));
-		}
-		else if (request.getParameter("success").equals("false")) {
-			out.print("<script>$(alert(\"Inkorrekt input.\"))</script>"
-					+ groups.addUserForm());
-		}*/
 		out.print(getPageOutro());
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
-		ProjectGroups groups = new ProjectGroups();
-		HttpSession session = request.getSession(true);
-		PrintWriter out = response.getWriter();
-		String user = request.getParameter("name");
-		String groupid = request.getParameter("groupid");
-		if (groups.addUserToProjectGroup(user, Integer.parseInt(groupid))) {
-			response.sendRedirect(request.getRequestURI()
-					+ "?success=true&groupid=" + groupid);
-		} else {
-			response.sendRedirect(request.getRequestURI() + "?success=false");
-		}
 	}
 	
 	private String showProjectGroups() {
