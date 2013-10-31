@@ -32,7 +32,7 @@ public class ActiveStatusForUser extends UsersMenu {
 		PrintWriter out = response.getWriter();
 		out.print(getPageIntro());
 
-		// ÄNDRA TILL RÄTT ROLL I generateMainMenu (se servletBase.java för
+		// ��NDRA TILL R��TT ROLL I generateMainMenu (se servletBase.java f��r
 		// roller)
 		out.print(generateMainMenu((int) session
 				.getAttribute("user_permissions")));
@@ -43,20 +43,16 @@ public class ActiveStatusForUser extends UsersMenu {
 		if (s == null) {
 			out.print("<p> Nothing to show </p>");
 		} else {
-			switch (request.getParameter("success")) {
-			case "null":
+			if (request.getParameter("success") == null) {
 				out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"Are you sure?\");if (confirmed) {$(this).submit();}});</script>");
 				out.print(s);
-				break;
-			case "true":
+			} else if (request.getParameter("success").equals("true")) {
 				out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"Are you sure?\");if (confirmed) {$(this).submit();}});</script>");
 				out.print(users.showUsers(db.getUsers()));
-				break;
-			case "false":
-				out.print(getPageIntro()
-						+ "<script>$(alert(\"incorrect syntax on the user name\"))</script>"
+			} else if (request.getParameter("success").equals("false")) {
+				out.print("<script>$(alert(\"incorrect syntax on the user name\"))</script>"
 						+ s);
-			}
+			} 
 		}
 		out.print(getPageOutro());
 	}
@@ -72,9 +68,9 @@ public class ActiveStatusForUser extends UsersMenu {
 			} else {
 				users.deactivateUser(username);
 			}
-			response.sendRedirect(request.getRequestURI() + "success=true");
+			response.sendRedirect(request.getRequestURI() + "?success=true");
 		} else {
-			response.sendRedirect(request.getRequestURI() + "success=false");
+			response.sendRedirect(request.getRequestURI() + "?success=false");
 		}
 
 	}
@@ -86,7 +82,7 @@ public class ActiveStatusForUser extends UsersMenu {
 		html += "<p> Username : <input type=" + formElement("text") + " name="
 				+ formElement("username") + '>';
 		html += "<p> Activate : <input type=" + formElement("text")
-				+ " active=" + formElement("active") + '>';
+				+ " active=" + formElement("active (true/false)") + '>';
 		html += "<input type=" + formElement("submit") + '>';
 		html += "</form>";
 		return html;

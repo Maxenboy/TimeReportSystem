@@ -27,14 +27,14 @@ public class AddMemberToProjectGroup extends gui.ProjectGroupsMenu {
 				.getAttribute("user_permissions")));
 		out.print(generateSubMenu((Integer) session
 				.getAttribute("user_permissions")));
-		if(request.getParameter("sucess") == null) {
+		if(request.getParameter("success") == null) {
 			out.print(groups.addUserForm());
 		}
-		else if(request.getParameter("sucess").equals("true")) {
+		else if(request.getParameter("success").equals("true")) {
 			out.print(groups.showProjectGroup(db.getUsers(Integer
 							.parseInt(request.getParameter("groupid")))));
 		}
-		else if (request.getParameter("sucess").equals("false")) {
+		else if (request.getParameter("success").equals("false")) {
 			out.print("<script>$(alert(\"Incorrect input.\"))</script>"
 					+ groups.addUserForm());
 		}
@@ -50,9 +50,9 @@ public class AddMemberToProjectGroup extends gui.ProjectGroupsMenu {
 		String groupid = request.getParameter("groupid");
 		if (groups.addUserToProjectGroup(user, Integer.parseInt(groupid))) {
 			response.sendRedirect(request.getRequestURI()
-					+ "success=true&groupid=" + groupid);
+					+ "?success=true&groupid=" + groupid);
 		} else {
-			response.sendRedirect(request.getRequestURI() + "sucess=false");
+			response.sendRedirect(request.getRequestURI() + "?success=false");
 		}
 	}
 
