@@ -2,13 +2,14 @@ package subprojectgroupsmenu;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import database.ProjectGroup;
-
+import database.User;
 
 @WebServlet("/AddMemberToProjectGroup")
 public class AddMemberToProjectGroup extends gui.ProjectGroupsMenu {
@@ -28,16 +29,32 @@ public class AddMemberToProjectGroup extends gui.ProjectGroupsMenu {
 				.getAttribute("user_permissions")));
 		out.print(generateSubMenu((Integer) session
 				.getAttribute("user_permissions")));
-		if(request.getParameter("thegroup") == null) {
+		if (request.getParameter("thegroup") == null) {
 			out.print(showProjectGroups());
 		} else {
-			if(request.getParameter("reportid") == null) {
-				out.print(groups.showProjectGroup(db.getUsers(Integer.parseInt(request.getParameter("thegroup")))));
-			} else {
-				if(groups.addUserToProjectGroup(db.getUser(request.getParameter("reportid")).getUsername(), Integer.parseInt(request.getParameter("thegroup")))) {
-					out.print(groups.showProjectGroup(db.getUsers(Integer.parseInt(request.getParameter("thegroup")))));
+			if (request.getParameter("reportid") == null) {
+				ArrayList<User> users = new ArrayList<User>();
+				for (User u : db.getUsers()) {
+					if (u.getProjectGroup() == 0) {
+						users.add(u);
+					}
+				}
+				if (users.isEmpty()) {
+					out.print("<script>$(alert(\"Finns inga användare utan projektgrupp!\"))</script>");
 				} else {
-					out.print("<script>$(alert(\"Användaren är redan med i en projektgrupp!\"))</script>" + groups.showProjectGroup(db.getUsers(Integer.parseInt(request.getParameter("thegroup")))));
+					out.print(groups.showProjectGroup(users));
+				}
+			} else {
+				if (groups.addUserToProjectGroup(
+						db.getUser(request.getParameter("reportid"))
+								.getUsername(), Integer.parseInt(request
+								.getParameter("thegroup")))) {
+					out.print(groups.showProjectGroup(db.getUsers(Integer
+							.parseInt(request.getParameter("thegroup")))));
+				} else {
+					out.print("<script>$(alert(\"Användaren är redan med i en projektgrupp!\"))</script>"
+							+ groups.showProjectGroup(db.getUsers(Integer
+									.parseInt(request.getParameter("thegroup")))));
 				}
 			}
 		}
@@ -47,7 +64,7 @@ public class AddMemberToProjectGroup extends gui.ProjectGroupsMenu {
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
 	}
-	
+
 	private String showProjectGroups() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<FORM METHOD=" + formElement("get") + ">");
@@ -94,6 +111,4 @@ public class AddMemberToProjectGroup extends gui.ProjectGroupsMenu {
 				+ formElement(Integer.toString(id)) + ">";
 	}
 
-
-	
 }
