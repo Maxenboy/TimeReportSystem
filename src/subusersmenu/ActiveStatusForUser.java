@@ -44,13 +44,13 @@ public class ActiveStatusForUser extends UsersMenu {
 			out.print("<p> Inget att visa </p>");
 		} else {
 			if (request.getParameter("success") == null) {
-				out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"Are you sure?\");if (confirmed) {$(this).submit();}});</script>");
+				out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"Är du säker?\");if (confirmed) {$(this).submit();}});</script>");
 				out.print(s);
 			} else if (request.getParameter("success").equals("true")) {
-				out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"Are you sure?\");if (confirmed) {$(this).submit();}});</script>");
+				out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"Är du säker?\");if (confirmed) {$(this).submit();}});</script>");
 				out.print(users.showUsers(db.getUsers()));
 			} else if (request.getParameter("success").equals("false")) {
-				out.print("<script>$(alert(\"incorrect syntax on the user name\"))</script>"
+				out.print("<script>$(alert(\"Inkorrekt syntax på anändarnamnet\"))</script>"
 						+ s);
 			} 
 		}
@@ -79,9 +79,9 @@ public class ActiveStatusForUser extends UsersMenu {
 		String html;
 		html = "<p> <form name=" + formElement("input");
 		html += " method=" + formElement("POST");
-		html += "<p> Username : <input type=" + formElement("text") + " name="
+		html += "<p> Användarnamn : <input type=" + formElement("text") + " name="
 				+ formElement("username") + '>';
-		html += "<p> Activate : <input type=" + formElement("text")
+		html += "<p> Aktivera : <input type=" + formElement("text")
 				+ " active=" + formElement("active (true/false)") + '>';
 		html += "<input type=" + formElement("submit") + '>';
 		html += "</form>";

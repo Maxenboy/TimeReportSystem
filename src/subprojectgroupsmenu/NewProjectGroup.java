@@ -34,7 +34,7 @@ public class NewProjectGroup extends gui.ProjectGroupsMenu {
 			out.print(showProjectGroups());
 		} else {
 			if (request.getParameter("inputname") == null) {
-				out.print("<script>$(alert(\"Information inkorrekt inamatad\"))</script>"
+				out.print("<script>$(alert(\"Information inkorrekt inmatad\"))</script>"
 						+ addProjectGroupForm());
 			} else {
 				out.print("<script>$(alert(\"Kunde inte lägga till projektgrupp\"))</script>"
@@ -86,13 +86,13 @@ public class NewProjectGroup extends gui.ProjectGroupsMenu {
 		html = "<p> <form name=" + formElement("input") + "id="
 				+ formElement("addprojectgroup");
 		html += " method=" + formElement("get");
-		html += "<p> Project name: <input type=" + formElement("text")
+		html += "<p> Projektnamn: <input type=" + formElement("text")
 				+ " projectname=" + formElement("addprojectname") + '>';
-		html += "<p> Start week: <input type=" + formElement("text")
+		html += "<p> Startvecka: <input type=" + formElement("text")
 				+ " startweek=" + formElement("startweek") + '>';
-		html += "<p> End week: <input type=" + formElement("text")
+		html += "<p> Slutvecka: <input type=" + formElement("text")
 				+ " endweek=" + formElement("endweek") + '>';
-		html += "<p> Estimated hours: <input type=" + formElement("text")
+		html += "<p> Antal estimerade timmar: <input type=" + formElement("text")
 				+ " estimatedhours=" + formElement("estimatedhours") + '>';
 		html += "<input type=" + formElement("submit") + "value="
 				+ formElement("Spara") + '>';

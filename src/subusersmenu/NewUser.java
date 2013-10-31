@@ -43,10 +43,10 @@ public class NewUser extends UsersMenu {
 			out.print("<p> Inget att visa </p>");
 		} else {
 			if (request.getParameter("success") == null) {
-				out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"Are you sure?\");if (confirmed) {$(this).submit();}});</script>");
+				out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"Är du säker?\");if (confirmed) {$(this).submit();}});</script>");
 				out.print(s);
 			} else if (request.getParameter("success").equals("true")) {
-				out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"Are you sure?\");if (confirmed) {$(this).submit();}});</script>");
+				out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"Är du säker?\");if (confirmed) {$(this).submit();}});</script>");
 				out.print(users.showUsers(db.getUsers()));
 			} else if(request.getParameter("success").equals("false")){
 				out.print("<script>$(alert(\"Inkorrekt syntax på användarnamnet\"))</script>" + s);

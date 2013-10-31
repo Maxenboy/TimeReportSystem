@@ -74,7 +74,7 @@ public class ShowProjectMembers extends ProjectGroupsMenu {
 		String html;
 		html = "<p> <form name=" + formElement("input");
 		html += " method=" + formElement("POST");
-		html += "<p> Username : <input type=" + formElement("text") + " name="
+		html += "<p> Användarnamn : <input type=" + formElement("text") + " name="
 				+ formElement("groupname") + '>';
 		html += "<input type=" + formElement("Spara") + '>';
 		html += "</form>";
