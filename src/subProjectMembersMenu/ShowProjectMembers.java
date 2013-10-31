@@ -32,9 +32,6 @@ public class ShowProjectMembers extends ProjectGroupsMenu {
 		HttpSession session = request.getSession(true);
 		PrintWriter out = response.getWriter();
 		out.print(getPageIntro());
-
-		// ������NDRA TILL R������TT ROLL I generateMainMenu (se
-		// servletBase.java f������r roller)
 		out.print(generateMainMenu((Integer) session
 				.getAttribute("user_permissions")));
 		out.print(generateSubMenu((Integer) session
@@ -43,7 +40,7 @@ public class ShowProjectMembers extends ProjectGroupsMenu {
 		String s = groupForm();
 		if (s == null)
 			out.print("<p> Inget att visa </p>");
-		else if (request.getParameter("sucsess") != null) {
+		else if (request.getParameter("success") != null) {
 			if (request.getParameter("success").equals(false)) {
 				out.print("<p> Den valda gruppen finns ej </p>");
 			} else {
@@ -63,10 +60,9 @@ public class ShowProjectMembers extends ProjectGroupsMenu {
 		HttpSession session = request.getSession(true);
 		String groupname = request.getParameter("groupname");
 		if (db.getProjectGroup(Integer.valueOf(groupname)) != null) {
-			response.sendRedirect(request.getRequestURI() + "success=true"
-					+ "groupname=" + groupname);
+			response.sendRedirect(request.getRequestURI() + "?success=true&groupname=" + groupname);
 		} else {
-			response.sendRedirect(request.getRequestURI() + "success=false");
+			response.sendRedirect(request.getRequestURI() + "?success=false");
 		}
 	}
 

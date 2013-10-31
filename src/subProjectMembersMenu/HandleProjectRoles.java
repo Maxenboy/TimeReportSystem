@@ -55,10 +55,10 @@ public class HandleProjectRoles extends gui.UsersMenu{
 			String groupName = request.getParameter("groupname");
 			if (db.getProjectGroup(Integer.parseInt(groupName)) != null) {
 				response.sendRedirect(request.getRequestURI()
-						+ "session=found&groupname=" + groupName);
+						+ "?session=found&groupname=" + groupName);
 			} else {
 				response.sendRedirect(request.getRequestURI()
-						+ "session=failed");
+						+ "?session=failed");
 			}
 		}
 
@@ -92,10 +92,10 @@ public class HandleProjectRoles extends gui.UsersMenu{
 		StringBuilder sb = new StringBuilder();
 		sb.append("<table class=\"table table-bordered table-hover\"" + ">");
 		sb.append("<tr>");
-		sb.append("<th>Användarnamn</th>");
+		sb.append("<th>Anvï¿½ndarnamn</th>");
 		sb.append("<th>Projektgrupp</th>");
 		sb.append("<th>Roll</th>");
-		sb.append("<th>Välj</th>");
+		sb.append("<th>Vï¿½lj</th>");
 		sb.append("</tr>");
 		return sb.toString();
 	}

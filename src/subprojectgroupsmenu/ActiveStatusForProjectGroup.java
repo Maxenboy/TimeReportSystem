@@ -53,9 +53,9 @@ public class ActiveStatusForProjectGroup extends gui.ProjectGroupsMenu {
 		String name = request.getParameter("name");
 		String status = request.getParameter("status");
 		if (checkGroup(name, status)) {
-			response.sendRedirect(request.getRequestURI() + "sucess=true");
+			response.sendRedirect(request.getRequestURI() + "?sucess=true");
 		} else {
-			response.sendRedirect(request.getRequestURI() + "sucess=false");
+			response.sendRedirect(request.getRequestURI() + "?sucess=false");
 		}
 	}
 

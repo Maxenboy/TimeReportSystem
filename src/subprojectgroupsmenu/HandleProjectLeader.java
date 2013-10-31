@@ -51,7 +51,7 @@ public class HandleProjectLeader extends gui.ProjectGroupsMenu {
 		String id = request.getParameter("name");
 		if (id != null) {
 			response.sendRedirect(request.getRequestURI()
-					+ "session=one&groupid=" + id);
+					+ "?session=one&groupid=" + id);
 		} else {
 			id = request.getParameter("reportId");
 			User user = db.getUser(Integer.parseInt(id));

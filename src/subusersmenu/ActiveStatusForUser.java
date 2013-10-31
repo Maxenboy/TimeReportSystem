@@ -31,9 +31,6 @@ public class ActiveStatusForUser extends UsersMenu {
 		HttpSession session = request.getSession(true);
 		PrintWriter out = response.getWriter();
 		out.print(getPageIntro());
-
-		// ��NDRA TILL R��TT ROLL I generateMainMenu (se servletBase.java f��r
-		// roller)
 		out.print(generateMainMenu((int) session
 				.getAttribute("user_permissions")));
 		out.print(generateSubMenu((int) session

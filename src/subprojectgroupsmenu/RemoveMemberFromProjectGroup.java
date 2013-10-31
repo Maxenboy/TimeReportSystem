@@ -27,11 +27,11 @@ public class RemoveMemberFromProjectGroup extends gui.ProjectGroupsMenu {
 		out.print(generateSubMenu((Integer) session.getAttribute("user_permissions")));
 		if (request.getParameter("session") == null) {
 			out.print(removeUserForm());
-		} else if (request.getParameter("session").equals("sucess")) {
+		} else if (request.getParameter("session").equals("success")) {
 			out.print(group.showProjectGroup(db.getUsers(Integer
 					.parseInt(request.getParameter("groupid")))));
 		} else {
-			out.print("<script>$(alert(\"Kunde inte lägga till grupp\"))</script>"
+			out.print("<script>$(alert(\"Kunde inte lï¿½gga till grupp\"))</script>"
 					+ removeUserForm());
 		}
 		out.print(getPageOutro());
@@ -45,10 +45,10 @@ public class RemoveMemberFromProjectGroup extends gui.ProjectGroupsMenu {
 		String groupId = request.getParameter("groupid");
 		if (group.removeUserFromProjectGroup(userName,
 				Integer.parseInt(groupId))) {
-			response.sendRedirect(request.getRequestURI() + "session=sucess");
+			response.sendRedirect(request.getRequestURI() + "?session=success");
 		} else {
 			response.sendRedirect(request.getRequestURI()
-					+ "session=false&groupid=" + groupId);
+					+ "?session=false&groupid=" + groupId);
 		}
 	}
 
@@ -62,7 +62,7 @@ public class RemoveMemberFromProjectGroup extends gui.ProjectGroupsMenu {
 		html += "<p> Group id: <input type=" + formElement("text")
 				+ " groupid=" + formElement("groupid") + '>';
 		html += "<input type=" + formElement("submit") + "value="
-				+ formElement("Ta bort användare") + '>';
+				+ formElement("Ta bort anvï¿½ndare") + '>';
 		html += "</form>";
 		return html;
 	}

@@ -29,8 +29,6 @@ public class HandleAdminRights extends UsersMenu {
 		PrintWriter out = response.getWriter();
 		out.print(getPageIntro());
 
-		// ÄNDRA TILL RÄTT ROLL I generateMainMenu (se servletBase.java för
-		// roller)
 		out.print(generateMainMenu((int) session
 				.getAttribute("user_permissions")));
 		out.print(generateSubMenu((int) session
@@ -41,14 +39,14 @@ public class HandleAdminRights extends UsersMenu {
 		} else if (request.getParameter("session").equals("Success")) {
 			u.makeAdministrator(request.getParameter("userName"));
 			out.print(u.showUsers(db.getUsers())
-					+ "<script>$(alert(\"Användaren är nu administratör. Ändringar sparade.\"))</script>");
+					+ "<script>$(alert(\"Anv��ndaren ��r nu administrat��r. ��ndringar sparade.\"))</script>");
 		} else if (request.getParameter("session").equals("SuccessRemove")) {
 			u.unmakeAdministrator(request.getParameter("userName"));
 			out.print(u.showUsers(db.getUsers())
-					+ "<script>$(alert(\"Användare är ej längre administratör. Ändringar sparade.\"))</script>");
+					+ "<script>$(alert(\"Anv��ndare ��r ej l��ngre administrat��r. ��ndringar sparade.\"))</script>");
 		} else {
 			out.print(u.showUsers(db.getUsers())
-					+ "<script>$(alert(\"Inte möjligt! Användare är med i en projektgrupp! \"))</script>");
+					+ "<script>$(alert(\"Inte m��jligt! Anv��ndare ��r med i en projektgrupp! \"))</script>");
 		}
 		out.print(getPageOutro());
 	}
@@ -60,13 +58,13 @@ public class HandleAdminRights extends UsersMenu {
 		if (u.getProjectGroup() == 0) {
 			if (u.getRole() == u.ROLE_ADMIN) {
 				response.sendRedirect(request.getRequestURI()
-						+ "session=SuccessRemove&userName=" + u.getUsername());
+						+ "?session=SuccessRemove&userName=" + u.getUsername());
 			} else {
 				response.sendRedirect(request.getRequestURI()
-						+ "session=Success&userName=" + u.getUsername());
+						+ "?session=Success&userName=" + u.getUsername());
 			}
 		} else {
-			response.sendRedirect(request.getRequestURI() + "session=failure");
+			response.sendRedirect(request.getRequestURI() + "?session=failure");
 		}
 	}
 

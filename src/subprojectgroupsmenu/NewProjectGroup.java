@@ -30,14 +30,14 @@ public class NewProjectGroup extends gui.ProjectGroupsMenu {
 				.getAttribute("user_permissions")));
 		if (request.getParameter("session") == null) {
 			out.print(addProjectGroupForm());
-		} else if (request.getParameter("session").equals("sucess")) {
+		} else if (request.getParameter("session").equals("success")) {
 			out.print(showProjectGroups());
 		} else {
 			if (request.getParameter("inputname") == null) {
 				out.print("<script>$(alert(\"Information inkorrekt inamatad\"))</script>"
 						+ addProjectGroupForm());
 			} else {
-				out.print("<script>$(alert(\"Kunde inte l‰gga till projektgrupp\"))</script>"
+				out.print("<script>$(alert(\"Kunde inte l√§gga till projektgrupp\"))</script>"
 						+ addProjectGroupForm());
 			}
 		}
@@ -56,7 +56,7 @@ public class NewProjectGroup extends gui.ProjectGroupsMenu {
 			if (group.createProjectGroup(name, startWeek, endWeek,
 					estimatedHours)) {
 				response.sendRedirect(request.getRequestURI()
-						+ "?session=sucess");
+						+ "?session=success");
 			} else {
 				response.sendRedirect(request.getRequestURI() + "?session=false");
 			}
