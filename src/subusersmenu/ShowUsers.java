@@ -53,12 +53,12 @@ public class ShowUsers extends UsersMenu {
 
 	}
 
-	public String adminShowUsers(ArrayList<User> users) {
+	private String adminShowUsers(ArrayList<User> users) {
 		if (users.isEmpty()) {
 			return null;
 		}
 		StringBuilder sb = new StringBuilder();
-		sb.append("<FORM METHOD=post ACTION=" + formElement("ShowUsers") + ">");
+		sb.append("<FORM METHOD=post>");
 		sb.append(buildShowUsersTable());
 		for (User u : users) {
 			sb.append("<tr>");
