@@ -33,7 +33,7 @@ public class Statistics extends gui.StatisticsMenu {
 
 		HttpSession session = request.getSession(true);
 		
-		testSetSessionData(session); // TEST! TA BORT!
+		//testSetSessionData(session); // TEST! TA BORT!
 		
 		int userPermission = (Integer) session.getAttribute("user_Permissions");
 		int projectGroupId = (Integer) session.getAttribute("project_group_id");
@@ -515,10 +515,10 @@ public class Statistics extends gui.StatisticsMenu {
 	}
 	
 
-
+/*
 	private void testSetSessionData(HttpSession session) {
 		session.setAttribute("user_Permissions", 1);
 		session.setAttribute("project_group_id", 1);
 		session.setAttribute("username","andsve");
-	}
+	}*/
 }
