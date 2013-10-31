@@ -39,7 +39,7 @@ public class RemoveMemberFromProjectGroup extends gui.ProjectGroupsMenu {
 			if (user.getProjectGroup() != 0) {
 				db.removeUserFromProjectGroup(user.getId(),
 						user.getProjectGroup());
-				out.print(db.getProjectGroup(user.getProjectGroup()));
+				out.print(group.showProjectGroup(db.getUsers(user.getProjectGroup())));
 			} else {
 				out.print("<script>$(alert(\"Användaren har ingen projektgrupp och kan därför inte tas bort ur en\"))</script>");
 			}
