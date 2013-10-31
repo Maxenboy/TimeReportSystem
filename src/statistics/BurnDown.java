@@ -29,10 +29,12 @@ public class BurnDown extends gui.StatisticsMenu {
 	 * 
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		
 		Database db = new Database();
 		PrintWriter out = response.getWriter();
 		
 		HttpSession session = request.getSession(true);
+		//testSetSessionData(session);
 		int userPermission = (Integer) session.getAttribute("user_Permissions");
 		int projectGroupId = (Integer) session.getAttribute("project_group_id");
 
@@ -46,11 +48,11 @@ public class BurnDown extends gui.StatisticsMenu {
 			out.append(getPageOutro());
 			break;
 		case 2:
-			out.append(printBurnDown(db.getTimePerWeek(projectGroupId), projectGroupId));
+			out.append(printBurnDown(db.getTimePerWeek(projectGroupId), projectGroupId, db.getProjectGroup(projectGroupId)));
 			out.append(getPageOutro());
 			break;
 		case 4:
-			out.append(printBurnDown(db.getTimePerWeek(projectGroupId), projectGroupId));
+			out.append(printBurnDown(db.getTimePerWeek(projectGroupId), projectGroupId, db.getProjectGroup(projectGroupId)));
 			out.append(getPageOutro());
 			break;
 		default:
@@ -73,7 +75,7 @@ public class BurnDown extends gui.StatisticsMenu {
 		out.append(generateSubMenu(userPermission));
 
 		if(projectGroup[0] != null) {
-			out.append(printBurnDown(db.getTimePerWeek(Integer.parseInt(projectGroup[0])), Integer.parseInt(projectGroup[0])));
+			out.append(printBurnDown(db.getTimePerWeek(Integer.parseInt(projectGroup[0])), Integer.parseInt(projectGroup[0]), db.getProjectGroup(Integer.parseInt(projectGroup[0]))));
 		} else {
 			out.append("ERROR - No project group chosen by administrator." );
 		}
@@ -92,7 +94,7 @@ public class BurnDown extends gui.StatisticsMenu {
 		ArrayList<ProjectGroup> pg = db.getProjectGroups();
 		Iterator<ProjectGroup> itr = pg.iterator();
 
-		sb.append("<form method='POST'> Please select the project group you need a BurnDown for.<br />"
+		sb.append("<form method='POST'> Var vänlig välj vilken projektgrupp du vill visa BurnDown för.<br />"
 				+ "<select name=projectgroup>");
 		while(itr.hasNext()) {
 			int projectgroup = itr.next().getId();
@@ -100,20 +102,23 @@ public class BurnDown extends gui.StatisticsMenu {
 					+ projectgroup + "'>" + projectgroup +
 					"</option>");
 		}
-		sb.append("</select> <br /><input type='SUBMIT' value='Submit' /> </form>");
+		sb.append("</select> <br /><input type='SUBMIT' value='Skicka' /> </form>");
 
 		return sb.toString();
 	}
 	
 	
+	
 	/**
-	 * Genererar html-kod som innehåller BurnDown-plotten.
-	 * @param burnDownData innehåller ***
-	 * @return Sträng som innehåller HTML-kod som visar BurnDown plotten.
-	 */
-	private String printBurnDown(HashMap<String, Integer> timePerWeek, int projectGroupId) {
+	 * Creates a string with html and javascript code that creates a burndown graph when printed out.
+	 * @param timePerWeek. A HashMap with week as key and time as value. There is also the key "totalProjectTime" which contains the total project time.
+	 * projectGroupId. Int.
+	 * projectGroup. ProjectGroup.
+	 * @return A string containing html and javascript that creates the burndown graph when printed out. If the total project time is 0, it returns the string "Förväntad projekttid är satt till noll."
+	 */	
+	private String printBurnDown(HashMap<String, Integer> timePerWeek, int projectGroupId, ProjectGroup projectGroup) {
 		if(timePerWeek.get("totalProjectTime") == 0) {
-			return("Excpected total projet time is set to zero");
+			return("Förväntad projekttid är satt till noll.");
 		}
 		
 		StringBuilder htmlBurnDown = new StringBuilder();
@@ -125,26 +130,27 @@ public class BurnDown extends gui.StatisticsMenu {
 		   + "google.setOnLoadCallback(drawChart);"
 		  + "function drawChart() {"
 		    + "var data = google.visualization.arrayToDataTable(["
-		   + "['Week', 'Real time left', 'Expected time left'],"
+		   + "['Vecka', 'Verklig tid kvar', 'Förväntad tid kvar'],"
 		); 
 		
-		double totalProjectTime = timePerWeek.get("totalProjectTime");
-		double numberOfWeeks = numberOfWeeks(timePerWeek);
+		double estimatedProjectTime = projectGroup.getEstimatedTime();
+		double numberOfWeeksProject = projectGroup.getEndWeek() - projectGroup.getStartWeek() + 1; 
 		double totalTimeSpent = 0;
 		int week = 0;
 
-		htmlBurnDown.append("['" + week + "',  " + totalProjectTime + ", " + totalProjectTime + "],");
+		htmlBurnDown.append("['" + week + "',  " + estimatedProjectTime + ", " + estimatedProjectTime + "],");
 		week++;
 		
-		while(week <= numberOfWeeks) {
-			double expectedTimeLeft = (1-week/numberOfWeeks)*totalProjectTime;			
+		while(week <= numberOfWeeksProject) {
+			double expectedTimeLeft = (1-week/numberOfWeeksProject)*estimatedProjectTime;
+			if (timePerWeek.containsKey(Integer.toString(week))) {
 			totalTimeSpent += timePerWeek.get(Integer.toString(week));
-			double realTimeLeft = totalProjectTime - totalTimeSpent;
-
+			}
+			double realTimeLeft = estimatedProjectTime - totalTimeSpent;
 			htmlBurnDown.append("['" + week + "',  " + realTimeLeft + ", " + expectedTimeLeft + "]");
-			if (week < numberOfWeeks) {
-				htmlBurnDown.append(",");
-			}		
+			if (week < numberOfWeeksProject) {
+			htmlBurnDown.append(",");
+			}	
 			week++;
 		}
 				
@@ -152,7 +158,7 @@ public class BurnDown extends gui.StatisticsMenu {
 		"]);"
 
 		     + "var options = {"
-		       + "title: 'Burndown for projectID " + projectGroupId + "'"
+		       + "title: 'Burndown' "
 		      + "};"
 
 		      + "var chart = new google.visualization.LineChart(document.getElementById('chart_div'));"
@@ -163,23 +169,11 @@ public class BurnDown extends gui.StatisticsMenu {
 		);
 		return htmlBurnDown.toString();
 	}		
-
-
-	
-	/**
-	 * @param timePerWeek. A HashMap with week as key and time as value. There is also the key "totalProjectTime" which contains the total project time.
-	 * @return int The biggest week number timePerWeek contains as key.
-	 */	
-	private int numberOfWeeks(HashMap<String, Integer> timePerWeek) {
-		int numberOfWeeks = 0;
-		int week = 1;
-
-		while(timePerWeek.containsKey(Integer.toString(week))) {
-			week++;
-			numberOfWeeks++;
-		}		
-		return numberOfWeeks; 
-	}
-
+/*
+	private void testSetSessionData(HttpSession session) {
+		session.setAttribute("user_Permissions", 1);
+		session.setAttribute("project_group_id", 1);
+		session.setAttribute("username","andsve");
+	}*/
 
 }
