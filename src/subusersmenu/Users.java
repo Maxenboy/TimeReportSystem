@@ -90,6 +90,7 @@ public class Users {
 				sb.append("<td> Ingen projektgrupp </td>");
 			}
 			sb.append("<td>" + translateRole(u.getRole()) + "</td>");
+			sb.append("<td>"+u.isActive());
 			sb.append("<td>" + createRadio(u.getId()) + "</td>");
 			sb.append("</tr>");
 		}
@@ -192,10 +193,11 @@ public class Users {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<table class=\"table table-bordered table-hover\"");
 		sb.append("<tr>");
-		sb.append("<th>Anv�ndarnamn</th>");
+		sb.append("<th>Användarnamn</th>");
 		sb.append("<th>Projektgrupp</th>");
 		sb.append("<th>Roll</th>");
-		sb.append("<th>V�lj</th>");
+		sb.append("<th> Status</th>");
+		sb.append("<th>Välj</th>");
 		sb.append("</tr>");
 		return sb.toString();
 	}
