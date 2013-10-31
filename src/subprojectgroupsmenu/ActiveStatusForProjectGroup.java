@@ -48,13 +48,13 @@ public class ActiveStatusForProjectGroup extends gui.ProjectGroupsMenu {
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
-		HttpSession session = request.getSession();
+		/*HttpSession session = request.getSession();
 		String name = request.getParameter("thegroup");
 		if (checkGroup(name)) {
 			response.sendRedirect(request.getRequestURI() + "&success=true");
 		} else {
 			response.sendRedirect(request.getRequestURI() + "&success=false");
-		}
+		}*/
 	}
 
 	private boolean checkGroup(String name) {

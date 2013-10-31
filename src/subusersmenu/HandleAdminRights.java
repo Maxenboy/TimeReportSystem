@@ -33,23 +33,28 @@ public class HandleAdminRights extends UsersMenu {
 				.getAttribute("user_permissions")));
 
 		if (request.getParameter("username") == null) {
+			System.out.println("username null");
 			out.print(u.showUsers(db.getUsers()));
 		} else {
+			System.out.println(request.getParameter("username"));
 			User user = db.getUser(Integer.parseInt(request
 					.getParameter("username")));
 			if (user.getProjectGroup() == 0) {
+				System.out.println("projectgroup == 0");
 				if (user.getRole() == user.ROLE_ADMIN) {
+					System.out.println("user = admin");
 					u.unmakeAdministrator(user.getUsername());
 					out.print(u.showUsers(db.getUsers())
-							+ "<script>$(alert(\"Anv��ndare ��r ej l��ngre administrat��r. ��ndringar sparade.\"))</script>");
+							+ "<script>$(alert(\"Användare är ej längre administratör. ändringar sparade.\"))</script>");
 				} else {
+					System.out.println("user not admin");
 					u.makeAdministrator(user.getUsername());
 					out.print(u.showUsers(db.getUsers())
-							+ "<script>$(alert(\"Anv��ndaren ��r nu administrat��r. ��ndringar sparade.\"))</script>");
+							+ "<script>$(alert(\"Användaren är nu administratör. ändringar sparade.\"))</script>");
 				}
 			} else {
-				out.print(u.showUsers(db.getUsers())
-						+ "<script>$(alert(\"Inte m��jligt! Anv��ndare ��r med i en projektgrupp! \"))</script>");
+				System.out.println("User in projectgroup");
+				out.print(u.showUsers(db.getUsers())+ "<script>$(alert(\"Inte m��jligt! Anv��ndare ��r med i en projektgrupp! \"))</script>");
 			}
 		}
 		out.print(getPageOutro());
@@ -59,5 +64,6 @@ public class HandleAdminRights extends UsersMenu {
 			throws IOException {
 
 	}
+
 
 }

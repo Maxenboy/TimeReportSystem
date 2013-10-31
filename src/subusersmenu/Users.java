@@ -77,7 +77,7 @@ public class Users {
 			return null;
 		}
 		StringBuilder sb = new StringBuilder();
-		sb.append("<FORM METHOD=post>");
+		sb.append("<FORM METHOD=" + formElement("get") + ">");
 		sb.append(buildShowUsersTable());
 		for (User u : users) {
 			sb.append("<tr>");
@@ -128,7 +128,9 @@ public class Users {
 	 * @param name
 	 */
 	public void makeAdministrator(String name) {
-		db.getUser(name).setRole(1);
+		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+		map.put(db.getUser(name).getId(), User.ROLE_ADMIN);
+		db.setUserRoles(map);
 	}
 
 	/**
@@ -137,7 +139,9 @@ public class Users {
 	 * @param name
 	 */
 	public void unmakeAdministrator(String name) {
-		db.getUser(name).setRole(3);
+		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+		map.put(db.getUser(name).getId(), User.ROLE_NO_ROLE);
+		db.setUserRoles(map);
 	}
 
 	/**
