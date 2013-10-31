@@ -14,9 +14,9 @@ public class RemoveTimeReport extends TimeReportingMenu{
 	
 	private static final long serialVersionUID = 2619824858072375910L;
 	TimeReportGenerator trg = new TimeReportGenerator(new Database());
-	private static final int FIRST = 0;
-	private static final int DO_REMOVAL = 1;
-	private static final int REMOVE_REPORT = 3;
+	public static final int FIRST = 0;
+	public static final int DO_REMOVAL = 1;
+	public static final int REMOVE_REPORT = 3;
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession(true);

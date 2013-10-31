@@ -16,13 +16,14 @@ import database.Database;
 
 @WebServlet("/SignTimeReports")
 public class SignTimeReports extends TimeReportingMenu {
-	private static final int FIRST = 0;
-	private static final int SIGN = 1;
-	private static final int LIST = 2;
+	public static final int FIRST = 0;
+	public static final int SIGN = 1;
+	public static final int LIST = 2;
 	private static final long serialVersionUID = -4213845458306512233L;
 	TimeReportGenerator trg = new TimeReportGenerator(new Database());
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		System.out.println("fuck off");
 		HttpSession session = request.getSession(true);
 		PrintWriter out = response.getWriter();
 		int permission = (Integer) session.getAttribute("user_permissions");
@@ -34,12 +35,7 @@ public class SignTimeReports extends TimeReportingMenu {
 		case PERMISSION_ADMIN:
 		case PERMISSION_PROJ_LEADER:
 			StringBuilder sb = new StringBuilder();
-			int state;
-			if(session.isNew()) {
-				state = FIRST;
-			} else {
-				state = (Integer) session.getAttribute("signState");
-			}
+			int state= (Integer) session.getAttribute("signState");
 			switch(state) {
 			case FIRST:
 				//First time visiting page.
@@ -75,6 +71,7 @@ public class SignTimeReports extends TimeReportingMenu {
 				}
 				break;
 			}
+			break;
 		default:
 			out.append("<script>alert('Permission denied')</script>");
 		}

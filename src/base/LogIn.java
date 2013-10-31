@@ -1,7 +1,5 @@
 package base;
 import java.io.*;
-
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -13,6 +11,10 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import subTimeReportMenu.ChangeTimeReport;
+import subTimeReportMenu.NewTimeReport;
+import subTimeReportMenu.RemoveTimeReport;
+import subTimeReportMenu.SignTimeReports;
 import database.Database;
 import database.User;
 
@@ -134,6 +136,10 @@ public class LogIn extends servletBase {
        			session.setAttribute("role", u.getRole());
        			session.setAttribute("project_group_id", u.getProjectGroup());
        			session.setAttribute("active", u.isActive());
+       			session.setAttribute("signState", SignTimeReports.FIRST);
+       			session.setAttribute("newReportState", NewTimeReport.FIRST);
+       			session.setAttribute("changeReportState", ChangeTimeReport.FIRST);
+       			session.setAttribute("removeReportState",RemoveTimeReport.FIRST);
        			if(u.getRole() == User.ROLE_ADMIN) {
        				session.setAttribute("user_permissions", 1);
        			} else if (u.getRole() == User.ROLE_PROJECT_LEADER) {
@@ -147,7 +153,7 @@ public class LogIn extends servletBase {
         	} else {
         		out.println("<p>User is not active</p>");
         		out.println(loginRequestForm());
-        		
+        	
         	}
 //       		}
 //       		else {

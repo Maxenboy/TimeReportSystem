@@ -18,61 +18,51 @@ public class ChangeTimeReport extends TimeReportingMenu{
 	
 	private static final long serialVersionUID = 162207957025267806L;
 	private TimeReportGenerator trg = new TimeReportGenerator(new Database());
-	private static final int FIRST = 0;
-	private static final int SHOW_REPORT = 1;
-	private static final int CHANGE_REPORT = 2;
-	private static final int NOT_ENOUGH_DATA = 3;
-	private static final int ILLEGAL_CHAR = 4;
+	public static final int FIRST = 0;
+	public static final int SHOW_REPORT = 1;
+	public static final int CHANGE_REPORT = 2;
+	public static final int NOT_ENOUGH_DATA = 3;
+	public static final int ILLEGAL_CHAR = 4;
+	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession(true);
 		PrintWriter out = response.getWriter();
 		out.print(getPageIntro());
 		int permission = (Integer) session.getAttribute("user_permissions");
-		out.print(generateMainMenu(permission));
-		out.print(generateSubMenu(permission));
+		
 		int userId = (Integer) session.getAttribute("id");
 		int projId = (Integer) session.getAttribute("project_group_id");
-		int state = 0;
-		if(session.isNew()) {
-			state = FIRST;
-		} else {
-			state = (Integer) session.getAttribute("ChangeReportState");
-		}
+		int state = (Integer) session.getAttribute("changeReportState");
 		String s;
 		switch(state) {
 		case FIRST:
 			switch(permission) {
 			case PERMISSION_ADMIN:
 			case PERMISSION_PROJ_LEADER:
+				out.print(generateMainMenu(permission));
+				out.print(generateSubMenu(permission));
 				s = trg.showAllTimeReports(projId, TimeReportGenerator.CHANGE_PRJ_REPORT);
 				if(s == null)
 					out.print("<p> Nothing to show </p>");
 				else 
 					out.print(s);
+				out.print(getPageOutro());
 				session.setAttribute("changeReportState", SHOW_REPORT);
 				break;
 			case PERMISSION_OTHER_USERS:
+				out.print(generateMainMenu(permission));
+				out.print(generateSubMenu(permission));
 				s = trg.showAllTimeReports(userId, TimeReportGenerator.CHANGE_USER_REPORT);
 				if(s == null)
 					out.print("<p> Nothing to show </p>");
 				else 
 					out.print(s);
+				out.print(getPageOutro());
 				session.setAttribute("changeReportState", SHOW_REPORT);
 				break;
 			}
-			
-		case NOT_ENOUGH_DATA:
-			session.setAttribute("changeReportState", FIRST);
-			out.print("<script> alert('Mandatory data has not been filled in. Please fill in week nr. and at least one activity') </script>");
-			doGet(request, response);
-			break;
-		case ILLEGAL_CHAR:
-			session.setAttribute("changeReportState", FIRST);
-			out.print("<script> alert('Illegal character. Only numerical chararcters are allowed') </script>");
-			doGet(request, response);
 			break;
 		}
-		out.print(getPageOutro());
 	}
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -91,6 +81,10 @@ public class ChangeTimeReport extends TimeReportingMenu{
 		case SHOW_REPORT:
 			reportId = request.getParameter("reportId");
 			if(reportId != null) {
+				int permission = (Integer) session.getAttribute("user_permissions");
+				out.print(getPageIntro());
+				out.print(generateMainMenu(permission));
+				out.print(generateSubMenu(permission));
 				s = trg.showChangeTimeReport(Integer.valueOf(reportId));
 				if(s == null) {
 					out.print("<script>alert('Cannot change signed report!') </script>");
@@ -99,36 +93,40 @@ public class ChangeTimeReport extends TimeReportingMenu{
 				} else {
 					out.print(s);
 					session.setAttribute("changeReportState", CHANGE_REPORT);
-					doGet(request, response);
+					out.print(getPageOutro());
 				}
 			}
 			break;
 		case CHANGE_REPORT:
 			String week = request.getParameter("week");
-			if(week.equals("")) {
-				session.setAttribute("changeReportState", NOT_ENOUGH_DATA);
+			if(!isNumeric(week) && !week.equals("")) {
+				session.setAttribute("changeReportState", FIRST);
+				out.print("<script> alert('Illegal character. Only numerical chararcters are allowed') </script>");
+				doGet(request, response);
+			} else if(week.equals("")) {
+				out.print("<script> alert('Mandatory data has not been filled in. Please fill in week nr. and at least one activity') </script>");
+				session.setAttribute("changeReportState", FIRST);
 				doGet(request,response);
 			} else {
-				if(!isNumeric(week)) {
-					session.setAttribute("changeReportState", ILLEGAL_CHAR);
-					doGet(request, response);
-				}
 				reportId = request.getParameter("reportId");
-				TimeReport timeReport = new TimeReport(Integer.valueOf(reportId),Integer.valueOf(week),false, 1, 1);
+				int userId = (Integer) session.getAttribute("id");
+				int projId = (Integer) session.getAttribute("project_group_id");
+				TimeReport timeReport = new TimeReport(Integer.valueOf(reportId),Integer.valueOf(week),false, userId, projId);
 				String[] fields = request.getParameter("FormFields").split(",");
 				ArrayList<Activity> activities = new ArrayList<Activity>();
 				boolean filledIn = false;
+				boolean nonNumerical = false;
 				int activityNbr = 10;
 				for(int i = 0; i < fields.length; i++) {
 					String field = fields[i];
 					String time = request.getParameter(field);
 					if(i % 4 == 0)
 						activityNbr++;
+					if(!isNumeric(time) && !time.equals("")) {
+						nonNumerical = true;
+						break;
+					}
 					if(!time.equals("")) {
-						if(!isNumeric(time)) {
-							session.setAttribute("changeReportState", ILLEGAL_CHAR);
-							doGet(request, response);
-						}
 						filledIn = true;
 						if(i < 36) {
 							activities.add(new Activity(activityNbr, Activity.mapIntToActivityType(i % 4), Integer.valueOf(time), timeReport.getId()));
@@ -137,8 +135,13 @@ public class ChangeTimeReport extends TimeReportingMenu{
 						}
 					}
 				}
-				if(!filledIn) {
-					session.setAttribute("changeReportState", NOT_ENOUGH_DATA);
+				if(nonNumerical) {
+					session.setAttribute("changeReportState", FIRST);
+					out.print("<script> alert('Illegal character. Only numerical chararcters are allowed') </script>");
+					doGet(request, response);
+				} else if(!filledIn) {
+					out.print("<script> alert('Mandatory data has not been filled in. Please fill in week nr. and at least one activity') </script>");
+					session.setAttribute("changeReportState", FIRST);
 					doGet(request, response);
 				} else {
 					//update in database
