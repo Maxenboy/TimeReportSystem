@@ -143,7 +143,7 @@ public class Statistics extends gui.StatisticsMenu {
 		ArrayList<ProjectGroup> pg = db.getProjectGroups();
 		Iterator<ProjectGroup> itr = pg.iterator();
 
-		sb.append("<form method='POST'> Please select the project group you need statistics for.<br />"
+		sb.append("<form method='POST'> Var vänlig välj vilken projektgrupp du vill visa statistik för.<br />"
 				+ "<select name=projectgroup>");
 		while(itr.hasNext()) {
 			int projectgroup = itr.next().getId();
@@ -151,7 +151,7 @@ public class Statistics extends gui.StatisticsMenu {
 					+ projectgroup + "'>" + projectgroup +
 					"</option>");
 		}
-		sb.append("</select> <br /><input type='SUBMIT' value='Submit' /> </form>");
+		sb.append("</select> <br /><input type='SUBMIT' value='Skicka' /> </form>");
 
 		return sb.toString();
 	}
@@ -177,7 +177,7 @@ public class Statistics extends gui.StatisticsMenu {
 				     + "google.setOnLoadCallback(drawChart);"
 				    + "function drawChart() {"
 				       + "var data = google.visualization.arrayToDataTable(["
-				      + "['Week', 'Hours'],"
+				      + "['Vecka', 'Timmar'],"
 				    );
 		
 		ArrayList<String> listOfWeeks = stats.get("week");		
@@ -205,8 +205,8 @@ public class Statistics extends gui.StatisticsMenu {
 		htmlGraph.append(
 				"]);"
 				        + "var options = {"
-				        + " title: 'Hours per week',"
-				        + "  hAxis: {title: 'Week', titleTextStyle: {color: 'black'}}"
+				        + " title: 'Timmar per vecka',"
+				        + "  hAxis: {title: 'Vecka', titleTextStyle: {color: 'black'}}"
 				       + " };"
 				       + "var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));"
 				      + "chart.draw(data, options);"
@@ -234,7 +234,8 @@ public class Statistics extends gui.StatisticsMenu {
 			Iterator<String> itr = users.iterator();
 
 			sb.append("<form method='POST'> "
-					+ "<table class='table table-bordered table-hover'><tr><td> Users <br /><select name='users' multiple>"); 
+					+ "<table class='table table-bordered table-hover'><tr><td> Användare <br /><select name='users' multiple>"); 
+			sb.append("<option selected> Alla </option>");
 			
 			while(itr.hasNext()) { // Iterates through the list with usernames to build up the first part of form.				
 				String username = itr.next();
@@ -248,7 +249,8 @@ public class Statistics extends gui.StatisticsMenu {
 			ArrayList<String> roles = table.get("role");
 			itr = roles.iterator();
 
-			sb.append("Roles <br /><select name='roles' multiple>");
+			sb.append("Roller <br /><select name='roles' multiple>");
+			sb.append("<option selected> Alla </option>");
 			while(itr.hasNext()) {
 				String role = itr.next();
 				sb.append("<option value='"
@@ -260,7 +262,8 @@ public class Statistics extends gui.StatisticsMenu {
 			ArrayList<String> activities= table.get("activity");
 			itr = activities.iterator();
 
-			sb.append("Activities <br /><select name='activities' multiple>");
+			sb.append("Aktiviteter <br /><select name='activities' multiple>");
+			sb.append("<option selected> Alla </option>");
 			while(itr.hasNext()) {
 				String activity = itr.next();
 				sb.append("<option value='"
@@ -272,7 +275,8 @@ public class Statistics extends gui.StatisticsMenu {
 			ArrayList<String> weeks= table.get("week");
 			itr = weeks.iterator();
 
-			sb.append("Weeks <br /><select name='weeks' multiple>");
+			sb.append("Veckor <br /><select name='weeks' multiple>");
+			sb.append("<option selected> Alla </option>");
 			while(itr.hasNext()) {
 				String week = itr.next();
 				sb.append("<option value='"
@@ -280,7 +284,7 @@ public class Statistics extends gui.StatisticsMenu {
 						"</option>");				
 			}
 			sb.append("</select></td></tr></table>"
-					+ "<br /><input type='SUBMIT' value='Submit' />"
+					+ "<br /><input type='SUBMIT' value='Skicka' />"
 					+ "</form>");  // form is now complete.
 
 
@@ -290,7 +294,8 @@ public class Statistics extends gui.StatisticsMenu {
 			ArrayList<String> weeks = table.get("week");
 			Iterator<String>  itr= weeks.iterator();
 
-			sb.append("Weeks <br /><select name='weeks' multiple>");
+			sb.append("Veckor <br /><select name='weeks' multiple>");
+			sb.append("<option selected> Alla </option>");
 			while(itr.hasNext()) {
 				String week = itr.next();
 				sb.append("<option value='"
@@ -298,11 +303,11 @@ public class Statistics extends gui.StatisticsMenu {
 						"</option>");				
 			}
 			sb.append("</select>"
-					+ "<br /><input type='SUBMIT' value='Submit' />"
+					+ "<br /><input type='SUBMIT' value='Skicka' />"
 					+ "</form>");  // form is now complete.	
 
 		} else {
-			sb.append("Something went wrong. Are you logged in?");
+			sb.append("Något blev fel. Försök att logga in igen. ");
 		}
 		return sb.toString();
 
@@ -316,6 +321,9 @@ public class Statistics extends gui.StatisticsMenu {
 	 */
 	private ArrayList<String> toStringArrayList(String[] array) {
 		if(array == null) {
+			return null;
+		}
+		if(array[0].equals("Alla")) {
 			return null;
 		}
 		
@@ -352,6 +360,9 @@ public class Statistics extends gui.StatisticsMenu {
 		if(array == null) {
 			return null;
 		}
+		if(array[0].equals("Alla")) {
+			return null;
+		}
 		
 		ArrayList<Integer> arrayList  = new ArrayList<Integer>();
 		for(int i = 0; i < array.length; i++) {
@@ -381,11 +392,11 @@ public class Statistics extends gui.StatisticsMenu {
 	 * Creates a string with html and javascript code that creates a table when printed out.
 	 * @param stats HashMap with keys "user", "role", "activity", "week" and "time" 
 	 * and ArrayList as value.
-	 * @return String containing html and javascript that creates the table when printed out. If stats is equal to null, it returns the string "No time report found with these filters.".
+	 * @return String containing html and javascript that creates the table when printed out.
 	 */	
 	private String printTable(HashMap<String, ArrayList<String>> stats) {
 		if(stats.get("time").isEmpty()) {
-			return("No time report found with these filters.");
+			return("Hittade ingen tidrapport med dessa filter.");
 		}
 		
 		StringBuilder htmlTable = new StringBuilder();
@@ -397,11 +408,11 @@ public class Statistics extends gui.StatisticsMenu {
 				      + "google.setOnLoadCallback(drawTable);"
 				      + "function drawTable() {"
 				       + "var data = new google.visualization.DataTable();"
-				       + "data.addColumn('string', 'Username');"
-				       + "data.addColumn('string', 'Role');"
-				       + "data.addColumn('string', 'Activity');"
-				       + "data.addColumn('string', 'Week');"
-				       + "data.addColumn('string', 'Time');"
+				       + "data.addColumn('string', 'Användarnamn');"
+				       + "data.addColumn('string', 'Roll');"
+				       + "data.addColumn('string', 'Aktivitet');"
+				       + "data.addColumn('string', 'Vecka');"
+				       + "data.addColumn('string', 'Tid');"
 				       + "data.addRows(["
 					);
 		
@@ -443,21 +454,21 @@ public class Statistics extends gui.StatisticsMenu {
 	private String translateRole(int role) {
 		switch(role) {
 			case 1:
-				return("Administrator");
+				return("Administratör");
 			case 2:
-				return("Project Leader");
+				return("Projektledare");
 			case 4: 
-				return("System Group");
+				return("Systemgrupp");
 			case 5:
-				return("System Group Leader");
+				return("Systemgruppsledare");
 			case 6:
-				return("Development Group");
+				return("Utvecklingsgrupp");
 			case 7:
-				return("Test Group");
+				return("Testgrupp");
 			case 8:
-				return("Test Leader");
+				return("Testledare");
 			default:
-				return("Unknown Role");
+				return("Okänd roll");
 		}
 	}
 	
@@ -517,7 +528,7 @@ public class Statistics extends gui.StatisticsMenu {
 
 /*
 	private void testSetSessionData(HttpSession session) {
-		session.setAttribute("user_Permissions", 1);
+		session.setAttribute("user_Permissions", 2);
 		session.setAttribute("project_group_id", 1);
 		session.setAttribute("username","andsve");
 	}*/
