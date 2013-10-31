@@ -31,8 +31,8 @@ public class AddMemberToProjectGroup extends gui.ProjectGroupsMenu {
 		if(request.getParameter("thegroup") == null) {
 			out.print(showProjectGroups());
 		} else {
-			if(groups.showProjectGroup(db.getUsers(Integer.parseInt(request.getParameter("thegroup")))) == null) {
-				
+			if(request.getParameter("reportid") == null) {
+				out.print(groups.showProjectGroup(db.getUsers(Integer.parseInt(request.getParameter("thegroup")))));
 			}
 		}
 		/*if(request.getParameter("success") == null) {
