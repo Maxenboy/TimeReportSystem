@@ -6,7 +6,6 @@ import java.io.PrintWriter;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
-import database.Database;
 
 @WebServlet("/AddMemberToProjectGroup")
 public class AddMemberToProjectGroup extends gui.ProjectGroupsMenu {
@@ -20,7 +19,6 @@ public class AddMemberToProjectGroup extends gui.ProjectGroupsMenu {
 			throws IOException {
 		ProjectGroups groups = new ProjectGroups();
 		HttpSession session = request.getSession(true);
-		Database db = new Database();
 		PrintWriter out = response.getWriter();
 		out.print(getPageIntro());
 		out.print(generateMainMenu((Integer) session

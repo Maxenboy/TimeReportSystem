@@ -8,8 +8,6 @@ import java.util.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
-import base.servletBase;
-import database.Database;
 import database.ProjectGroup;
 
 @WebServlet("/ShowProjectGroups")
@@ -19,13 +17,11 @@ public class ShowProjectGroups extends ProjectGroupsMenu {
 	 * 
 	 */
 	private static final long serialVersionUID = -6869459061396740611L;
-	Database db = new Database();
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession();
 		PrintWriter out = response.getWriter();
 		
-		// ��NDRA TILL R��TT ROLL I generateMainMenu (se servletBase.java f��r roller) 
 		out.print(getPageIntro());
 		out.print(generateMainMenu((Integer) session.getAttribute("user_permissions")));
 		out.print(generateSubMenu((Integer) session.getAttribute("user_permissions")));

@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import database.Database;
 
 @WebServlet("/ShowProjectMembers")
 public class ShowProjectMembers extends ProjectGroupsMenu {
@@ -20,10 +19,8 @@ public class ShowProjectMembers extends ProjectGroupsMenu {
 	 */
 	private static final long serialVersionUID = -6458493959837089759L;
 	private ProjectMembers pm;
-	private Database db;
 
 	public ShowProjectMembers() {
-		db = new Database();
 
 	}
 
@@ -70,7 +67,7 @@ public class ShowProjectMembers extends ProjectGroupsMenu {
 		String html;
 		html = "<p> <form name=" + formElement("input");
 		html += " method=" + formElement("POST");
-		html += "<p> Användarnamn : <input type=" + formElement("text") + " name="
+		html += "<p> Anvï¿½ndarnamn : <input type=" + formElement("text") + " name="
 				+ formElement("groupname") + '>';
 		html += "<input type=" + formElement("Spara") + '>';
 		html += "</form>";

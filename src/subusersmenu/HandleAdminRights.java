@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import database.Database;
 import database.User;
 
 @WebServlet("/HandleAdminRights")
@@ -21,7 +20,6 @@ public class HandleAdminRights extends UsersMenu {
 	 */
 	private static final long serialVersionUID = 1859483135166153038L;
 	Users u = new Users();
-	Database db = new Database();
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {

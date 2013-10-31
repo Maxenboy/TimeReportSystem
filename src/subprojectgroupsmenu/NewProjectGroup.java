@@ -17,7 +17,6 @@ public class NewProjectGroup extends gui.ProjectGroupsMenu {
 	 */
 	private static final long serialVersionUID = 1L;
 	private ProjectGroups group = new ProjectGroups();
-	private Database db = new Database();
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {

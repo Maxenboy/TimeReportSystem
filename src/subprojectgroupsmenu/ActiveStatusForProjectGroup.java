@@ -21,13 +21,11 @@ public class ActiveStatusForProjectGroup extends gui.ProjectGroupsMenu {
 	 * 
 	 */
 	ProjectGroups group;
-	Database db;
 	
 	
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
-		db = new Database();
 		HttpSession session = request.getSession(true);
 		PrintWriter out = response.getWriter();
 		out.print(getPageIntro());

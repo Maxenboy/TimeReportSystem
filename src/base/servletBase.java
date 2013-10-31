@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import database.Database;
+
 /**
  * This class is the superclass for all servlets in the application. It includes
  * basic functionality required by many servlets, like for example a page head
@@ -48,6 +50,7 @@ public class servletBase extends HttpServlet {
 	protected static final int PERMISSION_WITHOUT_ROLE = 	3; 
 	protected static final int PERMISSION_OTHER_USERS = 	4; 
 	
+	protected Database db = new Database();
 	
 	/**
 	 * Constructs a servlet and makes a connection to the database. It also

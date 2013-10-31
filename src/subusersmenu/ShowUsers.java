@@ -8,7 +8,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import base.*;
-import database.Database;
 
 @WebServlet("/ShowUsers")
 public class ShowUsers extends UsersMenu {
@@ -17,10 +16,8 @@ public class ShowUsers extends UsersMenu {
 	 */
 	private static final long serialVersionUID = -2190552005706112015L;
 private Users users;
-private Database db;
 	public ShowUsers() {
 		users= new Users();
-		db=new Database();
 	}
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

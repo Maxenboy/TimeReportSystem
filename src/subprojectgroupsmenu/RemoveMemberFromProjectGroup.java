@@ -16,7 +16,6 @@ public class RemoveMemberFromProjectGroup extends gui.ProjectGroupsMenu {
 	 */
 	private static final long serialVersionUID = 4921473121575805469L;
 	ProjectGroups group = new ProjectGroups();
-	Database db = new Database();
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
@@ -57,7 +56,7 @@ public class RemoveMemberFromProjectGroup extends gui.ProjectGroupsMenu {
 		html = "<p> <form name=" + formElement("input") + "id="
 				+ formElement("removeuserfromgroup");
 		html += " method=" + formElement("get");
-		html += "<p> Användarnamn: <input type=" + formElement("text") + " name="
+		html += "<p> Anvï¿½ndarnamn: <input type=" + formElement("text") + " name="
 				+ formElement("name") + '>';
 		html += "<p> Grupp id: <input type=" + formElement("text")
 				+ " groupid=" + formElement("groupid") + '>';

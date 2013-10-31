@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import database.Database;
 
 @WebServlet("/ActiveStatusForUser")
 public class ActiveStatusForUser extends UsersMenu {
@@ -19,11 +18,9 @@ public class ActiveStatusForUser extends UsersMenu {
 	 */
 	private static final long serialVersionUID = -3023954127569399790L;
 	private Users users;
-	private Database db;
 
 	public ActiveStatusForUser() {
 		users = new Users();
-		db = new Database();
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -41,13 +38,13 @@ public class ActiveStatusForUser extends UsersMenu {
 			out.print("<p> Inget att visa </p>");
 		} else {
 			if (request.getParameter("success") == null) {
-				out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"Är du säker?\");if (confirmed) {$(this).submit();}});</script>");
+				out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"ï¿½r du sï¿½ker?\");if (confirmed) {$(this).submit();}});</script>");
 				out.print(s);
 			} else if (request.getParameter("success").equals("true")) {
-				out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"Är du säker?\");if (confirmed) {$(this).submit();}});</script>");
+				out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"ï¿½r du sï¿½ker?\");if (confirmed) {$(this).submit();}});</script>");
 				out.print(users.showUsers(db.getUsers()));
 			} else if (request.getParameter("success").equals("false")) {
-				out.print("<script>$(alert(\"Inkorrekt syntax på anändarnamnet\"))</script>"
+				out.print("<script>$(alert(\"Inkorrekt syntax pï¿½ anï¿½ndarnamnet\"))</script>"
 						+ s);
 			} 
 		}
@@ -76,7 +73,7 @@ public class ActiveStatusForUser extends UsersMenu {
 		String html;
 		html = "<p> <form name=" + formElement("input");
 		html += " method=" + formElement("POST");
-		html += "<p> Användarnamn : <input type=" + formElement("text") + " name="
+		html += "<p> Anvï¿½ndarnamn : <input type=" + formElement("text") + " name="
 				+ formElement("username") + '>';
 		html += "<p> Aktivera : <input type=" + formElement("text")
 				+ " active=" + formElement("active (true/false)") + '>';

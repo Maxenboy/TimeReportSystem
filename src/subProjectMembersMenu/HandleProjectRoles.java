@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
-import database.Database;
 import database.User;
 
 @WebServlet("/HandleProjectRoles")
@@ -17,7 +16,6 @@ public class HandleProjectRoles extends gui.UsersMenu{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	Database db = new Database();
 	ProjectMembers members;
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)

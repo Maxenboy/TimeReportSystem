@@ -18,7 +18,6 @@ public class HandleProjectLeader extends gui.ProjectGroupsMenu {
 	 * 
 	 */
 	private static final long serialVersionUID = 2692792293983643296L;
-	Database db = new Database();
 	ProjectGroups group = new ProjectGroups();
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -69,7 +68,7 @@ public class HandleProjectLeader extends gui.ProjectGroupsMenu {
 		html += " method=" + formElement("get");
 		html += "<p> Vilken grupp : <input type=" + formElement("text")
 				+ " name=" + formElement("name") + '>';
-		html += "<p> Vilke användare : <input type=" + formElement("text")
+		html += "<p> Vilke anvï¿½ndare : <input type=" + formElement("text")
 				+ " user=" + formElement("user") + '>';
 		html += "<input type=" + formElement("submit") + "value="
 				+ formElement("Toggla ledare") + '>';
