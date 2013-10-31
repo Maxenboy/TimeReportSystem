@@ -30,11 +30,11 @@ public class AddMemberToProjectGroup extends gui.ProjectGroupsMenu {
 				.getAttribute("user_permissions")));
 		out.print(generateSubMenu((Integer) session
 				.getAttribute("user_permissions")));
-		if (request.getParameter("thegroup") == null || groupName != "") {
+		if (request.getParameter("thegroup") == null && groupName == "") {
 			out.print(showProjectGroups());
 		} else {
-			if (request.getParameter("reportid") == null) {
-				if(groupName == "") {
+			if (request.getParameter("reportId") == null) {
+				if (groupName == "") {
 					groupName = request.getParameter("thegroup");
 				}
 				ArrayList<User> users = new ArrayList<User>();
@@ -50,17 +50,17 @@ public class AddMemberToProjectGroup extends gui.ProjectGroupsMenu {
 				}
 			} else {
 				if (groups.addUserToProjectGroup(
-						db.getUser(request.getParameter("reportid"))
-								.getUsername(), Integer.parseInt(request
-								.getParameter("thegroup")))) {
+						db.getUser(Integer.parseInt(request.getParameter("reportId")))
+								.getUsername(), Integer.parseInt(groupName))) {
 					out.print(groups.showProjectGroup(db.getUsers(Integer
-							.parseInt(request.getParameter("thegroup")))));
+							.parseInt(groupName))));
+					groupName = "";
 				} else {
 					out.print("<script>$(alert(\"Användaren är redan med i en projektgrupp!\"))</script>"
 							+ groups.showProjectGroup(db.getUsers(Integer
-									.parseInt(request.getParameter("thegroup")))));
+									.parseInt(groupName))));
+					groupName = "";
 				}
-				groupName = "";
 			}
 		}
 		out.print(getPageOutro());
