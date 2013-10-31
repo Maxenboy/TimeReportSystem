@@ -19,7 +19,7 @@ public class ActiveStatusForProjectGroup extends gui.ProjectGroupsMenu {
 	/**
 	 * 
 	 */
-	ProjectGroups group;
+	ProjectGroups group  = new ProjectGroups();
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
@@ -30,16 +30,18 @@ public class ActiveStatusForProjectGroup extends gui.ProjectGroupsMenu {
 				.getAttribute("user_permissions")));
 		out.print(generateSubMenu((Integer) session
 				.getAttribute("user_permissions")));
-		if (request.getParameter("success") == null) {
+		if (request.getParameter("thegroup") == null) {
 			out.print("<script>$('#Activate/Inactivategroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"�r du s�ker?\");if (confirmed) {$(this).submit();}});</script>"
 					+ showProjectGroups());
-		} else if (request.getParameter("success").equals("true")) {
-			out.print("<script>$(alert(\"Lyckades!\"))</script>"
-					+ showProjectGroups());
-		} else if (request.getParameter("success").equals("false")) {
-			out.print("<script>$(alert(\"Inkorrekt input.\"))</script>"
-					+ "<script>$('#Activate/Inactivategroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"�r du s�ker?\");if (confirmed) {$(this).submit();}});</script>"
-					+ showProjectGroups());
+		} else {
+			if (checkGroup(request.getParameter("thegroup"))) {
+				out.print("<script>$(alert(\"Lyckades!\"))</script>"
+						+ showProjectGroups());
+			} else {
+				out.print("<script>$(alert(\"Inkorrekt input.\"))</script>"
+						+ "<script>$('#Activate/Inactivategroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"�r du s�ker?\");if (confirmed) {$(this).submit();}});</script>"
+						+ showProjectGroups());
+			}
 		}
 		out.print(getPageOutro());
 	}
@@ -49,16 +51,16 @@ public class ActiveStatusForProjectGroup extends gui.ProjectGroupsMenu {
 		HttpSession session = request.getSession();
 		String name = request.getParameter("thegroup");
 		if (checkGroup(name)) {
-			response.sendRedirect(request.getRequestURI() + "?success=true");
+			response.sendRedirect(request.getRequestURI() + "&success=true");
 		} else {
-			response.sendRedirect(request.getRequestURI() + "?success=false");
+			response.sendRedirect(request.getRequestURI() + "&success=false");
 		}
 	}
 
 	private boolean checkGroup(String name) {
 		List<ProjectGroup> groups = db.getProjectGroups();
 		for (ProjectGroup g : groups) {
-			if (g.getProjectName().equals(name)) {
+			if (g.getId() == Integer.parseInt(name)) {
 				if (g.isActive()) {
 					if (group.toggleActiveProjectGroup(g.getId(), false)) {
 						return true;
@@ -74,8 +76,7 @@ public class ActiveStatusForProjectGroup extends gui.ProjectGroupsMenu {
 
 	private String showProjectGroups() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("<FORM METHOD=get ACTION="
-				+ formElement("ActiveStatusForProjectGroup") + ">");
+		sb.append("<FORM METHOD=" + formElement("get") + ">");
 		sb.append(buildProjectGroupsTable());
 		List<ProjectGroup> groups = db.getProjectGroups();
 		for (ProjectGroup g : groups) {

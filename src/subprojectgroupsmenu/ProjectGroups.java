@@ -63,7 +63,7 @@ public class ProjectGroups {
 			return null;
 		}
 		StringBuilder sb = new StringBuilder();
-		sb.append("<FORM METHOD=post ACTION=" + formElement("ShowUsers") + ">");
+		sb.append("<FORM METHOD=post>");
 		sb.append(buildShowUsersInGroupTable());
 		for (User u : users) {
 			sb.append("<tr>");
