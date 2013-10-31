@@ -19,6 +19,8 @@ build/*
 build/*/*/*
 doc/*
 
+.DS_Store
+
 # External tool builders
 .externalToolBuilders/
 
