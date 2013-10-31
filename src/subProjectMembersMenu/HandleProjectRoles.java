@@ -34,7 +34,7 @@ public class HandleProjectRoles extends gui.UsersMenu{
 			out.print(showMembers(db.getUsers(Integer.parseInt(request
 							.getParameter("groupname")))));
 		} else if (request.getParameter("session").equals("failed")) {
-			out.print("<script>$(alert(\"Incorrect group id\"))</script>"
+			out.print("<script>$(alert(\"Inkorrekt grupp-id\"))</script>"
 					+ groupForm());
 		} else {
 			out.print("<script>$(alert(\"Error\"))</script>" + groupForm());
@@ -92,10 +92,10 @@ public class HandleProjectRoles extends gui.UsersMenu{
 		StringBuilder sb = new StringBuilder();
 		sb.append("<table class=\"table table-bordered table-hover\"" + ">");
 		sb.append("<tr>");
-		sb.append("<th>Username</th>");
-		sb.append("<th>Project group</th>");
-		sb.append("<th>Role</th>");
-		sb.append("<th>Select</th>");
+		sb.append("<th>Användarnamn</th>");
+		sb.append("<th>Projektgrupp</th>");
+		sb.append("<th>Roll</th>");
+		sb.append("<th>Välj</th>");
 		sb.append("</tr>");
 		return sb.toString();
 	}
@@ -112,7 +112,7 @@ public class HandleProjectRoles extends gui.UsersMenu{
 		html += " method=" + formElement("POST");
 		html += "<p> Groupname : <input type=" + formElement("text") + " name="
 				+ formElement("groupname") + '>';
-		html += "<input type=" + formElement("submit") + '>';
+		html += "<input type=" + formElement("Spara") + '>';
 		html += "</form>";
 		return html;
 	}

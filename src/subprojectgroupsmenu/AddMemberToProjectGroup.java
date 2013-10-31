@@ -35,7 +35,7 @@ public class AddMemberToProjectGroup extends gui.ProjectGroupsMenu {
 							.parseInt(request.getParameter("groupid")))));
 		}
 		else if (request.getParameter("sucess").equals("false")) {
-			out.print("<script>$(alert(\"Incorrect input.\"))</script>"
+			out.print("<script>$(alert(\"Inkorrekt input.\"))</script>"
 					+ groups.addUserForm());
 		}
 		out.print(getPageOutro());

@@ -34,10 +34,10 @@ public class NewProjectGroup extends gui.ProjectGroupsMenu {
 			out.print(showProjectGroups());
 		} else {
 			if (request.getParameter("inputname") == null) {
-				out.print("<script>$(alert(\"Information entered incorrectly.\"))</script>"
+				out.print("<script>$(alert(\"Information inkorrekt inamatad\"))</script>"
 						+ addProjectGroupForm());
 			} else {
-				out.print("<script>$(alert(\"Couldn't add project group.\"))</script>"
+				out.print("<script>$(alert(\"Kunde inte lägga till projektgrupp\"))</script>"
 						+ addProjectGroupForm());
 			}
 		}
@@ -69,13 +69,13 @@ public class NewProjectGroup extends gui.ProjectGroupsMenu {
 	private boolean validInput(String projectname, String startweek,
 			String endweek) {
 		boolean notOk = false;
-		if (projectname.length() > 10 && !Pattern.matches("\\w", projectname)) {
+		if (projectname.length() > 10 && Pattern.matches("\\W", projectname)) {
 			notOk = true;
 		}
-		if (!Pattern.matches("\\d", startweek)) {
+		if (Pattern.matches("\\D", startweek)) {
 			notOk = true;
 		}
-		if (!Pattern.matches("\\d", endweek)) {
+		if (Pattern.matches("\\D", endweek)) {
 			notOk = true;
 		}
 		return !notOk;
@@ -122,10 +122,10 @@ public class NewProjectGroup extends gui.ProjectGroupsMenu {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<table class=\"table table-bordered table-hover\"" + ">");
 		sb.append("<tr>");
-		sb.append("<th>Project Group</th>");
-		sb.append("<th>Start Week</th>");
-		sb.append("<th>End Week</th>");
-		sb.append("<th>Estimated hours</th>");
+		sb.append("<th>Projektgrupp</th>");
+		sb.append("<th>Startvecka</th>");
+		sb.append("<th>Slutvecka</th>");
+		sb.append("<th>Antal estimerade timmar</th>");
 		sb.append("</tr>");
 		return sb.toString();
 	}

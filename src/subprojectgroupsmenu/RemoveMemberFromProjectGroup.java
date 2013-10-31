@@ -31,7 +31,7 @@ public class RemoveMemberFromProjectGroup extends gui.ProjectGroupsMenu {
 			out.print(group.showProjectGroup(db.getUsers(Integer
 					.parseInt(request.getParameter("groupid")))));
 		} else {
-			out.print("<script>$(alert(\"Couldn't add project group.\"))</script>"
+			out.print("<script>$(alert(\"Kunde inte lägga till grupp\"))</script>"
 					+ removeUserForm());
 		}
 		out.print(getPageOutro());
@@ -62,7 +62,7 @@ public class RemoveMemberFromProjectGroup extends gui.ProjectGroupsMenu {
 		html += "<p> Group id: <input type=" + formElement("text")
 				+ " groupid=" + formElement("groupid") + '>';
 		html += "<input type=" + formElement("submit") + "value="
-				+ formElement("Remove user") + '>';
+				+ formElement("Ta bort användare") + '>';
 		html += "</form>";
 		return html;
 	}

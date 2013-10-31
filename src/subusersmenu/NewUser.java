@@ -40,7 +40,7 @@ public class NewUser extends UsersMenu {
 				.getAttribute("user_permissions")));
 		String s = users.userForm();
 		if (s == null) {
-			out.print("<p> Nothing to show </p>");
+			out.print("<p> Inget att visa </p>");
 		} else {
 			if (request.getParameter("success") == null) {
 				out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"Are you sure?\");if (confirmed) {$(this).submit();}});</script>");
@@ -49,7 +49,7 @@ public class NewUser extends UsersMenu {
 				out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"Are you sure?\");if (confirmed) {$(this).submit();}});</script>");
 				out.print(users.showUsers(db.getUsers()));
 			} else if(request.getParameter("success").equals("false")){
-				out.print("<script>$(alert(\"incorrect syntax on the user name\"))</script>" + s);
+				out.print("<script>$(alert(\"Inkorrekt syntax på användarnamnet\"))</script>" + s);
 			}
 
 		}

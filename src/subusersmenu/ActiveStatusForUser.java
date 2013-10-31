@@ -41,7 +41,7 @@ public class ActiveStatusForUser extends UsersMenu {
 
 		String s = groupForm();
 		if (s == null) {
-			out.print("<p> Nothing to show </p>");
+			out.print("<p> Inget att visa </p>");
 		} else {
 			switch (request.getParameter("success")) {
 			case "null":
@@ -54,7 +54,7 @@ public class ActiveStatusForUser extends UsersMenu {
 				break;
 			case "false":
 				out.print(getPageIntro()
-						+ "<script>$(alert(\"incorrect syntax on the user name\"))</script>"
+						+ "<script>$(alert(\"Inkorrekt syntax på användarnamnet\"))</script>"
 						+ s);
 			}
 		}
