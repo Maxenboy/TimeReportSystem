@@ -48,7 +48,6 @@ public class ActiveStatusForProjectGroup extends gui.ProjectGroupsMenu {
 			throws IOException {
 		HttpSession session = request.getSession();
 		String name = request.getParameter("thegroup");
-		System.out.println("Lyckades!" + name);
 		if (checkGroup(name)) {
 			response.sendRedirect(request.getRequestURI() + "?success=true");
 		} else {
