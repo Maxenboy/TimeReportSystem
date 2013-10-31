@@ -14,7 +14,6 @@ public class ShowTimeReports extends TimeReportingMenu {
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession(true);
-
 		PrintWriter out = response.getWriter();
 		out.print(getPageIntro());
 		int permission = (Integer) session.getAttribute("user_permissions");

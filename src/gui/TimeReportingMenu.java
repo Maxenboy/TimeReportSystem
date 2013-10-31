@@ -27,7 +27,7 @@ public class TimeReportingMenu extends servletBase {
 					+ "<li><a href=\"ShowTimeReports\">Show time reports</a></li>"
 					+ "<li><a href=\"ChangeTimeReport\">Change time report</a></li>"
 					+ "<li><a href=\"RemoveTimeReport\">Remove time report</a></li>"
-					+ "<li><a href=\"SignTimeReport\">Sign time report</a></li>"
+					+ "<li><a href=\"SignTimeReports\">Sign time report</a></li>"
 					+ "</ul>"; 
 			break; 
 		case PERMISSION_PROJ_LEADER: 
@@ -36,7 +36,7 @@ public class TimeReportingMenu extends servletBase {
 					+ "<li><a href=\"NewTimeReport\">New time report</a></li>"
 					+ "<li><a href=\"ChangeTimeReport\">Change time report</a></li>"
 					+ "<li><a href=\"RemoveTimeReport\">Remove time report</a></li>"
-					+ "<li><a href=\"SignTimeReport\">Sign time report</a></li>"
+					+ "<li><a href=\"SignTimeReports\">Sign time report</a></li>"
 					+ "</ul>"; 
 			break; 
 			
@@ -50,8 +50,12 @@ public class TimeReportingMenu extends servletBase {
 			break; 
 			
 		case PERMISSION_OTHER_USERS: 
-			// lol u mad
-			
+			html += ""
+					+ "<li><a href=\"ShowTimeReports\">Show time reports</a></li>"
+					+ "<li><a href=\"NewTimeReport\">New time report</a></li>"
+					+ "<li><a href=\"ChangeTimeReport\">Change time report</a></li>"
+					+ "<li><a href=\"RemoveTimeReport\">Remove time report</a></li>"
+					+ "</ul>"; 			
 			break; 
 		}
 		

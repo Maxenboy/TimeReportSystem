@@ -54,33 +54,6 @@ public class servletBase extends HttpServlet {
 	 * writes all user names on the console for test purpose.
 	 */
 	public servletBase() {
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-//			conn = DriverManager
-//					.getConnection("jdbc:mysql://vm26.cs.lth.se/puss1302?"
-//							+ "user=puss1302&password=jks78ww2");
-			conn = DriverManager
-					.getConnection("jdbc:mysql://localhost:3306/puss1302?user=puss1302&password=jks78ww2");
-			
-
-			// Display the contents of the database in the console.
-			// This should be removed in the final version
-			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("select * from users");
-			while (rs.next()) {
-				String name = rs.getString("username");
-				System.out.println("base " + name);
-			}
-
-			stmt.close();
-
-		} catch (SQLException ex) {
-			System.out.println("SQLException: " + ex.getMessage());
-			System.out.println("SQLState: " + ex.getSQLState());
-			System.out.println("VendorError: " + ex.getErrorCode());
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
 	}
 
 	/**
@@ -169,8 +142,11 @@ public class servletBase extends HttpServlet {
 						+ "<li><a href=\"Statistics\">Statistics</a></li>"; 				
 				break;
 				
-			default:
-				// inget händer lol
+			case PERMISSION_WITHOUT_ROLE:
+				intro += ""
+						+ "<li><a href=\"ShowProjectMembers\">Project members</a></li>"
+						+ "<li><a href=\"ShowTimeReports\">Time reports</a></li>"
+						+ "<li><a href=\"Statistics\">Statistics</a></li>";
 				break; 
 		}
 		
