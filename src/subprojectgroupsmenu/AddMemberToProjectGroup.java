@@ -14,6 +14,7 @@ import database.User;
 @WebServlet("/AddMemberToProjectGroup")
 public class AddMemberToProjectGroup extends gui.ProjectGroupsMenu {
 
+	private String groupName = "";
 	/**
 	 * 
 	 */
@@ -29,10 +30,13 @@ public class AddMemberToProjectGroup extends gui.ProjectGroupsMenu {
 				.getAttribute("user_permissions")));
 		out.print(generateSubMenu((Integer) session
 				.getAttribute("user_permissions")));
-		if (request.getParameter("thegroup") == null) {
+		if (request.getParameter("thegroup") == null || groupName != "") {
 			out.print(showProjectGroups());
 		} else {
 			if (request.getParameter("reportid") == null) {
+				if(groupName == "") {
+					groupName = request.getParameter("thegroup");
+				}
 				ArrayList<User> users = new ArrayList<User>();
 				for (User u : db.getUsers()) {
 					if (u.getProjectGroup() == 0) {
@@ -56,6 +60,7 @@ public class AddMemberToProjectGroup extends gui.ProjectGroupsMenu {
 							+ groups.showProjectGroup(db.getUsers(Integer
 									.parseInt(request.getParameter("thegroup")))));
 				}
+				groupName = "";
 			}
 		}
 		out.print(getPageOutro());
