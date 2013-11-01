@@ -153,15 +153,17 @@ public class LogIn extends servletBase {
         	} else {
         		out.println("<p style='color: red;'>Användaren är inaktiv</p>");
         		out.println(loginRequestForm());
-        	
         	}
 //       		}
 //       		else {
 //       			out.println("<p>That was not a valid user name / password. </p>");
 //       			out.println(loginRequestForm());
 //       		}
-       	}else{ // name was null, probably because no form has been filled out yet. Display form.
+       	} else if((name == null && password == null) || (name.length() == 0 && password.length() == 0)) {
+    		out.println(loginRequestForm());
+       	} else { // name was null, probably because no form has been filled out yet. Display form.
 //       		out.println("<p>That was not a valid user name / password. </p>");
+       		out.println("<p style='color: red;'>Inloggning misslyckades</p>");
        		out.println(loginRequestForm());
        	}
 		
