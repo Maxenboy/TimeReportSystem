@@ -139,7 +139,7 @@ public class LogIn extends servletBase {
        			} else {
        				session.setAttribute("user_permissions", 4);
        			}
-       			response.sendRedirect("ShowTimeReports");
+       			response.sendRedirect("");
         	} else {
         		out.println("<p style='color: red;'>Anv\u00E4ndaren \u00E4r inaktiv</p>");
         		out.println(loginRequestForm());
