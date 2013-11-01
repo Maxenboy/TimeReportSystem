@@ -39,7 +39,7 @@ public class RemoveTimeReport extends TimeReportingMenu{
 			break;
 		}
 		if(s == null) {
-			out.print("<script> alert('There are no time reports in the system.</script>");
+			out.print("<script> alert('Det finns inga tidrapporter att visa</script>");
 		} else {
 			out.print(s);
 			session.setAttribute("removeReportState", REMOVE_REPORT);
@@ -77,9 +77,9 @@ public class RemoveTimeReport extends TimeReportingMenu{
 		case DO_REMOVAL:
 			reportId = request.getParameter("reportId");
 			if(trg.removeTimeReport(reportId)) {
-				out.print("<script>alert('Removed report " +  reportId + "')</script>");
+				out.print("<script>alert('Tidrapport borttagen: " +  reportId + "')</script>");
 			} else {
-				out.print("<script>alert('Internal error - could not remove report')</script>");
+				out.print("<script>alert('Internt fel - Tidrapporten kunde ej raderas')</script>");
 			}
 			session.setAttribute("removeReportState", FIRST);
 			doGet(request, response);

@@ -43,7 +43,7 @@ public class ChangeTimeReport extends TimeReportingMenu{
 				out.print(generateSubMenu(permission));
 				s = trg.showAllTimeReports(projId, TimeReportGenerator.CHANGE_PRJ_REPORT);
 				if(s == null)
-					out.print("<p> Nothing to show </p>");
+					out.print("<p> Inga tidrapporter att visa </p>");
 				else 
 					out.print(s);
 				out.print(getPageOutro());
@@ -54,7 +54,7 @@ public class ChangeTimeReport extends TimeReportingMenu{
 				out.print(generateSubMenu(permission));
 				s = trg.showAllTimeReports(userId, TimeReportGenerator.CHANGE_USER_REPORT);
 				if(s == null)
-					out.print("<p> Nothing to show </p>");
+					out.print("<p> Inga tidrapporter att visa </p>");
 				else 
 					out.print(s);
 				out.print(getPageOutro());
@@ -87,7 +87,7 @@ public class ChangeTimeReport extends TimeReportingMenu{
 				out.print(generateSubMenu(permission));
 				s = trg.showChangeTimeReport(Integer.valueOf(reportId));
 				if(s == null) {
-					out.print("<script>alert('Cannot change signed report!') </script>");
+					out.print("<script>alert('Du kan inte ändra i en signerad tidrapport') </script>");
 					session.setAttribute("state", FIRST);
 					doGet(request, response);
 				} else {
@@ -101,10 +101,10 @@ public class ChangeTimeReport extends TimeReportingMenu{
 			String week = request.getParameter("week");
 			if(!isNumeric(week) && !week.equals("")) {
 				session.setAttribute("changeReportState", FIRST);
-				out.print("<script> alert('Illegal character. Only numerical chararcters are allowed') </script>");
+				out.print("<script> alert('Otillåten symbol. Använd bara numeriska symboler.') </script>");
 				doGet(request, response);
 			} else if(week.equals("")) {
-				out.print("<script> alert('Mandatory data has not been filled in. Please fill in week nr. and at least one activity') </script>");
+				out.print("<script> alert('Obligatoriska data saknas. Var vänlig fyll i veckonummer och åtminstone en aktivitet') </script>");
 				session.setAttribute("changeReportState", FIRST);
 				doGet(request,response);
 			} else {
@@ -137,20 +137,20 @@ public class ChangeTimeReport extends TimeReportingMenu{
 				}
 				if(nonNumerical) {
 					session.setAttribute("changeReportState", FIRST);
-					out.print("<script> alert('Illegal character. Only numerical chararcters are allowed') </script>");
+					out.print("<script> alert('Otillåten symbol. Använd bara numeriska symboler.') </script>");
 					doGet(request, response);
 				} else if(!filledIn) {
-					out.print("<script> alert('Mandatory data has not been filled in. Please fill in week nr. and at least one activity') </script>");
+					out.print("<script> alert('Obligatoriska data saknas. Var vänlig fyll i veckonummer och åtminstone en aktivitet') </script>");
 					session.setAttribute("changeReportState", FIRST);
 					doGet(request, response);
 				} else {
 					//update in database
 					if(trg.changeTimeReport(timeReport, activities)) {
-						out.print("<script>alert('Successfully updated time report.') </script>");
+						out.print("<script>alert('Tidrapport uppdaterad') </script>");
 						session.setAttribute("changeReportState", FIRST);
 						doGet(request, response);
 					} else {
-						out.print("<script>alert('Internal error - could not update time report.') </script>");
+						out.print("<script>alert('Internt fel - tidrapporten kunde ej uppdateras) </script>");
 						session.setAttribute("changeReportState", FIRST);
 						doGet(request, response);
 					}
