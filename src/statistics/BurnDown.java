@@ -35,7 +35,7 @@ public class BurnDown extends gui.StatisticsMenu {
 		
 		HttpSession session = request.getSession(true);
 		//testSetSessionData(session);
-		int userPermission = (Integer) session.getAttribute("user_Permissions");
+		int userPermission = (Integer) session.getAttribute("user_permissions");
 		int projectGroupId = (Integer) session.getAttribute("project_group_id");
 
 		out.append(getPageIntro());
@@ -68,7 +68,7 @@ public class BurnDown extends gui.StatisticsMenu {
 		HttpSession session = request.getSession(true);
 
 		String[] projectGroup = request.getParameterValues("projectgroup");
-		int userPermission = (Integer) session.getAttribute("user_Permissions");
+		int userPermission = (Integer) session.getAttribute("user_permissions");
 		
 		out.append(getPageIntro());
 		out.append(generateMainMenu(userPermission));
@@ -83,10 +83,10 @@ public class BurnDown extends gui.StatisticsMenu {
 	}
 	
 	/**
-	 * Genererar HTML-kod där admin får välja projektgrupp att se BurnDown för.
+	 * Genererar HTML-kod dï¿½r admin fï¿½r vï¿½lja projektgrupp att se BurnDown fï¿½r.
 	 * 
 	 * 
-	 * @return Sträng med HTML-kod som innehåller formuläret
+	 * @return Strï¿½ng med HTML-kod som innehï¿½ller formulï¿½ret
 	 */
 	private String projectGroupForm() {
 		StringBuilder sb = new StringBuilder();
@@ -94,7 +94,7 @@ public class BurnDown extends gui.StatisticsMenu {
 		ArrayList<ProjectGroup> pg = db.getProjectGroups();
 		Iterator<ProjectGroup> itr = pg.iterator();
 
-		sb.append("<form method='POST'> Var vänlig välj vilken projektgrupp du vill visa BurnDown för.<br />"
+		sb.append("<form method='POST'> Var vï¿½nlig vï¿½lj vilken projektgrupp du vill visa BurnDown fï¿½r.<br />"
 				+ "<select name=projectgroup>");
 		while(itr.hasNext()) {
 			int projectgroup = itr.next().getId();
@@ -114,11 +114,11 @@ public class BurnDown extends gui.StatisticsMenu {
 	 * @param timePerWeek. A HashMap with week as key and time as value. There is also the key "totalProjectTime" which contains the total project time.
 	 * projectGroupId. Int.
 	 * projectGroup. ProjectGroup.
-	 * @return A string containing html and javascript that creates the burndown graph when printed out. If the total project time is 0, it returns the string "Förväntad projekttid är satt till noll."
+	 * @return A string containing html and javascript that creates the burndown graph when printed out. If the total project time is 0, it returns the string "Fï¿½rvï¿½ntad projekttid ï¿½r satt till noll."
 	 */	
 	private String printBurnDown(HashMap<String, Integer> timePerWeek, int projectGroupId, ProjectGroup projectGroup) {
 		if(timePerWeek.get("totalProjectTime") == 0) {
-			return("Förväntad projekttid är satt till noll.");
+			return("Fï¿½rvï¿½ntad projekttid ï¿½r satt till noll.");
 		}
 		
 		StringBuilder htmlBurnDown = new StringBuilder();
@@ -130,7 +130,7 @@ public class BurnDown extends gui.StatisticsMenu {
 		   + "google.setOnLoadCallback(drawChart);"
 		  + "function drawChart() {"
 		    + "var data = google.visualization.arrayToDataTable(["
-		   + "['Vecka', 'Verklig tid kvar', 'Förväntad tid kvar'],"
+		   + "['Vecka', 'Verklig tid kvar', 'Fï¿½rvï¿½ntad tid kvar'],"
 		); 
 		
 		double estimatedProjectTime = projectGroup.getEstimatedTime();
@@ -171,7 +171,7 @@ public class BurnDown extends gui.StatisticsMenu {
 	}		
 /*
 	private void testSetSessionData(HttpSession session) {
-		session.setAttribute("user_Permissions", 1);
+		session.setAttribute("user_permissions", 1);
 		session.setAttribute("project_group_id", 1);
 		session.setAttribute("username","andsve");
 	}*/

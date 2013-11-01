@@ -76,7 +76,7 @@ public class Statistics extends gui.StatisticsMenu {
 		Database db = new Database();
 		PrintWriter out = response.getWriter();
 		HttpSession session = request.getSession(true);
-		int userPermission = (Integer) session.getAttribute("user_Permissions");
+		int userPermission = (Integer) session.getAttribute("user_permissions");
 
 		String projectGroups[] = request.getParameterValues("projectgroup");
 		String users[] = request.getParameterValues("users");
