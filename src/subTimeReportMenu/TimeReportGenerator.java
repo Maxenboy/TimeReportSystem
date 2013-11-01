@@ -37,7 +37,7 @@ public class TimeReportGenerator {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<table class=\"table table-bordered table-hover\">");
 		sb.append("<tr>");
-		sb.append("<th>Rappport ID</th>");
+		sb.append("<th>Rapport ID</th>");
 		sb.append("<th>Vecka</th>");
 		sb.append("<th>Signerad</th>");
 		sb.append("<th>V\u00E4lj</th>");

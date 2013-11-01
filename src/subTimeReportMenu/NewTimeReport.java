@@ -20,6 +20,8 @@ public class NewTimeReport extends TimeReportingMenu{
 	public static final int FIRST = 1;
 	public static final int NOT_ENOUGH_DATA = 3;
 	public static final int ILLEGAL_CHAR = 4;
+	public static final int SUCCESS = 5;
+	public static final int FAIL = 6;
 	TimeReportGenerator trg = new TimeReportGenerator(new Database());
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -29,10 +31,10 @@ public class NewTimeReport extends TimeReportingMenu{
 		int permission = (Integer) session.getAttribute("user_permissions");
 		
 		if(permission == PERMISSION_WITHOUT_ROLE) {
-			out.print("<script> alert('Du har inte blivit tilldelad n\u00E5gon roll och kan d\u00E4rf\u00F6r inte skapa en ny tidrapport. Var v\u00E4nlig kontakta din projektledare')");
+			out.print("<script> alert('Du har inte blivit tilldelad n\u00E5gon roll och kan d\u00E4rf\u00F6r inte skapa en ny tidrapport. Var v\u00E4nlig kontakta din projektledare') </script>");
 			response.sendRedirect("ShowTimeReports");
 		} else if(permission == PERMISSION_ADMIN) {
-			out.print("<script> alert('Du \u00E4r systemadministrat\u00F6r och \u00E4r d\u00E4rf\u00F6r ej till\u00E5ten att skapa en ny tidrapport')");
+			out.print("<script> alert('Du \u00E4r systemadministrat\u00F6r och \u00E4r d\u00E4rf\u00F6r ej till\u00E5ten att skapa en ny tidrapport') </script>");
 			response.sendRedirect("ShowTimeReports");
 		}
 		int state = (Integer) session.getAttribute("newReportState");
@@ -48,6 +50,51 @@ public class NewTimeReport extends TimeReportingMenu{
 				out.print(s);
 			}
 			out.print(getPageOutro());
+			break;
+		case ILLEGAL_CHAR:
+			out.print(generateMainMenu(permission, request));
+			out.print(generateSubMenu(permission));
+			out.print("<script> alert('Otillåten symbol. Anv\u00E4nd bara numeriska symboler.') </script>");
+			s = trg.showNewTimeForm();
+			if(s == null) {
+				out.print("500 internt fel");
+			} else { 
+				out.print(s);
+			}
+			out.print(getPageOutro());
+			session.setAttribute("newReportState", FIRST);
+			break;
+		case NOT_ENOUGH_DATA:
+			out.print(generateMainMenu(permission, request));
+			out.print(generateSubMenu(permission));
+			out.print("<script> alert('Obligatoriska data saknas. Var v\u00E4nlig fyll i veckonummer och \u00E5tminstone en aktivitet') </script>");
+			s = trg.showNewTimeForm();
+			if(s == null) {
+				out.print("500 internt fel");
+			} else { 
+				out.print(s);
+			}
+			out.print(getPageOutro());
+			session.setAttribute("newReportState", FIRST);
+			break;
+		case FAIL:
+			out.print(generateMainMenu(permission, request));
+			out.print(generateSubMenu(permission));
+			out.print("<script>alert('Tidrapporten kunde ej sparas. Kontrollera så att det ej finns en tidigare registrerad tidrapport för samma vecka') </script>");
+			s = trg.showNewTimeForm();
+			if(s == null) {
+				out.print("500 internt fel");
+			} else { 
+				out.print(s);
+			}
+			out.print(getPageOutro());
+			session.setAttribute("newReportState", FIRST);
+			break;
+		case SUCCESS:
+			out.print(generateMainMenu(permission, request));
+			out.print(generateSubMenu(permission));
+			out.print("<script>alert('Tidrapport sparad') </script>");
+			session.setAttribute("newReportState", FIRST);
 			break;
 		}
 		
@@ -96,23 +143,18 @@ public class NewTimeReport extends TimeReportingMenu{
 					}
 				}
 				if(nonNumeric) {
-					out.print("<script> alert('Otill\u00E5ten symbol. Anv\u00E4nd bara numeriska symboler.') </script>");
-					session.setAttribute("newReportState", FIRST);
+					session.setAttribute("newReportState", ILLEGAL_CHAR);
 					doGet(request, response);
 				} else if(!filledIn) {
-					System.out.println("break4");
-					out.print("<script> alert('Obligatoriska data saknas. Var v\u00E4nlig fyll i veckonummer och \u00E5tminstone en aktivitet') </script>");
-					session.setAttribute("newReportState", FIRST);
+					session.setAttribute("newReportState", NOT_ENOUGH_DATA);
 					doGet(request, response);
 				} else {
 					//save in database
 					if(trg.addNewTimeReport(timeReport, activities)) {
-						out.print("<script>alert('Tidrapport uppdaterad') </script>");
-						session.setAttribute("newReportState", FIRST);
+						session.setAttribute("newReportState", SUCCESS);
 						doGet(request, response);
 					} else {
-						out.print("<script>alert('Internt fel - tidrapporten kunde ej uppdateras) </script>");
-						session.setAttribute("newReportState", FIRST);
+						session.setAttribute("newReportState", FAIL);
 						doGet(request, response);
 					}
 				}
