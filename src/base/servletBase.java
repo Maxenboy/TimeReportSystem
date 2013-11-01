@@ -123,7 +123,7 @@ public class servletBase extends HttpServlet {
 			case PERMISSION_ADMIN:
 				intro += ""
 						+ "<li><a href=\"ShowProjectGroups\">Projektgrupper</a></li>"
-						+ "<li><a href=\"ShowUsers\">Användare</a></li>"
+						+ "<li><a href=\"ShowUsers\">Anv\u00E4ndare</a></li>"
 						+ "<li><a href=\"ShowProjectMembers\">Projektmedlemmar</a></li>"
 						+ "<li><a href=\"ShowTimeReports\">Tidrapporter</a></li>"
 						+ "<li><a href=\"Statistics\">Statistik</a></li>"; 
@@ -157,7 +157,7 @@ public class servletBase extends HttpServlet {
 				+ "<div class=\"col-lg-8\">"; 
 		
 		userInfo += ""
-				+ "<p>Användare: " + session.getAttribute("name") +"</p>"
+				+ "<p>Anv\u00E4ndare: " + session.getAttribute("name") +"</p>"
 				+ "<p>Grupp: " + translateProjectGroupId((int) session.getAttribute("project_group_id")) + "</p>"
 				+ "<p>Roll: "+ translateRole((int) session.getAttribute("role")) +"</p>"; 
 		

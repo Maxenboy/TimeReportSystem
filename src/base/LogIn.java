@@ -41,11 +41,11 @@ public class LogIn extends servletBase {
      * @return HTML code for the form
      */
     protected String loginRequestForm() {
-    	String html = "<p>Ange anv��ndarnamn och l��senord:</p>";
+    	String html = "<p>Ange anv\u00E4ndarnamn och l\u00F6senord:</p>";
     	html += "<p> <form name=" + formElement("input");
     	html += " method=" + formElement("post");
-    	html += "<p> Anv��ndarnamn: <input type=" + formElement("text") + " name=" + formElement("user") + '>'; 
-    	html += "<p> L��senord: <input type=" + formElement("password") + " name=" + formElement("password") + '>';  
+    	html += "<p> Anv\u00E4ndarnamn: <input type=" + formElement("text") + " name=" + formElement("user") + '>'; 
+    	html += "<p> L\u00F6senord: <input type=" + formElement("password") + " name=" + formElement("password") + '>';  
     	html += "<p> <input type=" + formElement("submit") + "value=" + formElement("Logga In") + '>';
     	return html;
     }
@@ -105,7 +105,7 @@ public class LogIn extends servletBase {
 		
 		if (loggedIn(request)) {
 			session.setAttribute("state", LOGIN_FALSE);
-			out.println("<p style='color: red;'>Du ��r nu utloggad</p>");
+			out.println("<p style='color: red;'>Du \u00E4r nu utloggad</p>");
 		}
 		
 		String name;
@@ -141,7 +141,7 @@ public class LogIn extends servletBase {
        			}
        			response.sendRedirect("ShowTimeReports");
         	} else {
-        		out.println("<p style='color: red;'>Anv��ndaren ��r inaktiv</p>");
+        		out.println("<p style='color: red;'>Anv\u00E4ndaren \u00E4r inaktiv</p>");
         		out.println(loginRequestForm());
         	}
 //       		}

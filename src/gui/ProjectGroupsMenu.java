@@ -30,8 +30,8 @@ public class ProjectGroupsMenu extends servletBase {
 						+ "<li><a href=\"ShowProjectGroups\">Visa projektgrupper</a></li>"
 						+ "<li><a href=\"NewProjectGroup\">Ny projektgrupp</a></li>"
 						+ "<li><a href=\"ActiveStatusForProjectGroup\">Aktivera/Inaktivera projektgrupp</a></li>"
-						+ "<li><a href=\"AddMemberToProjectGroup\">Lägg till användare i projektgrupp</a></li>"
-						+ "<li><a href=\"RemoveMemberFromProjectGroup\">Ta bort användare från projektgrupp</a></li>"
+						+ "<li><a href=\"AddMemberToProjectGroup\">L\u00E4gg till anv\u00E4ndare i projektgrupp</a></li>"
+						+ "<li><a href=\"RemoveMemberFromProjectGroup\">Ta bort anv\u00E4ndare fr\u00E5n projektgrupp</a></li>"
 						+ "<li><a href=\"HandleProjectLeader\">Hantera projektledare</a></li>"; 
 				break; 
 		}

@@ -39,7 +39,7 @@ public class TimeReportGenerator {
 		sb.append("<th>Rappport ID</th>");
 		sb.append("<th>Vecka</th>");
 		sb.append("<th>Signerad</th>");
-		sb.append("<th>Välj</th>");
+		sb.append("<th>V\u00E4lj</th>");
 		sb.append("</tr>");
 		return sb.toString();
 	}
@@ -95,7 +95,7 @@ public class TimeReportGenerator {
 			sb.append("</tr>");
 		}
 		sb.append("</table>");
-		sb.append("<INPUT TYPE="+ formElement("submit") + "VALUE=" + formElement("Hämta rapport") +">");
+		sb.append("<INPUT TYPE="+ formElement("submit") + "VALUE=" + formElement("H\u00E4mta rapport") +">");
 		sb.append("</form>");
 		return sb.toString();
 	}

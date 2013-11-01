@@ -19,10 +19,10 @@ public class UsersMenu extends servletBase {
 		switch(role) {
 		case PERMISSION_ADMIN: 
 			html += ""
-					+ "<li><a href=\"ShowUsers\">Visa användare</a></li>"
-					+ "<li><a href=\"NewUser\">Ny användare</a></li>"
-					+ "<li><a href=\"ActiveStatusForUser\">Aktivera/inaktiver användare</a></li>"
-					+ "<li><a href=\"HandleAdminRights\">Hantera administratörrättigheter</a></li>"; 			
+					+ "<li><a href=\"ShowUsers\">Visa anv\u00E4ndare</a></li>"
+					+ "<li><a href=\"NewUser\">Ny anv\u00E4ndare</a></li>"
+					+ "<li><a href=\"ActiveStatusForUser\">Aktivera/inaktiver anv\u00E4ndare</a></li>"
+					+ "<li><a href=\"HandleAdminRights\">Hantera administrat\u00F6rr\u00E4ttigheter</a></li>"; 			
 			break; 
 		case PERMISSION_OTHER_USERS: 
 		case PERMISSION_WITHOUT_ROLE: 

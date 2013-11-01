@@ -29,10 +29,10 @@ public class NewTimeReport extends TimeReportingMenu{
 		int permission = (Integer) session.getAttribute("user_permissions");
 		
 		if(permission == PERMISSION_WITHOUT_ROLE) {
-			out.print("<script> alert('Du har inte blivit tilldelad någon roll och kan därför inte skapa en ny tidrapport. Var vänlig kontakta din projektledare')");
+			out.print("<script> alert('Du har inte blivit tilldelad n\u00E5gon roll och kan d\u00E4rf\u00F6r inte skapa en ny tidrapport. Var v\u00E4nlig kontakta din projektledare')");
 			response.sendRedirect("ShowTimeReports");
 		} else if(permission == PERMISSION_ADMIN) {
-			out.print("<script> alert('Du är systemadministratör och är därför ej tillåten att skapa en ny tidrapport')");
+			out.print("<script> alert('Du \u00E4r systemadministrat\u00F6r och \u00E4r d\u00E4rf\u00F6r ej till\u00E5ten att skapa en ny tidrapport')");
 			response.sendRedirect("ShowTimeReports");
 		}
 		int state = (Integer) session.getAttribute("newReportState");
@@ -60,13 +60,13 @@ public class NewTimeReport extends TimeReportingMenu{
 		int userId = (Integer) session.getAttribute("id");
 		int projId = (Integer) session.getAttribute("project_group_id");
 		if(!isNumeric(week) && !week.equals("")) {
-			out.print("<script> alert('Otillåten symbol. Använd bara numeriska symboler.') </script>");
+			out.print("<script> alert('Otill\u00E5ten symbol. Anv\u00E4nd bara numeriska symboler.') </script>");
 			session.setAttribute("newReportState", FIRST);
 			doGet(request, response);
 		} else {
 			if(week.equals("")) {
 				System.out.println("break 1");
-				out.print("<script> alert('Obligatoriska data saknas. Var vänlig fyll i veckonummer och åtminstone en aktivitet') </script>");
+				out.print("<script> alert('Obligatoriska data saknas. Var v\u00E4nlig fyll i veckonummer och \u00E5tminstone en aktivitet') </script>");
 				session.setAttribute("newReportState", FIRST);
 				doGet(request,response);
 			} else {
@@ -96,12 +96,12 @@ public class NewTimeReport extends TimeReportingMenu{
 					}
 				}
 				if(nonNumeric) {
-					out.print("<script> alert('Otillåten symbol. Använd bara numeriska symboler.') </script>");
+					out.print("<script> alert('Otill\u00E5ten symbol. Anv\u00E4nd bara numeriska symboler.') </script>");
 					session.setAttribute("newReportState", FIRST);
 					doGet(request, response);
 				} else if(!filledIn) {
 					System.out.println("break4");
-					out.print("<script> alert('Obligatoriska data saknas. Var vänlig fyll i veckonummer och åtminstone en aktivitet') </script>");
+					out.print("<script> alert('Obligatoriska data saknas. Var v\u00E4nlig fyll i veckonummer och \u00E5tminstone en aktivitet') </script>");
 					session.setAttribute("newReportState", FIRST);
 					doGet(request, response);
 				} else {

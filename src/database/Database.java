@@ -21,7 +21,7 @@ public class Database {
 			conn = DriverManager
 					.getConnection("jdbc:mysql://localhost:3306/puss1302?user=puss1302&password=jks78ww2");
 			
-			//Ge fan i att ändra denna!
+			//Ge fan i att \u00E4ndra denna!
 //			 conn =
 //			 DriverManager.getConnection("jdbc:mysql://vm26.cs.lth.se/puss1302?"
 //			 + "user=puss1302&password=jks78ww2");

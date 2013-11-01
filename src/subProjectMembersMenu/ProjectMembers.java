@@ -40,7 +40,7 @@ public class ProjectMembers {
 		}
 		sb.append("</table>");
 		sb.append("<INPUT TYPE=" + formElement("submit") + "VALUE="
-				+ formElement("Hämta användare") + ">");
+				+ formElement("H\u00E4mta anv\u00E4ndare") + ">");
 		sb.append("</form>");
 		sb.append("</body></html>");
 		return sb.toString();
@@ -68,7 +68,7 @@ public class ProjectMembers {
 		String html;
 		html = "<p> <form name=" + formElement("input");
 		html += " method=" + formElement("POST");
-		html += "<p> Användarnamn : <input type=" + formElement("text") + " name="
+		html += "<p> Anv\u00E4ndarnamn : <input type=" + formElement("text") + " name="
 				+ formElement("groupname") + '>';
 		html += "<input type=" + formElement("Spara") + '>';
 		html += "</form>";
@@ -83,10 +83,10 @@ public class ProjectMembers {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<table border=" + formElement("1") + ">");
 		sb.append("<tr>");
-		sb.append("<th>Användarnamn</th>");
+		sb.append("<th>Anv\u00E4ndarnamn</th>");
 		sb.append("<th>Projektgrupp</th>");
 		sb.append("<th>Roll</th>");
-		sb.append("<th>Välj</th>");
+		sb.append("<th>V\u00E4lj</th>");
 		sb.append("</tr>");
 		return sb.toString();
 	}

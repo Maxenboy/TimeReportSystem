@@ -105,7 +105,7 @@ public class Users {
 	private String translateRole(int role) {
 		switch (role) {
 		case 1:
-			return ("Administratör");
+			return ("Administrat\u00F6r");
 		case 2:
 			return ("Projektledare");
 		case 4:

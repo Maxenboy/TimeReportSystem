@@ -53,7 +53,7 @@ public class TestUser {
 
 	@Test
 	public void testGetPassword() {
-		// TODO: testa genererat lösenord
+		// TODO: testa genererat l\u00F6senord
 		assertEquals("hejhej", user2.getPassword());
 	}
 

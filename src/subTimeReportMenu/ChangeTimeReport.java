@@ -87,7 +87,7 @@ public class ChangeTimeReport extends TimeReportingMenu{
 				out.print(generateSubMenu(permission));
 				s = trg.showChangeTimeReport(Integer.valueOf(reportId));
 				if(s == null) {
-					out.print("<script>alert('Du kan inte ändra i en signerad tidrapport') </script>");
+					out.print("<script>alert('Du kan inte \u00E4ndra i en signerad tidrapport') </script>");
 					session.setAttribute("state", FIRST);
 					doGet(request, response);
 				} else {
@@ -101,10 +101,10 @@ public class ChangeTimeReport extends TimeReportingMenu{
 			String week = request.getParameter("week");
 			if(!isNumeric(week) && !week.equals("")) {
 				session.setAttribute("changeReportState", FIRST);
-				out.print("<script> alert('Otillåten symbol. Använd bara numeriska symboler.') </script>");
+				out.print("<script> alert('Otill\u00E5ten symbol. Anv\u00E4nd bara numeriska symboler.') </script>");
 				doGet(request, response);
 			} else if(week.equals("")) {
-				out.print("<script> alert('Obligatoriska data saknas. Var vänlig fyll i veckonummer och åtminstone en aktivitet') </script>");
+				out.print("<script> alert('Obligatoriska data saknas. Var v\u00E4nlig fyll i veckonummer och \u00E5tminstone en aktivitet') </script>");
 				session.setAttribute("changeReportState", FIRST);
 				doGet(request,response);
 			} else {
@@ -137,10 +137,10 @@ public class ChangeTimeReport extends TimeReportingMenu{
 				}
 				if(nonNumerical) {
 					session.setAttribute("changeReportState", FIRST);
-					out.print("<script> alert('Otillåten symbol. Använd bara numeriska symboler.') </script>");
+					out.print("<script> alert('Otill\u00E5ten symbol. Anv\u00E4nd bara numeriska symboler.') </script>");
 					doGet(request, response);
 				} else if(!filledIn) {
-					out.print("<script> alert('Obligatoriska data saknas. Var vänlig fyll i veckonummer och åtminstone en aktivitet') </script>");
+					out.print("<script> alert('Obligatoriska data saknas. Var v\u00E4nlig fyll i veckonummer och \u00E5tminstone en aktivitet') </script>");
 					session.setAttribute("changeReportState", FIRST);
 					doGet(request, response);
 				} else {
