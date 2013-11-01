@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import database.Database;
+import database.ProjectGroup;
 
 /**
  * This class is the superclass for all servlets in the application. It includes
@@ -167,8 +168,8 @@ public class servletBase extends HttpServlet {
 		
 		userInfo += ""
 				+ "<p>Användare: " + session.getAttribute("name") +"</p>"
-				+ "<p>Grupp: " + session.getAttribute("project_group_id") + "</p>"
-				+ "<p>Roll: "+ session.getAttribute("role") +"</p>"; 
+				+ "<p>Grupp: " + translateProjectGroupId((int) session.getAttribute("project_group_id")) + "</p>"
+				+ "<p>Roll: "+ translateRole((int) session.getAttribute("role")) +"</p>"; 
 		
 		userInfo += ""
 				+ "</div>"
@@ -184,6 +185,39 @@ public class servletBase extends HttpServlet {
 				+ "</section>"; 
 		
 		return intro + closure + userInfo + outro; 
+	}
+	
+	private String translateRole(int role) {
+		switch (role) {
+		case 1:
+			return ("Administratör");
+		case 2:
+			return ("Projektledare");
+		case 4:
+			return ("Systemgrupp");
+		case 5:
+			return ("Systemgruppsledare");
+		case 6:
+			return ("Utvecklingsgrupp");
+		case 7:
+			return ("Testgrupp");
+		case 8:
+			return ("Testledare");
+		default:
+			return ("Ingen roll");
+		}
+	}
+	
+	private String translateProjectGroupId(int projectGroupId) {
+		if(projectGroupId == 0) {
+			return "Ingen projektgrupp";
+		}
+		ProjectGroup pg = db.getProjectGroup(projectGroupId);
+		if(pg == null) {
+			return "Ingen projektgrupp";
+		} else {
+			return pg.getProjectName();
+		}		
 	}
 
 }

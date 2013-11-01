@@ -24,10 +24,10 @@ public class Users {
 		String html;
 		html = "<p> <form name=" + formElement("input");
 		html += " method=" + formElement("POST");
-		html += "<p> Användarnamn : <input type=" + formElement("text") + " name="
+		html += "<p> Anv��ndarnamn : <input type=" + formElement("text") + " name="
 				+ formElement("username") + '>';
 		html += "<input type=" + formElement("submit") + "value="
-				+ formElement("Skapa användare") + '>';
+				+ formElement("Skapa anv��ndare") + '>';
 		html += "</form>";
 		return html;
 
@@ -105,21 +105,21 @@ public class Users {
 	private String translateRole(int role) {
 		switch (role) {
 		case 1:
-			return ("Administrator");
+			return ("Administratör");
 		case 2:
-			return ("Project Leader");
+			return ("Projektledare");
 		case 4:
-			return ("System Group");
+			return ("Systemgrupp");
 		case 5:
-			return ("System Group Leader");
+			return ("Systemgruppsledare");
 		case 6:
-			return ("Development Group");
+			return ("Utvecklingsgrupp");
 		case 7:
-			return ("Test Group");
+			return ("Testgrupp");
 		case 8:
-			return ("Test Leader");
+			return ("Testledare");
 		default:
-			return ("Unknown Role");
+			return ("Ingen roll");
 		}
 	}
 
@@ -193,11 +193,11 @@ public class Users {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<table class=\"table table-bordered table-hover\"");
 		sb.append("<tr>");
-		sb.append("<th>Användarnamn</th>");
+		sb.append("<th>Anv��ndarnamn</th>");
 		sb.append("<th>Projektgrupp</th>");
 		sb.append("<th>Roll</th>");
 		sb.append("<th>Aktiv</th>");
-		sb.append("<th>Välj</th>");
+		sb.append("<th>V��lj</th>");
 		sb.append("</tr>");
 		return sb.toString();
 	}
