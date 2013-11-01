@@ -130,34 +130,49 @@ public class TimeReportGenerator {
 		case SHOW_ALL:
 			timeReports = db.getTimeReportsForProjectGroupId(ID);
 			if(timeReports.isEmpty())
+				return null;
 			html = listReports(timeReports,state);
 			break;
 		case SHOW_USER_REPORT:
 			timeReports = db.getTimeReportsForUserId(ID);
+			if(timeReports.isEmpty())
+				return null;
 			html = listReports(timeReports, state);
 			break;
 		case SHOW_UNSIGNED:
 			timeReports = db.getUnsignedTimeReports(ID);
+			if(timeReports.isEmpty())
+				return null;
 			html = listReports(timeReports,state);
 			break;
 		case SHOW_SIGN:
 			timeReports = db.getSignedTimeReports(ID);
+			if(timeReports.isEmpty())
+				return null;
 			html = listReports(timeReports, state);
 			break;
 		case REMOVE_PRJ_REPORT:
 			timeReports = db.getUnsignedTimeReports(ID);
+			if(timeReports.isEmpty())
+				return null;
 			html = listReports(timeReports, state);
 			break;
 		case REMOVE_USER_REPORT:
 			timeReports = db.getTimeReportsForUserId(ID);
+			if(timeReports.isEmpty())
+				return null;
 			html = listReports(timeReports, REMOVE_REPORT);
 			break;
 		case CHANGE_USER_REPORT:
 			timeReports = db.getTimeReportsForUserId(ID);
+			if(timeReports.isEmpty())
+				return null;
 			html = listReports(timeReports,CHANGE_USER_REPORT);
 			break;
 		case CHANGE_PRJ_REPORT:
 			timeReports = db.getUnsignedTimeReports(ID);
+			if(timeReports.isEmpty())
+				return null;
 			html = listReports(timeReports,CHANGE_PRJ_REPORT);
 			break;
 		}

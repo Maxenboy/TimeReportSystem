@@ -1,8 +1,5 @@
 package base;
 import java.io.*;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -49,11 +46,11 @@ public class LogIn extends servletBase {
      * @return HTML code for the form
      */
     protected String loginRequestForm() {
-    	String html = "<p>Ange användarnamn och lösenord:</p>";
+    	String html = "<p>Ange anv��ndarnamn och l��senord:</p>";
     	html += "<p> <form name=" + formElement("input");
     	html += " method=" + formElement("post");
-    	html += "<p> Användarnamn: <input type=" + formElement("text") + " name=" + formElement("user") + '>'; 
-    	html += "<p> Lösenord: <input type=" + formElement("password") + " name=" + formElement("password") + '>';  
+    	html += "<p> Anv��ndarnamn: <input type=" + formElement("text") + " name=" + formElement("user") + '>'; 
+    	html += "<p> L��senord: <input type=" + formElement("password") + " name=" + formElement("password") + '>';  
     	html += "<p> <input type=" + formElement("submit") + "value=" + formElement("Logga In") + '>';
     	return html;
     }
@@ -115,7 +112,7 @@ public class LogIn extends servletBase {
 		
 		if (loggedIn(request)) {
 			session.setAttribute("state", LOGIN_FALSE);
-			out.println("<p style='color: red;'>Du är nu utloggad</p>");
+			out.println("<p style='color: red;'>Du ��r nu utloggad</p>");
 		}
 		
 		String name;
@@ -151,7 +148,7 @@ public class LogIn extends servletBase {
        			}
        			response.sendRedirect("ShowTimeReports");
         	} else {
-        		out.println("<p style='color: red;'>Användaren är inaktiv</p>");
+        		out.println("<p style='color: red;'>Anv��ndaren ��r inaktiv</p>");
         		out.println(loginRequestForm());
         	}
 //       		}
