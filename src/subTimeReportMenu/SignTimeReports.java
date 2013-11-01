@@ -23,7 +23,6 @@ public class SignTimeReports extends TimeReportingMenu {
 	TimeReportGenerator trg = new TimeReportGenerator(new Database());
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		System.out.println("fuck off");
 		HttpSession session = request.getSession(true);
 		PrintWriter out = response.getWriter();
 		int permission = (Integer) session.getAttribute("user_permissions");
@@ -73,7 +72,7 @@ public class SignTimeReports extends TimeReportingMenu {
 			}
 			break;
 		default:
-			out.append("<script>alert('Åtkomst nekad')</script>");
+			out.append("<script>alert('��tkomst nekad')</script>");
 		}
 		out.print(getPageOutro());
 	}
