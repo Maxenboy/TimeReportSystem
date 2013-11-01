@@ -23,8 +23,9 @@ public class HandleProjectRoles extends gui.UsersMenu{
 		HttpSession session = request.getSession();
 		PrintWriter out = response.getWriter();
 		out.print(getPageIntro());
-		out.print(generateMainMenu((Integer) session.getAttribute("user_permissions")));
-		out.print(generateSubMenu((Integer) session.getAttribute("user_permissions")));
+		int userPermission = (Integer) session.getAttribute("user_permissions");
+		out.append(generateMainMenu(userPermission, request));
+		out.print(generateSubMenu(userPermission));
 		if (request.getParameter("session") == null) {
 			out.print(groupForm());
 		} else if (request.getParameter("session").equals("found")) {
@@ -90,10 +91,10 @@ public class HandleProjectRoles extends gui.UsersMenu{
 		StringBuilder sb = new StringBuilder();
 		sb.append("<table class=\"table table-bordered table-hover\"" + ">");
 		sb.append("<tr>");
-		sb.append("<th>Användarnamn</th>");
+		sb.append("<th>Anv��ndarnamn</th>");
 		sb.append("<th>Projektgrupp</th>");
 		sb.append("<th>Roll</th>");
-		sb.append("<th>Välj</th>");
+		sb.append("<th>V��lj</th>");
 		sb.append("</tr>");
 		return sb.toString();
 	}

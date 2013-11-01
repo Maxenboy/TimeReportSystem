@@ -26,10 +26,9 @@ public class AddMemberToProjectGroup extends gui.ProjectGroupsMenu {
 		HttpSession session = request.getSession(true);
 		PrintWriter out = response.getWriter();
 		out.print(getPageIntro());
-		out.print(generateMainMenu((Integer) session
-				.getAttribute("user_permissions")));
-		out.print(generateSubMenu((Integer) session
-				.getAttribute("user_permissions")));
+		int userPermission = (Integer) session.getAttribute("user_permissions");
+		out.append(generateMainMenu(userPermission, request));
+		out.print(generateSubMenu(userPermission));
 		if (request.getParameter("thegroup") == null && groupName == "") {
 			out.print(showProjectGroups());
 		} else {
@@ -44,7 +43,7 @@ public class AddMemberToProjectGroup extends gui.ProjectGroupsMenu {
 					}
 				}
 				if (users.isEmpty()) {
-					out.print("<script>$(alert(\"Finns inga användare utan projektgrupp!\"))</script>");
+					out.print("<script>$(alert(\"Finns inga anv��ndare utan projektgrupp!\"))</script>");
 				} else {
 					out.print(groups.showProjectGroup(users));
 				}
@@ -56,7 +55,7 @@ public class AddMemberToProjectGroup extends gui.ProjectGroupsMenu {
 							.parseInt(groupName))));
 					groupName = "";
 				} else {
-					out.print("<script>$(alert(\"Användaren är redan med i en projektgrupp!\"))</script>"
+					out.print("<script>$(alert(\"Anv��ndaren ��r redan med i en projektgrupp!\"))</script>"
 							+ groups.showProjectGroup(db.getUsers(Integer
 									.parseInt(groupName))));
 					groupName = "";
@@ -105,7 +104,7 @@ public class AddMemberToProjectGroup extends gui.ProjectGroupsMenu {
 		sb.append("<th>Slutvecka</th>");
 		sb.append("<th>Estimerat antal timmar</th>");
 		sb.append("<th>Aktiv</th>");
-		sb.append("<th>Välj</th>");
+		sb.append("<th>V��lj</th>");
 		sb.append("</tr>");
 		return sb.toString();
 	}

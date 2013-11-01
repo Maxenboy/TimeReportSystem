@@ -29,10 +29,9 @@ public class ShowProjectMembers extends ProjectGroupsMenu {
 		HttpSession session = request.getSession(true);
 		PrintWriter out = response.getWriter();
 		out.print(getPageIntro());
-		out.print(generateMainMenu((Integer) session
-				.getAttribute("user_permissions")));
-		out.print(generateSubMenu((Integer) session
-				.getAttribute("user_permissions")));
+		int userPermission = (Integer) session.getAttribute("user_permissions");
+		out.append(generateMainMenu(userPermission, request));
+		out.print(generateSubMenu(userPermission));
 
 		String s = groupForm();
 		if (s == null)
@@ -67,7 +66,7 @@ public class ShowProjectMembers extends ProjectGroupsMenu {
 		String html;
 		html = "<p> <form name=" + formElement("input");
 		html += " method=" + formElement("POST");
-		html += "<p> Användarnamn : <input type=" + formElement("text") + " name="
+		html += "<p> Anv��ndarnamn : <input type=" + formElement("text") + " name="
 				+ formElement("groupname") + '>';
 		html += "<input type=" + formElement("Spara") + '>';
 		html += "</form>";

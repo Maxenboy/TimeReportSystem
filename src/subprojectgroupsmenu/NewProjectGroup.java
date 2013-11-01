@@ -23,10 +23,9 @@ public class NewProjectGroup extends gui.ProjectGroupsMenu {
 		HttpSession session = request.getSession();
 		PrintWriter out = response.getWriter();
 		out.print(getPageIntro());
-		out.print(generateMainMenu((Integer) session
-				.getAttribute("user_permissions")));
-		out.print(generateSubMenu((Integer) session
-				.getAttribute("user_permissions")));
+		int userPermission = (Integer) session.getAttribute("user_permissions");
+		out.append(generateMainMenu(userPermission, request));
+		out.print(generateSubMenu(userPermission));
 		if (request.getParameter("session") == null) {
 			out.print(addProjectGroupForm());
 		} else if (request.getParameter("session").equals("success")) {
@@ -36,7 +35,7 @@ public class NewProjectGroup extends gui.ProjectGroupsMenu {
 				out.print("<script>$(alert(\"Information inkorrekt inmatad\"))</script>"
 						+ addProjectGroupForm());
 			} else {
-				out.print("<script>$(alert(\"Kunde inte lägga till projektgrupp\"))</script>"
+				out.print("<script>$(alert(\"Kunde inte l��gga till projektgrupp\"))</script>"
 						+ addProjectGroupForm());
 			}
 		}

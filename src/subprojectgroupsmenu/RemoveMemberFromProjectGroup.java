@@ -26,13 +26,12 @@ public class RemoveMemberFromProjectGroup extends gui.ProjectGroupsMenu {
 		HttpSession session = request.getSession();
 		PrintWriter out = response.getWriter();
 		out.print(getPageIntro());
-		out.print(generateMainMenu((Integer) session
-				.getAttribute("user_permissions")));
-		out.print(generateSubMenu((Integer) session
-				.getAttribute("user_permissions")));
+		int userPermission = (Integer) session.getAttribute("user_permissions");
+		out.append(generateMainMenu(userPermission, request));
+		out.print(generateSubMenu(userPermission));
 		if (request.getParameter("username") == null) {
 			out.print(users.showUsers(db.getUsers()));
-			out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"Är du säker?\");if (confirmed) {$(this).submit();}});</script>");
+			out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"��r du s��ker?\");if (confirmed) {$(this).submit();}});</script>");
 		} else {
 			User user = db.getUser(Integer.parseInt(request
 					.getParameter("username")));
@@ -40,13 +39,13 @@ public class RemoveMemberFromProjectGroup extends gui.ProjectGroupsMenu {
 				db.removeUserFromProjectGroup(user.getId(),
 						user.getProjectGroup());
 				if (db.getUsers(user.getProjectGroup()).isEmpty()) {
-					out.print(db.getProjectGroup(user.getProjectGroup()).getProjectName() + " är tom.");
+					out.print(db.getProjectGroup(user.getProjectGroup()).getProjectName() + " ��r tom.");
 				} else {
 					out.print(group.showProjectGroup(db.getUsers(user
 							.getProjectGroup())));
 				}
 			} else {
-				out.print("<script>$(alert(\"Användaren har ingen projektgrupp och kan därför inte tas bort ur en\"))</script>");
+				out.print("<script>$(alert(\"Anv��ndaren har ingen projektgrupp och kan d��rf��r inte tas bort ur en\"))</script>");
 			}
 		}
 		out.print(getPageOutro());

@@ -39,7 +39,7 @@ public class ChangeTimeReport extends TimeReportingMenu{
 			switch(permission) {
 			case PERMISSION_ADMIN:
 			case PERMISSION_PROJ_LEADER:
-				out.print(generateMainMenu(permission));
+				out.print(generateMainMenu(permission, request));
 				out.print(generateSubMenu(permission));
 				s = trg.showAllTimeReports(projId, TimeReportGenerator.CHANGE_PRJ_REPORT);
 				if(s == null)
@@ -50,7 +50,7 @@ public class ChangeTimeReport extends TimeReportingMenu{
 				session.setAttribute("changeReportState", SHOW_REPORT);
 				break;
 			case PERMISSION_OTHER_USERS:
-				out.print(generateMainMenu(permission));
+				out.print(generateMainMenu(permission, request));
 				out.print(generateSubMenu(permission));
 				s = trg.showAllTimeReports(userId, TimeReportGenerator.CHANGE_USER_REPORT);
 				if(s == null)
@@ -83,7 +83,7 @@ public class ChangeTimeReport extends TimeReportingMenu{
 			if(reportId != null) {
 				int permission = (Integer) session.getAttribute("user_permissions");
 				out.print(getPageIntro());
-				out.print(generateMainMenu(permission));
+				out.print(generateMainMenu(permission, request));
 				out.print(generateSubMenu(permission));
 				s = trg.showChangeTimeReport(Integer.valueOf(reportId));
 				if(s == null) {

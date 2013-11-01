@@ -28,7 +28,7 @@ public class SignTimeReports extends TimeReportingMenu {
 		PrintWriter out = response.getWriter();
 		int permission = (Integer) session.getAttribute("user_permissions");
 		out.append(getPageIntro());
-		out.print(generateMainMenu(permission));
+		out.print(generateMainMenu(permission, request));
 		out.print(generateSubMenu(permission));
 		
 		switch(permission) {

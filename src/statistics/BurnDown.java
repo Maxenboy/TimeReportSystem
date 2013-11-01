@@ -39,7 +39,7 @@ public class BurnDown extends gui.StatisticsMenu {
 		int projectGroupId = (Integer) session.getAttribute("project_group_id");
 
 		out.append(getPageIntro());
-		out.append(generateMainMenu(userPermission));
+		out.append(generateMainMenu(userPermission, request));
 		out.append(generateSubMenu(userPermission));
 
 		switch(userPermission) {
@@ -71,7 +71,7 @@ public class BurnDown extends gui.StatisticsMenu {
 		int userPermission = (Integer) session.getAttribute("user_permissions");
 		
 		out.append(getPageIntro());
-		out.append(generateMainMenu(userPermission));
+		out.append(generateMainMenu(userPermission, request));
 		out.append(generateSubMenu(userPermission));
 
 		if(projectGroup[0] != null) {

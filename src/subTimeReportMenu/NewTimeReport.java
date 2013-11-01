@@ -40,7 +40,7 @@ public class NewTimeReport extends TimeReportingMenu{
 		String s;
 		switch(state) {
 		case FIRST:
-			out.print(generateMainMenu(permission));
+			out.print(generateMainMenu(permission, request));
 			out.print(generateSubMenu(permission));
 			s = trg.showNewTimeForm();
 			if(s == null) {

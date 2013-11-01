@@ -25,10 +25,9 @@ public class HandleProjectLeader extends gui.ProjectGroupsMenu {
 		HttpSession session = request.getSession();
 		PrintWriter out = response.getWriter();
 		out.print(getPageIntro());
-		out.print(generateMainMenu((Integer) session
-				.getAttribute("user_permissions")));
-		out.print(generateSubMenu((Integer) session
-				.getAttribute("user_permissions")));
+		int userPermission = (Integer) session.getAttribute("user_permissions");
+		out.append(generateMainMenu(userPermission, request));
+		out.print(generateSubMenu(userPermission));
 		if (request.getParameter("session") == null) {
 			out.print(leaderForm());
 		} else if (request.getParameter("session").equals("one")) {
@@ -68,7 +67,7 @@ public class HandleProjectLeader extends gui.ProjectGroupsMenu {
 		html += " method=" + formElement("get");
 		html += "<p> Vilken grupp : <input type=" + formElement("text")
 				+ " name=" + formElement("name") + '>';
-		html += "<p> Vilke användare : <input type=" + formElement("text")
+		html += "<p> Vilke anv��ndare : <input type=" + formElement("text")
 				+ " user=" + formElement("user") + '>';
 		html += "<input type=" + formElement("submit") + "value="
 				+ formElement("Toggla ledare") + '>';

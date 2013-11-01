@@ -121,7 +121,7 @@ public class servletBase extends HttpServlet {
 	 * @param userPermission Check the final ints above
 	 * @return HTML code for the menu
 	 */
-	protected String generateMainMenu(int userPermission) {
+	protected String generateMainMenu(int userPermission, HttpServletRequest request) {
 		String intro = ""
 				+ "<section class=\"main-menu container\">"
 				+ "<div class=\"row\">"
@@ -154,6 +154,7 @@ public class servletBase extends HttpServlet {
 				break; 
 		}
 		
+		HttpSession session = request.getSession();;
 		
 		String closure = ""
 				+ "</ul>"
@@ -165,9 +166,9 @@ public class servletBase extends HttpServlet {
 				+ "<div class=\"col-lg-8\">"; 
 		
 		userInfo += ""
-				+ "<p>User: USERNAME</p>"
-				+ "<p>Group: GROUP"
-				+ "<p>Role: ROLE</p>"; 
+				+ "<p>Användare: " + session.getAttribute("name") +"</p>"
+				+ "<p>Grupp: " + session.getAttribute("project_group_id") + "</p>"
+				+ "<p>Roll: "+ session.getAttribute("role") +"</p>"; 
 		
 		userInfo += ""
 				+ "</div>"

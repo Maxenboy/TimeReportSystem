@@ -39,7 +39,7 @@ public class Statistics extends gui.StatisticsMenu {
 		int projectGroupId = (Integer) session.getAttribute("project_group_id");
 		
 		out.append(getPageIntro());
-		out.append(generateMainMenu(userPermission));
+		out.append(generateMainMenu(userPermission, request));
 		out.append(generateSubMenu(userPermission));
 		switch(userPermission) {
 		case 1: // Administrator gets to choose project group.
@@ -87,7 +87,7 @@ public class Statistics extends gui.StatisticsMenu {
 		
 
 		out.append(getPageIntro());
-		out.append(generateMainMenu(userPermission));
+		out.append(generateMainMenu(userPermission, request));
 		out.append(generateSubMenu(userPermission));
 
 		if(userPermission == 1) { //Admin

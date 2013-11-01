@@ -17,7 +17,7 @@ public class ShowTimeReports extends TimeReportingMenu {
 		PrintWriter out = response.getWriter();
 		out.print(getPageIntro());
 		int permission = (Integer) session.getAttribute("user_permissions");
-		out.print(generateMainMenu(permission));
+		out.print(generateMainMenu(permission, request));
 		out.print(generateSubMenu(permission));
 
 		int userId = (Integer) session.getAttribute("id");
@@ -45,7 +45,7 @@ public class ShowTimeReports extends TimeReportingMenu {
 		PrintWriter out = response.getWriter();
 		out.print(getPageIntro());
 		int permission = (Integer) session.getAttribute("user_permissions");
-		out.print(generateMainMenu(permission));
+		out.print(generateMainMenu(permission, request));
 		out.print(generateSubMenu(permission));
 		String reportId = request.getParameter("reportId");
 		if(reportId != null) {

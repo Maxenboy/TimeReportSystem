@@ -28,12 +28,11 @@ public class ShowUsers extends UsersMenu {
 			throws IOException {
 		HttpSession session = request.getSession(true);
 		PrintWriter out = response.getWriter();
-		out.print(getPageIntro());
 
-		out.print(generateMainMenu((int) session
-				.getAttribute("user_permissions")));
-		out.print(generateSubMenu((int) session
-				.getAttribute("user_permissions")));
+		int permission = (Integer) session.getAttribute("user_permissions");
+		out.print(getPageIntro());
+		out.print(generateMainMenu(permission, request));
+		out.print(generateSubMenu(permission));
 		String s = users.showUsers(db.getUsers());
 		if (s == null)
 			out.print("<p> Inget att visa </p>");
@@ -106,11 +105,11 @@ public class ShowUsers extends UsersMenu {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<table class=\"table table-bordered table-hover\"");
 		sb.append("<tr>");
-		sb.append("<th>Användarnamn</th>");
+		sb.append("<th>Anv��ndarnamn</th>");
 		sb.append("<th>Projektgrupp</th>");
 		sb.append("<th>Roll</th>");
 		sb.append("<th>Aktiv</th>");
-		sb.append("<th>Lösenord</th>");
+		sb.append("<th>L��senord</th>");
 		sb.append("</tr>");
 		return sb.toString();
 	}

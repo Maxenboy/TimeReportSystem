@@ -29,26 +29,25 @@ public class ActiveStatusForUser extends UsersMenu {
 			throws IOException {
 		HttpSession session = request.getSession(true);
 		PrintWriter out = response.getWriter();
+		int permission = (Integer) session.getAttribute("user_permissions");
 		out.print(getPageIntro());
-		out.print(generateMainMenu((int) session
-				.getAttribute("user_permissions")));
-		out.print(generateSubMenu((int) session
-				.getAttribute("user_permissions")));
+		out.print(generateMainMenu(permission, request));
+		out.print(generateSubMenu(permission));
 
 		
 		if (request.getParameter("username") == null) {
 			out.print(users.showUsers(db.getUsers()));
-			out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"Är du säker?\");if (confirmed) {$(this).submit();}});</script>");
+			out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"��r du s��ker?\");if (confirmed) {$(this).submit();}});</script>");
 		} else {
 			User user = db.getUser(Integer.parseInt(request
 					.getParameter("username")));
 			if(user.isActive()){
 				db.deactivateUser(user.getId());
-				out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"Är du säker?\");if (confirmed) {$(this).submit();}});</script>");
+				out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"��r du s��ker?\");if (confirmed) {$(this).submit();}});</script>");
 				out.print(users.showUsers(db.getUsers()));
 			}else{
 				db.activateUser(user.getId());
-				out.print("<script>$(alert(\"Inkorrekt syntax på användarnamnet\"))</script>");
+				out.print("<script>$(alert(\"Inkorrekt syntax p�� anv��ndarnamnet\"))</script>");
 				out.print(users.showUsers(db.getUsers()));
 			}
 		}

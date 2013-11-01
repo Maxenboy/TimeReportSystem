@@ -23,8 +23,9 @@ public class ShowProjectGroups extends ProjectGroupsMenu {
 		PrintWriter out = response.getWriter();
 		
 		out.print(getPageIntro());
-		out.print(generateMainMenu((Integer) session.getAttribute("user_permissions")));
-		out.print(generateSubMenu((Integer) session.getAttribute("user_permissions")));
+		int userPermission = (Integer) session.getAttribute("user_permissions");
+		out.append(generateMainMenu(userPermission, request));
+		out.print(generateSubMenu(userPermission));
 		out.print(showProjectGroups() + getPageOutro());
 	}
 

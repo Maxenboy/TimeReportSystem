@@ -25,12 +25,11 @@ public class HandleAdminRights extends UsersMenu {
 			throws IOException {
 		HttpSession session = request.getSession();
 		PrintWriter out = response.getWriter();
-		out.print(getPageIntro());
 
-		out.print(generateMainMenu((int) session
-				.getAttribute("user_permissions")));
-		out.print(generateSubMenu((int) session
-				.getAttribute("user_permissions")));
+		int permission = (Integer) session.getAttribute("user_permissions");
+		out.print(getPageIntro());
+		out.print(generateMainMenu(permission, request));
+		out.print(generateSubMenu(permission));
 
 		if (request.getParameter("username") == null) {
 			out.print(u.showUsers(db.getUsers()));
@@ -42,14 +41,14 @@ public class HandleAdminRights extends UsersMenu {
 					System.out.println("user = admin");
 					u.unmakeAdministrator(user.getUsername());
 					out.print(u.showUsers(db.getUsers())
-							+ "<script>$(alert(\"Användare är ej längre administratör. ändringar sparade.\"))</script>");
+							+ "<script>$(alert(\"Anv��ndare ��r ej l��ngre administrat��r. ��ndringar sparade.\"))</script>");
 				} else {
 					u.makeAdministrator(user.getUsername());
 					out.print(u.showUsers(db.getUsers())
-							+ "<script>$(alert(\"Användaren är nu administratör. ändringar sparade.\"))</script>");
+							+ "<script>$(alert(\"Anv��ndaren ��r nu administrat��r. ��ndringar sparade.\"))</script>");
 				}
 			} else {
-				out.print(u.showUsers(db.getUsers())+ "<script>$(alert(\"Inte möjligt! Användare är med i en projektgrupp! \"))</script>");
+				out.print(u.showUsers(db.getUsers())+ "<script>$(alert(\"Inte m��jligt! Anv��ndare ��r med i en projektgrupp! \"))</script>");
 			}
 		}
 		out.print(getPageOutro());
