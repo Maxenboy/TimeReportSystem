@@ -234,25 +234,25 @@ public class Activity {
 		case ACTIVITY_NR_SSD:
 			return "SSD";
 		case ACTIVITY_NR_FINAL_REPORT:
-			return "Final Report";
+			return "Slutrapport";
 		case ACTIVITY_NR_FUNTION_TEST:
-			return "Function Test";
+			return "Funktionstest";
 		case ACTIVITY_NR_SYSTEM_TEST:
-			return "System Test";
+			return "Systemtest";
 		case ACTIVITY_NR_REGRESSION_TEST:
-			return "Regression Test";
+			return "Regressionstest";
 		case ACTIVITY_NR_MEETING:
-			return "Meeting";
+			return "Möte";
 		case ACTIVITY_NR_LECTURE:
-			return "Lecture";
+			return "Föreläsning";
 		case ACTIVITY_NR_EXERCISE:
-			return "Exercise";
+			return "Övning";
 		case ACTIVITY_NR_COMPUTER_EXERCISE:
-			return "Computer Exercise";
+			return "Datorövning";
 		case ACTIVITY_NR_HOME_STUDIES:
-			return "Home Studies";
+			return "Självstudier";
 		case ACTIVITY_NR_OTHER:
-			return "Other";
+			return "Övrigt";
 		}
 		return null;
 	}

@@ -16,6 +16,7 @@ public class TimeReportGenerator {
 	public static final int CHANGE_USER_REPORT = 8;
 	public static final int CHANGE_PRJ_REPORT = 9;
 	public static final int SHOW_PRJ = 10;
+	public static final int SIGN_PRJ = 11;
 	
 	/**
 	 * Constructor
@@ -111,11 +112,18 @@ public class TimeReportGenerator {
 				formElement("reportId") + "value=" + formElement(Integer.toString(id))+">";
 	}
 	
-	private String showPrj() {
+	private String showPrj(int state) {
 		ArrayList<ProjectGroup> prjGroups = db.getProjectGroups();
 		if(prjGroups.isEmpty())
 			return null;
-		String html = "<FORM METHOD=POST ACTION=ShowTimeReports>"; 
+		String html = new String();
+		switch(state) {
+		case SHOW_PRJ:
+			html += "<FORM METHOD=POST ACTION=ShowTimeReports>";
+			break;
+		case SIGN_PRJ:
+			html += "<FORM METHOD=POST ACTION=SignTimeReports>";
+		}
 		html += "<table class=\"table table-bordered table-hover\">";
 		html += "<tr>";
 		html += "<th>Grupp ID</th>";
@@ -151,7 +159,10 @@ public class TimeReportGenerator {
 		String html = null;
 		switch(state) {
 		case SHOW_PRJ:
-			html = showPrj();
+			html = showPrj(state);
+			break;
+		case SIGN_PRJ:
+			html = showPrj(state);
 			break;
 		case SHOW_ALL:
 			timeReports = db.getTimeReportsForProjectGroupId(ID);
@@ -211,7 +222,7 @@ public class TimeReportGenerator {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<FORM METHOD=post ACTION=\"NewTimeReport\">");
 		sb.append("<TABLE class=\"table table-bordered table-hover\">");
-		sb.append("<TR><TD COLSPAN=1><B>Week:</B></TD><TD><INPUT TYPE=\"text\" NAME=\"week\" Value=\"\" SIZE=3></TD></TR>");
+		sb.append("<TR><TD COLSPAN=1><B>Veckonummer:</B></TD><TD><INPUT TYPE=\"text\" NAME=\"week\" Value=\"\" SIZE=3></TD></TR>");
 		sb.append("<TR><TH>Nummer</TH><TH>Aktivitet</TH><TH WIDTH=75>D</TH><TH WIDTH=75>I</TH><TH WIDTH=75>F</TH><TH WIDTH=75>R</TH></TR>");
 		int activityNbr = 11;
 		int formField = 0;

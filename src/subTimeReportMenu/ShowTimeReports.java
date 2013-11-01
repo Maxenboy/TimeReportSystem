@@ -27,7 +27,6 @@ public class ShowTimeReports extends TimeReportingMenu {
 		String s = null;
 		switch(permission) {
 		case PERMISSION_ADMIN:
-			System.out.println("hello!");
 			s = trg.showAllTimeReports(projId, TimeReportGenerator.SHOW_PRJ);
 			if(s != null)
 				out.print(s);

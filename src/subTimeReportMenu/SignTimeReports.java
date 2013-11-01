@@ -19,6 +19,7 @@ public class SignTimeReports extends TimeReportingMenu {
 	public static final int FIRST = 0;
 	public static final int SIGN = 1;
 	public static final int LIST = 2;
+	public static final int SELECT = 3;
 	private static final long serialVersionUID = -4213845458306512233L;
 	TimeReportGenerator trg = new TimeReportGenerator(new Database());
 	
@@ -29,12 +30,24 @@ public class SignTimeReports extends TimeReportingMenu {
 		out.append(getPageIntro());
 		out.print(generateMainMenu(permission, request));
 		out.print(generateSubMenu(permission));
+		int state= (Integer) session.getAttribute("signState");
 		
 		switch(permission) {
 		case PERMISSION_ADMIN:
+			switch(state) {
+			case FIRST:
+				String s;
+				s = trg.showAllTimeReports(0, TimeReportGenerator.SHOW_PRJ);
+				if(s != null)
+					out.print(s);
+				else
+					out.print("Det finns inga projektgrupper att visa");
+				session.setAttribute("showReportState", LIST);
+				break;
+			}
+			break;
 		case PERMISSION_PROJ_LEADER:
 			StringBuilder sb = new StringBuilder();
-			int state= (Integer) session.getAttribute("signState");
 			switch(state) {
 			case FIRST:
 				//First time visiting page.
@@ -45,6 +58,7 @@ public class SignTimeReports extends TimeReportingMenu {
 						" name=" + formElement("unsign") + " value=" + formElement("Visa osignerade tidrapporter") + ">");
 				sb.append("</form>");
 				session.setAttribute("state", LIST);
+				out.print(sb.toString());
 				break;
 			case LIST:
 				//List signed or unsigned time reports
@@ -82,6 +96,42 @@ public class SignTimeReports extends TimeReportingMenu {
 		HttpSession session = request.getSession(true);
 		PrintWriter out = response.getWriter();
 		out.print(getPageIntro());
+		int permission = (Integer) session.getAttribute("user_permissions");
+		int state = (Integer) session.getAttribute("signState");
+		out.print(generateMainMenu(permission, request));
+		out.print(generateSubMenu(permission));
+		switch(permission) {
+		case PERMISSION_ADMIN:
+			StringBuilder sb = new StringBuilder();
+			switch(state) {
+			case SELECT:
+				String prjGroup = request.getParameter("prjGroup");
+				sb.append("<form method=post action = SignTimeReports>");
+				sb.append("<input type=" + formElement("submit") + 
+						" name=" + formElement("sign") + " value=" + formElement("Visa signerade tidrapporter") + ">");
+				sb.append("<input type=" + formElement("submit") + 
+						" name=" + formElement("unsign") + " value=" + formElement("Visa osignerade tidrapporter") + ">");
+				sb.append("<input type=\"hidden\" name=\"prjGroup\" value=" + formElement(prjGroup) + ">");
+				sb.append("</form>");
+				session.setAttribute("state", LIST);
+				out.print(sb.toString());
+				out.print(getPageOutro());
+				break;
+			case LIST:
+				
+				if(request.getParameter("sign") != null) {
+					sb.append(trg.showAllTimeReports(1, TimeReportGenerator.SHOW_SIGN));
+				} else if(request.getParameter("unsign") != null){
+					sb.append(trg.showAllTimeReports(1, TimeReportGenerator.SHOW_UNSIGNED));
+				}
+				session.setAttribute("signState", SIGN);
+				out.print(sb.toString());
+				out.print(getPageOutro());
+				break;
+				
+			}
+			break;
+		}
 		String reportId = request.getParameter("reportId");
 		if(reportId != null) {
 			String s = trg.showTimeReport(Integer.valueOf(reportId), TimeReportGenerator.SHOW_SIGN);
