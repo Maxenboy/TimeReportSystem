@@ -21,12 +21,12 @@ public class StatisticsMenu extends servletBase {
 		case PERMISSION_PROJ_LEADER: 	
 		case PERMISSION_OTHER_USERS: 
 			html += ""
-					+ "<li><a href=\"Statistics\">Show statistics</a></li>"
-					+ "<li><a href=\"BurnDown\">Show burn-down-diagram</a></li>"; 			
+					+ "<li><a href=\"Statistics\">Visa statistik</a></li>"
+					+ "<li><a href=\"BurnDown\">Visa Burn-down diagram</a></li>"; 			
 			break; 
 		
 		case PERMISSION_WITHOUT_ROLE: 
-			// får inte se :v
+			// f��r inte se :v
 			break; 	
 		}
 		
