@@ -24,21 +24,16 @@ import database.User;
  * Then the user is asked for name and password. 
  * If the user is logged in he/she is directed to the functionality page. 
  * 
- * @author Martin Host
- * @version 1.0
- * 
  */
 @WebServlet("/LogIn")
 public class LogIn extends servletBase {
 	private static final long serialVersionUID = 1L;
-	private Database db;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
     public LogIn() {
         super();
-        db = new Database();
     }
     
     /**
@@ -54,7 +49,6 @@ public class LogIn extends servletBase {
     	html += "<p> <input type=" + formElement("submit") + "value=" + formElement("Logga In") + '>';
     	return html;
     }
-    
     
 //    /**
 //     * Checks with the database if the user should be accepted
@@ -101,7 +95,6 @@ public class LogIn extends servletBase {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		// Get the session
 		HttpSession session = request.getSession(true);
 		

@@ -1,11 +1,5 @@
 package base;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -31,9 +25,6 @@ import database.ProjectGroup;
  * The administrator can be added with: mysql> insert into users (name,
  * password) values('admin', 'adminp');
  * 
- * @author Martin Host
- * @version 1.0
- * 
  */
 public class servletBase extends HttpServlet {
 
@@ -42,8 +33,6 @@ public class servletBase extends HttpServlet {
 	// Define states
 	protected static final int LOGIN_FALSE = 0;
 	protected static final int LOGIN_TRUE = 1;
-	protected Connection conn = null;
-
 	
 	// User permissions
 	protected static final int PERMISSION_ADMIN = 			1;
@@ -71,8 +60,9 @@ public class servletBase extends HttpServlet {
 		HttpSession session = request.getSession(true);
 		Object objectState = session.getAttribute("state");
 		int state = LOGIN_FALSE;
-		if (objectState != null)
+		if (objectState != null) {
 			state = (Integer) objectState;
+		}
 		return (state == LOGIN_TRUE);
 	}
 	
@@ -190,7 +180,7 @@ public class servletBase extends HttpServlet {
 	private String translateRole(int role) {
 		switch (role) {
 		case 1:
-			return ("Administratör");
+			return ("Administrat\u00F6r");
 		case 2:
 			return ("Projektledare");
 		case 4:
