@@ -172,7 +172,7 @@ public class servletBase extends HttpServlet {
 		userInfo += ""
 				+ "</div>"
 				+ "<div class=\"col-lg-4\">"
-				+ "<a href=\"#\" class=\"btn btn-danger btn-block\">Log out</a>"
+				+ "<a href =" + formElement("LogIn") + " class='btn btn-danger btn-block'> Logga ut</a>"
 				+ "</div>"
 				+ "</div>"
 				+ "</div>"; 
