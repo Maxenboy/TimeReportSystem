@@ -23,32 +23,38 @@ public class NewTimeReport extends TimeReportingMenu{
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession(true);
 		PrintWriter out = response.getWriter();
-		out.print(getPageIntro());
 		int permission = (Integer) session.getAttribute("user_permissions");
 		
 		if(permission == PERMISSION_WITHOUT_ROLE) {
-			out.print("<script> alert('Du har inte blivit tilldelad n\u00E5gon roll och kan d\u00E4rf\u00F6r inte skapa en ny tidrapport. Var v\u00E4nlig kontakta din projektledare') </script>");
-			response.sendRedirect("ShowTimeReports");
-		} else if(permission == PERMISSION_ADMIN) {
-			out.print("<script> alert('Du \u00E4r systemadministrat\u00F6r och \u00E4r d\u00E4rf\u00F6r ej till\u00E5ten att skapa en ny tidrapport') </script>");
-			response.sendRedirect("ShowTimeReports");
-		}
-		int state = (Integer) session.getAttribute("newReportState");
-		String s;
-		switch(state) {
-		case FIRST:
+			out.print(getPageIntro());
 			out.print(generateMainMenu(permission, request));
 			out.print(generateSubMenu(permission));
-			s = trg.showNewTimeForm();
-			if(s == null) {
-				out.print("500 internt fel");
-			} else { 
-				out.print(s);
-			}
+			out.print("<script> alert('Du har inte blivit tilldelad n\u00E5gon roll och kan d\u00E4rf\u00F6r inte skapa en ny tidrapport. Var v\u00E4nlig kontakta din projektledare') </script>");
 			out.print(getPageOutro());
-			break;
+		} else if(permission == PERMISSION_ADMIN) {
+			out.print(getPageIntro());
+			out.print(generateMainMenu(permission, request));
+			out.print(generateSubMenu(permission));
+			out.print("<script> alert('Du \u00E4r systemadministrat\u00F6r och \u00E4r d\u00E4rf\u00F6r ej till\u00E5ten att skapa en ny tidrapport') </script>");
+			out.print(getPageOutro());
+		} else {
+			int state = (Integer) session.getAttribute("newReportState");
+			String s;
+			switch(state) {
+			case FIRST:
+				out.print(getPageIntro());
+				out.print(generateMainMenu(permission, request));
+				out.print(generateSubMenu(permission));
+				s = trg.showNewTimeForm();
+				if(s == null) {
+					out.print("500 internt fel");
+				} else { 
+					out.print(s);
+				}
+				out.print(getPageOutro());
+				break;
+			}
 		}
-		
 	}
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {

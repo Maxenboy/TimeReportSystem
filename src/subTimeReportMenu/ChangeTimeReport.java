@@ -21,8 +21,6 @@ public class ChangeTimeReport extends TimeReportingMenu{
 	public static final int FIRST = 0;
 	public static final int SHOW_REPORT = 1;
 	public static final int CHANGE_REPORT = 2;
-	public static final int NOT_ENOUGH_DATA = 3;
-	public static final int ILLEGAL_CHAR = 4;
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession(true);

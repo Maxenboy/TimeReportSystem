@@ -183,6 +183,7 @@ public class SignTimeReports extends TimeReportingMenu {
 					out.print(getPageOutro());
 					session.setAttribute("signState", SIGN);
 				} else {
+					out.print("<script> alert('500 - Internt fel')</script>");
 					doGet(request,response);
 					session.setAttribute("signState", FIRST);
 				}
