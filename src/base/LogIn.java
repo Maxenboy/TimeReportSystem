@@ -115,7 +115,7 @@ public class LogIn extends servletBase {
 		
 		if (loggedIn(request)) {
 			session.setAttribute("state", LOGIN_FALSE);
-			out.println("<p style='color: red;'>Du är nu utloggad!</p>");
+			out.println("<p style='color: red;'>Du är nu utloggad</p>");
 		}
 		
 		String name;
