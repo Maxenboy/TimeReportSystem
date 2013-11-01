@@ -152,7 +152,6 @@ public class TimeReportGenerator {
 		switch(state) {
 		case SHOW_PRJ:
 			html = showPrj();
-			System.out.println(html);
 			break;
 		case SHOW_ALL:
 			timeReports = db.getTimeReportsForProjectGroupId(ID);
