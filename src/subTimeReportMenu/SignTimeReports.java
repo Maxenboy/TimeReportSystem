@@ -20,6 +20,7 @@ public class SignTimeReports extends TimeReportingMenu {
 	public static final int SIGN = 1;
 	public static final int LIST = 2;
 	public static final int SELECT = 3;
+	public static final int SHOW = 4;
 	private static final long serialVersionUID = -4213845458306512233L;
 	TimeReportGenerator trg = new TimeReportGenerator(new Database());
 	
@@ -27,9 +28,6 @@ public class SignTimeReports extends TimeReportingMenu {
 		HttpSession session = request.getSession(true);
 		PrintWriter out = response.getWriter();
 		int permission = (Integer) session.getAttribute("user_permissions");
-		out.append(getPageIntro());
-		out.print(generateMainMenu(permission, request));
-		out.print(generateSubMenu(permission));
 		int state= (Integer) session.getAttribute("signState");
 		
 		switch(permission) {
@@ -37,12 +35,20 @@ public class SignTimeReports extends TimeReportingMenu {
 			switch(state) {
 			case FIRST:
 				String s;
-				s = trg.showAllTimeReports(0, TimeReportGenerator.SHOW_PRJ);
+				out.append(getPageIntro());
+				out.print(generateMainMenu(permission, request));
+				out.print(generateSubMenu(permission));
+				s = trg.showAllTimeReports(0, TimeReportGenerator.SIGN_PRJ);
 				if(s != null)
 					out.print(s);
 				else
 					out.print("Det finns inga projektgrupper att visa");
-				session.setAttribute("showReportState", LIST);
+				out.print(getPageOutro());
+				session.setAttribute("signState", SELECT);
+				break;
+			default:
+				session.setAttribute("signState", FIRST);
+				doGet(request, response);
 				break;
 			}
 			break;
@@ -50,38 +56,23 @@ public class SignTimeReports extends TimeReportingMenu {
 			StringBuilder sb = new StringBuilder();
 			switch(state) {
 			case FIRST:
+				out.append(getPageIntro());
+				out.print(generateMainMenu(permission, request));
+				out.print(generateSubMenu(permission));
 				//First time visiting page.
-				sb.append("<form method=get action = SignTimeReports>");
+				sb.append("<form method=post action = SignTimeReports>");
 				sb.append("<input type=" + formElement("submit") + 
 						" name=" + formElement("sign") + " value=" + formElement("Visa signerade tidrapporter") + ">");
 				sb.append("<input type=" + formElement("submit") + 
 						" name=" + formElement("unsign") + " value=" + formElement("Visa osignerade tidrapporter") + ">");
 				sb.append("</form>");
-				session.setAttribute("state", LIST);
 				out.print(sb.toString());
+				out.print(getPageOutro());
+				session.setAttribute("signState", LIST);
 				break;
-			case LIST:
-				//List signed or unsigned time reports
-				if(request.getParameter("sign") != null) {
-					sb.append(trg.showAllTimeReports(1, TimeReportGenerator.SHOW_SIGN));
-				} else if(request.getParameter("unsign") != null){
-					sb.append(trg.showAllTimeReports(1, TimeReportGenerator.SHOW_UNSIGNED));
-				}
-				break;
-			case SIGN:
-				// Do signing/unsigning of timeReport
-				System.out.println(request.getParameter("reportId"));
-				String reportId = (String) request.getParameter("reportId");
-				boolean success = trg.signOrUnsignReport(reportId);
-				if(success) {
-					out.print("<script> alert(" + formElement("Internt fel - tidrapporten kunde ej signeras") + ");</script>");
-					session.setAttribute("signState",FIRST);
-					doGet(request, response);
-				} else {
-					out.print("<script> alert('Tidrapport signerad/avsignerad!')</script>");
-					session.setAttribute("signState",FIRST);
-					doGet(request, response);
-				}
+			default:
+				session.setAttribute("signState", FIRST);
+				doGet(request, response);
 				break;
 			}
 			break;
@@ -90,22 +81,21 @@ public class SignTimeReports extends TimeReportingMenu {
 		}
 		out.print(getPageOutro());
 	}
-	
+		
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		//Signing/unsigning of time reports
+		String reportId = new String();
 		HttpSession session = request.getSession(true);
 		PrintWriter out = response.getWriter();
-		out.print(getPageIntro());
 		int permission = (Integer) session.getAttribute("user_permissions");
 		int state = (Integer) session.getAttribute("signState");
-		out.print(generateMainMenu(permission, request));
-		out.print(generateSubMenu(permission));
+		StringBuilder sb = new StringBuilder();
 		switch(permission) {
 		case PERMISSION_ADMIN:
-			StringBuilder sb = new StringBuilder();
+			String prjGroup;
 			switch(state) {
 			case SELECT:
-				String prjGroup = request.getParameter("prjGroup");
+				prjGroup = request.getParameter("prjGroup");
 				sb.append("<form method=post action = SignTimeReports>");
 				sb.append("<input type=" + formElement("submit") + 
 						" name=" + formElement("sign") + " value=" + formElement("Visa signerade tidrapporter") + ">");
@@ -113,33 +103,105 @@ public class SignTimeReports extends TimeReportingMenu {
 						" name=" + formElement("unsign") + " value=" + formElement("Visa osignerade tidrapporter") + ">");
 				sb.append("<input type=\"hidden\" name=\"prjGroup\" value=" + formElement(prjGroup) + ">");
 				sb.append("</form>");
-				session.setAttribute("state", LIST);
+				session.setAttribute("signState", LIST);
+				out.print(getPageIntro());
+				out.print(generateMainMenu(permission, request));
+				out.print(generateSubMenu(permission));
 				out.print(sb.toString());
 				out.print(getPageOutro());
 				break;
 			case LIST:
-				
+				prjGroup = request.getParameter("prjGroup");
 				if(request.getParameter("sign") != null) {
-					sb.append(trg.showAllTimeReports(1, TimeReportGenerator.SHOW_SIGN));
+					sb.append(trg.showAllTimeReports(Integer.valueOf(prjGroup), TimeReportGenerator.SHOW_SIGN));
 				} else if(request.getParameter("unsign") != null){
-					sb.append(trg.showAllTimeReports(1, TimeReportGenerator.SHOW_UNSIGNED));
+					sb.append(trg.showAllTimeReports(Integer.valueOf(prjGroup), TimeReportGenerator.SHOW_UNSIGNED));
 				}
-				session.setAttribute("signState", SIGN);
+				session.setAttribute("signState", SHOW);
+				out.print(getPageIntro());
+				out.print(generateMainMenu(permission, request));
+				out.print(generateSubMenu(permission));
 				out.print(sb.toString());
 				out.print(getPageOutro());
 				break;
-				
+			case SIGN:
+				reportId = (String) request.getParameter("reportId");
+				boolean success = trg.signOrUnsignReport(reportId);
+				if(success) {
+					out.print("<script> alert('Tidrapport signerad/avsignerad!')</script>");
+					session.setAttribute("signState",FIRST);
+					doGet(request, response);
+				} else {
+					out.print("<script> alert(" + formElement("Internt fel - tidrapporten kunde ej signeras") + ");</script>");
+					session.setAttribute("signState",FIRST);
+					doGet(request, response);
+				}
+				break;
+			case SHOW:
+				reportId = request.getParameter("reportId");
+				if(reportId != null) {
+					out.print(getPageIntro());
+					out.print(generateMainMenu(permission, request));
+					out.print(generateSubMenu(permission));
+					String s = trg.showTimeReport(Integer.valueOf(reportId), TimeReportGenerator.SHOW_SIGN);
+					out.print(s);
+					out.print(getPageOutro());
+					session.setAttribute("signState", SIGN);
+				} else {
+					out.print("<script> alert('Internt fel')</script>");
+					session.setAttribute("signState", FIRST);
+					doGet(request,response);
+				}
+				break;
 			}
 			break;
-		}
-		String reportId = request.getParameter("reportId");
-		if(reportId != null) {
-			String s = trg.showTimeReport(Integer.valueOf(reportId), TimeReportGenerator.SHOW_SIGN);
-			session.setAttribute("signState", SIGN);
-			out.print(getPageIntro());
-			out.print(s);
-		} else {
-			doGet(request,response);
+		case PERMISSION_PROJ_LEADER:
+			switch(state) {
+			case LIST:
+				int projGroup = (Integer) session.getAttribute("project_group_id");
+				if(request.getParameter("sign") != null) {
+					sb.append(trg.showAllTimeReports(projGroup, TimeReportGenerator.SHOW_SIGN));
+				} else if(request.getParameter("unsign") != null){
+					sb.append(trg.showAllTimeReports(projGroup, TimeReportGenerator.SHOW_UNSIGNED));
+				}
+				session.setAttribute("signState", SHOW);
+				out.print(getPageIntro());
+				out.print(generateMainMenu(permission, request));
+				out.print(generateSubMenu(permission));
+				out.print(sb.toString());
+				out.print(getPageOutro());
+				break;
+			case SHOW:
+				reportId = request.getParameter("reportId");
+				if(reportId != null) {
+					out.print(getPageIntro());
+					out.print(generateMainMenu(permission, request));
+					out.print(generateSubMenu(permission));
+					out.print(getPageIntro());
+					String s = trg.showTimeReport(Integer.valueOf(reportId), TimeReportGenerator.SHOW_SIGN);
+					out.print(s);
+					out.print(getPageOutro());
+					session.setAttribute("signState", SIGN);
+				} else {
+					doGet(request,response);
+					session.setAttribute("signState", FIRST);
+				}
+				break;
+			case SIGN:
+				reportId = (String) request.getParameter("reportId");
+				boolean success = trg.signOrUnsignReport(reportId);
+				if(success) {
+					out.print("<script> alert('Tidrapport signerad/avsignerad!')</script>");
+					session.setAttribute("signState",FIRST);
+					doGet(request, response);
+				} else {
+					out.print("<script> alert(" + formElement("Internt fel - tidrapporten kunde ej signeras") + ");</script>");
+					session.setAttribute("signState",FIRST);
+					doGet(request, response);
+				}
+				break;
+			}
+			break;
 		}
 	}
 }

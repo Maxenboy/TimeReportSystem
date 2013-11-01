@@ -68,7 +68,6 @@ public class ChangeTimeReport extends TimeReportingMenu{
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession(true);
 		PrintWriter out = response.getWriter();
-		out.print(getPageIntro());
 		int state = 0;
 		if(session.isNew()) {
 			state = FIRST;
@@ -82,15 +81,15 @@ public class ChangeTimeReport extends TimeReportingMenu{
 			reportId = request.getParameter("reportId");
 			if(reportId != null) {
 				int permission = (Integer) session.getAttribute("user_permissions");
-				out.print(getPageIntro());
-				out.print(generateMainMenu(permission, request));
-				out.print(generateSubMenu(permission));
 				s = trg.showChangeTimeReport(Integer.valueOf(reportId));
 				if(s == null) {
 					out.print("<script>alert('Du kan inte \u00E4ndra i en signerad tidrapport') </script>");
 					session.setAttribute("state", FIRST);
 					doGet(request, response);
 				} else {
+					out.print(getPageIntro());
+					out.print(generateMainMenu(permission, request));
+					out.print(generateSubMenu(permission));
 					out.print(s);
 					session.setAttribute("changeReportState", CHANGE_REPORT);
 					out.print(getPageOutro());
@@ -136,8 +135,8 @@ public class ChangeTimeReport extends TimeReportingMenu{
 					}
 				}
 				if(nonNumerical) {
-					session.setAttribute("changeReportState", FIRST);
 					out.print("<script> alert('Otill\u00E5ten symbol. Anv\u00E4nd bara numeriska symboler.') </script>");
+					session.setAttribute("changeReportState", FIRST);
 					doGet(request, response);
 				} else if(!filledIn) {
 					out.print("<script> alert('Obligatoriska data saknas. Var v\u00E4nlig fyll i veckonummer och \u00E5tminstone en aktivitet') </script>");

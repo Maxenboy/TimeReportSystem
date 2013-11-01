@@ -18,10 +18,6 @@ import database.TimeReport;
 public class NewTimeReport extends TimeReportingMenu{
 	private static final long serialVersionUID = 6091270182349510225L;
 	public static final int FIRST = 1;
-	public static final int NOT_ENOUGH_DATA = 3;
-	public static final int ILLEGAL_CHAR = 4;
-	public static final int SUCCESS = 5;
-	public static final int FAIL = 6;
 	TimeReportGenerator trg = new TimeReportGenerator(new Database());
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -51,51 +47,6 @@ public class NewTimeReport extends TimeReportingMenu{
 			}
 			out.print(getPageOutro());
 			break;
-		case ILLEGAL_CHAR:
-			out.print(generateMainMenu(permission, request));
-			out.print(generateSubMenu(permission));
-			out.print("<script> alert('Otillåten symbol. Anv\u00E4nd bara numeriska symboler.') </script>");
-			s = trg.showNewTimeForm();
-			if(s == null) {
-				out.print("500 internt fel");
-			} else { 
-				out.print(s);
-			}
-			out.print(getPageOutro());
-			session.setAttribute("newReportState", FIRST);
-			break;
-		case NOT_ENOUGH_DATA:
-			out.print(generateMainMenu(permission, request));
-			out.print(generateSubMenu(permission));
-			out.print("<script> alert('Obligatoriska data saknas. Var v\u00E4nlig fyll i veckonummer och \u00E5tminstone en aktivitet') </script>");
-			s = trg.showNewTimeForm();
-			if(s == null) {
-				out.print("500 internt fel");
-			} else { 
-				out.print(s);
-			}
-			out.print(getPageOutro());
-			session.setAttribute("newReportState", FIRST);
-			break;
-		case FAIL:
-			out.print(generateMainMenu(permission, request));
-			out.print(generateSubMenu(permission));
-			out.print("<script>alert('Tidrapporten kunde ej sparas. Kontrollera så att det ej finns en tidigare registrerad tidrapport för samma vecka') </script>");
-			s = trg.showNewTimeForm();
-			if(s == null) {
-				out.print("500 internt fel");
-			} else { 
-				out.print(s);
-			}
-			out.print(getPageOutro());
-			session.setAttribute("newReportState", FIRST);
-			break;
-		case SUCCESS:
-			out.print(generateMainMenu(permission, request));
-			out.print(generateSubMenu(permission));
-			out.print("<script>alert('Tidrapport sparad') </script>");
-			session.setAttribute("newReportState", FIRST);
-			break;
 		}
 		
 	}
@@ -112,7 +63,6 @@ public class NewTimeReport extends TimeReportingMenu{
 			doGet(request, response);
 		} else {
 			if(week.equals("")) {
-				System.out.println("break 1");
 				out.print("<script> alert('Obligatoriska data saknas. Var v\u00E4nlig fyll i veckonummer och \u00E5tminstone en aktivitet') </script>");
 				session.setAttribute("newReportState", FIRST);
 				doGet(request,response);
@@ -143,18 +93,22 @@ public class NewTimeReport extends TimeReportingMenu{
 					}
 				}
 				if(nonNumeric) {
-					session.setAttribute("newReportState", ILLEGAL_CHAR);
+					out.print("<script> alert('Otill\u00E5ten symbol. Anv\u00E4nd bara numeriska symboler.') </script>");
+					session.setAttribute("newReportState", FIRST);
 					doGet(request, response);
 				} else if(!filledIn) {
-					session.setAttribute("newReportState", NOT_ENOUGH_DATA);
+					out.print("<script> alert('Obligatoriska data saknas. Var v\u00E4nlig fyll i veckonummer och \u00E5tminstone en aktivitet') </script>");
+					session.setAttribute("newReportState", FIRST);
 					doGet(request, response);
 				} else {
 					//save in database
 					if(trg.addNewTimeReport(timeReport, activities)) {
-						session.setAttribute("newReportState", SUCCESS);
+						out.print("<script>alert('Tidrapport sparad') </script>");
+						session.setAttribute("newReportState", FIRST);
 						doGet(request, response);
 					} else {
-						session.setAttribute("newReportState", FAIL);
+						out.print("<script>alert('Tidrapporten kunde ej sparas. Kontrollera så att det ej finns en tidigare registrerad tidrapport för samma vecka') </script>");
+						session.setAttribute("newReportState", FIRST);
 						doGet(request, response);
 					}
 				}

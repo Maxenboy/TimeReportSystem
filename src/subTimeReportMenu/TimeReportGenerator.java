@@ -119,10 +119,10 @@ public class TimeReportGenerator {
 		String html = new String();
 		switch(state) {
 		case SHOW_PRJ:
-			html += "<FORM METHOD=POST ACTION=ShowTimeReports>";
+			html = "<FORM METHOD=POST ACTION=ShowTimeReports>";
 			break;
 		case SIGN_PRJ:
-			html += "<FORM METHOD=POST ACTION=SignTimeReports>";
+			html = "<FORM METHOD=POST ACTION=\"SignTimeReports\">";
 		}
 		html += "<table class=\"table table-bordered table-hover\">";
 		html += "<tr>";
@@ -501,11 +501,11 @@ public class TimeReportGenerator {
 			sb.append("<input type=\"submit\" value=\"Radera tidrapport\" >");
 			break;
 		case SHOW_UNSIGNED:
-			sb.append("<form  method=\"get\" action=\"SignTimeReports\" onclick=\"return confirm('Are you sure you want to sign this report?')\">");
+			sb.append("<form  method=\"post\" action=\"SignTimeReports\" onclick=\"return confirm('Are you sure you want to sign this report?')\">");
 			sb.append("<input type=\"submit\" value=\"Signera tidrapport\" >");
 			break;
 		case SHOW_SIGN:
-			sb.append("<form  method=\"get\" action=\"SignTimeReports\" onclick=\"return confirm('Are you sure you want to unsign this report?')\">");
+			sb.append("<form  method=\"post\" action=\"SignTimeReports\" onclick=\"return confirm('Are you sure you want to unsign this report?')\">");
 			sb.append("<input type=\"submit\" value=\"Avsignera tidrapport\">");
 			break;
 		}
