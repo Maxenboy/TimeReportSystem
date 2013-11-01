@@ -10,13 +10,15 @@ import database.Database;
 @WebServlet("/ShowTimeReports")
 public class ShowTimeReports extends TimeReportingMenu {
 	private static final long serialVersionUID = -1933766080948920247L;
+	public static final int FIRST = 0;
+	public static final int ADMINISTRATOR = 1;
 	TimeReportGenerator trg = new TimeReportGenerator(new Database());
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession(true);
 		PrintWriter out = response.getWriter();
-		out.print(getPageIntro());
 		int permission = (Integer) session.getAttribute("user_permissions");
+		out.print(getPageIntro());
 		out.print(generateMainMenu(permission, request));
 		out.print(generateSubMenu(permission));
 
@@ -25,36 +27,82 @@ public class ShowTimeReports extends TimeReportingMenu {
 		String s = null;
 		switch(permission) {
 		case PERMISSION_ADMIN:
+			System.out.println("hello!");
+			s = trg.showAllTimeReports(projId, TimeReportGenerator.SHOW_PRJ);
+			if(s != null)
+				out.print(s);
+			else 
+				out.print("Det finns inga projektgrupper att visa");
+			session.setAttribute("showReportState", ADMINISTRATOR);
+			break;
 		case PERMISSION_PROJ_LEADER:
 			s = trg.showAllTimeReports(projId, TimeReportGenerator.SHOW_ALL);
+			if(s == null)
+				out.print("Det finns inga tidrapporter att visa");
+			else 
+				out.print(s);
+			out.print(getPageOutro());
+			session.setAttribute("showReportState", FIRST);
 			break;
 		case PERMISSION_OTHER_USERS:
 		case PERMISSION_WITHOUT_ROLE:
 			s = trg.showAllTimeReports(userId,TimeReportGenerator.SHOW_USER_REPORT);
+			if(s == null)
+				out.print("<script> alert('Det finns inga tidrapporter att visa')");
+			else 
+				out.print(s);
+			out.print(getPageOutro());
+			session.setAttribute("showReportState", FIRST);
 			break;
 		}
-		if(s == null)
-			out.print("<script> alert('Det finns inga tidrapporter att visa')");
-		else 
-			out.print(s);
-		out.print(getPageOutro());
+		
 	}
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession(true);
 		PrintWriter out = response.getWriter();
-		out.print(getPageIntro());
 		int permission = (Integer) session.getAttribute("user_permissions");
-		out.print(generateMainMenu(permission, request));
-		out.print(generateSubMenu(permission));
-		String reportId = request.getParameter("reportId");
-		if(reportId != null) {
-			String s = trg.showTimeReport(Integer.valueOf(reportId), TimeReportGenerator.SHOW_USER_REPORT);
-			out.print(getPageIntro());
-			out.print(s);
-		} else {
-			doGet(request,response);
+		int state = (Integer) session.getAttribute("showReportState");
+		switch(state) {
+		case ADMINISTRATOR:
+			String prjGroup = request.getParameter("prjGroup");
+			if(prjGroup != null) {
+				out.print(getPageIntro());
+				out.print(generateMainMenu(permission, request));
+				out.print(generateSubMenu(permission));
+				out.print(getPageIntro());
+				String s = trg.showAllTimeReports(Integer.valueOf(prjGroup), TimeReportGenerator.SHOW_ALL);
+				if(s == null)
+					out.print("Det finns inga tidrapporter att visa");
+				else 
+					out.print(s);
+				out.print(getPageOutro());
+				session.setAttribute("showReportState", FIRST);
+			} else {
+				out.print(getPageIntro());
+				out.print(generateMainMenu(permission, request));
+				out.print(generateSubMenu(permission));
+				out.print(getPageIntro());
+				out.print("Internt fel - inga projektgrupper kunde visas");
+				out.print(getPageOutro());
+				session.setAttribute("showReportState", FIRST);
+			}
+		break;
+		case FIRST:
+			String reportId = request.getParameter("reportId");
+			if(reportId != null) {
+				out.print(getPageIntro());
+				out.print(generateMainMenu(permission, request));
+				out.print(generateSubMenu(permission));
+				out.print(getPageIntro());
+				String s = trg.showTimeReport(Integer.valueOf(reportId), TimeReportGenerator.SHOW_USER_REPORT);
+				out.print(s);
+				out.print(getPageOutro());
+				session.setAttribute("showReportState", FIRST);
+			} else {
+				doGet(request,response);
+				session.setAttribute("showReportState", FIRST);
+			}
 		}
-		out.print(getPageOutro());
 	}
 }

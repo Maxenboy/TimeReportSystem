@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import subTimeReportMenu.ChangeTimeReport;
 import subTimeReportMenu.NewTimeReport;
 import subTimeReportMenu.RemoveTimeReport;
+import subTimeReportMenu.ShowTimeReports;
 import subTimeReportMenu.SignTimeReports;
+import subprojectgroupsmenu.ShowProjectGroups;
 import database.Database;
 import database.User;
 
@@ -130,6 +132,7 @@ public class LogIn extends servletBase {
        			session.setAttribute("newReportState", NewTimeReport.FIRST);
        			session.setAttribute("changeReportState", ChangeTimeReport.FIRST);
        			session.setAttribute("removeReportState",RemoveTimeReport.FIRST);
+       			session.setAttribute("showReportState", ShowTimeReports.FIRST);
        			if(u.getRole() == User.ROLE_ADMIN) {
        				session.setAttribute("user_permissions", 1);
        			} else if (u.getRole() == User.ROLE_PROJECT_LEADER) {

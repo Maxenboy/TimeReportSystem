@@ -15,6 +15,7 @@ public class TimeReportGenerator {
 	public static final int REMOVE_REPORT = 7;
 	public static final int CHANGE_USER_REPORT = 8;
 	public static final int CHANGE_PRJ_REPORT = 9;
+	public static final int SHOW_PRJ = 10;
 	
 	/**
 	 * Constructor
@@ -95,7 +96,7 @@ public class TimeReportGenerator {
 			sb.append("</tr>");
 		}
 		sb.append("</table>");
-		sb.append("<INPUT TYPE="+ formElement("submit") + "VALUE=" + formElement("H\u00E4mta rapport") +">");
+		sb.append("<INPUT TYPE="+ formElement("submit") + "VALUE=" + formElement("Hämta rapport") +">");
 		sb.append("</form>");
 		return sb.toString();
 	}
@@ -108,6 +109,28 @@ public class TimeReportGenerator {
 	private String createRadio(int id) {
 		return "<input type=" + formElement("radio") + "name=" + 
 				formElement("reportId") + "value=" + formElement(Integer.toString(id))+">";
+	}
+	
+	private String showPrj() {
+		ArrayList<ProjectGroup> prjGroups = db.getProjectGroups();
+		if(prjGroups.isEmpty())
+			return null;
+		String html = "<FORM METHOD=POST ACTION=ShowTimeReports>"; 
+		html += "<table class=\"table table-bordered table-hover\">";
+		html += "<tr>";
+		html += "<th>Grupp ID</th>";
+		html += "<th>Välj</th>";
+		html += "</tr>";
+		for(ProjectGroup pg: prjGroups) {
+			html += "<tr>";
+			html += "<td>" + pg.getId() + "</td>";
+			html += "<td> <input type=\"radio\" name=\"prjGroup\" value=" + formElement(Integer.toString(pg.getId())) + "> </td>"; 
+			html += "</tr>";
+		}
+		html += "</table>";
+		html += "<INPUT TYPE=\"submit\" VALUE=\"Hämta projektgrupp\">";
+		html += "</FORM>";
+		return html;
 	}
 	
 	/**
@@ -127,10 +150,12 @@ public class TimeReportGenerator {
 		ArrayList<TimeReport> timeReports = new ArrayList<TimeReport>();
 		String html = null;
 		switch(state) {
+		case SHOW_PRJ:
+			html = showPrj();
+			System.out.println(html);
+			break;
 		case SHOW_ALL:
 			timeReports = db.getTimeReportsForProjectGroupId(ID);
-			if(timeReports.isEmpty())
-				return null;
 			html = listReports(timeReports,state);
 			break;
 		case SHOW_USER_REPORT:
