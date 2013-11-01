@@ -41,9 +41,9 @@ public class SignTimeReports extends TimeReportingMenu {
 				//First time visiting page.
 				sb.append("<form method=get action = SignTimeReports>");
 				sb.append("<input type=" + formElement("submit") + 
-						" name=" + formElement("sign") + " value=" + formElement("Show signed time reports") + ">");
+						" name=" + formElement("sign") + " value=" + formElement("Visa signerade tidrapporter") + ">");
 				sb.append("<input type=" + formElement("submit") + 
-						" name=" + formElement("unsign") + " value=" + formElement("Show unsigned time reports") + ">");
+						" name=" + formElement("unsign") + " value=" + formElement("Visa osignerade tidrapporter") + ">");
 				sb.append("</form>");
 				session.setAttribute("state", LIST);
 				break;
@@ -61,11 +61,11 @@ public class SignTimeReports extends TimeReportingMenu {
 				String reportId = (String) request.getParameter("reportId");
 				boolean success = trg.signOrUnsignReport(reportId);
 				if(success) {
-					out.print("<script> alert(" + formElement("Internal error - please try again later") + ");</script>");
+					out.print("<script> alert(" + formElement("Internt fel - tidrapporten kunde ej signeras") + ");</script>");
 					session.setAttribute("signState",FIRST);
 					doGet(request, response);
 				} else {
-					out.print("<script> alert('Successful signing/unsigning of report!')</script>");
+					out.print("<script> alert('Tidrapport signerad/avsignerad!')</script>");
 					session.setAttribute("signState",FIRST);
 					doGet(request, response);
 				}
@@ -73,7 +73,7 @@ public class SignTimeReports extends TimeReportingMenu {
 			}
 			break;
 		default:
-			out.append("<script>alert('Permission denied')</script>");
+			out.append("<script>alert('Åtkomst nekad')</script>");
 		}
 		out.print(getPageOutro());
 	}

@@ -131,26 +131,26 @@ public class servletBase extends HttpServlet {
 		switch(userPermission) {
 			case PERMISSION_ADMIN:
 				intro += ""
-						+ "<li><a href=\"ShowProjectGroups\">Project groups</a></li>"
-						+ "<li><a href=\"ShowUsers\">Users</a></li>"
-						+ "<li><a href=\"ShowProjectMembers\">Project members</a></li>"
-						+ "<li><a href=\"ShowTimeReports\">Time reports</a></li>"
-						+ "<li><a href=\"Statistics\">Statistics</a></li>"; 
+						+ "<li><a href=\"ShowProjectGroups\">Projektgrupper</a></li>"
+						+ "<li><a href=\"ShowUsers\">Användare</a></li>"
+						+ "<li><a href=\"ShowProjectMembers\">Projektmedlemmar</a></li>"
+						+ "<li><a href=\"ShowTimeReports\">Tidrapporter</a></li>"
+						+ "<li><a href=\"Statistics\">Statistik</a></li>"; 
 				break; 
 				
 			case PERMISSION_PROJ_LEADER: 
 			case PERMISSION_OTHER_USERS: 
 				intro += ""
-						+ "<li><a href=\"ShowProjectMembers\">Project members</a></li>"
-						+ "<li><a href=\"ShowTimeReports\">Time reports</a></li>"
-						+ "<li><a href=\"Statistics\">Statistics</a></li>"; 				
+						+ "<li><a href=\"ShowProjectMembers\">Projektmedlemmar</a></li>"
+						+ "<li><a href=\"ShowTimeReports\">Tidrapporter</a></li>"
+						+ "<li><a href=\"Statistics\">Statistik</a></li>"; 				
 				break;
 				
 			case PERMISSION_WITHOUT_ROLE:
 				intro += ""
-						+ "<li><a href=\"ShowProjectMembers\">Project members</a></li>"
-						+ "<li><a href=\"ShowTimeReports\">Time reports</a></li>"
-						+ "<li><a href=\"Statistics\">Statistics</a></li>";
+						+ "<li><a href=\"ShowProjectMembers\">Projektmedlemmar</a></li>"
+						+ "<li><a href=\"ShowTimeReports\">Tidrapporter</a></li>"
+						+ "<li><a href=\"Statistics\">Statistik</a></li>";
 				break; 
 		}
 		

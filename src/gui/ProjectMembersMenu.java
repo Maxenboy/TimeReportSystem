@@ -20,15 +20,15 @@ public class ProjectMembersMenu extends servletBase {
 		case PERMISSION_ADMIN: 
 		case PERMISSION_PROJ_LEADER: 	
 			html += ""
-					+ "<li><a href=\"ShowProjectMembers\">Show project members</a></li>"
-					+ "<li><a href=\"HandleProjectRoles\">Manage project members</a></li>"; 			
+					+ "<li><a href=\"ShowProjectMembers\">Visa projektmedlemmar</a></li>"
+					+ "<li><a href=\"HandleProjectRoles\">Hantera projektmedlemmar</a></li>"; 			
 			break; 
 		case PERMISSION_OTHER_USERS: 
 			html += ""
-					+ "<li><a href=\"ShowProjectMembers\">Show project members</a></li>"; 	
+					+ "<li><a href=\"ShowProjectMembers\">Visa projektmedlemmar</a></li>"; 	
 			break; 
 		case PERMISSION_WITHOUT_ROLE: 
-			// får inte se :v
+			// f��r inte se :v
 			break; 	
 		}
 		

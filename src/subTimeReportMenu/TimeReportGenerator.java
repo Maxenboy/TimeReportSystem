@@ -36,10 +36,10 @@ public class TimeReportGenerator {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<table class=\"table table-bordered table-hover\">");
 		sb.append("<tr>");
-		sb.append("<th>Report ID</th>");
-		sb.append("<th>Week</th>");
-		sb.append("<th>Signed</th>");
-		sb.append("<th>Select</th>");
+		sb.append("<th>Rappport ID</th>");
+		sb.append("<th>Vecka</th>");
+		sb.append("<th>Signerad</th>");
+		sb.append("<th>Välj</th>");
 		sb.append("</tr>");
 		return sb.toString();
 	}
@@ -95,7 +95,7 @@ public class TimeReportGenerator {
 			sb.append("</tr>");
 		}
 		sb.append("</table>");
-		sb.append("<INPUT TYPE="+ formElement("submit") + "VALUE=" + formElement("Get Report") +">");
+		sb.append("<INPUT TYPE="+ formElement("submit") + "VALUE=" + formElement("Hämta rapport") +">");
 		sb.append("</form>");
 		return sb.toString();
 	}
@@ -129,7 +129,9 @@ public class TimeReportGenerator {
 		switch(state) {
 		case SHOW_ALL:
 			timeReports = db.getTimeReportsForProjectGroupId(ID);
+			if(timeReports.isEmpty())
 			html = listReports(timeReports,state);
+			break;
 		case SHOW_USER_REPORT:
 			timeReports = db.getTimeReportsForUserId(ID);
 			html = listReports(timeReports, state);
@@ -171,7 +173,7 @@ public class TimeReportGenerator {
 		sb.append("<FORM METHOD=post ACTION=\"NewTimeReport\">");
 		sb.append("<TABLE class=\"table table-bordered table-hover\">");
 		sb.append("<TR><TD COLSPAN=1><B>Week:</B></TD><TD><INPUT TYPE=\"text\" NAME=\"week\" Value=\"\" SIZE=3></TD></TR>");
-		sb.append("<TR><TH>Number</TH><TH>Activity</TH><TH WIDTH=75>D</TH><TH WIDTH=75>I</TH><TH WIDTH=75>F</TH><TH WIDTH=75>R</TH></TR>");
+		sb.append("<TR><TH>Nummer</TH><TH>Aktivitet</TH><TH WIDTH=75>D</TH><TH WIDTH=75>I</TH><TH WIDTH=75>F</TH><TH WIDTH=75>R</TH></TR>");
 		int activityNbr = 11;
 		int formField = 0;
 		while(activityNbr < 20) {
@@ -208,7 +210,7 @@ public class TimeReportGenerator {
 		sb.append("</I></TD></TR>");
 		sb.append("</TABLE>");
 		sb.append("<INPUT TYPE=\"hidden\" NAME=\"FormFields\" Value=\"0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,21 ,22 ,23 ,30 ,41,42,43,44,100,\">");
-		sb.append("<INPUT TYPE=\"submit\" VALUE=\"Submit time report\">");
+		sb.append("<INPUT TYPE=\"submit\" VALUE=\"Skicka in tidrapport\">");
 		sb.append("</FORM>");
 		return sb.toString();
 	}
@@ -236,8 +238,8 @@ public class TimeReportGenerator {
 		ArrayList<Activity> activities = db.getActivities(reportId);
 		sb.append("<FORM METHOD=post ACTION=\"ChangeTimeReport\">");
 		sb.append("<TABLE class=\"table table-bordered table-hover\">");
-		sb.append("<TR><TD COLSPAN=1><B>Week:</B></TD><TD><INPUT TYPE=\"text\" NAME=\"week\" Value=" + formElement(Integer.toString(tr.getWeek())) + "SIZE=3></TD></TR>");
-		sb.append("<TR><TH>Number</TH><TH>Activity</TH><TH WIDTH=75>D</TH><TH WIDTH=75>I</TH><TH WIDTH=75>F</TH><TH WIDTH=75>R</TH></TR>");
+		sb.append("<TR><TD COLSPAN=1><B>Vecka:</B></TD><TD><INPUT TYPE=\"text\" NAME=\"week\" Value=" + formElement(Integer.toString(tr.getWeek())) + "SIZE=3></TD></TR>");
+		sb.append("<TR><TH>Number</TH><TH>Aktivitet</TH><TH WIDTH=75>D</TH><TH WIDTH=75>I</TH><TH WIDTH=75>F</TH><TH WIDTH=75>R</TH></TR>");
 		int activityNbr = 11;
 		int formField = 0;
 		while(activityNbr < 20) {
@@ -324,17 +326,9 @@ public class TimeReportGenerator {
 		sb.append("</TABLE>");
 		sb.append("<INPUT TYPE=\"hidden\" NAME=\"FormFields\" Value=\"0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,21 ,22 ,23 ,30 ,41,42,43,44,100,\">");
 		sb.append("<INPUT TYPE=\"hidden\" NAME=\"reportId\" Value=" + formElement(Integer.toString(reportId)) + ">");
-		sb.append("<INPUT TYPE=\"submit\" VALUE=\"Submit time report\">");
+		sb.append("<INPUT TYPE=\"submit\" VALUE=\"Skicka in tidrapport\">");
 		sb.append("</FORM>");
 		return sb.toString();
-	}
-	
-	public String showSuccess(int i) {
-		return null;
-	}
-	
-	public String showFail(int i) {
-		return null;
 	}
 	
 	/**
@@ -352,16 +346,16 @@ public class TimeReportGenerator {
 		//Table setup
 		sb.append("<table class=\"table table-bordered table-hover\">");
 		sb.append("<tr>");
-		sb.append("<TD COLSPAN=2><B>Report id:</B></TD><TD COLSPAN=2>" + reportId + "</TD>");
+		sb.append("<TD COLSPAN=2><B>Rapport:</B></TD><TD COLSPAN=2>" + reportId + "</TD>");
 		sb.append("<TD><B>Week:</B></TD><TD COLSPAN=2>" + tr.getWeek() + "</TD>");
 		sb.append("</tr>");
 		sb.append("<tr>");
-		sb.append("<TD COLSPAN=2><B>Project name:</B></TD><TD COLSPAN=2>" + pg.getProjectName() + "</TD>");
-		sb.append("<TD><B>Signed:</B></TD><TD COLSPAN=2>");
+		sb.append("<TD COLSPAN=2><B>Projektnamn:</B></TD><TD COLSPAN=2>" + pg.getProjectName() + "</TD>");
+		sb.append("<TD><B>Signerad:</B></TD><TD COLSPAN=2>");
 		sb.append(tr.isSigned() ? "Y" : "N");
 		sb.append("</TD></tr>");
 		sb.append("<tr>");
-		sb.append("<TH>Number</TH><TH>Activity</TH>" + 
+		sb.append("<TH>Number</TH><TH>Aktivitet</TH>" + 
 				"<TH WIDTH=75>D</TH><TH WIDTH=75>I</TH><TH WIDTH=75>F</TH>" + 
 					"<TH WIDTH=75>R</TH><TH WIDTH=75>Total time</TH></tr>");
 		HashMap<Integer,int[]> table = createTimeReportPresentationTable(activities);
@@ -454,15 +448,15 @@ public class TimeReportGenerator {
 		switch(state) {
 		case REMOVE_REPORT:
 			sb.append("<form  method=\"post\" action=\"RemoveTimeReport\" onclick=\"return confirm('Are you sure you want to remove this report?')\">");
-			sb.append("<input type=\"submit\" value=\"Remove report\" >");
+			sb.append("<input type=\"submit\" value=\"Radera tidrapport\" >");
 			break;
 		case SHOW_UNSIGNED:
 			sb.append("<form  method=\"get\" action=\"SignTimeReports\" onclick=\"return confirm('Are you sure you want to sign this report?')\">");
-			sb.append("<input type=\"submit\" value=\"Sign report\" >");
+			sb.append("<input type=\"submit\" value=\"Signera tidrapport\" >");
 			break;
 		case SHOW_SIGN:
 			sb.append("<form  method=\"get\" action=\"SignTimeReports\" onclick=\"return confirm('Are you sure you want to unsign this report?')\">");
-			sb.append("<input type=\"submit\" value=\"Unsign report\">");
+			sb.append("<input type=\"submit\" value=\"Avsignera tidrapport\">");
 			break;
 		}
 		sb.append("<input type=\"hidden\" name=\"reportId\" value=" + formElement(Integer.toString(reportId)) + ">");

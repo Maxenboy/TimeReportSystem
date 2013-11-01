@@ -29,11 +29,10 @@ public class NewTimeReport extends TimeReportingMenu{
 		int permission = (Integer) session.getAttribute("user_permissions");
 		
 		if(permission == PERMISSION_WITHOUT_ROLE) {
-			out.print("<script> alert('You are currently not assigned to any role in the project" + 
-		" and are therefore unable to create a new time report. Please contact your project leader')");
+			out.print("<script> alert('Du har inte blivit tilldelad någon roll och kan därför inte skapa en ny tidrapport. Var vänlig kontakta din projektledare')");
 			response.sendRedirect("ShowTimeReports");
 		} else if(permission == PERMISSION_ADMIN) {
-			out.print("<script> alert('You are a system administrator, and are not allowed to create time reports')");
+			out.print("<script> alert('Du är systemadministratör och är därför ej tillåten att skapa en ny tidrapport')");
 			response.sendRedirect("ShowTimeReports");
 		}
 		int state = (Integer) session.getAttribute("newReportState");
@@ -44,7 +43,7 @@ public class NewTimeReport extends TimeReportingMenu{
 			out.print(generateSubMenu(permission));
 			s = trg.showNewTimeForm();
 			if(s == null) {
-				out.print("500 internal error");
+				out.print("500 internt fel");
 			} else { 
 				out.print(s);
 			}
@@ -61,13 +60,13 @@ public class NewTimeReport extends TimeReportingMenu{
 		int userId = (Integer) session.getAttribute("id");
 		int projId = (Integer) session.getAttribute("project_group_id");
 		if(!isNumeric(week) && !week.equals("")) {
-			out.print("<script> alert('Illegal character. Only numerical chararcters are allowed') </script>");
+			out.print("<script> alert('Otillåten symbol. Använd bara numeriska symboler.') </script>");
 			session.setAttribute("newReportState", FIRST);
 			doGet(request, response);
 		} else {
 			if(week.equals("")) {
 				System.out.println("break 1");
-				out.print("<script> alert('Mandatory data has not been filled in. Please fill in week nr. and at least one activity') </script>");
+				out.print("<script> alert('Obligatoriska data saknas. Var vänlig fyll i veckonummer och åtminstone en aktivitet') </script>");
 				session.setAttribute("newReportState", FIRST);
 				doGet(request,response);
 			} else {
@@ -97,22 +96,22 @@ public class NewTimeReport extends TimeReportingMenu{
 					}
 				}
 				if(nonNumeric) {
-					out.print("<script> alert('Illegal character, only numerical values are allowed') </script>");
+					out.print("<script> alert('Otillåten symbol. Använd bara numeriska symboler.') </script>");
 					session.setAttribute("newReportState", FIRST);
 					doGet(request, response);
 				} else if(!filledIn) {
 					System.out.println("break4");
-					out.print("<script> alert('Mandatory data has not been filled in. Please fill in week nr. and at least one activity') </script>");
+					out.print("<script> alert('Obligatoriska data saknas. Var vänlig fyll i veckonummer och åtminstone en aktivitet') </script>");
 					session.setAttribute("newReportState", FIRST);
 					doGet(request, response);
 				} else {
 					//save in database
 					if(trg.addNewTimeReport(timeReport, activities)) {
-						out.print("<script>alert('Successfully saved time report.') </script>");
+						out.print("<script>alert('Tidrapport uppdaterad') </script>");
 						session.setAttribute("newReportState", FIRST);
 						doGet(request, response);
 					} else {
-						out.print("<script>alert('Internal error - could not save time report.') </script>");
+						out.print("<script>alert('Internt fel - tidrapporten kunde ej uppdateras) </script>");
 						session.setAttribute("newReportState", FIRST);
 						doGet(request, response);
 					}

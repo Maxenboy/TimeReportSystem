@@ -24,37 +24,37 @@ public class TimeReportingMenu extends servletBase {
 		switch(role) {
 		case PERMISSION_ADMIN: 
 			html += ""
-					+ "<li><a href=\"ShowTimeReports\">Show time reports</a></li>"
-					+ "<li><a href=\"ChangeTimeReport\">Change time report</a></li>"
-					+ "<li><a href=\"RemoveTimeReport\">Remove time report</a></li>"
-					+ "<li><a href=\"SignTimeReports\">Sign time report</a></li>"
+					+ "<li><a href=\"ShowTimeReports\">Visa tidrapporter</a></li>"
+					+ "<li><a href=\"ChangeTimeReport\">Ändra tidrapport</a></li>"
+					+ "<li><a href=\"RemoveTimeReport\">Ta bort tidrapport</a></li>"
+					+ "<li><a href=\"SignTimeReports\">Signera tidrapport</a></li>"
 					+ "</ul>"; 
 			break; 
 		case PERMISSION_PROJ_LEADER: 
 			html += ""
-					+ "<li><a href=\"ShowTimeReports\">Show time reports</a></li>"
-					+ "<li><a href=\"NewTimeReport\">New time report</a></li>"
-					+ "<li><a href=\"ChangeTimeReport\">Change time report</a></li>"
-					+ "<li><a href=\"RemoveTimeReport\">Remove time report</a></li>"
-					+ "<li><a href=\"SignTimeReports\">Sign time report</a></li>"
+					+ "<li><a href=\"ShowTimeReports\">Visa tidrapporter</a></li>"
+					+ "<li><a href=\"NewTimeReport\">Ny tidrapport</a></li>"
+					+ "<li><a href=\"ChangeTimeReport\">Ändra tidrapport</a></li>"
+					+ "<li><a href=\"RemoveTimeReport\">Ta bort tidrapport</a></li>"
+					+ "<li><a href=\"SignTimeReports\">Signera tidrapport</a></li>"
 					+ "</ul>"; 
 			break; 
 			
 		case PERMISSION_WITHOUT_ROLE: 
 			html += ""
-					+ "<li><a href=\"ShowTimeReports\">Show time reports</a></li>"
-					+ "<li><a href=\"NewTimeReport\">New time report</a></li>"
-					+ "<li><a href=\"ChangeTimeReport\">Change time report</a></li>"
-					+ "<li><a href=\"RemoveTimeReport\">Remove time report</a></li>"
+					+ "<li><a href=\"ShowTimeReports\">Visa tidrapporter</a></li>"
+					+ "<li><a href=\"NewTimeReport\">Ny tidrapport</a></li>"
+					+ "<li><a href=\"ChangeTimeReport\">Ändra tidrapport</a></li>"
+					+ "<li><a href=\"RemoveTimeReport\">Ta bort tidrapport</a></li>"
 					+ "</ul>"; 			
 			break; 
 			
 		case PERMISSION_OTHER_USERS: 
 			html += ""
-					+ "<li><a href=\"ShowTimeReports\">Show time reports</a></li>"
-					+ "<li><a href=\"NewTimeReport\">New time report</a></li>"
-					+ "<li><a href=\"ChangeTimeReport\">Change time report</a></li>"
-					+ "<li><a href=\"RemoveTimeReport\">Remove time report</a></li>"
+					+ "<li><a href=\"ShowTimeReports\">Visa tidrapporter</a></li>"
+					+ "<li><a href=\"NewTimeReport\">Ny tidrapport</a></li>"
+					+ "<li><a href=\"ChangeTimeReport\">Ändra tidrapport</a></li>"
+					+ "<li><a href=\"RemoveTimeReport\">Ta bort tidrapport</a></li>"
 					+ "</ul>"; 			
 			break; 
 		}
