@@ -47,8 +47,7 @@ public class Database {
 			PreparedStatement preparedStatement = conn
 					.prepareStatement(getTableSQL);
 			preparedStatement.setString(1, username);
-			preparedStatement.executeQuery();
-			ResultSet res = preparedStatement.getResultSet();
+			ResultSet res = preparedStatement.executeQuery();
 			while (res.next()) {
 				if (res.getString(3).equals(password)) {
 					u = new User(res.getInt(1), res.getString(2),
@@ -84,8 +83,7 @@ public class Database {
 			String getTableSQL = "SELECT * FROM users WHERE username = ? LIMIT 1";
 			preparedStatement = conn.prepareStatement(getTableSQL);
 			preparedStatement.setString(1, user.getUsername());
-			preparedStatement.executeQuery();
-			ResultSet res = preparedStatement.getResultSet();
+			ResultSet res = preparedStatement.executeQuery();
 			while (res.next()) {
 				user.setId(res.getInt(1));
 				user.setActive(res.getBoolean(4));
@@ -113,8 +111,7 @@ public class Database {
 			PreparedStatement preparedStatement = conn
 					.prepareStatement(getTableSQL);
 			preparedStatement.setString(1, username);
-			preparedStatement.executeQuery();
-			ResultSet res = preparedStatement.getResultSet();
+			ResultSet res = preparedStatement.executeQuery();
 			while (res.next()) {
 				u = new User(res.getInt(1), res.getString(2), res.getString(3),
 						res.getBoolean(4), res.getInt(5), res.getInt(6));
@@ -136,10 +133,8 @@ public class Database {
 		ArrayList<User> list = new ArrayList<User>();
 		try {
 			String getUsersSQL = "SELECT * FROM users";
-			PreparedStatement preparedStatement = conn
-					.prepareStatement(getUsersSQL);
-			preparedStatement.executeQuery();
-			ResultSet res = preparedStatement.getResultSet();
+			PreparedStatement preparedStatement = conn.prepareStatement(getUsersSQL);
+			ResultSet res = preparedStatement.executeQuery();
 			User u = null;
 			while (res.next()) {
 				u = new User(res.getInt(1), res.getString(2), res.getString(3),
@@ -164,8 +159,7 @@ public class Database {
 			String getUsersSQL = "SELECT * FROM users WHERE project_group_id = ?";
 			PreparedStatement preparedStatement = conn.prepareStatement(getUsersSQL);
 			preparedStatement.setInt(1, projectGroupId);
-			preparedStatement.executeQuery();
-			ResultSet res = preparedStatement.getResultSet();
+			ResultSet res = preparedStatement.executeQuery();
 			User u = null;
 			while (res.next()) {
 				u = new User(res.getInt(1), res.getString(2), res.getString(3),
@@ -190,8 +184,7 @@ public class Database {
 			PreparedStatement preparedStatement = conn
 					.prepareStatement(getTableSQL);
 			preparedStatement.setInt(1, userId);
-			preparedStatement.executeQuery();
-			ResultSet res = preparedStatement.getResultSet();
+			ResultSet res = preparedStatement.executeQuery();
 			res.next();
 			u = new User(res.getInt(1), res.getString(2), res.getString(3),
 					res.getBoolean(4), res.getInt(5), res.getInt(6));
@@ -362,8 +355,7 @@ public class Database {
 			String getTableSQL = "SELECT id FROM project_groups WHERE project_name = ? LIMIT 1";
 			preparedStatement = conn.prepareStatement(getTableSQL);
 			preparedStatement.setString(1, projectGroup.getProjectName());
-			preparedStatement.executeQuery();
-			ResultSet res = preparedStatement.getResultSet();
+			ResultSet res = preparedStatement.executeQuery();
 			while (res.next()) {
 				projectGroup.setId(res.getInt(1));
 			}
@@ -474,8 +466,7 @@ public class Database {
 			PreparedStatement preparedStatement = conn
 					.prepareStatement(getTableSQL);
 			preparedStatement.setInt(1, projectGroupId);
-			preparedStatement.executeQuery();
-			ResultSet res = preparedStatement.getResultSet();
+			ResultSet res = preparedStatement.executeQuery();
 			while (res.next()) {
 				pg = new ProjectGroup(res.getInt(1), res.getString(2),
 						res.getBoolean(3), res.getInt(4), res.getInt(5),
@@ -499,8 +490,7 @@ public class Database {
 			String getTableSQL = "SELECT * FROM project_groups";
 			PreparedStatement preparedStatement = conn
 					.prepareStatement(getTableSQL);
-			preparedStatement.executeQuery();
-			ResultSet res = preparedStatement.getResultSet();
+			ResultSet res = preparedStatement.executeQuery();
 			while (res.next()) {
 				list.add(new ProjectGroup(res.getInt(1), res.getString(2), res
 						.getBoolean(3), res.getInt(4), res.getInt(5), res
@@ -528,8 +518,7 @@ public class Database {
 			PreparedStatement preparedStatement = conn
 					.prepareStatement(getTableSQL);
 			preparedStatement.setInt(1, projectGroupId);
-			preparedStatement.executeQuery();
-			ResultSet res = preparedStatement.getResultSet();
+			ResultSet res = preparedStatement.executeQuery();
 			while (res.next()) {
 				list.add(new TimeReport(res.getInt(1), res.getInt(2), res
 						.getBoolean(3), res.getInt(4), res.getInt(5)));
@@ -554,8 +543,7 @@ public class Database {
 			PreparedStatement preparedStatement = conn
 					.prepareStatement(getTableSQL);
 			preparedStatement.setInt(1, projectGroupId);
-			preparedStatement.executeQuery();
-			ResultSet res = preparedStatement.getResultSet();
+			ResultSet res = preparedStatement.executeQuery();
 			while (res.next()) {
 				list.add(new TimeReport(res.getInt(1), res.getInt(2), res
 						.getBoolean(3), res.getInt(4), res.getInt(5)));
@@ -580,8 +568,7 @@ public class Database {
 			PreparedStatement preparedStatement = conn
 					.prepareStatement(getTableSQL);
 			preparedStatement.setInt(1, projectGroupId);
-			preparedStatement.executeQuery();
-			ResultSet res = preparedStatement.getResultSet();
+			ResultSet res = preparedStatement.executeQuery();
 			while (res.next()) {
 				list.add(new TimeReport(res.getInt(1), res.getInt(2), res
 						.getBoolean(3), res.getInt(4), res.getInt(5)));
@@ -717,8 +704,7 @@ public class Database {
 			PreparedStatement preparedStatement = conn
 					.prepareStatement(getTableSQL);
 			preparedStatement.setInt(1, userId);
-			preparedStatement.executeQuery();
-			ResultSet res = preparedStatement.getResultSet();
+			ResultSet res = preparedStatement.executeQuery();
 			while (res.next()) {
 				list.add(new TimeReport(res.getInt(1), res.getInt(2), res
 						.getBoolean(3), res.getInt(4), res.getInt(5)));
@@ -818,11 +804,9 @@ public class Database {
 		TimeReport report = null;
 		try {
 			String getTableSQL = "SELECT * FROM time_reports WHERE id = ? LIMIT 1";
-			PreparedStatement preparedStatement = conn
-					.prepareStatement(getTableSQL);
+			PreparedStatement preparedStatement = conn.prepareStatement(getTableSQL);
 			preparedStatement.setInt(1, timeReportId);
-			preparedStatement.executeQuery();
-			ResultSet res = preparedStatement.getResultSet();
+			ResultSet res = preparedStatement.executeQuery();
 			while (res.next()) {
 				report = new TimeReport(res.getInt(1), res.getInt(2),
 						res.getBoolean(3), res.getInt(4), res.getInt(5));
@@ -848,8 +832,7 @@ public class Database {
 			PreparedStatement preparedStatement = conn
 					.prepareStatement(getUsersSQL);
 			preparedStatement.setInt(1, timeReportId);
-			preparedStatement.executeQuery();
-			ResultSet res = preparedStatement.getResultSet();
+			ResultSet res = preparedStatement.executeQuery();
 			Activity activity = null;
 			while (res.next()) {
 				activity = new Activity(res.getInt(1), res.getInt(2),
@@ -875,8 +858,7 @@ public class Database {
 			PreparedStatement preparedStatement = conn
 					.prepareStatement(getTableSQL);
 			preparedStatement.setInt(1, activityId);
-			preparedStatement.executeQuery();
-			ResultSet res = preparedStatement.getResultSet();
+			ResultSet res = preparedStatement.executeQuery();
 			res.next();
 			activity = new Activity(res.getInt(1), res.getInt(2),
 					res.getString(3), res.getInt(4), res.getInt(5));
@@ -909,8 +891,7 @@ public class Database {
 			String getTableSQL = "SELECT DISTINCT(role) FROM users WHERE project_group_id = ?";
 			PreparedStatement preparedStatement = conn.prepareStatement(getTableSQL);
 			preparedStatement.setInt(1, projectGroupId);
-			preparedStatement.executeQuery();
-			ResultSet res = preparedStatement.getResultSet();
+			ResultSet res = preparedStatement.executeQuery();
 			while(res.next()) {
 				roles.add(Integer.toString(res.getInt("role")));
 			}
@@ -926,8 +907,7 @@ public class Database {
 				String getTableSQL = "SELECT DISTINCT(activity_nr) FROM activities WHERE time_report_id = ?";
 				PreparedStatement preparedStatement = conn.prepareStatement(getTableSQL);
 				preparedStatement.setInt(1, tr.getId());
-				preparedStatement.executeQuery();
-				ResultSet res = preparedStatement.getResultSet();
+				ResultSet res = preparedStatement.executeQuery();
 				while(res.next()) {
 					if(!activityNr.contains(Integer.toString(res.getInt("activity_nr")))) {
 						activityNr.add(Integer.toString(res.getInt("activity_nr")));
@@ -947,8 +927,7 @@ public class Database {
 			String getTableSQL = "SELECT DISTINCT(week) FROM time_reports WHERE project_group_id = ?";
 			PreparedStatement preparedStatement = conn.prepareStatement(getTableSQL);
 			preparedStatement.setInt(1, projectGroupId);
-			preparedStatement.executeQuery();
-			ResultSet res = preparedStatement.getResultSet();
+			ResultSet res = preparedStatement.executeQuery();
 			while(res.next()) {
 				weeks.add(Integer.toString(res.getInt("week")));
 			}
