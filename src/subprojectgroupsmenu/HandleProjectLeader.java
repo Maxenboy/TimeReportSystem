@@ -67,7 +67,7 @@ public class HandleProjectLeader extends gui.ProjectGroupsMenu {
 		html += " method=" + formElement("get");
 		html += "<p> Vilken grupp : <input type=" + formElement("text")
 				+ " name=" + formElement("name") + '>';
-		html += "<p> Vilke anv��ndare : <input type=" + formElement("text")
+		html += "<p> Vilke anv\u00E4ndare : <input type=" + formElement("text")
 				+ " user=" + formElement("user") + '>';
 		html += "<input type=" + formElement("submit") + "value="
 				+ formElement("Toggla ledare") + '>';

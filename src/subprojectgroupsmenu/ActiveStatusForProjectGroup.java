@@ -30,7 +30,7 @@ public class ActiveStatusForProjectGroup extends gui.ProjectGroupsMenu {
 		out.append(generateMainMenu(userPermission, request));
 		out.print(generateSubMenu(userPermission));
 		if (request.getParameter("thegroup") == null) {
-			out.print("<script>$('#Activate/Inactivategroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"��r du s��ker?\");if (confirmed) {$(this).submit();}});</script>"
+			out.print("<script>$('#Activate/Inactivategroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"\u00C4r du s\u00E4ker?\");if (confirmed) {$(this).submit();}});</script>"
 					+ showProjectGroups());
 		} else {
 			if (checkGroup(request.getParameter("thegroup"))) {
@@ -38,7 +38,7 @@ public class ActiveStatusForProjectGroup extends gui.ProjectGroupsMenu {
 						+ showProjectGroups());
 			} else {
 				out.print("<script>$(alert(\"Inkorrekt input.\"))</script>"
-						+ "<script>$('#Activate/Inactivategroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"��r du s��ker?\");if (confirmed) {$(this).submit();}});</script>"
+						+ "<script>$('#Activate/Inactivategroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"\u00C4r du s\u00E4ker?\");if (confirmed) {$(this).submit();}});</script>"
 						+ showProjectGroups());
 			}
 		}
@@ -102,7 +102,7 @@ public class ActiveStatusForProjectGroup extends gui.ProjectGroupsMenu {
 		sb.append("<th>Slutvecka</th>");
 		sb.append("<th>Estimerat antal timmar</th>");
 		sb.append("<th>Aktiv</th>");
-		sb.append("<th>V��lj</th>");
+		sb.append("<th>V\u00E4lj</th>");
 		sb.append("</tr>");
 		return sb.toString();
 	}

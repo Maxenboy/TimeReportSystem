@@ -25,7 +25,7 @@ public class TimeReportingMenu extends servletBase {
 		case PERMISSION_ADMIN: 
 			html += ""
 					+ "<li><a href=\"ShowTimeReports\">Visa tidrapporter</a></li>"
-					+ "<li><a href=\"ChangeTimeReport\">Ändra tidrapport</a></li>"
+					+ "<li><a href=\"ChangeTimeReport\">\u00C4ndra tidrapport</a></li>"
 					+ "<li><a href=\"RemoveTimeReport\">Ta bort tidrapport</a></li>"
 					+ "<li><a href=\"SignTimeReports\">Signera tidrapport</a></li>"
 					+ "</ul>"; 
@@ -34,7 +34,7 @@ public class TimeReportingMenu extends servletBase {
 			html += ""
 					+ "<li><a href=\"ShowTimeReports\">Visa tidrapporter</a></li>"
 					+ "<li><a href=\"NewTimeReport\">Ny tidrapport</a></li>"
-					+ "<li><a href=\"ChangeTimeReport\">Ändra tidrapport</a></li>"
+					+ "<li><a href=\"ChangeTimeReport\">\u00C4ndra tidrapport</a></li>"
 					+ "<li><a href=\"RemoveTimeReport\">Ta bort tidrapport</a></li>"
 					+ "<li><a href=\"SignTimeReports\">Signera tidrapport</a></li>"
 					+ "</ul>"; 
@@ -44,7 +44,7 @@ public class TimeReportingMenu extends servletBase {
 			html += ""
 					+ "<li><a href=\"ShowTimeReports\">Visa tidrapporter</a></li>"
 					+ "<li><a href=\"NewTimeReport\">Ny tidrapport</a></li>"
-					+ "<li><a href=\"ChangeTimeReport\">Ändra tidrapport</a></li>"
+					+ "<li><a href=\"ChangeTimeReport\">\u00C4ndra tidrapport</a></li>"
 					+ "<li><a href=\"RemoveTimeReport\">Ta bort tidrapport</a></li>"
 					+ "</ul>"; 			
 			break; 
@@ -53,7 +53,7 @@ public class TimeReportingMenu extends servletBase {
 			html += ""
 					+ "<li><a href=\"ShowTimeReports\">Visa tidrapporter</a></li>"
 					+ "<li><a href=\"NewTimeReport\">Ny tidrapport</a></li>"
-					+ "<li><a href=\"ChangeTimeReport\">Ändra tidrapport</a></li>"
+					+ "<li><a href=\"ChangeTimeReport\">\u00C4ndra tidrapport</a></li>"
 					+ "<li><a href=\"RemoveTimeReport\">Ta bort tidrapport</a></li>"
 					+ "</ul>"; 			
 			break; 

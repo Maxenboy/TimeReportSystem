@@ -37,17 +37,17 @@ public class ActiveStatusForUser extends UsersMenu {
 		
 		if (request.getParameter("username") == null) {
 			out.print(users.showUsers(db.getUsers()));
-			out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"��r du s��ker?\");if (confirmed) {$(this).submit();}});</script>");
+			out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"\u00C4r du s\u00F6ker?\");if (confirmed) {$(this).submit();}});</script>");
 		} else {
 			User user = db.getUser(Integer.parseInt(request
 					.getParameter("username")));
 			if(user.isActive()){
 				db.deactivateUser(user.getId());
-				out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"��r du s��ker?\");if (confirmed) {$(this).submit();}});</script>");
+				out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"\u00C4r du s\u00F6ker?\");if (confirmed) {$(this).submit();}});</script>");
 				out.print(users.showUsers(db.getUsers()));
 			}else{
 				db.activateUser(user.getId());
-				out.print("<script>$(alert(\"Inkorrekt syntax p�� anv��ndarnamnet\"))</script>");
+				out.print("<script>$(alert(\"Inkorrekt syntax p\u00E5 anv\u00E4ndarnamnet\"))</script>");
 				out.print(users.showUsers(db.getUsers()));
 			}
 		}

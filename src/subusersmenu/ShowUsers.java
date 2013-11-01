@@ -105,11 +105,11 @@ public class ShowUsers extends UsersMenu {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<table class=\"table table-bordered table-hover\"");
 		sb.append("<tr>");
-		sb.append("<th>Anv��ndarnamn</th>");
+		sb.append("<th>Anv\u00E4ndarnamn</th>");
 		sb.append("<th>Projektgrupp</th>");
 		sb.append("<th>Roll</th>");
 		sb.append("<th>Aktiv</th>");
-		sb.append("<th>L��senord</th>");
+		sb.append("<th>L\u00F6senord</th>");
 		sb.append("</tr>");
 		return sb.toString();
 	}

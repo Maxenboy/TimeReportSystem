@@ -43,7 +43,7 @@ public class AddMemberToProjectGroup extends gui.ProjectGroupsMenu {
 					}
 				}
 				if (users.isEmpty()) {
-					out.print("<script>$(alert(\"Finns inga anv��ndare utan projektgrupp!\"))</script>");
+					out.print("<script>$(alert(\"Finns inga anv\u00E4ndare utan projektgrupp!\"))</script>");
 				} else {
 					out.print(groups.showProjectGroup(users));
 				}
@@ -55,7 +55,7 @@ public class AddMemberToProjectGroup extends gui.ProjectGroupsMenu {
 							.parseInt(groupName))));
 					groupName = "";
 				} else {
-					out.print("<script>$(alert(\"Anv��ndaren ��r redan med i en projektgrupp!\"))</script>"
+					out.print("<script>$(alert(\"Anv\u00E4ndaren \u00E4r redan med i en projektgrupp!\"))</script>"
 							+ groups.showProjectGroup(db.getUsers(Integer
 									.parseInt(groupName))));
 					groupName = "";
@@ -104,7 +104,7 @@ public class AddMemberToProjectGroup extends gui.ProjectGroupsMenu {
 		sb.append("<th>Slutvecka</th>");
 		sb.append("<th>Estimerat antal timmar</th>");
 		sb.append("<th>Aktiv</th>");
-		sb.append("<th>V��lj</th>");
+		sb.append("<th>V\u00E4lj</th>");
 		sb.append("</tr>");
 		return sb.toString();
 	}

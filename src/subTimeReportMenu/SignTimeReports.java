@@ -72,7 +72,7 @@ public class SignTimeReports extends TimeReportingMenu {
 			}
 			break;
 		default:
-			out.append("<script>alert('��tkomst nekad')</script>");
+			out.append("<script>alert('\u00C5tkomst nekad')</script>");
 		}
 		out.print(getPageOutro());
 	}

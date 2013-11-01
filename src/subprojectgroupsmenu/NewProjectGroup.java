@@ -35,7 +35,7 @@ public class NewProjectGroup extends gui.ProjectGroupsMenu {
 				out.print("<script>$(alert(\"Information inkorrekt inmatad\"))</script>"
 						+ addProjectGroupForm());
 			} else {
-				out.print("<script>$(alert(\"Kunde inte l��gga till projektgrupp\"))</script>"
+				out.print("<script>$(alert(\"Kunde inte l\u00E4gga till projektgrupp\"))</script>"
 						+ addProjectGroupForm());
 			}
 		}

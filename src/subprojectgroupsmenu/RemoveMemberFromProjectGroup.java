@@ -31,7 +31,7 @@ public class RemoveMemberFromProjectGroup extends gui.ProjectGroupsMenu {
 		out.print(generateSubMenu(userPermission));
 		if (request.getParameter("username") == null) {
 			out.print(users.showUsers(db.getUsers()));
-			out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"��r du s��ker?\");if (confirmed) {$(this).submit();}});</script>");
+			out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"\u00C4r du s\u00E4ker?\");if (confirmed) {$(this).submit();}});</script>");
 		} else {
 			User user = db.getUser(Integer.parseInt(request
 					.getParameter("username")));
@@ -39,13 +39,13 @@ public class RemoveMemberFromProjectGroup extends gui.ProjectGroupsMenu {
 				db.removeUserFromProjectGroup(user.getId(),
 						user.getProjectGroup());
 				if (db.getUsers(user.getProjectGroup()).isEmpty()) {
-					out.print(db.getProjectGroup(user.getProjectGroup()).getProjectName() + " ��r tom.");
+					out.print(db.getProjectGroup(user.getProjectGroup()).getProjectName() + " \u00E4r tom.");
 				} else {
 					out.print(group.showProjectGroup(db.getUsers(user
 							.getProjectGroup())));
 				}
 			} else {
-				out.print("<script>$(alert(\"Anv��ndaren har ingen projektgrupp och kan d��rf��r inte tas bort ur en\"))</script>");
+				out.print("<script>$(alert(\"Anv\u00E4ndaren har ingen projektgrupp och kan d\u00E4rf\u00F6r inte tas bort ur en\"))</script>");
 			}
 		}
 		out.print(getPageOutro());

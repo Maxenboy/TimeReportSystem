@@ -41,14 +41,14 @@ public class HandleAdminRights extends UsersMenu {
 					System.out.println("user = admin");
 					u.unmakeAdministrator(user.getUsername());
 					out.print(u.showUsers(db.getUsers())
-							+ "<script>$(alert(\"Anv��ndare ��r ej l��ngre administrat��r. ��ndringar sparade.\"))</script>");
+							+ "<script>$(alert(\"Anv\u00E4ndare \u00E4r ej l\u00E4ngre administrat\u00F6r. \u00C4ndringar sparade.\"))</script>");
 				} else {
 					u.makeAdministrator(user.getUsername());
 					out.print(u.showUsers(db.getUsers())
-							+ "<script>$(alert(\"Anv��ndaren ��r nu administrat��r. ��ndringar sparade.\"))</script>");
+							+ "<script>$(alert(\"Anv\u00E4ndaren \u00E4r nu administrat\u00F6r. \u00C4ndringar sparade.\"))</script>");
 				}
 			} else {
-				out.print(u.showUsers(db.getUsers())+ "<script>$(alert(\"Inte m��jligt! Anv��ndare ��r med i en projektgrupp! \"))</script>");
+				out.print(u.showUsers(db.getUsers())+ "<script>$(alert(\"Inte m\u00F6jligt! Anv\u00E4ndare \u00E4r med i en projektgrupp! \"))</script>");
 			}
 		}
 		out.print(getPageOutro());

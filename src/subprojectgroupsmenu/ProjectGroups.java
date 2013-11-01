@@ -47,7 +47,7 @@ public class ProjectGroups {
 		html += "<p> Grupp id: <input type=" + formElement("text")
 				+ " groupid=" + formElement("groupid") + '>';
 		html += "<input type=" + formElement("submit") + "value="
-				+ formElement("L�gg till anv�ndare") + '>';
+				+ formElement("L\u00E4gg till anv\u00E4ndare") + '>';
 		html += "</form>";
 		return html;
 	}

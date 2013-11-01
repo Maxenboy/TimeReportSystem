@@ -94,7 +94,7 @@ public class BurnDown extends gui.StatisticsMenu {
 		ArrayList<ProjectGroup> pg = db.getProjectGroups();
 		Iterator<ProjectGroup> itr = pg.iterator();
 
-		sb.append("<form method='POST'> Var v�nlig v�lj vilken projektgrupp du vill visa BurnDown f�r.<br />"
+		sb.append("<form method='POST'> Var v\u00E4nlig v\u00E4lj vilken projektgrupp du vill visa BurnDown f\u00F6r.<br />"
 				+ "<select name=projectgroup>");
 		while(itr.hasNext()) {
 			int projectgroup = itr.next().getId();
@@ -118,7 +118,7 @@ public class BurnDown extends gui.StatisticsMenu {
 	 */	
 	private String printBurnDown(HashMap<String, Integer> timePerWeek, int projectGroupId, ProjectGroup projectGroup) {
 		if(timePerWeek.get("totalProjectTime") == 0) {
-			return("F�rv�ntad projekttid �r satt till noll.");
+			return("F\u00F6rv\u00E4ntad projekttid \u00E4r satt till noll.");
 		}
 		
 		StringBuilder htmlBurnDown = new StringBuilder();
@@ -130,7 +130,7 @@ public class BurnDown extends gui.StatisticsMenu {
 		   + "google.setOnLoadCallback(drawChart);"
 		  + "function drawChart() {"
 		    + "var data = google.visualization.arrayToDataTable(["
-		   + "['Vecka', 'Verklig tid kvar', 'F�rv�ntad tid kvar'],"
+		   + "['Vecka', 'Verklig tid kvar', 'F\u00F6rv\u00E4ntad tid kvar'],"
 		); 
 		
 		double estimatedProjectTime = projectGroup.getEstimatedTime();

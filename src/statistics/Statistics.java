@@ -109,7 +109,7 @@ public class Statistics extends gui.StatisticsMenu {
 					out.append(getPageOutro());
 					
 				} else { //
-					out.append("There seems to be a problem with the cookies");
+					out.append("Det verkar vara ett problem med cookies");
 				}
 			}
 		} else if(userPermission == 2) { // The project leader has submitted filter-data 
@@ -143,7 +143,7 @@ public class Statistics extends gui.StatisticsMenu {
 		ArrayList<ProjectGroup> pg = db.getProjectGroups();
 		Iterator<ProjectGroup> itr = pg.iterator();
 
-		sb.append("<form method='POST'> Var v�nlig v�lj vilken projektgrupp du vill visa statistik f�r.<br />"
+		sb.append("<form method='POST'> Var v\u00E4nlig v\u00E4lj vilken projektgrupp du vill visa statistik f\u00F6r.<br />"
 				+ "<select name=projectgroup>");
 		while(itr.hasNext()) {
 			int projectgroup = itr.next().getId();
@@ -234,7 +234,7 @@ public class Statistics extends gui.StatisticsMenu {
 			Iterator<String> itr = users.iterator();
 
 			sb.append("<form method='POST'> "
-					+ "<table class='table table-bordered table-hover'><tr><td> Anv�ndare <br /><select name='users' multiple>"); 
+					+ "<table class='table table-bordered table-hover'><tr><td> Anv\u00E4ndare <br /><select name='users' multiple>"); 
 			sb.append("<option selected> Alla </option>");
 			
 			while(itr.hasNext()) { // Iterates through the list with usernames to build up the first part of form.				
@@ -307,7 +307,7 @@ public class Statistics extends gui.StatisticsMenu {
 					+ "</form>");  // form is now complete.	
 
 		} else {
-			sb.append("N�got blev fel. F�rs�k att logga in igen. ");
+			sb.append("N\u00E5got blev fel. F\u00F6rs\u00F6k att logga in igen. ");
 		}
 		return sb.toString();
 
@@ -408,7 +408,7 @@ public class Statistics extends gui.StatisticsMenu {
 				      + "google.setOnLoadCallback(drawTable);"
 				      + "function drawTable() {"
 				       + "var data = new google.visualization.DataTable();"
-				       + "data.addColumn('string', 'Anv�ndarnamn');"
+				       + "data.addColumn('string', 'Anv\u00E4ndarnamn');"
 				       + "data.addColumn('string', 'Roll');"
 				       + "data.addColumn('string', 'Aktivitet');"
 				       + "data.addColumn('string', 'Vecka');"
@@ -454,7 +454,7 @@ public class Statistics extends gui.StatisticsMenu {
 	private String translateRole(int role) {
 		switch(role) {
 			case 1:
-				return("Administrat�r");
+				return("Administrat\u00F6r");
 			case 2:
 				return("Projektledare");
 			case 4: 
@@ -468,7 +468,7 @@ public class Statistics extends gui.StatisticsMenu {
 			case 8:
 				return("Testledare");
 			default:
-				return("Ok�nd roll");
+				return("Ok\u00E4nd roll");
 		}
 	}
 	

@@ -91,10 +91,10 @@ public class HandleProjectRoles extends gui.UsersMenu{
 		StringBuilder sb = new StringBuilder();
 		sb.append("<table class=\"table table-bordered table-hover\"" + ">");
 		sb.append("<tr>");
-		sb.append("<th>Anv��ndarnamn</th>");
+		sb.append("<th>Anv\u00E4ndarnamn</th>");
 		sb.append("<th>Projektgrupp</th>");
 		sb.append("<th>Roll</th>");
-		sb.append("<th>V��lj</th>");
+		sb.append("<th>V\u00E4lj</th>");
 		sb.append("</tr>");
 		return sb.toString();
 	}
