@@ -18,49 +18,54 @@ public class HandleProjectRoles extends gui.UsersMenu{
 	private static final long serialVersionUID = 1L;
 	ProjectMembers members;
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws IOException {
-		HttpSession session = request.getSession();
-		PrintWriter out = response.getWriter();
-		out.print(getPageIntro());
-		int userPermission = (Integer) session.getAttribute("user_permissions");
-		out.append(generateMainMenu(userPermission, request));
-		out.print(generateSubMenu(userPermission));
-		if (request.getParameter("session") == null) {
-			out.print(groupForm());
-		} else if (request.getParameter("session").equals("found")) {
-			members = new ProjectMembers(request.getParameter("name"));
-			out.print(showMembers(db.getUsers(Integer.parseInt(request
-							.getParameter("groupname")))));
-		} else if (request.getParameter("session").equals("failed")) {
-			out.print("<script>$(alert(\"Inkorrekt grupp-id\"))</script>"
-					+ groupForm());
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		if (loggedIn(request)) {
+			HttpSession session = request.getSession();
+			PrintWriter out = response.getWriter();
+			out.print(getPageIntro());
+			int userPermission = (Integer) session.getAttribute("user_permissions");
+			out.append(generateMainMenu(userPermission, request));
+			out.print(generateSubMenu(userPermission));
+			if (request.getParameter("session") == null) {
+				out.print(groupForm());
+			} else if (request.getParameter("session").equals("found")) {
+				members = new ProjectMembers(request.getParameter("name"));
+				out.print(showMembers(db.getUsers(Integer.parseInt(request
+						.getParameter("groupname")))));
+			} else if (request.getParameter("session").equals("failed")) {
+				out.print("<script>$(alert(\"Inkorrekt grupp-id\"))</script>"
+						+ groupForm());
+			} else {
+				out.print("<script>$(alert(\"Error\"))</script>" + groupForm());
+			}
+			out.print(getPageOutro());
 		} else {
-			out.print("<script>$(alert(\"Error\"))</script>" + groupForm());
+			response.sendRedirect("LogIn");
 		}
-		out.print(getPageOutro());
 	}
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws IOException {
-		HttpSession session = request.getSession();
-		String stage = request.getParameter("session");
-		if (stage.equals("found")) {
-			String id = request.getParameter("reportId");
-			String role = request.getParameter("role");
-			members.changerole(db.getUser(Integer.parseInt(id)),
-					Integer.parseInt(role));
-		} else {
-			String groupName = request.getParameter("groupname");
-			if (db.getProjectGroup(Integer.parseInt(groupName)) != null) {
-				response.sendRedirect(request.getRequestURI()
-						+ "?session=found&groupname=" + groupName);
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		if (loggedIn(request)) {
+			HttpSession session = request.getSession();
+			String stage = request.getParameter("session");
+			if (stage.equals("found")) {
+				String id = request.getParameter("reportId");
+				String role = request.getParameter("role");
+				members.changerole(db.getUser(Integer.parseInt(id)),
+						Integer.parseInt(role));
 			} else {
-				response.sendRedirect(request.getRequestURI()
-						+ "?session=failed");
+				String groupName = request.getParameter("groupname");
+				if (db.getProjectGroup(Integer.parseInt(groupName)) != null) {
+					response.sendRedirect(request.getRequestURI()
+							+ "?session=found&groupname=" + groupName);
+				} else {
+					response.sendRedirect(request.getRequestURI()
+							+ "?session=failed");
+				}
 			}
+		} else {
+			response.sendRedirect("LogIn");
 		}
-
 	}
 
 	private String showMembers(ArrayList<User> users) {

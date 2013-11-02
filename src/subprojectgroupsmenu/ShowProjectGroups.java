@@ -13,23 +13,24 @@ import database.ProjectGroup;
 @WebServlet("/ShowProjectGroups")
 public class ShowProjectGroups extends ProjectGroupsMenu {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -6869459061396740611L;
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		HttpSession session = request.getSession();
-		PrintWriter out = response.getWriter();
-		
-		out.print(getPageIntro());
-		int userPermission = (Integer) session.getAttribute("user_permissions");
-		out.append(generateMainMenu(userPermission, request));
-		out.print(generateSubMenu(userPermission));
-		out.print(showProjectGroups() + getPageOutro());
+		if (loggedIn(request)) {
+			HttpSession session = request.getSession();
+			PrintWriter out = response.getWriter();
+			
+			out.print(getPageIntro());
+			int userPermission = (Integer) session.getAttribute("user_permissions");
+			out.append(generateMainMenu(userPermission, request));
+			out.print(generateSubMenu(userPermission));
+			out.print(showProjectGroups() + getPageOutro());
+		} else {
+			response.sendRedirect("LogIn");
+		}
 	}
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response) {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 	}
 

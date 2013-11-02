@@ -29,57 +29,62 @@ public class BurnDown extends gui.StatisticsMenu {
 	 * 
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		
-		//Database db = new Database();
-		PrintWriter out = response.getWriter();
-		
-		HttpSession session = request.getSession(true);
-		//testSetSessionData(session);
-		int userPermission = (Integer) session.getAttribute("user_permissions");
-		int projectGroupId = (Integer) session.getAttribute("project_group_id");
-
-		out.append(getPageIntro());
-		out.append(generateMainMenu(userPermission, request));
-		out.append(generateSubMenu(userPermission));
-
-		switch(userPermission) {
-		case 1: // Administrator gets to choose project group.
-			out.append(projectGroupForm());
-			out.append(getPageOutro());
-			break;
-		case 2:
-			out.append(printBurnDown(db.getTimePerWeek(projectGroupId), projectGroupId, db.getProjectGroup(projectGroupId)));
-			out.append(getPageOutro());
-			break;
-		case 4:
-			out.append(printBurnDown(db.getTimePerWeek(projectGroupId), projectGroupId, db.getProjectGroup(projectGroupId)));
-			out.append(getPageOutro());
-			break;
-		default:
-			out.append("Unexpected user permission level.");	
-			out.append(getPageOutro());
-			break;
-		}		
+		if (loggedIn(request)) {
+			PrintWriter out = response.getWriter();
+			
+			HttpSession session = request.getSession(true);
+			//testSetSessionData(session);
+			int userPermission = (Integer) session.getAttribute("user_permissions");
+			int projectGroupId = (Integer) session.getAttribute("project_group_id");
+			
+			out.append(getPageIntro());
+			out.append(generateMainMenu(userPermission, request));
+			out.append(generateSubMenu(userPermission));
+			
+			switch(userPermission) {
+			case 1: // Administrator gets to choose project group.
+				out.append(projectGroupForm());
+				out.append(getPageOutro());
+				break;
+			case 2:
+				out.append(printBurnDown(db.getTimePerWeek(projectGroupId), projectGroupId, db.getProjectGroup(projectGroupId)));
+				out.append(getPageOutro());
+				break;
+			case 4:
+				out.append(printBurnDown(db.getTimePerWeek(projectGroupId), projectGroupId, db.getProjectGroup(projectGroupId)));
+				out.append(getPageOutro());
+				break;
+			default:
+				out.append("Unexpected user permission level.");	
+				out.append(getPageOutro());
+				break;
+			}		
+		} else {
+			response.sendRedirect("LogIn");
+		}
 	}
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		//Database db = new Database();
-		PrintWriter out = response.getWriter();
-		HttpSession session = request.getSession(true);
-
-		String[] projectGroup = request.getParameterValues("projectgroup");
-		int userPermission = (Integer) session.getAttribute("user_permissions");
-		
-		out.append(getPageIntro());
-		out.append(generateMainMenu(userPermission, request));
-		out.append(generateSubMenu(userPermission));
-
-		if(projectGroup[0] != null) {
-			out.append(printBurnDown(db.getTimePerWeek(Integer.parseInt(projectGroup[0])), Integer.parseInt(projectGroup[0]), db.getProjectGroup(Integer.parseInt(projectGroup[0]))));
+		if (loggedIn(request)) {
+			PrintWriter out = response.getWriter();
+			HttpSession session = request.getSession(true);
+			
+			String[] projectGroup = request.getParameterValues("projectgroup");
+			int userPermission = (Integer) session.getAttribute("user_permissions");
+			
+			out.append(getPageIntro());
+			out.append(generateMainMenu(userPermission, request));
+			out.append(generateSubMenu(userPermission));
+			
+			if(projectGroup[0] != null) {
+				out.append(printBurnDown(db.getTimePerWeek(Integer.parseInt(projectGroup[0])), Integer.parseInt(projectGroup[0]), db.getProjectGroup(Integer.parseInt(projectGroup[0]))));
+			} else {
+				out.append("ERROR - No project group chosen by administrator." );
+			}
+			out.append(getPageOutro());
 		} else {
-			out.append("ERROR - No project group chosen by administrator." );
+			response.sendRedirect("LogIn");
 		}
-		out.append(getPageOutro());
 	}
 	
 	/**

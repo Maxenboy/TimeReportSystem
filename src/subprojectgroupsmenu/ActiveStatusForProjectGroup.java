@@ -21,33 +21,35 @@ public class ActiveStatusForProjectGroup extends gui.ProjectGroupsMenu {
 	 */
 	ProjectGroups group  = new ProjectGroups();
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws IOException {
-		HttpSession session = request.getSession(true);
-		PrintWriter out = response.getWriter();
-		int userPermission = (Integer) session.getAttribute("user_permissions");
-		out.print(getPageIntro());
-		out.append(generateMainMenu(userPermission, request));
-		out.print(generateSubMenu(userPermission));
-		if (request.getParameter("thegroup") == null) {
-			out.print("<script>$('#Activate/Inactivategroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"\u00C4r du s\u00E4ker?\");if (confirmed) {$(this).submit();}});</script>"
-					+ showProjectGroups());
-		} else {
-			if (checkGroup(request.getParameter("thegroup"))) {
-				out.print("<script>$(alert(\"Lyckades!\"))</script>"
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		if (loggedIn(request)) {
+			HttpSession session = request.getSession(true);
+			PrintWriter out = response.getWriter();
+			int userPermission = (Integer) session.getAttribute("user_permissions");
+			out.print(getPageIntro());
+			out.append(generateMainMenu(userPermission, request));
+			out.print(generateSubMenu(userPermission));
+			if (request.getParameter("thegroup") == null) {
+				out.print("<script>$('#Activate/Inactivategroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"\u00C4r du s\u00E4ker?\");if (confirmed) {$(this).submit();}});</script>"
 						+ showProjectGroups());
 			} else {
-				out.print("<script>$(alert(\"Inkorrekt input.\"))</script>"
-						+ "<script>$('#Activate/Inactivategroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"\u00C4r du s\u00E4ker?\");if (confirmed) {$(this).submit();}});</script>"
-						+ showProjectGroups());
+				if (checkGroup(request.getParameter("thegroup"))) {
+					out.print("<script>$(alert(\"Lyckades!\"))</script>"
+							+ showProjectGroups());
+				} else {
+					out.print("<script>$(alert(\"Inkorrekt input.\"))</script>"
+							+ "<script>$('#Activate/Inactivategroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"\u00C4r du s\u00E4ker?\");if (confirmed) {$(this).submit();}});</script>"
+							+ showProjectGroups());
+				}
 			}
+			out.print(getPageOutro());
+		} else {
+			response.sendRedirect("LogIn");
 		}
-		out.print(getPageOutro());
 	}
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws IOException {
-
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		
 	}
 
 	private boolean checkGroup(String name) {

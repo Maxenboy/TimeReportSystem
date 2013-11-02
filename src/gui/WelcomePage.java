@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import database.User;
 
-import base.servletBase;
+import base.ServletBase;
 
 
 /**
@@ -24,7 +24,7 @@ import base.servletBase;
  * 
  */
 @WebServlet("")
-public class WelcomePage extends servletBase {
+public class WelcomePage extends ServletBase {
 	private static final long serialVersionUID = 1L;
        
     /**
@@ -41,14 +41,11 @@ public class WelcomePage extends servletBase {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Get the session
-		HttpSession session = request.getSession();
-		PrintWriter out = response.getWriter();
-		
-		if (!loggedIn(request)) {
-			session.setAttribute("state", LOGIN_FALSE);
-			response.sendRedirect("LogIn");
-		} else {
+		if (loggedIn(request)) {
+			// Get the session
+			HttpSession session = request.getSession();
+			PrintWriter out = response.getWriter();
+
 			out.print(getPageIntro());
 			int userPermission = User.ROLE_NO_ROLE;
 			if(session.getAttribute("user_permissions") != null) {
@@ -58,9 +55,9 @@ public class WelcomePage extends servletBase {
 			out.println("<div class='container'><div class='row'>");
 			out.println("<div class='col-lg-12'><h1>V\u00E4lkommen</h1><p>TidRapporteringsSystem av grupp 2 i Programvaruutveckling i stora system 2013</div>");
 			out.println("</div></div>");
-			out.println(getPageOutro());
+				out.println(getPageOutro());
+		} else {
+			response.sendRedirect("LogIn");
 		}
-		
 	}
-
 }

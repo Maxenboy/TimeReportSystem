@@ -15,93 +15,100 @@ public class ShowTimeReports extends TimeReportingMenu {
 	TimeReportGenerator trg = new TimeReportGenerator(new Database());
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		HttpSession session = request.getSession(true);
-		PrintWriter out = response.getWriter();
-		int permission = (Integer) session.getAttribute("user_permissions");
-		out.print(getPageIntro());
-		out.print(generateMainMenu(permission, request));
-		out.print(generateSubMenu(permission));
-
-		int userId = (Integer) session.getAttribute("id");
-		int projId = (Integer) session.getAttribute("project_group_id");
-		String s = null;
-		switch(permission) {
-		case PERMISSION_ADMIN:
-			s = trg.showAllTimeReports(projId, TimeReportGenerator.SHOW_PRJ);
-			if(s != null)
-				out.print(s);
-			else 
-				out.print("Det finns inga projektgrupper att visa");
-			session.setAttribute("showReportState", ADMINISTRATOR);
-			break;
-		case PERMISSION_PROJ_LEADER:
-			s = trg.showAllTimeReports(projId, TimeReportGenerator.SHOW_ALL);
-			if(s == null)
-				out.print("Det finns inga tidrapporter att visa");
-			else 
-				out.print(s);
-			out.print(getPageOutro());
-			session.setAttribute("showReportState", FIRST);
-			break;
-		case PERMISSION_OTHER_USERS:
-		case PERMISSION_WITHOUT_ROLE:
-			s = trg.showAllTimeReports(userId,TimeReportGenerator.SHOW_USER_REPORT);
-			if(s == null)
-				out.print("<script> alert('Det finns inga tidrapporter att visa')");
-			else 
-				out.print(s);
-			out.print(getPageOutro());
-			session.setAttribute("showReportState", FIRST);
-			break;
-		}
-		
-	}
-	
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		HttpSession session = request.getSession(true);
-		PrintWriter out = response.getWriter();
-		int permission = (Integer) session.getAttribute("user_permissions");
-		int state = (Integer) session.getAttribute("showReportState");
-		switch(state) {
-		case ADMINISTRATOR:
-			String prjGroup = request.getParameter("prjGroup");
-			if(prjGroup != null) {
-				out.print(getPageIntro());
-				out.print(generateMainMenu(permission, request));
-				out.print(generateSubMenu(permission));
-				out.print(getPageIntro());
-				String s = trg.showAllTimeReports(Integer.valueOf(prjGroup), TimeReportGenerator.SHOW_ALL);
+		if (loggedIn(request)) {
+			HttpSession session = request.getSession(true);
+			PrintWriter out = response.getWriter();
+			int permission = (Integer) session.getAttribute("user_permissions");
+			out.print(getPageIntro());
+			out.print(generateMainMenu(permission, request));
+			out.print(generateSubMenu(permission));
+			
+			int userId = (Integer) session.getAttribute("id");
+			int projId = (Integer) session.getAttribute("project_group_id");
+			String s = null;
+			switch(permission) {
+			case PERMISSION_ADMIN:
+				s = trg.showAllTimeReports(projId, TimeReportGenerator.SHOW_PRJ);
+				if(s != null)
+					out.print(s);
+				else 
+					out.print("Det finns inga projektgrupper att visa");
+				session.setAttribute("showReportState", ADMINISTRATOR);
+				break;
+			case PERMISSION_PROJ_LEADER:
+				s = trg.showAllTimeReports(projId, TimeReportGenerator.SHOW_ALL);
 				if(s == null)
 					out.print("Det finns inga tidrapporter att visa");
 				else 
 					out.print(s);
 				out.print(getPageOutro());
 				session.setAttribute("showReportState", FIRST);
-			} else {
-				out.print(getPageIntro());
-				out.print(generateMainMenu(permission, request));
-				out.print(generateSubMenu(permission));
-				out.print(getPageIntro());
-				out.print("Internt fel - inga projektgrupper kunde visas");
+				break;
+			case PERMISSION_OTHER_USERS:
+			case PERMISSION_WITHOUT_ROLE:
+				s = trg.showAllTimeReports(userId,TimeReportGenerator.SHOW_USER_REPORT);
+				if(s == null)
+					out.print("<script> alert('Det finns inga tidrapporter att visa')");
+				else 
+					out.print(s);
 				out.print(getPageOutro());
 				session.setAttribute("showReportState", FIRST);
+				break;
 			}
-		break;
-		case FIRST:
-			String reportId = request.getParameter("reportId");
-			if(reportId != null) {
-				out.print(getPageIntro());
-				out.print(generateMainMenu(permission, request));
-				out.print(generateSubMenu(permission));
-				out.print(getPageIntro());
-				String s = trg.showTimeReport(Integer.valueOf(reportId), TimeReportGenerator.SHOW_USER_REPORT);
-				out.print(s);
-				out.print(getPageOutro());
-				session.setAttribute("showReportState", FIRST);
-			} else {
-				doGet(request,response);
-				session.setAttribute("showReportState", FIRST);
+		} else {
+			response.sendRedirect("LogIn");
+		}
+	}
+	
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		if (loggedIn(request)) {
+			HttpSession session = request.getSession(true);
+			PrintWriter out = response.getWriter();
+			int permission = (Integer) session.getAttribute("user_permissions");
+			int state = (Integer) session.getAttribute("showReportState");
+			switch(state) {
+			case ADMINISTRATOR:
+				String prjGroup = request.getParameter("prjGroup");
+				if(prjGroup != null) {
+					out.print(getPageIntro());
+					out.print(generateMainMenu(permission, request));
+					out.print(generateSubMenu(permission));
+					out.print(getPageIntro());
+					String s = trg.showAllTimeReports(Integer.valueOf(prjGroup), TimeReportGenerator.SHOW_ALL);
+					if(s == null)
+						out.print("Det finns inga tidrapporter att visa");
+					else 
+						out.print(s);
+					out.print(getPageOutro());
+					session.setAttribute("showReportState", FIRST);
+				} else {
+					out.print(getPageIntro());
+					out.print(generateMainMenu(permission, request));
+					out.print(generateSubMenu(permission));
+					out.print(getPageIntro());
+					out.print("Internt fel - inga projektgrupper kunde visas");
+					out.print(getPageOutro());
+					session.setAttribute("showReportState", FIRST);
+				}
+				break;
+			case FIRST:
+				String reportId = request.getParameter("reportId");
+				if(reportId != null) {
+					out.print(getPageIntro());
+					out.print(generateMainMenu(permission, request));
+					out.print(generateSubMenu(permission));
+					out.print(getPageIntro());
+					String s = trg.showTimeReport(Integer.valueOf(reportId), TimeReportGenerator.SHOW_USER_REPORT);
+					out.print(s);
+					out.print(getPageOutro());
+					session.setAttribute("showReportState", FIRST);
+				} else {
+					doGet(request,response);
+					session.setAttribute("showReportState", FIRST);
+				}
 			}
+		} else {
+			response.sendRedirect("LogIn");
 		}
 	}
 }

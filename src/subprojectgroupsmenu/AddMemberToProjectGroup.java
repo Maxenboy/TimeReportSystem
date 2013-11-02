@@ -20,53 +20,56 @@ public class AddMemberToProjectGroup extends gui.ProjectGroupsMenu {
 	 */
 	private static final long serialVersionUID = -1961915720341016655L;
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws IOException {
-		ProjectGroups groups = new ProjectGroups();
-		HttpSession session = request.getSession(true);
-		PrintWriter out = response.getWriter();
-		out.print(getPageIntro());
-		int userPermission = (Integer) session.getAttribute("user_permissions");
-		out.append(generateMainMenu(userPermission, request));
-		out.print(generateSubMenu(userPermission));
-		if (request.getParameter("thegroup") == null && groupName == "") {
-			out.print(showProjectGroups());
-		} else {
-			if (request.getParameter("reportId") == null) {
-				if (groupName == "") {
-					groupName = request.getParameter("thegroup");
-				}
-				ArrayList<User> users = new ArrayList<User>();
-				for (User u : db.getUsers()) {
-					if (u.getProjectGroup() == 0) {
-						users.add(u);
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		if (loggedIn(request)) {
+			ProjectGroups groups = new ProjectGroups();
+			HttpSession session = request.getSession(true);
+			PrintWriter out = response.getWriter();
+			out.print(getPageIntro());
+			int userPermission = (Integer) session.getAttribute("user_permissions");
+			out.append(generateMainMenu(userPermission, request));
+			out.print(generateSubMenu(userPermission));
+			if (request.getParameter("thegroup") == null && groupName == "") {
+				out.print(showProjectGroups());
+			} else {
+				if (request.getParameter("reportId") == null) {
+					if (groupName == "") {
+						groupName = request.getParameter("thegroup");
+					}
+					ArrayList<User> users = new ArrayList<User>();
+					for (User u : db.getUsers()) {
+						if (u.getProjectGroup() == 0) {
+							users.add(u);
+						}
+					}
+					if (users.isEmpty()) {
+						out.print("<script>$(alert(\"Finns inga anv\u00E4ndare utan projektgrupp!\"))</script>");
+					} else {
+						out.print(groups.showProjectGroup(users));
+					}
+				} else {
+					if (groups.addUserToProjectGroup(
+							db.getUser(Integer.parseInt(request.getParameter("reportId")))
+							.getUsername(), Integer.parseInt(groupName))) {
+						out.print(groups.showProjectGroup(db.getUsers(Integer
+								.parseInt(groupName))));
+						groupName = "";
+					} else {
+						out.print("<script>$(alert(\"Anv\u00E4ndaren \u00E4r redan med i en projektgrupp!\"))</script>"
+								+ groups.showProjectGroup(db.getUsers(Integer
+										.parseInt(groupName))));
+						groupName = "";
 					}
 				}
-				if (users.isEmpty()) {
-					out.print("<script>$(alert(\"Finns inga anv\u00E4ndare utan projektgrupp!\"))</script>");
-				} else {
-					out.print(groups.showProjectGroup(users));
-				}
-			} else {
-				if (groups.addUserToProjectGroup(
-						db.getUser(Integer.parseInt(request.getParameter("reportId")))
-								.getUsername(), Integer.parseInt(groupName))) {
-					out.print(groups.showProjectGroup(db.getUsers(Integer
-							.parseInt(groupName))));
-					groupName = "";
-				} else {
-					out.print("<script>$(alert(\"Anv\u00E4ndaren \u00E4r redan med i en projektgrupp!\"))</script>"
-							+ groups.showProjectGroup(db.getUsers(Integer
-									.parseInt(groupName))));
-					groupName = "";
-				}
 			}
+			out.print(getPageOutro());
+		} else {
+			response.sendRedirect("LogIn");
 		}
-		out.print(getPageOutro());
 	}
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		
 	}
 
 	private String showProjectGroups() {

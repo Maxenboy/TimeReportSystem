@@ -1,8 +1,8 @@
 package gui;
 
-import base.servletBase;
+import base.ServletBase;
 
-public class ProjectGroupsMenu extends servletBase {
+public class ProjectGroupsMenu extends ServletBase {
 	
 	public ProjectGroupsMenu() {
 		super(); 

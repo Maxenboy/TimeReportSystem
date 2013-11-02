@@ -1,8 +1,8 @@
 package gui;
 
-import base.servletBase;
+import base.ServletBase;
 
-public class TimeReportingMenu extends servletBase {
+public class TimeReportingMenu extends ServletBase {
 	protected static final int PERMISSION_ADMIN = 			1;
 	protected static final int PERMISSION_PROJ_LEADER = 	2; 
 	protected static final int PERMISSION_WITHOUT_ROLE = 	3; 

@@ -28,7 +28,7 @@ import database.User;
  * 
  */
 @WebServlet("/LogIn")
-public class LogIn extends servletBase {
+public class LogIn extends ServletBase {
 	private static final long serialVersionUID = 1L;
        
     /**
@@ -96,6 +96,7 @@ public class LogIn extends servletBase {
 	 * 
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+    @Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Get the session
 		HttpSession session = request.getSession(true);
@@ -168,8 +169,9 @@ public class LogIn extends servletBase {
 	 * 
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+    @Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+    	doGet(request, response);
 	}
 
 }

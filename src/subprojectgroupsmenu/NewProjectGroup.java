@@ -18,49 +18,54 @@ public class NewProjectGroup extends gui.ProjectGroupsMenu {
 	private static final long serialVersionUID = 1L;
 	private ProjectGroups group = new ProjectGroups();
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws IOException {
-		HttpSession session = request.getSession();
-		PrintWriter out = response.getWriter();
-		out.print(getPageIntro());
-		int userPermission = (Integer) session.getAttribute("user_permissions");
-		out.append(generateMainMenu(userPermission, request));
-		out.print(generateSubMenu(userPermission));
-		if (request.getParameter("session") == null) {
-			out.print(addProjectGroupForm());
-		} else if (request.getParameter("session").equals("success")) {
-			out.print(showProjectGroups());
-		} else {
-			if (request.getParameter("inputname") == null) {
-				out.print("<script>$(alert(\"Information inkorrekt inmatad\"))</script>"
-						+ addProjectGroupForm());
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		if (loggedIn(request)) {
+			HttpSession session = request.getSession();
+			PrintWriter out = response.getWriter();
+			out.print(getPageIntro());
+			int userPermission = (Integer) session.getAttribute("user_permissions");
+			out.append(generateMainMenu(userPermission, request));
+			out.print(generateSubMenu(userPermission));
+			if (request.getParameter("session") == null) {
+				out.print(addProjectGroupForm());
+			} else if (request.getParameter("session").equals("success")) {
+				out.print(showProjectGroups());
 			} else {
-				out.print("<script>$(alert(\"Kunde inte l\u00E4gga till projektgrupp\"))</script>"
-						+ addProjectGroupForm());
+				if (request.getParameter("inputname") == null) {
+					out.print("<script>$(alert(\"Information inkorrekt inmatad\"))</script>"
+							+ addProjectGroupForm());
+				} else {
+					out.print("<script>$(alert(\"Kunde inte l\u00E4gga till projektgrupp\"))</script>"
+							+ addProjectGroupForm());
+				}
 			}
+			out.print(getPageOutro());
+		} else {
+			response.sendRedirect("LogIn");
 		}
-		out.print(getPageOutro());
-
 	}
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws IOException {
-		HttpSession session = request.getSession(true);
-		String name = request.getParameter("projectname");
-		String startWeek = request.getParameter("startweek");
-		String endWeek = request.getParameter("endweek");
-		String estimatedHours = request.getParameter("estimatedhours");
-		if (validInput(name, startWeek, endWeek)) {
-			if (group.createProjectGroup(name, startWeek, endWeek,
-					estimatedHours)) {
-				response.sendRedirect(request.getRequestURI()
-						+ "?session=success");
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		if (loggedIn(request)) {
+			HttpSession session = request.getSession(true);
+			String name = request.getParameter("projectname");
+			String startWeek = request.getParameter("startweek");
+			String endWeek = request.getParameter("endweek");
+			String estimatedHours = request.getParameter("estimatedhours");
+			if (validInput(name, startWeek, endWeek)) {
+				if (group.createProjectGroup(name, startWeek, endWeek,
+						estimatedHours)) {
+					response.sendRedirect(request.getRequestURI()
+							+ "?session=success");
+				} else {
+					response.sendRedirect(request.getRequestURI() + "?session=false");
+				}
 			} else {
-				response.sendRedirect(request.getRequestURI() + "?session=false");
+				response.sendRedirect(request.getRequestURI()
+						+ "?session=false&inputname=bad");
 			}
 		} else {
-			response.sendRedirect(request.getRequestURI()
-					+ "?session=false&inputname=bad");
+			response.sendRedirect("LogIn");
 		}
 	}
 

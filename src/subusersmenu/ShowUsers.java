@@ -14,9 +14,7 @@ import base.*;
 
 @WebServlet("/ShowUsers")
 public class ShowUsers extends UsersMenu {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = -2190552005706112015L;
 	private Users users;
 
@@ -24,32 +22,33 @@ public class ShowUsers extends UsersMenu {
 		users = new Users();
 	}
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws IOException {
-		HttpSession session = request.getSession(true);
-		PrintWriter out = response.getWriter();
-
-		int permission = (Integer) session.getAttribute("user_permissions");
-		out.print(getPageIntro());
-		out.print(generateMainMenu(permission, request));
-		out.print(generateSubMenu(permission));
-		String s = users.showUsers(db.getUsers());
-		if (s == null)
-			out.print("<p> Inget att visa </p>");
-		else {
-			if ((Integer) session.getAttribute("user_permissions") == 1) {
-				out.print(adminShowUsers(db.getUsers()));
-			} else {
-				out.print(s);
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		if (loggedIn(request)) {
+			HttpSession session = request.getSession(true);
+			PrintWriter out = response.getWriter();
+			
+			int permission = (Integer) session.getAttribute("user_permissions");
+			out.print(getPageIntro());
+			out.print(generateMainMenu(permission, request));
+			out.print(generateSubMenu(permission));
+			String s = users.showUsers(db.getUsers());
+			if (s == null)
+				out.print("<p> Inget att visa </p>");
+			else {
+				if ((Integer) session.getAttribute("user_permissions") == 1) {
+					out.print(adminShowUsers(db.getUsers()));
+				} else {
+					out.print(s);
+				}
 			}
+			out.print(getPageOutro());
+		} else {
+			response.sendRedirect("LogIn");
 		}
-		out.print(getPageOutro());
-
 	}
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws IOException {
-
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		
 	}
 
 	private String adminShowUsers(ArrayList<User> users) {

@@ -1,8 +1,8 @@
 package gui;
 
-import base.servletBase;
+import base.ServletBase;
 
-public class UsersMenu extends servletBase {
+public class UsersMenu extends ServletBase {
 	
 	public UsersMenu() {
 		super(); 

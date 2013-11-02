@@ -21,41 +21,43 @@ public class HandleAdminRights extends UsersMenu {
 	private static final long serialVersionUID = 1859483135166153038L;
 	Users u = new Users();
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws IOException {
-		HttpSession session = request.getSession();
-		PrintWriter out = response.getWriter();
-
-		int permission = (Integer) session.getAttribute("user_permissions");
-		out.print(getPageIntro());
-		out.print(generateMainMenu(permission, request));
-		out.print(generateSubMenu(permission));
-
-		if (request.getParameter("username") == null) {
-			out.print(u.showUsers(db.getUsers()));
-		} else {
-			User user = db.getUser(Integer.parseInt(request
-					.getParameter("username")));
-			if (user.getProjectGroup() == 0) {
-				if (user.getRole() == user.ROLE_ADMIN) {
-					System.out.println("user = admin");
-					u.unmakeAdministrator(user.getUsername());
-					out.print(u.showUsers(db.getUsers())
-							+ "<script>$(alert(\"Anv\u00E4ndare \u00E4r ej l\u00E4ngre administrat\u00F6r. \u00C4ndringar sparade.\"))</script>");
-				} else {
-					u.makeAdministrator(user.getUsername());
-					out.print(u.showUsers(db.getUsers())
-							+ "<script>$(alert(\"Anv\u00E4ndaren \u00E4r nu administrat\u00F6r. \u00C4ndringar sparade.\"))</script>");
-				}
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		if (loggedIn(request)) {
+			HttpSession session = request.getSession();
+			PrintWriter out = response.getWriter();
+			
+			int permission = (Integer) session.getAttribute("user_permissions");
+			out.print(getPageIntro());
+			out.print(generateMainMenu(permission, request));
+			out.print(generateSubMenu(permission));
+			
+			if (request.getParameter("username") == null) {
+				out.print(u.showUsers(db.getUsers()));
 			} else {
-				out.print(u.showUsers(db.getUsers())+ "<script>$(alert(\"Inte m\u00F6jligt! Anv\u00E4ndare \u00E4r med i en projektgrupp! \"))</script>");
+				User user = db.getUser(Integer.parseInt(request
+						.getParameter("username")));
+				if (user.getProjectGroup() == 0) {
+					if (user.getRole() == user.ROLE_ADMIN) {
+						System.out.println("user = admin");
+						u.unmakeAdministrator(user.getUsername());
+						out.print(u.showUsers(db.getUsers())
+								+ "<script>$(alert(\"Anv\u00E4ndare \u00E4r ej l\u00E4ngre administrat\u00F6r. \u00C4ndringar sparade.\"))</script>");
+					} else {
+						u.makeAdministrator(user.getUsername());
+						out.print(u.showUsers(db.getUsers())
+								+ "<script>$(alert(\"Anv\u00E4ndaren \u00E4r nu administrat\u00F6r. \u00C4ndringar sparade.\"))</script>");
+					}
+				} else {
+					out.print(u.showUsers(db.getUsers())+ "<script>$(alert(\"Inte m\u00F6jligt! Anv\u00E4ndare \u00E4r med i en projektgrupp! \"))</script>");
+				}
 			}
+			out.print(getPageOutro());
+		} else {
+			response.sendRedirect("LogIn");
 		}
-		out.print(getPageOutro());
 	}
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 	}
 

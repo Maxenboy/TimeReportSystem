@@ -28,37 +28,39 @@ public class Statistics extends gui.StatisticsMenu {
 	 * If the user is just an ordinary user, a multiple-select-box to select week is shown.
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		//Database db = new Database();
-		PrintWriter out = response.getWriter();
-
-		HttpSession session = request.getSession(true);
-		
-		//testSetSessionData(session); // TEST! TA BORT!
-		
-		int userPermission = (Integer) session.getAttribute("user_permissions");
-		int projectGroupId = (Integer) session.getAttribute("project_group_id");
-		
-		out.append(getPageIntro());
-		out.append(generateMainMenu(userPermission, request));
-		out.append(generateSubMenu(userPermission));
-		switch(userPermission) {
-		case 1: // Administrator gets to choose project group.
-			out.append(projectGroupForm());
-			out.append(getPageOutro());
-			break;
-		case 2: // Project leader chooses filters from the available users, activities, roles and weeks. 
-			out.append(printFilter(db.getStatisticsFilter(projectGroupId), userPermission));
-			out.append(getPageOutro());
-			break;
-		case 4: // Ordinary user chooses week. 
-			out.append(printFilter(db.getStatisticsFilter(projectGroupId), userPermission));
-			out.append(getPageOutro());
-			break;
-		default:
-			out.append("Unexpected user permission level.");
-			out.append(getPageOutro());
+		if (loggedIn(request)) {
+			PrintWriter out = response.getWriter();
+			
+			HttpSession session = request.getSession(true);
+			
+			//testSetSessionData(session); // TEST! TA BORT!
+			
+			int userPermission = (Integer) session.getAttribute("user_permissions");
+			int projectGroupId = (Integer) session.getAttribute("project_group_id");
+			
+			out.append(getPageIntro());
+			out.append(generateMainMenu(userPermission, request));
+			out.append(generateSubMenu(userPermission));
+			switch(userPermission) {
+			case 1: // Administrator gets to choose project group.
+				out.append(projectGroupForm());
+				out.append(getPageOutro());
+				break;
+			case 2: // Project leader chooses filters from the available users, activities, roles and weeks. 
+				out.append(printFilter(db.getStatisticsFilter(projectGroupId), userPermission));
+				out.append(getPageOutro());
+				break;
+			case 4: // Ordinary user chooses week. 
+				out.append(printFilter(db.getStatisticsFilter(projectGroupId), userPermission));
+				out.append(getPageOutro());
+				break;
+			default:
+				out.append("Unexpected user permission level.");
+				out.append(getPageOutro());
+			}
+		} else {
+			response.sendRedirect("LogIn");
 		}
-
 	}
 
 
@@ -73,63 +75,66 @@ public class Statistics extends gui.StatisticsMenu {
 	 * If filters/weeks have been submitted the statistics will be shown in table- and graphical form.
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		//Database db = new Database();
-		PrintWriter out = response.getWriter();
-		HttpSession session = request.getSession(true);
-		int userPermission = (Integer) session.getAttribute("user_permissions");
-
-		String projectGroups[] = request.getParameterValues("projectgroup");
-		String users[] = request.getParameterValues("users");
-		String roles[] = request.getParameterValues("roles");
-		String activities[] = request.getParameterValues("activities");
-		String weeks[] = request.getParameterValues("weeks");
-		int projectGroupId = (Integer) session.getAttribute("project_group_id");
-		
-
-		out.append(getPageIntro());
-		out.append(generateMainMenu(userPermission, request));
-		out.append(generateSubMenu(userPermission));
-
-		if(userPermission == 1) { //Admin
-
-			if(projectGroups != null) { // The administrator has submitted data to select project group.
-				String projectGroup = projectGroups[0];
-				Cookie cookie = new Cookie("projectGroup", projectGroup);
-				response.addCookie(cookie);
-				out.append(printFilter(db.getStatisticsFilter(Integer.parseInt(projectGroup)), userPermission));
+		if (loggedIn(request)) {
+			PrintWriter out = response.getWriter();
+			HttpSession session = request.getSession(true);
+			int userPermission = (Integer) session.getAttribute("user_permissions");
+			
+			String projectGroups[] = request.getParameterValues("projectgroup");
+			String users[] = request.getParameterValues("users");
+			String roles[] = request.getParameterValues("roles");
+			String activities[] = request.getParameterValues("activities");
+			String weeks[] = request.getParameterValues("weeks");
+			int projectGroupId = (Integer) session.getAttribute("project_group_id");
+			
+			
+			out.append(getPageIntro());
+			out.append(generateMainMenu(userPermission, request));
+			out.append(generateSubMenu(userPermission));
+			
+			if(userPermission == 1) { //Admin
+				
+				if(projectGroups != null) { // The administrator has submitted data to select project group.
+					String projectGroup = projectGroups[0];
+					Cookie cookie = new Cookie("projectGroup", projectGroup);
+					response.addCookie(cookie);
+					out.append(printFilter(db.getStatisticsFilter(Integer.parseInt(projectGroup)), userPermission));
+					out.append(getPageOutro());
+				}
+				else { // Admin has submitted filters. 
+					String projectGroup= getCookieValue(request);
+					if(projectGroup != null) {
+						HashMap<String, ArrayList<String>> stats = db.getStatistics(Integer.parseInt(projectGroup), toStringArrayList(users), toIntegerArrayList(roles), toIntegerArrayList(activities), toIntegerArrayList(weeks));
+						out.append(printGraph(stats));
+						out.append(printTable(stats));
+						
+						out.append(getPageOutro());
+						
+					} else { //
+						out.append("Det verkar vara ett problem med cookies");
+					}
+				}
+			} else if(userPermission == 2) { // The project leader has submitted filter-data 
+				HashMap<String, ArrayList<String>> stats = db.getStatistics(projectGroupId, toStringArrayList(users), toIntegerArrayList(roles), toIntegerArrayList(activities), toIntegerArrayList(weeks));
+				out.append(printGraph(stats));
+				out.append(printTable(stats));
+				
+				out.append(getPageOutro());
+				
+				
+			} else if(userPermission == 4) { // User has submitted weeks.
+				
+				String[] username = new String[1];
+				
+				username[0] = (String) session.getAttribute("name"); 
+				HashMap<String, ArrayList<String>> stats = db.getStatistics(projectGroupId, toStringArrayList(username), null, null, toIntegerArrayList(weeks));
+				out.append(printGraph(stats));
+				out.append(printTable(stats));
+				
 				out.append(getPageOutro());
 			}
-			else { // Admin has submitted filters. 
-				String projectGroup= getCookieValue(request);
-				if(projectGroup != null) {
-					HashMap<String, ArrayList<String>> stats = db.getStatistics(Integer.parseInt(projectGroup), toStringArrayList(users), toIntegerArrayList(roles), toIntegerArrayList(activities), toIntegerArrayList(weeks));
-					out.append(printGraph(stats));
-					out.append(printTable(stats));
-
-					out.append(getPageOutro());
-					
-				} else { //
-					out.append("Det verkar vara ett problem med cookies");
-				}
-			}
-		} else if(userPermission == 2) { // The project leader has submitted filter-data 
-			HashMap<String, ArrayList<String>> stats = db.getStatistics(projectGroupId, toStringArrayList(users), toIntegerArrayList(roles), toIntegerArrayList(activities), toIntegerArrayList(weeks));
-			out.append(printGraph(stats));
-			out.append(printTable(stats));
-
-			out.append(getPageOutro());
-
-			
-		} else if(userPermission == 4) { // User has submitted weeks.
-
-			String[] username = new String[1];
-			
-			username[0] = (String) session.getAttribute("name"); 
-			HashMap<String, ArrayList<String>> stats = db.getStatistics(projectGroupId, toStringArrayList(username), null, null, toIntegerArrayList(weeks));
-			out.append(printGraph(stats));
-			out.append(printTable(stats));
-
-			out.append(getPageOutro());
+		} else {
+			response.sendRedirect("LogIn");
 		}
 	}
 

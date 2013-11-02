@@ -26,7 +26,7 @@ import database.ProjectGroup;
  * password) values('admin', 'adminp');
  * 
  */
-public class servletBase extends HttpServlet {
+public class ServletBase extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
@@ -46,7 +46,8 @@ public class servletBase extends HttpServlet {
 	 * Constructs a servlet and makes a connection to the database. It also
 	 * writes all user names on the console for test purpose.
 	 */
-	public servletBase() {
+	public ServletBase() {
+		
 	}
 
 	/**
