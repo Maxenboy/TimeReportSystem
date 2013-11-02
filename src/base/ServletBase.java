@@ -43,8 +43,7 @@ public class ServletBase extends HttpServlet {
 	protected Database db = new Database();
 	
 	/**
-	 * Constructs a servlet and makes a connection to the database. It also
-	 * writes all user names on the console for test purpose.
+	 * Constructs a servlet.
 	 */
 	public ServletBase() {
 		

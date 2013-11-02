@@ -106,6 +106,7 @@ public class LogIn extends ServletBase {
 		PrintWriter out = response.getWriter();
 		out.println(getPageIntro());
 		
+		// Log out if logged in
 		if (loggedIn(request)) {
 			session.setAttribute("state", LOGIN_FALSE);
 			out.println("<p style='color: red;'>Du \u00E4r nu utloggad</p>");
