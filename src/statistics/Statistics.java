@@ -124,7 +124,8 @@ public class Statistics extends gui.StatisticsMenu {
 
 			String[] username = new String[1];
 			
-			username[0] = db.getUser((Integer) session.getAttribute("id")).getUsername(); // kolla att username != null? 
+			username[0] = (String) session.getAttribute("name");
+			//username[0] = db.getUser((Integer) session.getAttribute("id")).getUsername(); // kolla att username != null? 
 			HashMap<String, ArrayList<String>> stats = db.getStatistics(projectGroupId, toStringArrayList(username), null, null, toIntegerArrayList(weeks));
 			out.append(printGraph(stats));
 			out.append(printTable(stats));
