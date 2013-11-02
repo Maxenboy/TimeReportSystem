@@ -30,7 +30,7 @@ public class BurnDown extends gui.StatisticsMenu {
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		
-		Database db = new Database();
+		//Database db = new Database();
 		PrintWriter out = response.getWriter();
 		
 		HttpSession session = request.getSession(true);
@@ -63,7 +63,7 @@ public class BurnDown extends gui.StatisticsMenu {
 	}
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		Database db = new Database();
+		//Database db = new Database();
 		PrintWriter out = response.getWriter();
 		HttpSession session = request.getSession(true);
 
@@ -90,7 +90,7 @@ public class BurnDown extends gui.StatisticsMenu {
 	 */
 	private String projectGroupForm() {
 		StringBuilder sb = new StringBuilder();
-		Database db = new Database();
+		//Database db = new Database();
 		ArrayList<ProjectGroup> pg = db.getProjectGroups();
 		Iterator<ProjectGroup> itr = pg.iterator();
 
@@ -144,7 +144,7 @@ public class BurnDown extends gui.StatisticsMenu {
 		while(week <= numberOfWeeksProject) {
 			double expectedTimeLeft = (1-week/numberOfWeeksProject)*estimatedProjectTime;
 			if (timePerWeek.containsKey(Integer.toString(week))) {
-			totalTimeSpent += timePerWeek.get(Integer.toString(week));
+			totalTimeSpent += timePerWeek.get(Integer.toString(week))/60;
 			}
 			double realTimeLeft = estimatedProjectTime - totalTimeSpent;
 			htmlBurnDown.append("['" + week + "',  " + realTimeLeft + ", " + expectedTimeLeft + "]");

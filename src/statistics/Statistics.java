@@ -28,7 +28,7 @@ public class Statistics extends gui.StatisticsMenu {
 	 * If the user is just an ordinary user, a multiple-select-box to select week is shown.
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		Database db = new Database();
+		//Database db = new Database();
 		PrintWriter out = response.getWriter();
 
 		HttpSession session = request.getSession(true);
@@ -73,7 +73,7 @@ public class Statistics extends gui.StatisticsMenu {
 	 * If filters/weeks have been submitted the statistics will be shown in table- and graphical form.
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		Database db = new Database();
+		//Database db = new Database();
 		PrintWriter out = response.getWriter();
 		HttpSession session = request.getSession(true);
 		int userPermission = (Integer) session.getAttribute("user_permissions");
@@ -124,8 +124,7 @@ public class Statistics extends gui.StatisticsMenu {
 
 			String[] username = new String[1];
 			
-			username[0] = (String) session.getAttribute("name");
-			//username[0] = db.getUser((Integer) session.getAttribute("id")).getUsername(); // kolla att username != null? 
+			username[0] = (String) session.getAttribute("name"); 
 			HashMap<String, ArrayList<String>> stats = db.getStatistics(projectGroupId, toStringArrayList(username), null, null, toIntegerArrayList(weeks));
 			out.append(printGraph(stats));
 			out.append(printTable(stats));
@@ -179,7 +178,7 @@ public class Statistics extends gui.StatisticsMenu {
 				     + "google.setOnLoadCallback(drawChart);"
 				    + "function drawChart() {"
 				       + "var data = google.visualization.arrayToDataTable(["
-				      + "['Vecka', 'Timmar'],"
+				      + "['Vecka', 'Minuter'],"
 				    );
 		
 		ArrayList<String> listOfWeeks = stats.get("week");		
@@ -207,7 +206,7 @@ public class Statistics extends gui.StatisticsMenu {
 		htmlGraph.append(
 				"]);"
 				        + "var options = {"
-				        + " title: 'Timmar per vecka',"
+				        + " title: 'Minuter per vecka',"
 				        + "  hAxis: {title: 'Vecka', titleTextStyle: {color: 'black'}}"
 				       + " };"
 				       + "var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));"
@@ -414,7 +413,7 @@ public class Statistics extends gui.StatisticsMenu {
 				       + "data.addColumn('string', 'Roll');"
 				       + "data.addColumn('string', 'Aktivitet');"
 				       + "data.addColumn('string', 'Vecka');"
-				       + "data.addColumn('string', 'Tid');"
+				       + "data.addColumn('string', 'Tid(minuter)');"
 				       + "data.addRows(["
 					);
 		
