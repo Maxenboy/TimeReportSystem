@@ -123,7 +123,8 @@ public class Statistics extends gui.StatisticsMenu {
 		} else if(userPermission == 4) { // User has submitted weeks.
 
 			String[] username = new String[1];
-			username[0] = (String) session.getAttribute("username"); // kolla att username != null? 
+			
+			username[0] = db.getUser((Integer) session.getAttribute("id")).getUsername(); // kolla att username != null? 
 			HashMap<String, ArrayList<String>> stats = db.getStatistics(projectGroupId, toStringArrayList(username), null, null, toIntegerArrayList(weeks));
 			out.append(printGraph(stats));
 			out.append(printTable(stats));
@@ -295,7 +296,7 @@ public class Statistics extends gui.StatisticsMenu {
 			Iterator<String>  itr= weeks.iterator();
 
 			sb.append("Veckor <br /><select name='weeks' multiple>");
-			sb.append("<option selected> Alla </option>");
+			sb.append("<option selected>Alla</option>");
 			while(itr.hasNext()) {
 				String week = itr.next();
 				sb.append("<option value='"
