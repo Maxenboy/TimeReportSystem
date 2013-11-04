@@ -16,8 +16,9 @@ public class RemoveTimeReport extends TimeReportingMenu{
 	private static final long serialVersionUID = 2619824858072375910L;
 	TimeReportGenerator trg = new TimeReportGenerator(db);
 	public static final int FIRST = 0;
-	public static final int DO_REMOVAL = 1;
-	public static final int REMOVE_REPORT = 3;
+	public static final int REMOVE_REPORT = 1;
+	public static final int SHOW_REPORT = 2;
+	public static final int ADMINISTRATOR = 3;
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
@@ -25,28 +26,47 @@ public class RemoveTimeReport extends TimeReportingMenu{
 			PrintWriter out = response.getWriter();
 			out.print(getPageIntro());
 			int permission = (Integer) session.getAttribute("user_permissions");
-			out.print(generateMainMenu(permission, request));
-			out.print(generateSubMenu(permission));
-			
 			int userId = (Integer) session.getAttribute("id");
 			int projId = (Integer) session.getAttribute("project_group_id");
 			String s = null;
 			switch(permission) {
 			case PERMISSION_ADMIN:
+				System.out.println("in do admin");
+				s = trg.showAllTimeReports(projId, TimeReportGenerator.REMOVE_PRJ);
+				out.print(generateMainMenu(permission, request));
+				out.print(generateSubMenu(permission));
+				if(s != null)
+					out.print(s);
+				else 
+					out.print("Det finns inga projektgrupper att visa");
+				out.print(getPageOutro());
+				session.setAttribute("removeReportState", ADMINISTRATOR);
+				break;
 			case PERMISSION_PROJ_LEADER:
+				out.print(generateMainMenu(permission, request));
+				out.print(generateSubMenu(permission));
 				s = trg.showAllTimeReports(projId, TimeReportGenerator.REMOVE_PRJ_REPORT);
+				if(s == null) {
+					out.print("<script> alert('Det finns inga tidrapporter att visa</script>");
+				} else {
+					out.print(s);
+					session.setAttribute("removeReportState", SHOW_REPORT);
+				}
+				out.print(getPageOutro());
 				break;
 			case PERMISSION_OTHER_USERS:
+				out.print(generateMainMenu(permission, request));
+				out.print(generateSubMenu(permission));
 				s = trg.showAllTimeReports(userId,TimeReportGenerator.REMOVE_USER_REPORT);
+				if(s == null) {
+					out.print("<script> alert('Det finns inga tidrapporter att visa</script>");
+				} else {
+					out.print(s);
+					session.setAttribute("removeReportState", SHOW_REPORT);
+				}
+				out.print(getPageOutro());
 				break;
 			}
-			if(s == null) {
-				out.print("<script> alert('Det finns inga tidrapporter att visa</script>");
-			} else {
-				out.print(s);
-				session.setAttribute("removeReportState", REMOVE_REPORT);
-			}
-			out.print(getPageOutro());
 		} else {
 			response.sendRedirect("LogIn");
 		}
@@ -56,31 +76,64 @@ public class RemoveTimeReport extends TimeReportingMenu{
 		if (loggedIn(request)) {
 			HttpSession session = request.getSession(true);
 			PrintWriter out = response.getWriter();
-			out.print(getPageIntro());
 			int permission = (Integer) session.getAttribute("user_permissions");
-			out.print(generateMainMenu(permission, request));
-			out.print(generateSubMenu(permission));
-			int state = FIRST;
+			int state = (Integer) session.getAttribute("removeReportState");
 			String reportId;
-			if(!session.isNew()) 
-				state = (Integer) session.getAttribute("removeReportState");
-			
+			String s;
+			System.out.println("state: " + state);
 			switch(state) {
+			case ADMINISTRATOR:
+				System.out.println("hello");
+				if(permission != PERMISSION_ADMIN) {
+					out.print("<script> alert('Otillåten handling. Du saknar administratörsrättigheter') </script>");
+					session.setAttribute("changeReportState", FIRST);
+					doGet(request, response);
+				} else {
+					String prjGroup = request.getParameter("prjGroup");
+					if(prjGroup != null) {
+						out.print(getPageIntro());
+						out.print(generateMainMenu(permission, request));
+						out.print(generateSubMenu(permission));
+						s = trg.showAllTimeReports(Integer.valueOf(prjGroup), TimeReportGenerator.REMOVE_PRJ_REPORT);
+						if(s == null)
+							out.print("Det finns inga tidrapporter att visa");
+						else 
+							out.print(s);
+						out.print(getPageOutro());
+						session.setAttribute("removeReportState", SHOW_REPORT);
+					} else {
+						out.print(getPageIntro());
+						out.print(generateMainMenu(permission, request));
+						out.print(generateSubMenu(permission));
+						out.print("Internt fel - inga tidrapporter kunde visas");
+						out.print(getPageOutro());
+						session.setAttribute("removeReportState", FIRST);
+					}
+				}
+				break;
 			case FIRST:
 				doGet(request, response);
 				break;
-			case REMOVE_REPORT:
+			case SHOW_REPORT:
 				reportId = request.getParameter("reportId");
 				if(reportId != null) {
-					String s = trg.showTimeReport(Integer.valueOf(reportId), TimeReportGenerator.REMOVE_REPORT);
-					out.print(s);
-					session.setAttribute("removeReportState", DO_REMOVAL);
+					s = trg.showTimeReport(Integer.valueOf(reportId), TimeReportGenerator.REMOVE_REPORT);
+					out.print(getPageIntro());
+					out.print(generateMainMenu(permission, request));
+					out.print(generateSubMenu(permission));
+					if(s == null) {
+						out.print("Det finns inga tidrapporter att visa");
+					} else { 
+						out.print(s);
+						session.setAttribute("removeReportState", REMOVE_REPORT);
+					}
+					out.print(getPageOutro());
 				} else {
 					session.setAttribute("removeReportState", FIRST);
 					doGet(request,response);
 				}
 				break;
-			case DO_REMOVAL:
+			case REMOVE_REPORT:
 				reportId = request.getParameter("reportId");
 				if(trg.removeTimeReport(reportId)) {
 					out.print("<script>alert('Tidrapport borttagen: " +  reportId + "')</script>");
@@ -91,7 +144,6 @@ public class RemoveTimeReport extends TimeReportingMenu{
 				doGet(request, response);
 				break;
 			}
-			out.print(getPageOutro());
 		} else {
 			response.sendRedirect("LogIn");
 		}
