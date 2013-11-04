@@ -7,19 +7,19 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import database.User;
-import base.*;
 
 @WebServlet("/ShowUsers")
 public class ShowUsers extends UsersMenu {
 
 	private static final long serialVersionUID = -2190552005706112015L;
-	private Users users;
 
 	public ShowUsers() {
-		users = new Users();
+		super();
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -69,7 +69,8 @@ public class ShowUsers extends UsersMenu {
 				sb.append("<td> Ingen projektgrupp </td>");
 			}
 			sb.append("<td>" + translateRole(u.getRole()) + "</td>");
-			sb.append("<td>" + u.isActive() + "</td>");
+			String active = u.isActive() ? "Aktiv" : "Inaktiv";
+			sb.append("<td>" + active + "</td>");
 			sb.append("<td>" + u.getPassword() + "</td>");
 			sb.append("</tr>");
 		}
@@ -82,21 +83,21 @@ public class ShowUsers extends UsersMenu {
 	private String translateRole(int role) {
 		switch (role) {
 		case 1:
-			return ("Administrator");
+			return ("Administrat\u00F6r");
 		case 2:
-			return ("Project Leader");
+			return ("Projektledare");
 		case 4:
-			return ("System Group");
+			return ("Systemgrupp");
 		case 5:
-			return ("System Group Leader");
+			return ("Systemgruppsledare");
 		case 6:
-			return ("Development Group");
+			return ("Utvecklingsgrupp");
 		case 7:
-			return ("Test Group");
+			return ("Testgrupp");
 		case 8:
-			return ("Test Leader");
+			return ("Testgruppsledare");
 		default:
-			return ("Unknown Role");
+			return ("Utan roll");
 		}
 	}
 

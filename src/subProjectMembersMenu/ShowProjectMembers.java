@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -38,7 +37,7 @@ public class ShowProjectMembers extends ProjectGroupsMenu {
 				if (request.getParameter("success").equals("false")) {
 					out.print("<p> Den valda gruppen finns ej </p>");
 				} else {
-					pm = new ProjectMembers(request.getParameter("groupname"));
+					pm = new ProjectMembers(request.getParameter("groupname"), db);
 					out.print(pm.showMembers(db.getUsers(Integer.valueOf(request
 							.getParameter("groupname")))));
 				}

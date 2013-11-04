@@ -1,16 +1,16 @@
 package gui;
-import java.io.*;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import database.User;
+import javax.servlet.http.HttpSession;
 
 import base.ServletBase;
+import database.User;
 
 
 /**
@@ -53,7 +53,7 @@ public class WelcomePage extends ServletBase {
 			}
 			out.append(generateMainMenu(userPermission, request));
 			out.println("<div class='container'><div class='row'>");
-			out.println("<div class='col-lg-12'><h1>V\u00E4lkommen</h1><p>TidRapporteringsSystem av grupp 2 i Programvaruutveckling i stora system 2013</div>");
+			out.println("<div class='col-lg-12'><h1>V\u00E4lkommen</h1><p>TidRapporteringsSystem av grupp 2 i Programvaruutveckling f\u00F6r stora system 2013</div>");
 			out.println("</div></div>");
 				out.println(getPageOutro());
 		} else {

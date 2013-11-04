@@ -12,9 +12,9 @@ public class ProjectMembers {
 	 * 
 	 * @param groupName
 	 */
-	public ProjectMembers(String groupName) {
+	public ProjectMembers(String groupName, Database database) {
 		this.groupName = Integer.parseInt(groupName);
-		db = new Database();
+		this.db = database;
 	}
 
 	/**

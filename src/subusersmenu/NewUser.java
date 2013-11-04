@@ -10,15 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import database.Database;
-
 @WebServlet("/NewUser")
 public class NewUser extends UsersMenu {
 	private static final long serialVersionUID = 3336226905706349638L;
-	private Users users;
 
 	public NewUser() {
-		users = new Users();
+		super();
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -57,7 +54,7 @@ public class NewUser extends UsersMenu {
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
-			HttpSession session = request.getSession(true);
+//			HttpSession session = request.getSession(true);
 			String username = request.getParameter("username");
 			if (users.checkNewName(username)) {
 				users.addUser(username);

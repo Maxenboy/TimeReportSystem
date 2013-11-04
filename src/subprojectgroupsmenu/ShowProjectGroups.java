@@ -54,7 +54,7 @@ public class ShowProjectGroups extends ProjectGroupsMenu {
 
 	private String buildProjectGroupsTable() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("<table border=" + formElement("1") + ">");
+		sb.append("<table class=\"table table-bordered table-hover\">");
 		sb.append("<tr>");
 		sb.append("<th>Projektgrupp</th>");
 		sb.append("<th>Starvecka</th>");

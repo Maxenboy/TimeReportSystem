@@ -15,25 +15,22 @@ import database.User;
 public class AddMemberToProjectGroup extends gui.ProjectGroupsMenu {
 
 	private String groupName = "";
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -1961915720341016655L;
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
-			ProjectGroups groups = new ProjectGroups();
+			ProjectGroups groups = new ProjectGroups(db);
 			HttpSession session = request.getSession(true);
 			PrintWriter out = response.getWriter();
 			out.print(getPageIntro());
 			int userPermission = (Integer) session.getAttribute("user_permissions");
 			out.append(generateMainMenu(userPermission, request));
 			out.print(generateSubMenu(userPermission));
-			if (request.getParameter("thegroup") == null && groupName == "") {
+			if (request.getParameter("thegroup") == null && groupName.equals("")) {
 				out.print(showProjectGroups());
 			} else {
 				if (request.getParameter("reportId") == null) {
-					if (groupName == "") {
+					if (groupName.equals("")) {
 						groupName = request.getParameter("thegroup");
 					}
 					ArrayList<User> users = new ArrayList<User>();
@@ -100,7 +97,7 @@ public class AddMemberToProjectGroup extends gui.ProjectGroupsMenu {
 
 	private String buildProjectGroupsTable() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("<table border=" + formElement("1") + ">");
+		sb.append("<table class=\"table table-bordered table-hover\">");
 		sb.append("<tr>");
 		sb.append("<th>Projektgrupp</th>");
 		sb.append("<th>Starvecka</th>");

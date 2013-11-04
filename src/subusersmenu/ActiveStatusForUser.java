@@ -17,10 +17,9 @@ import database.User;
 public class ActiveStatusForUser extends UsersMenu {
 
 	private static final long serialVersionUID = -3023954127569399790L;
-	private Users users;
 
 	public ActiveStatusForUser() {
-		users = new Users();
+		super();
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

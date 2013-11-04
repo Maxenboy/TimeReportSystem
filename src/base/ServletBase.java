@@ -35,10 +35,10 @@ public class ServletBase extends HttpServlet {
 	protected static final int LOGIN_TRUE = 1;
 	
 	// User permissions
-	protected static final int PERMISSION_ADMIN = 			1;
-	protected static final int PERMISSION_PROJ_LEADER = 	2; 
-	protected static final int PERMISSION_WITHOUT_ROLE = 	3; 
-	protected static final int PERMISSION_OTHER_USERS = 	4; 
+	protected static final int PERMISSION_ADMIN = 1;
+	protected static final int PERMISSION_PROJ_LEADER = 2; 
+	protected static final int PERMISSION_WITHOUT_ROLE = 3; 
+	protected static final int PERMISSION_OTHER_USERS = 4; 
 	
 	protected Database db = new Database();
 	
@@ -47,6 +47,11 @@ public class ServletBase extends HttpServlet {
 	 */
 	public ServletBase() {
 		
+	}
+	
+	@Override
+	public void destroy() {
+		db.closeConnection();
 	}
 
 	/**
@@ -192,9 +197,9 @@ public class ServletBase extends HttpServlet {
 		case 7:
 			return ("Testgrupp");
 		case 8:
-			return ("Testledare");
+			return ("Testgruppsledare");
 		default:
-			return ("Ingen roll");
+			return ("Utan roll");
 		}
 	}
 	

@@ -11,7 +11,6 @@ import database.Activity;
 public class testStats {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		Database db = new Database();/*
 		ProjectGroup pg1 = new ProjectGroup(1,"first", true, 1, 10, 1000);
 		ProjectGroup pg2 = new ProjectGroup(2,"second", true, 1, 10, 2000);

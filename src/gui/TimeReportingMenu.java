@@ -3,10 +3,10 @@ package gui;
 import base.ServletBase;
 
 public class TimeReportingMenu extends ServletBase {
-	protected static final int PERMISSION_ADMIN = 			1;
-	protected static final int PERMISSION_PROJ_LEADER = 	2; 
-	protected static final int PERMISSION_WITHOUT_ROLE = 	3; 
-	protected static final int PERMISSION_OTHER_USERS = 	4; 
+	protected static final int PERMISSION_ADMIN = 1;
+	protected static final int PERMISSION_PROJ_LEADER = 2;
+	protected static final int PERMISSION_WITHOUT_ROLE = 3;
+	protected static final int PERMISSION_OTHER_USERS = 4;
 	
 	
 	public TimeReportingMenu() {

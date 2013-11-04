@@ -5,20 +5,20 @@ import gui.TimeReportingMenu;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import database.Activity;
-import database.Database;
 import database.TimeReport;
 
 @WebServlet("/NewTimeReport")
 public class NewTimeReport extends TimeReportingMenu{
 	private static final long serialVersionUID = 6091270182349510225L;
 	public static final int FIRST = 1;
-	TimeReportGenerator trg = new TimeReportGenerator(new Database());
+	TimeReportGenerator trg = new TimeReportGenerator(db);
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {

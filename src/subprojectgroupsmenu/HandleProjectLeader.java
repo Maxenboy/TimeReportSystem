@@ -2,23 +2,20 @@ package subprojectgroupsmenu;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.ArrayList;
 
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import com.mysql.jdbc.jdbc2.optional.SuspendableXAConnection;
-
-import database.*;
+import database.User;
 
 @WebServlet("/HandleProjectLeader")
 public class HandleProjectLeader extends gui.ProjectGroupsMenu {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 2692792293983643296L;
-	ProjectGroups group = new ProjectGroups();
+	private ProjectGroups group = new ProjectGroups(db);
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
@@ -48,7 +45,7 @@ public class HandleProjectLeader extends gui.ProjectGroupsMenu {
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
-			HttpSession session = request.getSession();
+//			HttpSession session = request.getSession();
 			String id = request.getParameter("name");
 			if (id != null) {
 				response.sendRedirect(request.getRequestURI()
@@ -56,10 +53,10 @@ public class HandleProjectLeader extends gui.ProjectGroupsMenu {
 			} else {
 				id = request.getParameter("reportId");
 				User user = db.getUser(Integer.parseInt(id));
-				if (user.getRole() == user.ROLE_PROJECT_LEADER) {
+				if (user.getRole() == User.ROLE_PROJECT_LEADER) {
 					user.setRole(3);
 				} else {
-					user.setRole(user.ROLE_PROJECT_LEADER);
+					user.setRole(User.ROLE_PROJECT_LEADER);
 				}
 			}
 		} else {

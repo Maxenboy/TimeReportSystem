@@ -1,19 +1,20 @@
 package subTimeReportMenu;
 
 import gui.TimeReportingMenu;
+
 import java.io.IOException;
 import java.io.PrintWriter;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import database.Database;
 
 @WebServlet("/RemoveTimeReport")
 public class RemoveTimeReport extends TimeReportingMenu{
 	
 	private static final long serialVersionUID = 2619824858072375910L;
-	TimeReportGenerator trg = new TimeReportGenerator(new Database());
+	TimeReportGenerator trg = new TimeReportGenerator(db);
 	public static final int FIRST = 0;
 	public static final int DO_REMOVAL = 1;
 	public static final int REMOVE_REPORT = 3;

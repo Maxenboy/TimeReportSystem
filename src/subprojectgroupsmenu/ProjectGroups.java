@@ -1,10 +1,10 @@
 package subprojectgroupsmenu;
 
-import database.*;
+import java.util.ArrayList;
 
-import java.util.*;
-
-import javax.servlet.annotation.WebServlet;
+import database.Database;
+import database.ProjectGroup;
+import database.User;
 
 public class ProjectGroups {
 	private String name, startweek, endweek, estimatedHours;
@@ -14,8 +14,8 @@ public class ProjectGroups {
 	 * Constructor
 	 * 
 	 */
-	public ProjectGroups() {
-		db = new Database();
+	public ProjectGroups(Database database) {
+		this.db = database;
 	}
 	
 	/**
@@ -27,10 +27,7 @@ public class ProjectGroups {
 	 * @return
 	 */
 	public boolean createProjectGroup(String name, String startWeek, String endWeek, String estimatedHours) {
-		if(db.addProjectGroup(new ProjectGroup(1, name, true, Integer.parseInt(startWeek), Integer.parseInt(endWeek), Integer.parseInt(estimatedHours)))) {
-			return true;
-		}
-		return false;
+		return db.addProjectGroup(new ProjectGroup(name, Integer.parseInt(startWeek), Integer.parseInt(endWeek), Integer.parseInt(estimatedHours)));
 	}
 
 	/**
@@ -83,21 +80,21 @@ public class ProjectGroups {
 	private String translateRole(int role) {
 		switch (role) {
 		case 1:
-			return ("Administrator");
+			return ("Administrat\u00F6r");
 		case 2:
-			return ("Project Leader");
+			return ("Projektledare");
 		case 4:
-			return ("System Group");
+			return ("Systemgrupp");
 		case 5:
-			return ("System Group Leader");
+			return ("Systemgruppsledare");
 		case 6:
-			return ("Development Group");
+			return ("Utvecklingsgrupp");
 		case 7:
-			return ("Test Group");
+			return ("Testgrupp");
 		case 8:
-			return ("Test Leader");
+			return ("Testgruppsledare");
 		default:
-			return ("Unknown Role");
+			return ("Utan roll");
 		}
 	}
 

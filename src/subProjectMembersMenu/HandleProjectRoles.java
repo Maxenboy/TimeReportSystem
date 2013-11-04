@@ -12,11 +12,8 @@ import database.User;
 @WebServlet("/HandleProjectRoles")
 public class HandleProjectRoles extends gui.UsersMenu{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	ProjectMembers members;
+	private ProjectMembers members;
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
@@ -29,7 +26,7 @@ public class HandleProjectRoles extends gui.UsersMenu{
 			if (request.getParameter("session") == null) {
 				out.print(groupForm());
 			} else if (request.getParameter("session").equals("found")) {
-				members = new ProjectMembers(request.getParameter("name"));
+				members = new ProjectMembers(request.getParameter("name"), db);
 				out.print(showMembers(db.getUsers(Integer.parseInt(request
 						.getParameter("groupname")))));
 			} else if (request.getParameter("session").equals("failed")) {
@@ -46,7 +43,7 @@ public class HandleProjectRoles extends gui.UsersMenu{
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
-			HttpSession session = request.getSession();
+//			HttpSession session = request.getSession();
 			String stage = request.getParameter("session");
 			if (stage.equals("found")) {
 				String id = request.getParameter("reportId");
@@ -120,6 +117,5 @@ public class HandleProjectRoles extends gui.UsersMenu{
 		html += "</form>";
 		return html;
 	}
-
 	
 }

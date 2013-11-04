@@ -13,22 +13,46 @@ import java.util.Map;
 import com.mysql.jdbc.Statement;
 
 public class Database {
-	private Connection conn;
+	private Connection conn = null;
 
+	/**
+	 * Creates a new Database object with a new connection to the database.
+	 */
 	public Database() {
+		checkConnection();
+	}
+	
+	/**
+	 * Checks that the connection to the database is still valid and if it is
+	 * not it tries to reconnect.
+	 */
+	private void checkConnection() {
+			try {
+				if (conn == null || !conn.isValid(15)) {
+					Class.forName("com.mysql.jdbc.Driver");
+					// Lokal databas:
+					conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/puss1302?user=puss1302&password=jks78ww2");
+					// Skolans databas:
+//					conn = DriverManager.getConnection("jdbc:mysql://vm26.cs.lth.se/puss1302?user=puss1302&password=jks78ww2");
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+	}
+	
+	/**
+	 * Closes this database object's connection to the database. This method 
+	 * should be called when the database object is not going to be used anymore
+	 * to release resources.
+	 */
+	public void closeConnection() {
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager
-					.getConnection("jdbc:mysql://localhost:3306/puss1302?user=puss1302&password=jks78ww2");
-			
-			//Ge fan i att \u00E4ndra denna!
-//			 conn =
-//			 DriverManager.getConnection("jdbc:mysql://vm26.cs.lth.se/puss1302?"
-//			 + "user=puss1302&password=jks78ww2");
-
+			if (conn != null) {
+				conn.close();
+			}
 		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
@@ -44,8 +68,8 @@ public class Database {
 		User u = null;
 		try {
 			String getTableSQL = "SELECT * FROM users WHERE username = ? LIMIT 1";
-			PreparedStatement preparedStatement = conn
-					.prepareStatement(getTableSQL);
+			checkConnection();
+			PreparedStatement preparedStatement = conn.prepareStatement(getTableSQL);
 			preparedStatement.setString(1, username);
 			ResultSet res = preparedStatement.executeQuery();
 			while (res.next()) {
@@ -74,8 +98,8 @@ public class Database {
 		try {
 			String insertTableSQL = "INSERT INTO users"
 					+ "(username, password) VALUES" + "(?,?)";
-			PreparedStatement preparedStatement = conn
-					.prepareStatement(insertTableSQL);
+			checkConnection();
+			PreparedStatement preparedStatement = conn.prepareStatement(insertTableSQL);
 			preparedStatement.setString(1, user.getUsername());
 			preparedStatement.setString(2, user.getPassword());
 			preparedStatement.executeUpdate();
@@ -108,8 +132,8 @@ public class Database {
 		User u = null;
 		try {
 			String getTableSQL = "SELECT * FROM users WHERE username = ? LIMIT 1";
-			PreparedStatement preparedStatement = conn
-					.prepareStatement(getTableSQL);
+			checkConnection();
+			PreparedStatement preparedStatement = conn.prepareStatement(getTableSQL);
 			preparedStatement.setString(1, username);
 			ResultSet res = preparedStatement.executeQuery();
 			while (res.next()) {
@@ -133,6 +157,7 @@ public class Database {
 		ArrayList<User> list = new ArrayList<User>();
 		try {
 			String getUsersSQL = "SELECT * FROM users";
+			checkConnection();
 			PreparedStatement preparedStatement = conn.prepareStatement(getUsersSQL);
 			ResultSet res = preparedStatement.executeQuery();
 			User u = null;
@@ -141,6 +166,8 @@ public class Database {
 						res.getBoolean(4), res.getInt(5), res.getInt(6));
 				list.add(u);
 			}
+			res.close();
+			preparedStatement.close();
 		} catch (SQLException ex) {
 			// System.err.println(ex);
 		}
@@ -157,6 +184,7 @@ public class Database {
 		ArrayList<User> list = new ArrayList<User>();
 		try {
 			String getUsersSQL = "SELECT * FROM users WHERE project_group_id = ?";
+			checkConnection();
 			PreparedStatement preparedStatement = conn.prepareStatement(getUsersSQL);
 			preparedStatement.setInt(1, projectGroupId);
 			ResultSet res = preparedStatement.executeQuery();
@@ -166,6 +194,8 @@ public class Database {
 						res.getBoolean(4), res.getInt(5), res.getInt(6));
 				list.add(u);
 			}
+			res.close();
+			preparedStatement.close();
 		} catch (SQLException ex) {
 			// System.err.println(ex);
 		}
@@ -181,8 +211,8 @@ public class Database {
 		User u = null;
 		try {
 			String getTableSQL = "SELECT * FROM users WHERE id = ? LIMIT 1";
-			PreparedStatement preparedStatement = conn
-					.prepareStatement(getTableSQL);
+			checkConnection();
+			PreparedStatement preparedStatement = conn.prepareStatement(getTableSQL);
 			preparedStatement.setInt(1, userId);
 			ResultSet res = preparedStatement.executeQuery();
 			res.next();
@@ -219,8 +249,8 @@ public class Database {
 		boolean resultOk = true;
 		try {
 			String checkIfUserIdExistsSQL = "SELECT active FROM users WHERE id = ? LIMIT 1";
-			PreparedStatement preparedStatement = conn
-					.prepareStatement(checkIfUserIdExistsSQL);
+			checkConnection();
+			PreparedStatement preparedStatement = conn.prepareStatement(checkIfUserIdExistsSQL);
 			preparedStatement.setInt(1, userId);
 			ResultSet res = preparedStatement.executeQuery();
 			if (res.next()) {
@@ -229,12 +259,11 @@ public class Database {
 				preparedStatement.setInt(1, active);
 				preparedStatement.setInt(2, userId);
 				preparedStatement.executeUpdate();
-				preparedStatement.close();
 			} else {
 				resultOk = false;
-				preparedStatement.close();
 			}
-
+			res.close();
+			preparedStatement.close();
 		} catch (SQLException ex) {
 			// System.err.println(ex);
 			resultOk = false;
@@ -262,8 +291,8 @@ public class Database {
 		boolean resultOk = true;
 		try {
 			String checkIfUserIdExistsSQL = "SELECT active FROM users WHERE id = ? LIMIT 1";
-			PreparedStatement preparedStatement = conn
-					.prepareStatement(checkIfUserIdExistsSQL);
+			checkConnection();
+			PreparedStatement preparedStatement = conn.prepareStatement(checkIfUserIdExistsSQL);
 			preparedStatement.setInt(1, userId);
 			ResultSet res = preparedStatement.executeQuery();
 			if (res.next()) {
@@ -272,12 +301,11 @@ public class Database {
 				preparedStatement.setInt(1, role);
 				preparedStatement.setInt(2, userId);
 				preparedStatement.executeUpdate();
-				preparedStatement.close();
 			} else {
 				resultOk = false;
-				preparedStatement.close();
 			}
-
+			res.close();
+			preparedStatement.close();
 		} catch (SQLException ex) {
 			// System.err.println(ex);
 			resultOk = false;
@@ -309,8 +337,8 @@ public class Database {
 		boolean resultOk = true;
 		try {
 			String checkIfUserIdExistsSQL = "SELECT active FROM project_groups WHERE id = ? LIMIT 1";
-			PreparedStatement preparedStatement = conn
-					.prepareStatement(checkIfUserIdExistsSQL);
+			checkConnection();
+			PreparedStatement preparedStatement = conn.prepareStatement(checkIfUserIdExistsSQL);
 			preparedStatement.setInt(1, projectGroupId);
 			ResultSet res = preparedStatement.executeQuery();
 			if (res.next()) {
@@ -319,12 +347,11 @@ public class Database {
 				preparedStatement.setInt(1, active);
 				preparedStatement.setInt(2, projectGroupId);
 				preparedStatement.executeUpdate();
-				preparedStatement.close();
 			} else {
 				resultOk = false;
-				preparedStatement.close();
 			}
-
+			res.close();
+			preparedStatement.close();
 		} catch (SQLException ex) {
 			// System.err.println(ex);
 			resultOk = false;
@@ -343,8 +370,8 @@ public class Database {
 			String insertTableSQL = "INSERT INTO project_groups"
 					+ "(project_name, active, start_week, end_week, estimated_time) VALUES"
 					+ "(?,?,?,?,?)";
-			PreparedStatement preparedStatement = conn
-					.prepareStatement(insertTableSQL);
+			checkConnection();
+			PreparedStatement preparedStatement = conn.prepareStatement(insertTableSQL);
 			preparedStatement.setString(1, projectGroup.getProjectName());
 			preparedStatement.setBoolean(2, projectGroup.isActive());
 			preparedStatement.setInt(3, projectGroup.getStartWeek());
@@ -378,14 +405,13 @@ public class Database {
 		boolean resultOk = true;
 		try {
 			String checkIfProjectGroupIdExistsSQL = "SELECT * FROM project_groups WHERE id = ? LIMIT 1";
-			PreparedStatement preparedStatement = conn
-					.prepareStatement(checkIfProjectGroupIdExistsSQL);
+			checkConnection();
+			PreparedStatement preparedStatement = conn.prepareStatement(checkIfProjectGroupIdExistsSQL);
 			preparedStatement.setInt(1, projectGroupId);
 			ResultSet res = preparedStatement.executeQuery();
 			if (res.next()) {
 				String checkIfUserIdExistsSQL = "SELECT * FROM users WHERE id = ? LIMIT 1";
-				preparedStatement = conn
-						.prepareStatement(checkIfUserIdExistsSQL);
+				preparedStatement = conn.prepareStatement(checkIfUserIdExistsSQL);
 				preparedStatement.setInt(1, userId);
 				ResultSet res2 = preparedStatement.executeQuery();
 				if (res2.next()) {
@@ -394,16 +420,15 @@ public class Database {
 					preparedStatement.setInt(1, projectGroupId);
 					preparedStatement.setInt(2, userId);
 					preparedStatement.executeUpdate();
-					preparedStatement.close();
 				} else {
 					resultOk = false;
-					preparedStatement.close();
 				}
+				res2.close();
 			} else {
 				resultOk = false;
-				preparedStatement.close();
 			}
-
+			res.close();
+			preparedStatement.close();
 		} catch (SQLException ex) {
 			// System.err.println(ex);
 			resultOk = false;
@@ -421,14 +446,13 @@ public class Database {
 		boolean resultOk = true;
 		try {
 			String checkIfProjectGroupIdExistsSQL = "SELECT * FROM project_groups WHERE id = ? LIMIT 1";
-			PreparedStatement preparedStatement = conn
-					.prepareStatement(checkIfProjectGroupIdExistsSQL);
+			checkConnection();
+			PreparedStatement preparedStatement = conn.prepareStatement(checkIfProjectGroupIdExistsSQL);
 			preparedStatement.setInt(1, projectGroupId);
 			ResultSet res = preparedStatement.executeQuery();
 			if (res.next()) {
 				String checkIfUserIdExistsSQL = "SELECT * FROM users WHERE id = ? LIMIT 1";
-				preparedStatement = conn
-						.prepareStatement(checkIfUserIdExistsSQL);
+				preparedStatement = conn.prepareStatement(checkIfUserIdExistsSQL);
 				preparedStatement.setInt(1, userId);
 				ResultSet res2 = preparedStatement.executeQuery();
 				if (res2.next()) {
@@ -436,17 +460,15 @@ public class Database {
 					preparedStatement = conn.prepareStatement(insertIntoSQL);
 					preparedStatement.setInt(1, userId);
 					preparedStatement.executeUpdate();
-					preparedStatement.close();
 				} else {
 					resultOk = false;
-					preparedStatement.close();
 				}
 				res2.close();
 			} else {
 				resultOk = false;
-				preparedStatement.close();
 			}
 			res.close();
+			preparedStatement.close();
 		} catch (SQLException ex) {
 			// System.err.println(ex);
 			resultOk = false;
@@ -463,8 +485,8 @@ public class Database {
 		ProjectGroup pg = null;
 		try {
 			String getTableSQL = "SELECT * FROM project_groups WHERE id = ? LIMIT 1";
-			PreparedStatement preparedStatement = conn
-					.prepareStatement(getTableSQL);
+			checkConnection();
+			PreparedStatement preparedStatement = conn.prepareStatement(getTableSQL);
 			preparedStatement.setInt(1, projectGroupId);
 			ResultSet res = preparedStatement.executeQuery();
 			while (res.next()) {
@@ -488,8 +510,8 @@ public class Database {
 		ArrayList<ProjectGroup> list = new ArrayList<ProjectGroup>();
 		try {
 			String getTableSQL = "SELECT * FROM project_groups";
-			PreparedStatement preparedStatement = conn
-					.prepareStatement(getTableSQL);
+			checkConnection();
+			PreparedStatement preparedStatement = conn.prepareStatement(getTableSQL);
 			ResultSet res = preparedStatement.executeQuery();
 			while (res.next()) {
 				list.add(new ProjectGroup(res.getInt(1), res.getString(2), res
@@ -515,8 +537,8 @@ public class Database {
 		ArrayList<TimeReport> list = new ArrayList<TimeReport>();
 		try {
 			String getTableSQL = "SELECT * FROM time_reports WHERE project_group_id = ? ORDER BY id";
-			PreparedStatement preparedStatement = conn
-					.prepareStatement(getTableSQL);
+			checkConnection();
+			PreparedStatement preparedStatement = conn.prepareStatement(getTableSQL);
 			preparedStatement.setInt(1, projectGroupId);
 			ResultSet res = preparedStatement.executeQuery();
 			while (res.next()) {
@@ -540,8 +562,8 @@ public class Database {
 		ArrayList<TimeReport> list = new ArrayList<TimeReport>();
 		try {
 			String getTableSQL = "SELECT * FROM time_reports WHERE project_group_id = ? AND signed = 0 ORDER BY id";
-			PreparedStatement preparedStatement = conn
-					.prepareStatement(getTableSQL);
+			checkConnection();
+			PreparedStatement preparedStatement = conn.prepareStatement(getTableSQL);
 			preparedStatement.setInt(1, projectGroupId);
 			ResultSet res = preparedStatement.executeQuery();
 			while (res.next()) {
@@ -565,8 +587,8 @@ public class Database {
 		ArrayList<TimeReport> list = new ArrayList<TimeReport>();
 		try {
 			String getTableSQL = "SELECT * FROM time_reports WHERE project_group_id = ? AND signed = 1 ORDER BY id";
-			PreparedStatement preparedStatement = conn
-					.prepareStatement(getTableSQL);
+			checkConnection();
+			PreparedStatement preparedStatement = conn.prepareStatement(getTableSQL);
 			preparedStatement.setInt(1, projectGroupId);
 			ResultSet res = preparedStatement.executeQuery();
 			while (res.next()) {
@@ -602,8 +624,8 @@ public class Database {
 		boolean resultOk = true;
 		try {
 			String checkIfTimeReportExists = "SELECT signed FROM time_reports WHERE id = ? LIMIT 1";
-			PreparedStatement preparedStatement = conn
-					.prepareStatement(checkIfTimeReportExists);
+			checkConnection();
+			PreparedStatement preparedStatement = conn.prepareStatement(checkIfTimeReportExists);
 			preparedStatement.setInt(1, timeReport.getId());
 			ResultSet res = preparedStatement.executeQuery();
 			if (res.next()) {
@@ -612,13 +634,12 @@ public class Database {
 				preparedStatement.setBoolean(1, signed);
 				preparedStatement.setInt(2, timeReport.getId());
 				preparedStatement.executeUpdate();
-				preparedStatement.close();
 				timeReport.setSigned(signed);
 			} else {
 				resultOk = false;
-				preparedStatement.close();
 			}
-
+			res.close();
+			preparedStatement.close();
 		} catch (SQLException ex) {
 			// System.err.println(ex);
 			resultOk = false;
@@ -651,8 +672,8 @@ public class Database {
 		boolean resultOk = true;
 		try {
 			String checkIfTimeReportExists = "SELECT signed FROM time_reports WHERE id = ? LIMIT 1";
-			PreparedStatement preparedStatement = conn
-					.prepareStatement(checkIfTimeReportExists);
+			checkConnection();
+			PreparedStatement preparedStatement = conn.prepareStatement(checkIfTimeReportExists);
 			preparedStatement.setInt(1, timeReportId);
 			ResultSet res = preparedStatement.executeQuery();
 			if (res.next()) {
@@ -661,16 +682,14 @@ public class Database {
 				preparedStatement.setInt(1, timeReportId);
 				preparedStatement.executeUpdate();
 				String removeActivitiesRelatedToTimeReportSQL = "DELETE FROM activities WHERE time_report_id = ?";
-				preparedStatement = conn
-						.prepareStatement(removeActivitiesRelatedToTimeReportSQL);
+				preparedStatement = conn.prepareStatement(removeActivitiesRelatedToTimeReportSQL);
 				preparedStatement.setInt(1, timeReportId);
 				preparedStatement.executeUpdate();
-				preparedStatement.close();
 			} else {
 				resultOk = false;
-				preparedStatement.close();
 			}
-
+			res.close();
+			preparedStatement.close();
 		} catch (SQLException ex) {
 			// System.err.println(ex);
 			resultOk = false;
@@ -701,8 +720,8 @@ public class Database {
 		ArrayList<TimeReport> list = new ArrayList<TimeReport>();
 		try {
 			String getTableSQL = "SELECT * FROM time_reports WHERE user_id = ? ORDER BY id";
-			PreparedStatement preparedStatement = conn
-					.prepareStatement(getTableSQL);
+			checkConnection();
+			PreparedStatement preparedStatement = conn.prepareStatement(getTableSQL);
 			preparedStatement.setInt(1, userId);
 			ResultSet res = preparedStatement.executeQuery();
 			while (res.next()) {
@@ -735,8 +754,8 @@ public class Database {
 		}
 		try {
 			String insertTableSQL = "INSERT INTO time_reports (week, signed, user_id, project_group_id) VALUES (?,?,?,?)";
-			PreparedStatement preparedStatement = conn.prepareStatement(
-					insertTableSQL, Statement.RETURN_GENERATED_KEYS);
+			checkConnection();
+			PreparedStatement preparedStatement = conn.prepareStatement(insertTableSQL, Statement.RETURN_GENERATED_KEYS);
 			preparedStatement.setInt(1, timeReport.getWeek());
 			preparedStatement.setBoolean(2, timeReport.isSigned());
 			preparedStatement.setInt(3, timeReport.getUserId());
@@ -759,8 +778,7 @@ public class Database {
 //							.println("addTimeReport: Activity id not 0. Adding it anyways.");
 				}
 				String insertActivityTableSQL = "INSERT INTO activities (activity_nr, activity_type, time, time_report_id) VALUES (?,?,?,?)";
-				PreparedStatement preparedStatementActivity = conn
-						.prepareStatement(insertActivityTableSQL,
+				PreparedStatement preparedStatementActivity = conn.prepareStatement(insertActivityTableSQL,
 								Statement.RETURN_GENERATED_KEYS);
 				preparedStatementActivity.setInt(1, activity.getActivityNr());
 				preparedStatementActivity.setString(2,
@@ -804,6 +822,7 @@ public class Database {
 		TimeReport report = null;
 		try {
 			String getTableSQL = "SELECT * FROM time_reports WHERE id = ? LIMIT 1";
+			checkConnection();
 			PreparedStatement preparedStatement = conn.prepareStatement(getTableSQL);
 			preparedStatement.setInt(1, timeReportId);
 			ResultSet res = preparedStatement.executeQuery();
@@ -829,8 +848,8 @@ public class Database {
 		ArrayList<Activity> list = new ArrayList<Activity>();
 		try {
 			String getUsersSQL = "SELECT * FROM activities where time_report_id = ? order by id";
-			PreparedStatement preparedStatement = conn
-					.prepareStatement(getUsersSQL);
+			checkConnection();
+			PreparedStatement preparedStatement = conn.prepareStatement(getUsersSQL);
 			preparedStatement.setInt(1, timeReportId);
 			ResultSet res = preparedStatement.executeQuery();
 			Activity activity = null;
@@ -839,6 +858,8 @@ public class Database {
 						res.getString(3), res.getInt(4), res.getInt(5));
 				list.add(activity);
 			}
+			res.close();
+			preparedStatement.close();
 		} catch (SQLException ex) {
 			// System.err.println(ex);
 		}
@@ -855,8 +876,8 @@ public class Database {
 		Activity activity;
 		try {
 			String getTableSQL = "SELECT * FROM activities WHERE id = ? LIMIT 1";
-			PreparedStatement preparedStatement = conn
-					.prepareStatement(getTableSQL);
+			checkConnection();
+			PreparedStatement preparedStatement = conn.prepareStatement(getTableSQL);
 			preparedStatement.setInt(1, activityId);
 			ResultSet res = preparedStatement.executeQuery();
 			res.next();
@@ -886,7 +907,7 @@ public class Database {
 		for(User u : list) {
 			users.add(u.getUsername());
 		}
-		
+		checkConnection();
 		try {
 			String getTableSQL = "SELECT DISTINCT(role) FROM users WHERE project_group_id = ?";
 			PreparedStatement preparedStatement = conn.prepareStatement(getTableSQL);
@@ -933,6 +954,7 @@ public class Database {
 			}
 			res.close();
 			preparedStatement.close();
+			
 		} catch (SQLException ex) {
 			// System.err.println(ex);
 		}
@@ -972,6 +994,8 @@ public class Database {
 		stats.put("week", new ArrayList<String>());
 		stats.put("time", new ArrayList<String>());
 		
+		checkConnection();
+		
 		/*
 		 * Basically what we want to run is:
 		 * SELECT * FROM activities WHERE activity_nr IN (?,...) AND time_report_id IN (SELECT id FROM time_reports WHERE project_group_id=? AND week IN (?,...) AND user_id IN (SELECT id FROM users WHERE username IN (?,...) AND role IN (?,...)));
@@ -1010,6 +1034,7 @@ public class Database {
 			while (usersRes.next()) {
 				usersList.add(usersRes.getInt("id"));
 			}
+			usersRes.close();
 			usersStmt.close();
 			if (usersList.size() == 0) {
 //				System.err.println("getStatistics: No matching users.");
@@ -1042,6 +1067,7 @@ public class Database {
 			while (timeReportsRes.next()) {
 				timeReportsList.add(timeReportsRes.getInt("id"));
 			}
+			timeReportsRes.close();
 			timeReportsStmt.close();
 			if (timeReportsList.size() == 0) {
 //				System.err.println("getStatistics: No matching time reports.");
@@ -1078,11 +1104,13 @@ public class Database {
 				stats.get("week").add(Integer.toString(timeReport.getWeek()));
 				stats.get("time").add(activitiesRes.getString("time"));
 			}
+			activitiesRes.close();
 			activitiesStmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 //			System.err.println(e);
-		}
+		} 
+//		closeConnection();
 		return stats;
 	}
 	

@@ -15,8 +15,8 @@ import subusersmenu.Users;
 public class RemoveMemberFromProjectGroup extends gui.ProjectGroupsMenu {
 
 	private static final long serialVersionUID = 4921473121575805469L;
-	ProjectGroups group = new ProjectGroups();
-	Users users = new Users();
+	private ProjectGroups group = new ProjectGroups(db);
+	private Users users = new Users(db);
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {

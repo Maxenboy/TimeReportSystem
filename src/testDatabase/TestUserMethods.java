@@ -21,33 +21,17 @@ import database.ProjectGroup;
 import database.User;
 
 public class TestUserMethods {
-
-	private Connection conn;
 	private Database db;
 	private User u;
+	
 	@Before
 	public void setup() {
-		db = new Database();
+		// Clear tables
+		Connection conn = null;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/puss1302?user=puss1302&password=jks78ww2");
-			// conn =
-			// DriverManager.getConnection("jdbc:mysql://vm26.cs.lth.se/puss1302?"
-			// + "user=puss1302&password=jks78ww2");
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		u = new User("User");
-	}
-
-	@After
-	public void tearDown() {
-		try{
+			// conn = DriverManager.getConnection("jdbc:mysql://vm26.cs.lth.se/puss1302?user=puss1302&password=jks78ww2");
 			Statement stmt = conn.createStatement();
 		    stmt.executeUpdate("TRUNCATE TABLE project_groups"); 
 		    stmt.executeUpdate("TRUNCATE TABLE users"); 
@@ -55,8 +39,27 @@ public class TestUserMethods {
 		    stmt.executeUpdate("TRUNCATE TABLE activities");
 		    stmt.executeUpdate("insert into users (username, password, role) values('admin', 'adminp', 1)");
 		    stmt.close();
-		} catch (SQLException ex) {
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
+		
+		db = new Database();
+		u = new User("User");
+	}
+
+	@After
+	public void tearDown() {
+		db.closeConnection();
 	}
 
 	@Test

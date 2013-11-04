@@ -1,15 +1,17 @@
 package statistics;
-import java.util.*;
-import java.io.*;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import database.*;
+import database.ProjectGroup;
 
 
 @WebServlet("/Statistics")
@@ -19,7 +21,6 @@ public class Statistics extends gui.StatisticsMenu {
 	public Statistics() {
 
 	}
-
 
 	/**
 	 * The doGet method is called when the user gets directed to the statistics-page. 
@@ -145,7 +146,6 @@ public class Statistics extends gui.StatisticsMenu {
 	 */
 	private String projectGroupForm() {
 		StringBuilder sb = new StringBuilder();
-		Database db = new Database();
 		ArrayList<ProjectGroup> pg = db.getProjectGroups();
 		Iterator<ProjectGroup> itr = pg.iterator();
 

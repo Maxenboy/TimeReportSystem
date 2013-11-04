@@ -12,14 +12,8 @@ import database.*;
 @WebServlet("/ActiveStatusForProjectGroup")
 public class ActiveStatusForProjectGroup extends gui.ProjectGroupsMenu {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -2713701817050035720L;
-	/**
-	 * 
-	 */
-	ProjectGroups group  = new ProjectGroups();
+	private ProjectGroups group  = new ProjectGroups(db);
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
@@ -97,7 +91,7 @@ public class ActiveStatusForProjectGroup extends gui.ProjectGroupsMenu {
 
 	private String buildProjectGroupsTable() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("<table border=" + formElement("1") + ">");
+		sb.append("<table class=\"table table-bordered table-hover\">");
 		sb.append("<tr>");
 		sb.append("<th>Projektgrupp</th>");
 		sb.append("<th>Starvecka</th>");

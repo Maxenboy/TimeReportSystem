@@ -1,20 +1,19 @@
 package base;
-import java.io.*;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import subTimeReportMenu.ChangeTimeReport;
 import subTimeReportMenu.NewTimeReport;
 import subTimeReportMenu.RemoveTimeReport;
 import subTimeReportMenu.ShowTimeReports;
 import subTimeReportMenu.SignTimeReports;
-import subprojectgroupsmenu.ShowProjectGroups;
-import database.Database;
 import database.User;
 
 /**
@@ -154,7 +153,7 @@ public class LogIn extends ServletBase {
 //       			out.println("<p>That was not a valid user name / password. </p>");
 //       			out.println(loginRequestForm());
 //       		}
-       	} else if((name == null && password == null) || (name.length() == 0 && password.length() == 0)) {
+       	} else if(name == null || password == null || name.length() == 0 || password.length() == 0) {
     		out.println(loginRequestForm());
        	} else { // name was null, probably because no form has been filled out yet. Display form.
 //       		out.println("<p>That was not a valid user name / password. </p>");

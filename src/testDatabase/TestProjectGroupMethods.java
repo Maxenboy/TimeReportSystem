@@ -22,32 +22,49 @@ import database.User;
 
 
 public class TestProjectGroupMethods {
-	
-	private Connection conn;
 	private Database db;
 	private ProjectGroup pg;
 	private User u;
+	
 	@Before
 	public void setup() {
-		db = new Database();
+		// Clear tables
+		Connection conn = null;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/puss1302?user=puss1302&password=jks78ww2");
-			// conn =
-			// DriverManager.getConnection("jdbc:mysql://vm26.cs.lth.se/puss1302?"
-			// + "user=puss1302&password=jks78ww2");
-
+			// conn = DriverManager.getConnection("jdbc:mysql://vm26.cs.lth.se/puss1302?user=puss1302&password=jks78ww2");
+			Statement stmt = conn.createStatement();
+		    stmt.executeUpdate("TRUNCATE TABLE project_groups"); 
+		    stmt.executeUpdate("TRUNCATE TABLE users"); 
+		    stmt.executeUpdate("TRUNCATE TABLE time_reports"); 
+		    stmt.executeUpdate("TRUNCATE TABLE activities");
+		    stmt.executeUpdate("insert into users (username, password, role) values('admin', 'adminp', 1)");
+		    stmt.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
+		
+		db = new Database();
 		pg = new ProjectGroup("TestName", 0, 7, 12);
 		u = new User("User");
-		
 	}
+	
+	@After
+	public void tearDown() {
+		db.closeConnection();
+	}
+	
 	@Test
 	public void testAddNewProjectGroup() {
 		assertTrue(db.addProjectGroup(pg));
@@ -162,18 +179,5 @@ public class TestProjectGroupMethods {
 			db.addProjectGroup(new ProjectGroup(name, 1, 7, 3000));
 		}
 		assertEquals(20, db.getProjectGroups().size());
-	}
-	@After
-	public void tearDown() {
-		try{
-			Statement stmt = conn.createStatement();
-		    stmt.executeUpdate("TRUNCATE TABLE project_groups"); 
-		    stmt.executeUpdate("TRUNCATE TABLE users"); 
-		    stmt.executeUpdate("TRUNCATE TABLE time_reports"); 
-		    stmt.executeUpdate("TRUNCATE TABLE activities");
-		    stmt.executeUpdate("insert into users (username, password, role) values('admin', 'adminp', 1)");
-		    stmt.close();
-		} catch (SQLException ex) {
-		}
 	}
 }

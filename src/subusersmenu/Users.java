@@ -11,8 +11,8 @@ public class Users {
 	/**
 	 * Constructor
 	 */
-	public Users() {
-		db = new Database();
+	public Users(Database database) {
+		this.db = database;
 	}
 
 	/**
@@ -90,7 +90,8 @@ public class Users {
 				sb.append("<td> Ingen projektgrupp </td>");
 			}
 			sb.append("<td>" + translateRole(u.getRole()) + "</td>");
-			sb.append("<td>"+u.isActive());
+			String active = u.isActive() ? "Aktiv" : "Inaktiv";
+			sb.append("<td>"+ active + "</td>");
 			sb.append("<td>" + createRadio(u.getId()) + "</td>");
 			sb.append("</tr>");
 		}
@@ -117,9 +118,9 @@ public class Users {
 		case 7:
 			return ("Testgrupp");
 		case 8:
-			return ("Testledare");
+			return ("Testgruppsledare");
 		default:
-			return ("Ingen roll");
+			return ("Utan roll");
 		}
 	}
 

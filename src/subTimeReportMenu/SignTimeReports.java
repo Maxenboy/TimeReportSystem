@@ -6,12 +6,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import database.Database;
 
 
 @WebServlet("/SignTimeReports")
@@ -22,7 +19,7 @@ public class SignTimeReports extends TimeReportingMenu {
 	public static final int SELECT = 3;
 	public static final int SHOW = 4;
 	private static final long serialVersionUID = -4213845458306512233L;
-	TimeReportGenerator trg = new TimeReportGenerator(new Database());
+	TimeReportGenerator trg = new TimeReportGenerator(db);
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {

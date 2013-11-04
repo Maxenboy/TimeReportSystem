@@ -242,17 +242,17 @@ public class Activity {
 		case ACTIVITY_NR_REGRESSION_TEST:
 			return "Regressionstest";
 		case ACTIVITY_NR_MEETING:
-			return "Möte";
+			return "M\u00F6te";
 		case ACTIVITY_NR_LECTURE:
-			return "Föreläsning";
+			return "F\u00F6rel\u00E4sning";
 		case ACTIVITY_NR_EXERCISE:
-			return "Övning";
+			return "\u00D6vning";
 		case ACTIVITY_NR_COMPUTER_EXERCISE:
-			return "Datorövning";
+			return "Dator\u00F6vning";
 		case ACTIVITY_NR_HOME_STUDIES:
-			return "Självstudier";
+			return "Sj\u00E4lvstudier";
 		case ACTIVITY_NR_OTHER:
-			return "Övrigt";
+			return "\u00D6vrigt";
 		}
 		return null;
 	}

@@ -12,11 +12,8 @@ import database.*;
 @WebServlet("/NewProjectGroup")
 public class NewProjectGroup extends gui.ProjectGroupsMenu {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	private ProjectGroups group = new ProjectGroups();
+	private ProjectGroups group = new ProjectGroups(db);
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
@@ -47,7 +44,7 @@ public class NewProjectGroup extends gui.ProjectGroupsMenu {
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
-			HttpSession session = request.getSession(true);
+//			HttpSession session = request.getSession(true);
 			String name = request.getParameter("projectname");
 			String startWeek = request.getParameter("startweek");
 			String endWeek = request.getParameter("endweek");

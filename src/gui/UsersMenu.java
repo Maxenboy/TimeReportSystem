@@ -1,11 +1,15 @@
 package gui;
 
+import subusersmenu.Users;
 import base.ServletBase;
 
 public class UsersMenu extends ServletBase {
 	
+	protected Users users;
+	
 	public UsersMenu() {
 		super(); 
+		users = new Users(db);
 	}
 
 	public String generateSubMenu(int role) {

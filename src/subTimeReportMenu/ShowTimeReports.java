@@ -1,18 +1,21 @@
 package subTimeReportMenu;
 
 import gui.TimeReportingMenu;
+
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
-import database.Database;
+
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @WebServlet("/ShowTimeReports")
 public class ShowTimeReports extends TimeReportingMenu {
 	private static final long serialVersionUID = -1933766080948920247L;
 	public static final int FIRST = 0;
 	public static final int ADMINISTRATOR = 1;
-	TimeReportGenerator trg = new TimeReportGenerator(new Database());
+	TimeReportGenerator trg = new TimeReportGenerator(db);
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {

@@ -7,21 +7,19 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import database.Database;
 import database.ProjectGroup;
 
 
 @WebServlet("/BurnDown")
 public class BurnDown extends gui.StatisticsMenu {
+	
 	public BurnDown() {
 		// Konstruktor
 	}
-	
 	
 	/**
 	 * @throws IOException  
@@ -44,21 +42,17 @@ public class BurnDown extends gui.StatisticsMenu {
 			switch(userPermission) {
 			case 1: // Administrator gets to choose project group.
 				out.append(projectGroupForm());
-				out.append(getPageOutro());
 				break;
 			case 2:
 				out.append(printBurnDown(db.getTimePerWeek(projectGroupId), projectGroupId, db.getProjectGroup(projectGroupId)));
-				out.append(getPageOutro());
 				break;
 			case 4:
 				out.append(printBurnDown(db.getTimePerWeek(projectGroupId), projectGroupId, db.getProjectGroup(projectGroupId)));
-				out.append(getPageOutro());
 				break;
 			default:
-				out.append("Unexpected user permission level.");	
-				out.append(getPageOutro());
-				break;
+				out.append("Oväntad anv\u00E4ndarrättighetsniv\u00E5.");
 			}		
+			out.append(getPageOutro());
 		} else {
 			response.sendRedirect("LogIn");
 		}
@@ -79,7 +73,7 @@ public class BurnDown extends gui.StatisticsMenu {
 			if(projectGroup[0] != null) {
 				out.append(printBurnDown(db.getTimePerWeek(Integer.parseInt(projectGroup[0])), Integer.parseInt(projectGroup[0]), db.getProjectGroup(Integer.parseInt(projectGroup[0]))));
 			} else {
-				out.append("ERROR - No project group chosen by administrator." );
+				out.append("ERROR - Ingen projektgrupp vald av administrat\u00F6r." );
 			}
 			out.append(getPageOutro());
 		} else {
