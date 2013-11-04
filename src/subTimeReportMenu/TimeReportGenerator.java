@@ -18,6 +18,7 @@ public class TimeReportGenerator {
 	public static final int SHOW_PRJ = 10;
 	public static final int SIGN_PRJ = 11;
 	public static final int REMOVE_PRJ = 12;
+	public static final int CHANGE_PRJ = 13;
 	
 	/**
 	 * Constructor
@@ -127,6 +128,9 @@ public class TimeReportGenerator {
 			break;
 		case REMOVE_PRJ:
 			html = "<FORM METHOD=POST ACTION=\"RemoveTimeReport\">";
+			break;
+		case CHANGE_PRJ:
+			html = "<FORM METHOD=POST ACTION=\"ChangeTimeReport\">";
 		}
 		html += "<table class=\"table table-bordered table-hover\">";
 		html += "<tr>";
@@ -169,6 +173,9 @@ public class TimeReportGenerator {
 			html = showPrj(state);
 			break;
 		case REMOVE_PRJ:
+			html = showPrj(state);
+			break;
+		case CHANGE_PRJ:
 			html = showPrj(state);
 			break;
 		case SHOW_ALL:

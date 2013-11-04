@@ -36,7 +36,7 @@ public class ChangeTimeReport extends TimeReportingMenu{
 			String s;
 			switch(permission) {
 			case PERMISSION_ADMIN:
-				s = trg.showAllTimeReports(projId, TimeReportGenerator.SHOW_PRJ);
+				s = trg.showAllTimeReports(projId, TimeReportGenerator.CHANGE_PRJ);
 				out.print(generateMainMenu(permission, request));
 				out.print(generateSubMenu(permission));
 				if(s != null)
@@ -44,7 +44,7 @@ public class ChangeTimeReport extends TimeReportingMenu{
 				else 
 					out.print("Det finns inga projektgrupper att visa");
 				out.print(getPageOutro());
-				session.setAttribute("showReportState", ADMINISTRATOR);
+				session.setAttribute("changeReportState", ADMINISTRATOR);
 				break;
 			case PERMISSION_PROJ_LEADER:
 				out.print(generateMainMenu(permission, request));

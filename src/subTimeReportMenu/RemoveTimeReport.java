@@ -59,7 +59,7 @@ public class RemoveTimeReport extends TimeReportingMenu{
 				out.print(generateSubMenu(permission));
 				s = trg.showAllTimeReports(userId,TimeReportGenerator.REMOVE_USER_REPORT);
 				if(s == null) {
-					out.print("<script> alert('Det finns inga tidrapporter att visa</script>");
+					out.print("Det finns inga tidrapporter att visa");
 				} else {
 					out.print(s);
 					session.setAttribute("removeReportState", SHOW_REPORT);
