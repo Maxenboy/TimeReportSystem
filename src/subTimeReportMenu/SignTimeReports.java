@@ -16,7 +16,7 @@ public class SignTimeReports extends TimeReportingMenu {
 	public static final int FIRST = 0;
 	public static final int SIGN = 1;
 	public static final int LIST = 2;
-	public static final int SELECT = 3;
+	public static final int ADMINISTRATOR = 3;
 	public static final int SHOW = 4;
 	private static final long serialVersionUID = -4213845458306512233L;
 	TimeReportGenerator trg = new TimeReportGenerator(db);
@@ -42,7 +42,7 @@ public class SignTimeReports extends TimeReportingMenu {
 					else
 						out.print("Det finns inga projektgrupper att visa");
 					out.print(getPageOutro());
-					session.setAttribute("signState", SELECT);
+					session.setAttribute("signState", ADMINISTRATOR);
 					break;
 				default:
 					session.setAttribute("signState", FIRST);
@@ -96,7 +96,7 @@ public class SignTimeReports extends TimeReportingMenu {
 			case PERMISSION_ADMIN:
 				String prjGroup;
 				switch(state) {
-				case SELECT:
+				case ADMINISTRATOR:
 					prjGroup = request.getParameter("prjGroup");
 					sb.append("<form method=post action = SignTimeReports>");
 					sb.append("<input type=" + formElement("submit") + 

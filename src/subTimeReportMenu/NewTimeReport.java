@@ -39,22 +39,17 @@ public class NewTimeReport extends TimeReportingMenu{
 				out.print("<script> alert('Du \u00E4r systemadministrat\u00F6r och \u00E4r d\u00E4rf\u00F6r ej till\u00E5ten att skapa en ny tidrapport') </script>");
 				out.print(getPageOutro());
 			} else {
-				int state = (Integer) session.getAttribute("newReportState");
 				String s;
-				switch(state) {
-				case FIRST:
-					out.print(getPageIntro());
-					out.print(generateMainMenu(permission, request));
-					out.print(generateSubMenu(permission));
-					s = trg.showNewTimeForm();
-					if(s == null) {
-						out.print("500 internt fel");
-					} else { 
-						out.print(s);
-					}
-					out.print(getPageOutro());
-					break;
+				out.print(getPageIntro());
+				out.print(generateMainMenu(permission, request));
+				out.print(generateSubMenu(permission));
+				s = trg.showNewTimeForm();
+				if(s == null) {
+					out.print("500 internt fel");
+				} else { 
+					out.print(s);
 				}
+				out.print(getPageOutro());
 			}
 		} else {
 			response.sendRedirect("LogIn");

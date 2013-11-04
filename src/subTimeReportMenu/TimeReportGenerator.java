@@ -17,6 +17,8 @@ public class TimeReportGenerator {
 	public static final int CHANGE_PRJ_REPORT = 9;
 	public static final int SHOW_PRJ = 10;
 	public static final int SIGN_PRJ = 11;
+	public static final int REMOVE_PRJ = 12;
+	public static final int CHANGE_PRJ = 13;
 	
 	/**
 	 * Constructor
@@ -123,6 +125,12 @@ public class TimeReportGenerator {
 			break;
 		case SIGN_PRJ:
 			html = "<FORM METHOD=POST ACTION=\"SignTimeReports\">";
+			break;
+		case REMOVE_PRJ:
+			html = "<FORM METHOD=POST ACTION=\"RemoveTimeReport\">";
+			break;
+		case CHANGE_PRJ:
+			html = "<FORM METHOD=POST ACTION=\"ChangeTimeReport\">";
 		}
 		html += "<table class=\"table table-bordered table-hover\">";
 		html += "<tr>";
@@ -162,6 +170,12 @@ public class TimeReportGenerator {
 			html = showPrj(state);
 			break;
 		case SIGN_PRJ:
+			html = showPrj(state);
+			break;
+		case REMOVE_PRJ:
+			html = showPrj(state);
+			break;
+		case CHANGE_PRJ:
 			html = showPrj(state);
 			break;
 		case SHOW_ALL:
@@ -205,7 +219,7 @@ public class TimeReportGenerator {
 			html = listReports(timeReports,CHANGE_USER_REPORT);
 			break;
 		case CHANGE_PRJ_REPORT:
-			timeReports = db.getUnsignedTimeReports(ID);
+			timeReports = db.getTimeReportsForProjectGroupId(ID);
 			if(timeReports.isEmpty())
 				return null;
 			html = listReports(timeReports,CHANGE_PRJ_REPORT);
@@ -376,7 +390,7 @@ public class TimeReportGenerator {
 		sb.append("</TABLE>");
 		sb.append("<INPUT TYPE=\"hidden\" NAME=\"FormFields\" Value=\"0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,21 ,22 ,23 ,30 ,41,42,43,44,100,\">");
 		sb.append("<INPUT TYPE=\"hidden\" NAME=\"reportId\" Value=" + formElement(Integer.toString(reportId)) + ">");
-		sb.append("<INPUT TYPE=\"submit\" VALUE=\"Skicka in tidrapport\">");
+		sb.append("<INPUT TYPE=\"submit\" VALUE=\"Ändra tidrapport\">");
 		sb.append("</FORM>");
 		return sb.toString();
 	}
@@ -497,15 +511,15 @@ public class TimeReportGenerator {
 		StringBuilder sb = new StringBuilder();
 		switch(state) {
 		case REMOVE_REPORT:
-			sb.append("<form  method=\"post\" action=\"RemoveTimeReport\" onclick=\"return confirm('Are you sure you want to remove this report?')\">");
+			sb.append("<form  method=\"post\" action=\"RemoveTimeReport\" onclick=\"return confirm('Är du säker på att du vill ta bort den här rapporten?')\">");
 			sb.append("<input type=\"submit\" value=\"Radera tidrapport\" >");
 			break;
 		case SHOW_UNSIGNED:
-			sb.append("<form  method=\"post\" action=\"SignTimeReports\" onclick=\"return confirm('Are you sure you want to sign this report?')\">");
+			sb.append("<form  method=\"post\" action=\"SignTimeReports\" onclick=\"return confirm('Är du säker på att du vill signera den hör rapporten?')\">");
 			sb.append("<input type=\"submit\" value=\"Signera tidrapport\" >");
 			break;
 		case SHOW_SIGN:
-			sb.append("<form  method=\"post\" action=\"SignTimeReports\" onclick=\"return confirm('Are you sure you want to unsign this report?')\">");
+			sb.append("<form  method=\"post\" action=\"SignTimeReports\" onclick=\"return confirm('Är du säker på att du vill avsignera den hör rapporten')\">");
 			sb.append("<input type=\"submit\" value=\"Avsignera tidrapport\">");
 			break;
 		}

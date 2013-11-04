@@ -22,6 +22,7 @@ public class ChangeTimeReport extends TimeReportingMenu{
 	public static final int FIRST = 0;
 	public static final int SHOW_REPORT = 1;
 	public static final int CHANGE_REPORT = 2;
+	public static final int ADMINISTRATOR = 3;
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
@@ -32,35 +33,40 @@ public class ChangeTimeReport extends TimeReportingMenu{
 			
 			int userId = (Integer) session.getAttribute("id");
 			int projId = (Integer) session.getAttribute("project_group_id");
-			int state = (Integer) session.getAttribute("changeReportState");
 			String s;
-			switch(state) {
-			case FIRST:
-				switch(permission) {
-				case PERMISSION_ADMIN:
-				case PERMISSION_PROJ_LEADER:
-					out.print(generateMainMenu(permission, request));
-					out.print(generateSubMenu(permission));
-					s = trg.showAllTimeReports(projId, TimeReportGenerator.CHANGE_PRJ_REPORT);
-					if(s == null)
-						out.print("<p> Inga tidrapporter att visa </p>");
-					else 
-						out.print(s);
-					out.print(getPageOutro());
-					session.setAttribute("changeReportState", SHOW_REPORT);
-					break;
-				case PERMISSION_OTHER_USERS:
-					out.print(generateMainMenu(permission, request));
-					out.print(generateSubMenu(permission));
-					s = trg.showAllTimeReports(userId, TimeReportGenerator.CHANGE_USER_REPORT);
-					if(s == null)
-						out.print("<p> Inga tidrapporter att visa </p>");
-					else 
-						out.print(s);
-					out.print(getPageOutro());
-					session.setAttribute("changeReportState", SHOW_REPORT);
-					break;
-				}
+			switch(permission) {
+			case PERMISSION_ADMIN:
+				s = trg.showAllTimeReports(projId, TimeReportGenerator.CHANGE_PRJ);
+				out.print(generateMainMenu(permission, request));
+				out.print(generateSubMenu(permission));
+				if(s != null)
+					out.print(s);
+				else 
+					out.print("Det finns inga projektgrupper att visa");
+				out.print(getPageOutro());
+				session.setAttribute("changeReportState", ADMINISTRATOR);
+				break;
+			case PERMISSION_PROJ_LEADER:
+				out.print(generateMainMenu(permission, request));
+				out.print(generateSubMenu(permission));
+				s = trg.showAllTimeReports(projId, TimeReportGenerator.CHANGE_PRJ_REPORT);
+				if(s == null)
+					out.print("<p> Inga tidrapporter att visa </p>");
+				else 
+					out.print(s);
+				out.print(getPageOutro());
+				session.setAttribute("changeReportState", SHOW_REPORT);
+				break;
+			case PERMISSION_OTHER_USERS:
+				out.print(generateMainMenu(permission, request));
+				out.print(generateSubMenu(permission));
+				s = trg.showAllTimeReports(userId, TimeReportGenerator.CHANGE_USER_REPORT);
+				if(s == null)
+					out.print("<p> Inga tidrapporter att visa </p>");
+				else 
+					out.print(s);
+				out.print(getPageOutro());
+				session.setAttribute("changeReportState", SHOW_REPORT);
 				break;
 			}
 		} else {
@@ -72,23 +78,48 @@ public class ChangeTimeReport extends TimeReportingMenu{
 		if (loggedIn(request)) {
 			HttpSession session = request.getSession(true);
 			PrintWriter out = response.getWriter();
-			int state = 0;
-			if(session.isNew()) {
-				state = FIRST;
-			} else {
-				state = (Integer) session.getAttribute("changeReportState");
-			}
+			int permission = (Integer) session.getAttribute("user_permissions");
+			int state = (Integer) session.getAttribute("changeReportState");
 			String s;
 			String reportId;
 			switch(state) {
+			case ADMINISTRATOR:
+				if(permission != PERMISSION_ADMIN) {
+					out.print("<script> alert('Otillåten handling. Du saknar administratörsrättigheter') </script>");
+					session.setAttribute("changeReportState", FIRST);
+					doGet(request, response);
+				} else {
+					String prjGroup = request.getParameter("prjGroup");
+					if(prjGroup != null) {
+						out.print(getPageIntro());
+						out.print(generateMainMenu(permission, request));
+						out.print(generateSubMenu(permission));
+						out.print(getPageIntro());
+						s = trg.showAllTimeReports(Integer.valueOf(prjGroup), TimeReportGenerator.CHANGE_PRJ_REPORT);
+						if(s == null)
+							out.print("Det finns inga tidrapporter att visa");
+						else 
+							out.print(s);
+						out.print(getPageOutro());
+						session.setAttribute("changeReportState", SHOW_REPORT);
+					} else {
+						out.print(getPageIntro());
+						out.print(generateMainMenu(permission, request));
+						out.print(generateSubMenu(permission));
+						out.print(getPageIntro());
+						out.print("Internt fel - inga tidrapporter kunde visas");
+						out.print(getPageOutro());
+						session.setAttribute("changeReportState", FIRST);
+					}
+				}
+				break;
 			case SHOW_REPORT:
 				reportId = request.getParameter("reportId");
 				if(reportId != null) {
-					int permission = (Integer) session.getAttribute("user_permissions");
 					s = trg.showChangeTimeReport(Integer.valueOf(reportId));
 					if(s == null) {
 						out.print("<script>alert('Du kan inte \u00E4ndra i en signerad tidrapport') </script>");
-						session.setAttribute("state", FIRST);
+						session.setAttribute("changeReportstate", FIRST);
 						doGet(request, response);
 					} else {
 						out.print(getPageIntro());
@@ -103,8 +134,8 @@ public class ChangeTimeReport extends TimeReportingMenu{
 			case CHANGE_REPORT:
 				String week = request.getParameter("week");
 				if(!isNumeric(week) && !week.equals("")) {
-					session.setAttribute("changeReportState", FIRST);
 					out.print("<script> alert('Otill\u00E5ten symbol. Anv\u00E4nd bara numeriska symboler.') </script>");
+					session.setAttribute("changeReportState", FIRST);
 					doGet(request, response);
 				} else if(week.equals("")) {
 					out.print("<script> alert('Obligatoriska data saknas. Var v\u00E4nlig fyll i veckonummer och \u00E5tminstone en aktivitet') </script>");

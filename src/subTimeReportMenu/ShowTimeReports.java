@@ -89,7 +89,7 @@ public class ShowTimeReports extends TimeReportingMenu {
 					out.print(generateMainMenu(permission, request));
 					out.print(generateSubMenu(permission));
 					out.print(getPageIntro());
-					out.print("Internt fel - inga projektgrupper kunde visas");
+					out.print("Internt fel - inga tidrapporter kunde visas");
 					out.print(getPageOutro());
 					session.setAttribute("showReportState", FIRST);
 				}
