@@ -97,7 +97,7 @@ public class ServletBase extends HttpServlet {
 				+ "<body style=\"padding-top: 80px\">";
 		return intro;
 	}
-	
+		
 	protected String getPageOutro() {
 		String html = ""
 				+ "</section>"

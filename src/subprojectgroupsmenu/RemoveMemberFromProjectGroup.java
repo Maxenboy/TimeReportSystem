@@ -2,6 +2,7 @@ package subprojectgroupsmenu;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +34,9 @@ public class RemoveMemberFromProjectGroup extends gui.ProjectGroupsMenu {
 				User user = db.getUser(Integer.parseInt(request
 						.getParameter("username")));
 				if (user.getProjectGroup() != 0) {
+					HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+					map.put(user.getId(), User.ROLE_NO_ROLE);
+					db.setUserRoles(map);
 					db.removeUserFromProjectGroup(user.getId(),
 							user.getProjectGroup());
 					if (db.getUsers(user.getProjectGroup()).isEmpty()) {

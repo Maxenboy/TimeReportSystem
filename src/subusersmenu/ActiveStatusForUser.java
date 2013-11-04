@@ -12,7 +12,6 @@ import javax.servlet.http.HttpSession;
 
 import database.User;
 
-
 @WebServlet("/ActiveStatusForUser")
 public class ActiveStatusForUser extends UsersMenu {
 
@@ -22,7 +21,8 @@ public class ActiveStatusForUser extends UsersMenu {
 		super();
 	}
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
 		if (loggedIn(request)) {
 			HttpSession session = request.getSession(true);
 			PrintWriter out = response.getWriter();
@@ -30,21 +30,24 @@ public class ActiveStatusForUser extends UsersMenu {
 			out.print(getPageIntro());
 			out.print(generateMainMenu(permission, request));
 			out.print(generateSubMenu(permission));
-			
-			
+
 			if (request.getParameter("username") == null) {
 				out.print(users.showUsers(db.getUsers()));
 				out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"\u00C4r du s\u00F6ker?\");if (confirmed) {$(this).submit();}});</script>");
 			} else {
 				User user = db.getUser(Integer.parseInt(request
 						.getParameter("username")));
-				if(user.isActive()){
-					db.deactivateUser(user.getId());
-					out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"\u00C4r du s\u00F6ker?\");if (confirmed) {$(this).submit();}});</script>");
-					out.print(users.showUsers(db.getUsers()));
-				}else{
-					db.activateUser(user.getId());
-					out.print("<script>$(alert(\"Inkorrekt syntax p\u00E5 anv\u00E4ndarnamnet\"))</script>");
+				if (!session.getAttribute("name").equals(user.getUsername())) {
+					if (user.isActive()) {
+						db.deactivateUser(user.getId());
+						out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"\u00C4r du s\u00F6ker?\");if (confirmed) {$(this).submit();}});</script>");
+						out.print(users.showUsers(db.getUsers()));
+					} else {
+						db.activateUser(user.getId());
+						out.print(users.showUsers(db.getUsers()));
+					}
+				} else {
+					out.print("<script>$(alert(\"Du kan inte inaktivera dig själv!\"))</script>");
 					out.print(users.showUsers(db.getUsers()));
 				}
 			}
@@ -54,10 +57,9 @@ public class ActiveStatusForUser extends UsersMenu {
 		}
 	}
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
+
 	}
-
-
 
 }

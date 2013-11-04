@@ -34,7 +34,6 @@ public class HandleAdminRights extends UsersMenu {
 						.getParameter("username")));
 				if (user.getProjectGroup() == 0) {
 					if (user.getRole() == User.ROLE_ADMIN) {
-						System.out.println("user = admin");
 						users.unmakeAdministrator(user.getUsername());
 						out.print(users.showUsers(db.getUsers())
 								+ "<script>$(alert(\"Anv\u00E4ndare \u00E4r ej l\u00E4ngre administrat\u00F6r. \u00C4ndringar sparade.\"))</script>");

@@ -15,24 +15,34 @@ public class NewProjectGroup extends gui.ProjectGroupsMenu {
 	private static final long serialVersionUID = 1L;
 	private ProjectGroups group = new ProjectGroups(db);
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
 		if (loggedIn(request)) {
 			HttpSession session = request.getSession();
 			PrintWriter out = response.getWriter();
 			out.print(getPageIntro());
-			int userPermission = (Integer) session.getAttribute("user_permissions");
+			int userPermission = (Integer) session
+					.getAttribute("user_permissions");
 			out.append(generateMainMenu(userPermission, request));
 			out.print(generateSubMenu(userPermission));
-			if (request.getParameter("session") == null) {
+			String name = request.getParameter("projectname");
+			String startWeek = request.getParameter("startweek");
+			String endWeek = request.getParameter("endweek");
+			String estimatedHours = request.getParameter("estimatedhours");
+			if (name == null || startWeek == null || endWeek == null
+					|| estimatedHours == null) {
 				out.print(addProjectGroupForm());
-			} else if (request.getParameter("session").equals("success")) {
-				out.print(showProjectGroups());
 			} else {
-				if (request.getParameter("inputname") == null) {
-					out.print("<script>$(alert(\"Information inkorrekt inmatad\"))</script>"
-							+ addProjectGroupForm());
+				if (validInput(name, startWeek, endWeek)) {
+					if (group.createProjectGroup(name, startWeek, endWeek,
+							estimatedHours)) {
+						out.print(showProjectGroups());
+					} else {
+						out.print("<script>$(alert(\"Kunde inte lägga till projektgrupp\"))</script>"
+								+ addProjectGroupForm());
+					}
 				} else {
-					out.print("<script>$(alert(\"Kunde inte l\u00E4gga till projektgrupp\"))</script>"
+					out.print("<script>$(alert(\"Information inkorrekt inmatad\"))</script>"
 							+ addProjectGroupForm());
 				}
 			}
@@ -42,60 +52,39 @@ public class NewProjectGroup extends gui.ProjectGroupsMenu {
 		}
 	}
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		if (loggedIn(request)) {
-//			HttpSession session = request.getSession(true);
-			String name = request.getParameter("projectname");
-			String startWeek = request.getParameter("startweek");
-			String endWeek = request.getParameter("endweek");
-			String estimatedHours = request.getParameter("estimatedhours");
-			if (validInput(name, startWeek, endWeek)) {
-				if (group.createProjectGroup(name, startWeek, endWeek,
-						estimatedHours)) {
-					response.sendRedirect(request.getRequestURI()
-							+ "?session=success");
-				} else {
-					response.sendRedirect(request.getRequestURI() + "?session=false");
-				}
-			} else {
-				response.sendRedirect(request.getRequestURI()
-						+ "?session=false&inputname=bad");
-			}
-		} else {
-			response.sendRedirect("LogIn");
-		}
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
 	}
 
 	private boolean validInput(String projectname, String startweek,
 			String endweek) {
-		boolean notOk = false;
-		if (projectname.length() > 10 && Pattern.matches("\\W", projectname)) {
-			notOk = true;
+		boolean ok = false;
+		if (projectname.length() < 10 && Pattern.matches("[a-zA-Z0-9]*", projectname)) {
+			if (Pattern.matches("\\d", startweek)) {
+				if (Pattern.matches("\\d", endweek)) {
+					ok = true;
+				}
+			}
 		}
-		if (Pattern.matches("\\D", startweek)) {
-			notOk = true;
-		}
-		if (Pattern.matches("\\D", endweek)) {
-			notOk = true;
-		}
-		return !notOk;
+		return ok;
 	}
+
 
 	private String addProjectGroupForm() {
 		String html;
-		html = "<p> <form name=" + formElement("input") + "id="
-				+ formElement("addprojectgroup");
-		html += " method=" + formElement("get");
-		html += "<p> Projektnamn: <input type=" + formElement("text")
-				+ " projectname=" + formElement("addprojectname") + '>';
-		html += "<p> Startvecka: <input type=" + formElement("text")
-				+ " startweek=" + formElement("startweek") + '>';
-		html += "<p> Slutvecka: <input type=" + formElement("text")
-				+ " endweek=" + formElement("endweek") + '>';
-		html += "<p> Antal estimerade timmar: <input type=" + formElement("text")
-				+ " estimatedhours=" + formElement("estimatedhours") + '>';
-		html += "<input type=" + formElement("submit") + "value="
-				+ formElement("Spara") + '>';
+		html = "<form name=" + formElement("input") + "action="
+				+ formElement("NewProjectGroup") + "method="
+				+ formElement("get") + ">";
+		html += "Name: <input type=" + formElement("text") + " name="
+				+ formElement("projectname") + "><br>";
+		html += "Start week: <input type=" + formElement("text")
+				+ " name=" + formElement("startweek") + "><br>";
+		html += "End week: <input type=" + formElement("text") + " name="
+				+ formElement("endweek") + "><br>";
+		html += "Estimated hours: <input type=" + formElement("text")
+				+ " name=" + formElement("estimatedhours") + "><br>";
+		html += "<input type=" + formElement("submit") + " value="
+				+ formElement("Submit") + ">";
 		html += "</form>";
 		return html;
 	}

@@ -17,45 +17,54 @@ public class AddMemberToProjectGroup extends gui.ProjectGroupsMenu {
 	private String groupName = "";
 	private static final long serialVersionUID = -1961915720341016655L;
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
 		if (loggedIn(request)) {
 			ProjectGroups groups = new ProjectGroups(db);
 			HttpSession session = request.getSession(true);
 			PrintWriter out = response.getWriter();
 			out.print(getPageIntro());
-			int userPermission = (Integer) session.getAttribute("user_permissions");
+			int userPermission = (Integer) session
+					.getAttribute("user_permissions");
 			out.append(generateMainMenu(userPermission, request));
 			out.print(generateSubMenu(userPermission));
-			if (request.getParameter("thegroup") == null && groupName.equals("")) {
+			if (request.getParameter("thegroup") == null
+					&& groupName.equals("")) {
 				out.print(showProjectGroups());
 			} else {
 				if (request.getParameter("reportId") == null) {
 					if (groupName.equals("")) {
 						groupName = request.getParameter("thegroup");
 					}
-					ArrayList<User> users = new ArrayList<User>();
-					for (User u : db.getUsers()) {
-						if (u.getProjectGroup() == 0) {
-							users.add(u);
-						}
-					}
+					ArrayList<User> users = getUsersWithoutProjectGroup();
+					
 					if (users.isEmpty()) {
-						out.print("<script>$(alert(\"Finns inga anv\u00E4ndare utan projektgrupp!\"))</script>");
+						out.print("<script>$(alert(\"Finns inga användare utan projektgrupp!\"))</script>");
 					} else {
 						out.print(groups.showProjectGroup(users));
 					}
 				} else {
-					if (groups.addUserToProjectGroup(
-							db.getUser(Integer.parseInt(request.getParameter("reportId")))
-							.getUsername(), Integer.parseInt(groupName))) {
-						out.print(groups.showProjectGroup(db.getUsers(Integer
-								.parseInt(groupName))));
-						groupName = "";
+					if (db.getUser(
+							Integer.parseInt(request.getParameter("reportId")))
+							.getRole() != User.ROLE_ADMIN) {
+						if (groups.addUserToProjectGroup(
+								db.getUser(
+										Integer.parseInt(request
+												.getParameter("reportId")))
+										.getUsername(), Integer
+										.parseInt(groupName))) {
+							out.print(groups.showProjectGroup(db
+									.getUsers(Integer.parseInt(groupName))));
+							groupName = "";
+						} else {
+							ArrayList<User> users = getUsersWithoutProjectGroup();
+							out.print("<script>$(alert(\"Anv\u00E4ndaren \u00E4r redan med i en projektgrupp!\"))</script>"
+									+ groups.showProjectGroup(users));
+						}
 					} else {
-						out.print("<script>$(alert(\"Anv\u00E4ndaren \u00E4r redan med i en projektgrupp!\"))</script>"
-								+ groups.showProjectGroup(db.getUsers(Integer
-										.parseInt(groupName))));
-						groupName = "";
+						ArrayList<User> users = getUsersWithoutProjectGroup();
+						out.print("<script>$(alert(\"Administratörer kan ej vara med i projektgrupper.\"))</script>"
+								+ groups.showProjectGroup(users));
 					}
 				}
 			}
@@ -65,8 +74,19 @@ public class AddMemberToProjectGroup extends gui.ProjectGroupsMenu {
 		}
 	}
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
+
+	}
+	
+	private ArrayList<User> getUsersWithoutProjectGroup() {
+		ArrayList<User> users = new ArrayList<User>();
+		for (User u : db.getUsers()) {
+			if (u.getProjectGroup() == 0) {
+				users.add(u);
+			}
+		}
+		return users;
 	}
 
 	private String showProjectGroups() {
@@ -90,7 +110,7 @@ public class AddMemberToProjectGroup extends gui.ProjectGroupsMenu {
 		}
 		sb.append("</table>");
 		sb.append("<input type=" + formElement("submit") + "value="
-				+ formElement("Aktivera/Inaktivera") + ">");
+				+ formElement("Välj grupp") + ">");
 		sb.append("</form>");
 		return sb.toString();
 	}

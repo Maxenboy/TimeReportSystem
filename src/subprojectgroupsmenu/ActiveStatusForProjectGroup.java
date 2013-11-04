@@ -2,6 +2,7 @@ package subprojectgroupsmenu;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.*;
@@ -13,13 +14,15 @@ import database.*;
 public class ActiveStatusForProjectGroup extends gui.ProjectGroupsMenu {
 
 	private static final long serialVersionUID = -2713701817050035720L;
-	private ProjectGroups group  = new ProjectGroups(db);
+	private ProjectGroups group = new ProjectGroups(db);
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
 		if (loggedIn(request)) {
 			HttpSession session = request.getSession(true);
 			PrintWriter out = response.getWriter();
-			int userPermission = (Integer) session.getAttribute("user_permissions");
+			int userPermission = (Integer) session
+					.getAttribute("user_permissions");
 			out.print(getPageIntro());
 			out.append(generateMainMenu(userPermission, request));
 			out.print(generateSubMenu(userPermission));
@@ -27,12 +30,16 @@ public class ActiveStatusForProjectGroup extends gui.ProjectGroupsMenu {
 				out.print("<script>$('#Activate/Inactivategroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"\u00C4r du s\u00E4ker?\");if (confirmed) {$(this).submit();}});</script>"
 						+ showProjectGroups());
 			} else {
-				if (checkGroup(request.getParameter("thegroup"))) {
-					out.print("<script>$(alert(\"Lyckades!\"))</script>"
-							+ showProjectGroups());
+				if (!hasActiveMembers(request.getParameter("thegroup"))) {
+					if (checkGroup(request.getParameter("thegroup"))) {
+						out.print(showProjectGroups());
+					} else {
+						out.print("<script>$(alert(\"Inkorrekt input.\"))</script>"
+								+ "<script>$('#Activate/Inactivategroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"\u00C4r du s\u00E4ker?\");if (confirmed) {$(this).submit();}});</script>"
+								+ showProjectGroups());
+					}
 				} else {
-					out.print("<script>$(alert(\"Inkorrekt input.\"))</script>"
-							+ "<script>$('#Activate/Inactivategroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"\u00C4r du s\u00E4ker?\");if (confirmed) {$(this).submit();}});</script>"
+					out.print("<script>$(alert(\"Du kan inte inaktivera en grupp med aktiva medlemmar. Dessa måse först inaktiveras eller tas bort från projektgrupp.\"))</script>"
 							+ showProjectGroups());
 				}
 			}
@@ -42,8 +49,19 @@ public class ActiveStatusForProjectGroup extends gui.ProjectGroupsMenu {
 		}
 	}
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
+
+	}
+
+	private boolean hasActiveMembers(String name) {
+		ArrayList<User> users = db.getUsers(Integer.parseInt(name));
+		for (User u : users) {
+			if (u.isActive()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private boolean checkGroup(String name) {
@@ -65,7 +83,8 @@ public class ActiveStatusForProjectGroup extends gui.ProjectGroupsMenu {
 
 	private String showProjectGroups() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("<FORM METHOD=" + formElement("get") + ">");
+		sb.append("<FORM METHOD=" + formElement("get")
+				+ "onsubmit=\"return confirm('Är du säker?')\"" + ">");
 		sb.append(buildProjectGroupsTable());
 		List<ProjectGroup> groups = db.getProjectGroups();
 		for (ProjectGroup g : groups) {
