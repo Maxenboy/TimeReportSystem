@@ -135,13 +135,13 @@ public class LogIn extends ServletBase {
        			session.setAttribute("removeReportState",RemoveTimeReport.FIRST);
        			session.setAttribute("showReportState", ShowTimeReports.FIRST);
        			if(u.getRole() == User.ROLE_ADMIN) {
-       				session.setAttribute("user_permissions", 1);
+       				session.setAttribute("user_permissions", PERMISSION_ADMIN);
        			} else if (u.getRole() == User.ROLE_PROJECT_LEADER) {
-       				session.setAttribute("user_permissions", 2);
+       				session.setAttribute("user_permissions", PERMISSION_PROJ_LEADER);
        			} else if(u.getRole() == User.ROLE_NO_ROLE) {
-       				session.setAttribute("user_permissions", 3);
+       				session.setAttribute("user_permissions", PERMISSION_WITHOUT_ROLE);
        			} else {
-       				session.setAttribute("user_permissions", 4);
+       				session.setAttribute("user_permissions", PERMISSION_OTHER_USERS);
        			}
        			response.sendRedirect("");
         	} else {

@@ -1,6 +1,6 @@
 package subProjectMembersMenu;
 
-import gui.ProjectGroupsMenu;
+import gui.ProjectMembersMenu;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpSession;
 
 
 @WebServlet("/ShowProjectMembers")
-public class ShowProjectMembers extends ProjectGroupsMenu {
+public class ShowProjectMembers extends ProjectMembersMenu {
 
 	private static final long serialVersionUID = -6458493959837089759L;
 	private ProjectMembers pm;

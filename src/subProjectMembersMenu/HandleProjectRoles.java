@@ -1,5 +1,7 @@
 package subProjectMembersMenu;
 
+import gui.ProjectMembersMenu;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -10,7 +12,7 @@ import javax.servlet.http.*;
 import database.User;
 
 @WebServlet("/HandleProjectRoles")
-public class HandleProjectRoles extends gui.UsersMenu{
+public class HandleProjectRoles extends ProjectMembersMenu {
 
 	private static final long serialVersionUID = 1L;
 	private ProjectMembers members;
