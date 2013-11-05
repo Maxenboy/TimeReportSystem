@@ -64,16 +64,9 @@ public class HandleProjectRoles extends ProjectMembersMenu {
 						db.setUserRoles(map);
 						groupName = "";
 						out.print(showProjectGroups());
-						state = 1;
 					}
 				}
 			} else {
-				if (state == 1) {
-					ArrayList<User> users = db.getUsers((Integer) session
-							.getAttribute("project_group_id"));
-					out.print(showProjectGroup(users));
-					state = 2;
-				} else {
 					ArrayList<User> users = db.getUsers((Integer) session
 							.getAttribute("project_group_id"));
 					HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
@@ -86,10 +79,9 @@ public class HandleProjectRoles extends ProjectMembersMenu {
 						}
 					}
 					db.setUserRoles(map);
-					groupName = "";
+					users = db.getUsers((Integer) session
+							.getAttribute("project_group_id"));
 					out.print(showProjectGroup(users));
-					state = 1;
-				}
 			}
 			out.print(getPageOutro());
 		} else {
