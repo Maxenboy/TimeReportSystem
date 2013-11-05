@@ -40,6 +40,7 @@ public class TimeReportGenerator {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<table class=\"table table-bordered table-hover\">");
 		sb.append("<tr>");
+		sb.append("<th>AnvändarID</th>");
 		sb.append("<th>Rapport ID</th>");
 		sb.append("<th>Vecka</th>");
 		sb.append("<th>Signerad</th>");
@@ -89,6 +90,7 @@ public class TimeReportGenerator {
 		for (int i = 0; i < timeReports.size(); i++) {
 			TimeReport tr = timeReports.get(i);
 			sb.append("<tr>");
+			sb.append("<td>" + tr.getUserId() + "</td>");
 			sb.append("<td>" + tr.getId() + "</td>");
 			sb.append("<td>" + tr.getWeek() + "</td>");
 			if(tr.isSigned())

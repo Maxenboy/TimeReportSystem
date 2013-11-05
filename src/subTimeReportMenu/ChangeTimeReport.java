@@ -184,7 +184,7 @@ public class ChangeTimeReport extends TimeReportingMenu{
 							session.setAttribute("changeReportState", FIRST);
 							doGet(request, response);
 						} else {
-							out.print("<script>alert('Internt fel - tidrapporten kunde ej uppdateras) </script>");
+							out.print("<script>alert('Tidrapporten kunde ej uppdateras. Kontrollera att det ej redan finns en tidrapport med den veckan.') </script>");
 							session.setAttribute("changeReportState", FIRST);
 							doGet(request, response);
 						}

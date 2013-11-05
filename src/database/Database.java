@@ -704,6 +704,20 @@ public class Database {
 	 * @return true if successful, false otherwise
 	 */
 	public boolean updateTimeReport(TimeReport timeReport, ArrayList<Activity> activities) {
+		try {
+			String SQLStatement = "SELECT * from time_reports WHERE user_id = ? AND week = ? AND id <> ?";
+			checkConnection();
+			PreparedStatement preparedStatement = conn.prepareStatement(SQLStatement);
+			preparedStatement.setInt(1, timeReport.getUserId());
+			preparedStatement.setInt(2,timeReport.getWeek());
+			preparedStatement.setInt(3,timeReport.getId());
+			ResultSet result = preparedStatement.executeQuery();
+			if(result.next())
+				return false;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if (removeTimeReport(timeReport.getId())) {
 			return addTimeReport(timeReport, activities);
 		} else {
