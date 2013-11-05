@@ -18,7 +18,8 @@ public class NewUser extends UsersMenu {
 		super();
 	}
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
 		if (loggedIn(request)) {
 			HttpSession session = request.getSession(true);
 			PrintWriter out = response.getWriter();
@@ -38,13 +39,18 @@ public class NewUser extends UsersMenu {
 					out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"\u00C4r du s\u00F6ker?\");if (confirmed) {$(this).submit();}});</script>");
 					String name = request.getParameter("user");
 					String pass = db.getUser(name).getPassword();
-					out.print("<script>$(alert(\"Lyckades! Anv\u00E4ndarnamn: " + name + " L\u00F6senord: " + pass +"\"))</script>");
+					out.print("<script>$(alert(\"Lyckades! Anv\u00E4ndarnamn: "
+							+ name + " L\u00F6senord: " + pass
+							+ "\"))</script>");
 					out.print(users.showUsers(db.getUsers()));
 				} else if (request.getParameter("success").equals("false")) {
-					out.print("<script>$(alert(\"Inkorrekt syntax p\u00E5 anv\u00E4ndarnamnet\"))</script>"
+					out.print("<script>$(alert(\"Ogiltigt användarnamn.\"))</script>"
+							+ s);
+				} else {
+					out.print("<script>$(alert(\"En användare med detta namn existerar redan.\"))</script>"
 							+ s);
 				}
-				
+
 			}
 			out.print(getPageOutro());
 		} else {
@@ -52,16 +58,27 @@ public class NewUser extends UsersMenu {
 		}
 	}
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
 		if (loggedIn(request)) {
-//			HttpSession session = request.getSession(true);
+			// HttpSession session = request.getSession(true);
 			String username = request.getParameter("username");
-			if (users.checkNewName(username)) {
+			switch (users.checkNewName(username)) {
+			case 1:
+				response.sendRedirect(request.getRequestURI()
+						+ "?success=false");
+				break;
+			case 2:
+				response.sendRedirect(request.getRequestURI()
+						+ "?success=exist");
+				break;
+			case 3:
 				users.addUser(username);
-				response.sendRedirect(request.getRequestURI() + "?success=true&user="+username);
-			} else {
-				response.sendRedirect(request.getRequestURI() + "?success=false");
+				response.sendRedirect(request.getRequestURI()
+						+ "?success=true&user=" + username);
+				break;
 			}
+
 		} else {
 			response.sendRedirect("LogIn");
 		}

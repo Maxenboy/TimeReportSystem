@@ -167,7 +167,7 @@ public class ProjectGroups {
 		sb.append("<table class=\"table table-bordered table-hover\"");
 		sb.append("<tr>");
 		sb.append("<th>Anv\u00E4ndarnamn</th>");
-		sb.append("<th>Projectgrupp</th>");
+		sb.append("<th>Projektgrupp</th>");
 		sb.append("<th>Roll</th>");
 		sb.append("<th>V\u00E4lj</th>");
 		sb.append("</tr>");

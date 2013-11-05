@@ -20,8 +20,10 @@ public class HandleProjectRoles extends ProjectMembersMenu {
 	private static final long serialVersionUID = 1L;
 	private ProjectMembers members;
 	private String groupName = "";
+	private int state = 1;
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
 		if (loggedIn(request)) {
 			HttpSession session = request.getSession();
 			PrintWriter out = response.getWriter();
@@ -30,27 +32,63 @@ public class HandleProjectRoles extends ProjectMembersMenu {
 					.getAttribute("user_permissions");
 			out.append(generateMainMenu(userPermission, request));
 			out.print(generateSubMenu(userPermission));
-			if (request.getParameter("thegroup") == null
-					&& groupName.equals("")) {
-				out.print(showProjectGroups());
-			} else {
-				if (request.getParameter("reportId") == null) {
-					if (groupName.equals("")) {
-						groupName = request.getParameter("thegroup");
-					}
-					ArrayList<User> users = db.getUsers(Integer
-							.parseInt(groupName));
-					if (users.isEmpty()) {
-						out.print("<script>$(alert(\"Finns inga användare i projektgruppen!\"))</script>");
-					} else {
-						out.print(showProjectGroup(users));
-					}
+			if ((Integer) session.getAttribute("role") == 1) {
+				if (request.getParameter("thegroup") == null
+						&& groupName.equals("")) {
+					out.print(showProjectGroups());
 				} else {
+					if (state == 1) {
+						if (groupName.equals("")) {
+							groupName = request.getParameter("thegroup");
+						}
+						ArrayList<User> users = db.getUsers(Integer
+								.parseInt(groupName));
+						if (users.isEmpty()) {
+							out.print("<script>$(alert(\"Finns inga användare i projektgruppen!\"))</script>");
+						} else {
+							out.print(showProjectGroup(users));
+							state = 2;
+						}
+					} else {
+						ArrayList<User> users = db.getUsers(Integer
+								.parseInt(groupName));
+						HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+						for (User u : users) {
+							if (request.getParameter("" + u.getId()) != null
+									&& Integer.parseInt(request.getParameter(""
+											+ u.getId())) != u.getRole()) {
+								map.put(u.getId(), Integer.parseInt(request
+										.getParameter("" + u.getId())));
+							}
+						}
+						db.setUserRoles(map);
+						groupName = "";
+						out.print(showProjectGroups());
+						state = 1;
+					}
+				}
+			} else {
+				if (state == 1) {
+					ArrayList<User> users = db.getUsers((Integer) session
+							.getAttribute("project_group_id"));
+					out.print(showProjectGroup(users));
+					state = 2;
+				} else {
+					ArrayList<User> users = db.getUsers((Integer) session
+							.getAttribute("project_group_id"));
 					HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
-					
+					for (User u : users) {
+						if (request.getParameter("" + u.getId()) != null
+								&& Integer.parseInt(request.getParameter(""
+										+ u.getId())) != u.getRole()) {
+							map.put(u.getId(), Integer.parseInt(request
+									.getParameter("" + u.getId())));
+						}
+					}
 					db.setUserRoles(map);
 					groupName = "";
-					out.print(showProjectGroups());
+					out.print(showProjectGroup(users));
+					state = 1;
 				}
 			}
 			out.print(getPageOutro());
@@ -59,7 +97,11 @@ public class HandleProjectRoles extends ProjectMembersMenu {
 		}
 	}
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
+		if (groupName != "") {
+			response.sendRedirect(request.getRequestURI() + "&changed=true");
+		}
 	}
 
 	private String showProjectGroups() {
@@ -107,95 +149,101 @@ public class HandleProjectRoles extends ProjectMembersMenu {
 				+ formElement("thegroup") + "value="
 				+ formElement(Integer.toString(id)) + ">";
 	}
-	
-	private String createDropDown(int id) {
+
+	private String createDropDown(int id, int uId) {
 		String html;
 		switch (id) {
+		case 2:
+			html = "<select name=\"" + uId + "\">"
+					+ "<option value=\"2\" selected>Projektledare</option>"
+					+ "<option value=\"3\">Utan roll</option>"
+					+ "<option value=\"4\">Systemgrupp</option>"
+					+ "<option value=\"5\">Systemledare</option>"
+					+ "<option value=\"6\">Utvecklingsgrupp</option>"
+					+ "<option value=\"7\">Testgrupp</option>"
+					+ "<option value=\"8\">Testledare</option>" + "</select>";
+			break;
 		case 3:
-			html = 
-			"<select name=\"role\">"
+			html = "<select name=\"" + uId + "\">"
+					+ "<option value=\"2\">Projektledare</option>"
 					+ "<option value=\"3\" selected>Utan roll</option>"
-					+ "<option value=\"4\">System group </option>"
-					+ "<option value=\"5\">System leader</option>"
-					+ "<option value=\"6\">Development group</option>"
-					+ "<option value=\"7\">Test group</option>"
-					+ "<option value=\"8\">Test Leader</option>"
-					+ "</select>";
+					+ "<option value=\"4\">Systemgrupp </option>"
+					+ "<option value=\"5\">Systemledare</option>"
+					+ "<option value=\"6\">Utvecklingsgrupp</option>"
+					+ "<option value=\"7\">Testgrupp</option>"
+					+ "<option value=\"8\">Testledare</option>" + "</select>";
 			break;
 		case 4:
-			html = 
-			"<select name=\"role\">"
+			html = "<select name=\"" + uId + "\">"
+					+ "<option value=\"2\">Projektledare</option>"
 					+ "<option value=\"3\">Utan roll</option>"
-					+ "<option value=\"4\" selected>System group </option>"
-					+ "<option value=\"5\">System leader</option>"
-					+ "<option value=\"6\">Development group</option>"
-					+ "<option value=\"7\">Test group</option>"
-					+ "<option value=\"8\">Test Leader</option>"
-					+ "</select>";
+					+ "<option value=\"4\" selected>Systemgrupp </option>"
+					+ "<option value=\"5\">Systemledare</option>"
+					+ "<option value=\"6\">Utvecklingsgrupp</option>"
+					+ "<option value=\"7\">Testgrupp</option>"
+					+ "<option value=\"8\">Testledare</option>" + "</select>";
 			break;
 		case 5:
-			html = 
-			"<select name=\"role\">"
+			html = "<select name=\"" + uId + "\">"
+					+ "<option value=\"2\">Projektledare</option>"
 					+ "<option value=\"3\">Utan roll</option>"
-					+ "<option value=\"4\">System group </option>"
-					+ "<option value=\"5\" selected>System leader</option>"
-					+ "<option value=\"6\">Development group</option>"
-					+ "<option value=\"7\">Test group</option>"
-					+ "<option value=\"8\">Test Leader</option>"
-					+ "</select>";
+					+ "<option value=\"4\">Systemgrupp </option>"
+					+ "<option value=\"5\" selected>Systemledare</option>"
+					+ "<option value=\"6\">Utvecklingsgrupp</option>"
+					+ "<option value=\"7\">Testgrupp</option>"
+					+ "<option value=\"8\">Testledare</option>" + "</select>";
 			break;
 		case 6:
-			html = 
-			"<select name=\"role\">"
+			html = "<select name=\"" + uId + "\">"
+					+ "<option value=\"2\">Projektledare</option>"
 					+ "<option value=\"3\">Utan roll</option>"
-					+ "<option value=\"4\">System group </option>"
-					+ "<option value=\"5\">System leader</option>"
-					+ "<option value=\"6\" selected>Development group</option>"
-					+ "<option value=\"7\">Test group</option>"
-					+ "<option value=\"8\">Test Leader</option>"
-					+ "</select>";
+					+ "<option value=\"4\">Systemgrupp </option>"
+					+ "<option value=\"5\">Systemledare</option>"
+					+ "<option value=\"6\" selected>Utvecklingsgrupp</option>"
+					+ "<option value=\"7\">Testgrupp</option>"
+					+ "<option value=\"8\">Testledare</option>" + "</select>";
 			break;
 		case 7:
-			html = 
-			"<select name=\"role\">"
+			html = "<select name=\"" + uId + "\">"
+					+ "<option value=\"2\">Projektledare</option>"
 					+ "<option value=\"3\">Utan roll</option>"
-					+ "<option value=\"4\">System group </option>"
-					+ "<option value=\"5\">System leader</option>"
-					+ "<option value=\"6\">Development group</option>"
-					+ "<option value=\"7\" selected>Test group</option>"
-					+ "<option value=\"8\">Test Leader</option>"
-					+ "</select>";
+					+ "<option value=\"4\">Systemgrupp </option>"
+					+ "<option value=\"5\">Systemledare</option>"
+					+ "<option value=\"6\">Utvecklingsgrupp</option>"
+					+ "<option value=\"7\" selected>Testgrupp</option>"
+					+ "<option value=\"8\">Testledare</option>" + "</select>";
 			break;
 		case 8:
-			html = 
-			"<select name=\"role\">"
+			html = "<select name=\"" + uId + "\">"
+					+ "<option value=\"2\">Projektledare</option>"
 					+ "<option value=\"3\">Utan roll</option>"
-					+ "<option value=\"4\">System group </option>"
-					+ "<option value=\"5\">System leader</option>"
-					+ "<option value=\"6\">Development group</option>"
-					+ "<option value=\"7\">Test group</option>"
-					+ "<option value=\"8\" selected>Test Leader</option>"
-					+ "</select>";
+					+ "<option value=\"4\">Systemgrupp </option>"
+					+ "<option value=\"5\">Systemledare</option>"
+					+ "<option value=\"6\">Utvecklingsgrupp</option>"
+					+ "<option value=\"7\">Testgrupp</option>"
+					+ "<option value=\"8\" selected>Testledare</option>" + "</select>";
 			break;
-			default:
-			html = "";	
+		default:
+			html = "";
 			break;
 		}
 		return html;
 	}
+
 	private String showProjectGroup(ArrayList<User> users) {
 		if (users.isEmpty()) {
 			return null;
 		}
 		StringBuilder sb = new StringBuilder();
-		sb.append("<FORM METHOD=" + formElement("get") + "onsubmit=\"return confirm('Är du säker?')\"" +">");
+		sb.append("<FORM METHOD=" + formElement("get")
+				+ "onsubmit=\"return confirm('Är du säker?')\"" + ">");
 		sb.append(buildShowUsersInGroupTable());
 		for (User u : users) {
 			sb.append("<tr>");
 			sb.append("<td>" + u.getUsername() + "</td>");
 			sb.append("<td>" + u.getProjectGroup() + "</td>");
 			sb.append("<td>" + translateRole(u.getRole()) + "</td>");
-			sb.append("<td>" + createDropDown(u.getRole()) + "</td>");
+			sb.append("<td>" + createDropDown(u.getRole(), u.getId()) + "</td>");
 			sb.append("</tr>");
 		}
 		sb.append("</table>");
@@ -204,6 +252,7 @@ public class HandleProjectRoles extends ProjectMembersMenu {
 		sb.append("</form>");
 		return sb.toString();
 	}
+
 	private String translateRole(int role) {
 		switch (role) {
 		case 1:
@@ -224,6 +273,7 @@ public class HandleProjectRoles extends ProjectMembersMenu {
 			return ("Utan roll");
 		}
 	}
+
 	private String buildShowUsersInGroupTable() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<table class=\"table table-bordered table-hover\"");
@@ -235,5 +285,5 @@ public class HandleProjectRoles extends ProjectMembersMenu {
 		sb.append("</tr>");
 		return sb.toString();
 	}
-	
+
 }

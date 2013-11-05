@@ -39,17 +39,17 @@ public class Users {
 	 * @param name
 	 * @return
 	 */
-	public boolean checkNewName(String name) {
+	public int checkNewName(String name) {
 		if (name.length() < 5 || name.length() > 10
-				|| Pattern.matches("\\W", name)) {
-			return false;
+				|| Pattern.matches("[^a-zA-Z0-9]*", name)) {
+			return 1;
 		}
 		for (User u : db.getUsers()) {
 			if (u.getUsername().equals(name)) {
-				return false;
+				return 2;
 			}
 		}
-		return true;
+		return 3;
 	}
 
 	/**
@@ -163,7 +163,7 @@ public class Users {
 	 * @return
 	 */
 	public boolean addUser(String name) {
-		if (checkNewName(name)) {
+		if (checkNewName(name)==3) {
 			db.addUser(new User(name));
 			return true;
 		}

@@ -39,7 +39,7 @@ public class ActiveStatusForProjectGroup extends gui.ProjectGroupsMenu {
 								+ showProjectGroups());
 					}
 				} else {
-					out.print("<script>$(alert(\"Du kan inte inaktivera en grupp med aktiva medlemmar. Dessa måse först inaktiveras eller tas bort från projektgrupp.\"))</script>"
+					out.print("<script>$(alert(\"Du kan inte inaktivera en grupp med aktiva medlemmar. Dessa måste först inaktiveras eller tas bort från projektgrupp.\"))</script>"
 							+ showProjectGroups());
 				}
 			}
