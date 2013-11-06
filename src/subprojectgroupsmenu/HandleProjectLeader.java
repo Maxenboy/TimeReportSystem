@@ -40,7 +40,7 @@ public class HandleProjectLeader extends gui.ProjectGroupsMenu {
 						groupName = request.getParameter("thegroup");
 					}
 					ArrayList<User> users = db.getUsers(Integer
-							.parseInt(request.getParameter("thegroup")));
+							.parseInt(groupName));
 					if (users.isEmpty()) {
 						out.print("<script>$(alert(\"Finns inga användare i projektgruppen!\"))</script>");
 					} else {
@@ -83,9 +83,9 @@ public class HandleProjectLeader extends gui.ProjectGroupsMenu {
 		for (User u : users) {
 			sb.append("<tr>");
 			sb.append("<td>" + u.getUsername() + "</td>");
-			sb.append("<td>" + u.getProjectGroup() + "</td>");
+			sb.append("<td>" + db.getProjectGroup(u.getProjectGroup()).getProjectName() + "</td>");
 			sb.append("<td>" + translateRole(u.getRole()) + "</td>");
-			sb.append("<td>" + createRadio(u.getId()) + "</td>");
+			sb.append("<td>" + createRadio2(u.getId()) + "</td>");
 			sb.append("</tr>");
 		}
 		sb.append("</table>");
@@ -119,7 +119,7 @@ public class HandleProjectLeader extends gui.ProjectGroupsMenu {
 		sb.append("<table class=\"table table-bordered table-hover\"");
 		sb.append("<tr>");
 		sb.append("<th>Anv\u00E4ndarnamn</th>");
-		sb.append("<th>Projectgrupp</th>");
+		sb.append("<th>Projektgrupp</th>");
 		sb.append("<th>Roll</th>");
 		sb.append("<th>V\u00E4lj</th>");
 		sb.append("</tr>");
@@ -169,6 +169,12 @@ public class HandleProjectLeader extends gui.ProjectGroupsMenu {
 	private String createRadio(int id) {
 		return "<input type=" + formElement("radio") + "name="
 				+ formElement("thegroup") + "value="
+				+ formElement(Integer.toString(id)) + ">";
+	}
+	
+	private String createRadio2(int id) {
+		return "<input type=" + formElement("radio") + "name="
+				+ formElement("reportId") + "value="
 				+ formElement(Integer.toString(id)) + ">";
 	}
 

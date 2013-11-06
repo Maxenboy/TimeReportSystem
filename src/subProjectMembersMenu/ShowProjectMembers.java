@@ -41,11 +41,11 @@ public class ShowProjectMembers extends ProjectMembersMenu {
 				} else {
 					ArrayList<User> users = db.getUsers(Integer
 							.parseInt(request.getParameter("thegroup")));
-					out.print(showProjectGroup(users));
+					out.print("<H1> Projektgrupp: " + db.getProjectGroup(Integer.parseInt(request.getParameter("thegroup"))).getProjectName() + "</H1><br>" +showProjectGroup(users));
 				}
 			} else {
 				ArrayList<User> users = db.getUsers((Integer) session.getAttribute("project_group_id"));
-				out.print(showProjectGroup(users));
+				out.print(db.getProjectGroup((Integer) session.getAttribute("project_group_id")).getProjectName() + "<br>" +showProjectGroup(users));
 			}
 		} else {
 			response.sendRedirect("LogIn");

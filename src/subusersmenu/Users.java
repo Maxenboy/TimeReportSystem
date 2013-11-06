@@ -40,16 +40,15 @@ public class Users {
 	 * @return
 	 */
 	public int checkNewName(String name) {
-		if (name.length() < 5 || name.length() > 10
-				|| Pattern.matches("[^a-zA-Z0-9]*", name)) {
-			return 1;
+		if(name.length() > 4 && name.length() < 11 && Pattern.matches("[a-zA-Z0-9]*", name)) {
+			return 3;
 		}
 		for (User u : db.getUsers()) {
 			if (u.getUsername().equals(name)) {
 				return 2;
 			}
 		}
-		return 3;
+		return 1;
 	}
 
 	/**

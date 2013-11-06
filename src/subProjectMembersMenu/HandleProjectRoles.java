@@ -28,6 +28,7 @@ public class HandleProjectRoles extends ProjectMembersMenu {
 			HttpSession session = request.getSession();
 			PrintWriter out = response.getWriter();
 			out.print(getPageIntro());
+			boolean changed = false;
 			int userPermission = (Integer) session
 					.getAttribute("user_permissions");
 			out.append(generateMainMenu(userPermission, request));
@@ -46,7 +47,7 @@ public class HandleProjectRoles extends ProjectMembersMenu {
 						if (users.isEmpty()) {
 							out.print("<script>$(alert(\"Finns inga användare i projektgruppen!\"))</script>");
 						} else {
-							out.print(showProjectGroup(users));
+							out.print(showProjectGroup(users, -1));
 							state = 2;
 						}
 					} else {
@@ -59,6 +60,8 @@ public class HandleProjectRoles extends ProjectMembersMenu {
 											+ u.getId())) != u.getRole()) {
 								map.put(u.getId(), Integer.parseInt(request
 										.getParameter("" + u.getId())));
+								changed = true;
+								
 							}
 						}
 						db.setUserRoles(map);
@@ -67,21 +70,28 @@ public class HandleProjectRoles extends ProjectMembersMenu {
 					}
 				}
 			} else {
-					ArrayList<User> users = db.getUsers((Integer) session
-							.getAttribute("project_group_id"));
-					HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
-					for (User u : users) {
-						if (request.getParameter("" + u.getId()) != null
-								&& Integer.parseInt(request.getParameter(""
-										+ u.getId())) != u.getRole()) {
-							map.put(u.getId(), Integer.parseInt(request
-									.getParameter("" + u.getId())));
-						}
+				ArrayList<User> users = db.getUsers((Integer) session
+						.getAttribute("project_group_id"));
+				HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+				for (User u : users) {
+					if (request.getParameter("" + u.getId()) != null
+							&& Integer.parseInt(request.getParameter(""
+									+ u.getId())) != u.getRole()) {
+						map.put(u.getId(),
+								Integer.parseInt(request.getParameter(""
+										+ u.getId())));
+						changed = true;
+						
 					}
-					db.setUserRoles(map);
-					users = db.getUsers((Integer) session
-							.getAttribute("project_group_id"));
-					out.print(showProjectGroup(users));
+				}
+				db.setUserRoles(map);
+				users = db.getUsers((Integer) session
+						.getAttribute("project_group_id"));
+				out.print(showProjectGroup(users,
+						(Integer) session.getAttribute("id")));
+			}
+			if(changed) {
+				out.print("<script>$(alert(\"Ändringar är sparade.\"))</script>");
 			}
 			out.print(getPageOutro());
 		} else {
@@ -213,7 +223,8 @@ public class HandleProjectRoles extends ProjectMembersMenu {
 					+ "<option value=\"5\">Systemledare</option>"
 					+ "<option value=\"6\">Utvecklingsgrupp</option>"
 					+ "<option value=\"7\">Testgrupp</option>"
-					+ "<option value=\"8\" selected>Testledare</option>" + "</select>";
+					+ "<option value=\"8\" selected>Testledare</option>"
+					+ "</select>";
 			break;
 		default:
 			html = "";
@@ -222,20 +233,22 @@ public class HandleProjectRoles extends ProjectMembersMenu {
 		return html;
 	}
 
-	private String showProjectGroup(ArrayList<User> users) {
+	private String showProjectGroup(ArrayList<User> users, int id) {
 		if (users.isEmpty()) {
 			return null;
 		}
 		StringBuilder sb = new StringBuilder();
-		sb.append("<FORM METHOD=" + formElement("get")
-				+ "onsubmit=\"return confirm('Är du säker?')\"" + ">");
+		sb.append("<FORM METHOD=" + formElement("get") + ">");
 		sb.append(buildShowUsersInGroupTable());
 		for (User u : users) {
 			sb.append("<tr>");
 			sb.append("<td>" + u.getUsername() + "</td>");
-			sb.append("<td>" + u.getProjectGroup() + "</td>");
+			sb.append("<td>" + db.getProjectGroup(u.getProjectGroup()).getProjectName() + "</td>");
 			sb.append("<td>" + translateRole(u.getRole()) + "</td>");
-			sb.append("<td>" + createDropDown(u.getRole(), u.getId()) + "</td>");
+			if (id != u.getId()) {
+				sb.append("<td>" + createDropDown(u.getRole(), u.getId())
+						+ "</td>");
+			}
 			sb.append("</tr>");
 		}
 		sb.append("</table>");
