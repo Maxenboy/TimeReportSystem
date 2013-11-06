@@ -18,7 +18,6 @@ import database.User;
 public class HandleProjectRoles extends ProjectMembersMenu {
 
 	private static final long serialVersionUID = 1L;
-	private ProjectMembers members;
 	private String groupName = "";
 	private int state = 1;
 

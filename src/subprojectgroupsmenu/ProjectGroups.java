@@ -7,7 +7,6 @@ import database.ProjectGroup;
 import database.User;
 
 public class ProjectGroups {
-	private String name, startweek, endweek, estimatedHours;
 	private Database db;
 
 	/**
