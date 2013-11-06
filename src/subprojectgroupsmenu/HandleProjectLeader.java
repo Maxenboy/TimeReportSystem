@@ -18,7 +18,6 @@ import database.User;
 public class HandleProjectLeader extends gui.ProjectGroupsMenu {
 
 	private static final long serialVersionUID = 2692792293983643296L;
-	private ProjectGroups group = new ProjectGroups(db);
 	private String groupName = "";
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)

@@ -4,7 +4,6 @@ import java.util.*;
 import database.*;
 
 public class ProjectMembers {
-	private int groupName;
 	private Database db;
 
 	/**
@@ -13,7 +12,6 @@ public class ProjectMembers {
 	 * @param groupName
 	 */
 	public ProjectMembers(String groupName, Database database) {
-		this.groupName = Integer.parseInt(groupName);
 		this.db = database;
 	}
 
