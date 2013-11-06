@@ -157,7 +157,7 @@ public class Statistics extends gui.StatisticsMenu {
 					+ projectgroup + "'>" + projectgroup +
 					"</option>");
 		}
-		sb.append("</select> <br /><input type='SUBMIT' value='Skicka' /> </form>");
+		sb.append("</select> <br /><input type='SUBMIT' value='Visa' /> </form>");
 
 		return sb.toString();
 	}
@@ -290,7 +290,7 @@ public class Statistics extends gui.StatisticsMenu {
 						"</option>");				
 			}
 			sb.append("</select></td></tr></table>"
-					+ "<br /><input type='SUBMIT' value='Skicka' />"
+					+ "<br /><input type='SUBMIT' value='Visa' />"
 					+ "</form>");  // form is now complete.
 
 
@@ -309,7 +309,7 @@ public class Statistics extends gui.StatisticsMenu {
 						"</option>");				
 			}
 			sb.append("</select>"
-					+ "<br /><input type='SUBMIT' value='Skicka' />"
+					+ "<br /><input type='SUBMIT' value='Visa' />"
 					+ "</form>");  // form is now complete.	
 
 		} else {

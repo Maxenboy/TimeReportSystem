@@ -101,7 +101,7 @@ public class BurnDown extends gui.StatisticsMenu {
 					+ projectgroup + "'>" + projectgroup +
 					"</option>");
 		}
-		sb.append("</select> <br /><input type='SUBMIT' value='Skicka' /> </form>");
+		sb.append("</select> <br /><input type='SUBMIT' value='Visa' /> </form>");
 
 		return sb.toString();
 	}
