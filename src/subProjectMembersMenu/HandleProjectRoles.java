@@ -136,7 +136,7 @@ public class HandleProjectRoles extends ProjectMembersMenu {
 		sb.append("<table class=\"table table-bordered table-hover\">");
 		sb.append("<tr>");
 		sb.append("<th>Projektgrupp</th>");
-		sb.append("<th>Starvecka</th>");
+		sb.append("<th>Startvecka</th>");
 		sb.append("<th>Slutvecka</th>");
 		sb.append("<th>Estimerat antal timmar</th>");
 		sb.append("<th>Aktiv</th>");

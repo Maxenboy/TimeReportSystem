@@ -87,7 +87,7 @@ public class ShowProjectMembers extends ProjectMembersMenu {
 		sb.append("<table class=\"table table-bordered table-hover\">");
 		sb.append("<tr>");
 		sb.append("<th>Projektgrupp</th>");
-		sb.append("<th>Starvecka</th>");
+		sb.append("<th>Startvecka</th>");
 		sb.append("<th>Slutvecka</th>");
 		sb.append("<th>Estimerat antal timmar</th>");
 		sb.append("<th>Aktiv</th>");
@@ -113,7 +113,7 @@ public class ShowProjectMembers extends ProjectMembersMenu {
 		for (User u : users) {
 			sb.append("<tr>");
 			sb.append("<td>" + u.getUsername() + "</td>");
-			sb.append("<td>" + u.getProjectGroup() + "</td>");
+			sb.append("<td>" + db.getProjectGroup(u.getProjectGroup()).getProjectName() + "</td>");
 			sb.append("<td>" + translateRole(u.getRole()) + "</td>");
 			String active = u.isActive() ? "Aktiv" : "Inaktiv";
 			sb.append("<td>" + active + "</td>");
