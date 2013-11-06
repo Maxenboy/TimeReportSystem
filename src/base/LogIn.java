@@ -145,7 +145,7 @@ public class LogIn extends ServletBase {
        			}
        			response.sendRedirect("");
         	} else {
-        		out.println("<p style='color: red;'>Anv\u00E4ndaren \u00E4r inaktiv</p>");
+        		out.println("<p style='color: red;'>Du \u00E4r inte inloggad i TidRapporteringsSystemet. Kontakta administrat\u00F6r.</p>");
         		out.println(loginRequestForm());
         	}
 //       		}
