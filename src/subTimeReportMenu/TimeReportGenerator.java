@@ -40,7 +40,7 @@ public class TimeReportGenerator {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<table class=\"table table-bordered table-hover\">");
 		sb.append("<tr>");
-		sb.append("<th>Anv�ndarID</th>");
+		sb.append("<th>Anv�ndarID</th>");
 		sb.append("<th>Rapport ID</th>");
 		sb.append("<th>Vecka</th>");
 		sb.append("<th>Signerad</th>");
@@ -89,8 +89,9 @@ public class TimeReportGenerator {
 		sb.append(buildShowTimeReportTable());
 		for (int i = 0; i < timeReports.size(); i++) {
 			TimeReport tr = timeReports.get(i);
+			User usr = db.getUser(tr.getUserId());
 			sb.append("<tr>");
-			sb.append("<td>" + tr.getUserId() + "</td>");
+			sb.append("<td>" + usr.getUsername() + "</td>");
 			sb.append("<td>" + tr.getId() + "</td>");
 			sb.append("<td>" + tr.getWeek() + "</td>");
 			if(tr.isSigned())
@@ -137,7 +138,7 @@ public class TimeReportGenerator {
 		html += "<table class=\"table table-bordered table-hover\">";
 		html += "<tr>";
 		html += "<th>Grupp ID</th>";
-		html += "<th>Välj</th>";
+		html += "<th>V��lj</th>";
 		html += "</tr>";
 		for(ProjectGroup pg: prjGroups) {
 			html += "<tr>";
@@ -146,7 +147,7 @@ public class TimeReportGenerator {
 			html += "</tr>";
 		}
 		html += "</table>";
-		html += "<INPUT TYPE=\"submit\" VALUE=\"Hämta projektgrupp\">";
+		html += "<INPUT TYPE=\"submit\" VALUE=\"H��mta projektgrupp\">";
 		html += "</FORM>";
 		return html;
 	}
@@ -300,11 +301,12 @@ public class TimeReportGenerator {
 		TimeReport tr = db.getTimeReport(reportId);
 		if(tr.isSigned())
 			return null;
+		User usr = db.getUser(tr.getUserId());
 		StringBuilder sb = new StringBuilder();
 		ArrayList<Activity> activities = db.getActivities(reportId);
 		sb.append("<FORM METHOD=post ACTION=\"ChangeTimeReport\">");
 		sb.append("<TABLE class=\"table table-bordered table-hover\">");
-		sb.append("<TR><TD COLSPAN=1><B>Vecka:</B></TD><TD><INPUT TYPE=\"text\" NAME=\"week\" Value=" + formElement(Integer.toString(tr.getWeek())) + "SIZE=3></TD></TR>");
+		sb.append("<TR><TD COLSPAN=1><B>Vecka:</B></TD><TD><INPUT TYPE=\"text\" NAME=\"week\" Value=" + formElement(Integer.toString(tr.getWeek())) + "SIZE=3></TD><TD COLSPAN=2><B>Användarnamn:</B></TD><TD COLSPAN=2>" + usr.getUsername() + "</TD></TR>");
 		sb.append("<TR><TH>Number</TH><TH>Aktivitet</TH><TH WIDTH=75>D</TH><TH WIDTH=75>I</TH><TH WIDTH=75>F</TH><TH WIDTH=75>R</TH></TR>");
 		int activityNbr = 11;
 		int formField = 0;
@@ -392,7 +394,7 @@ public class TimeReportGenerator {
 		sb.append("</TABLE>");
 		sb.append("<INPUT TYPE=\"hidden\" NAME=\"FormFields\" Value=\"0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,21 ,22 ,23 ,30 ,41,42,43,44,100,\">");
 		sb.append("<INPUT TYPE=\"hidden\" NAME=\"reportId\" Value=" + formElement(Integer.toString(reportId)) + ">");
-		sb.append("<INPUT TYPE=\"submit\" VALUE=\"Ändra tidrapport\">");
+		sb.append("<INPUT TYPE=\"submit\" VALUE=\"��ndra tidrapport\">");
 		sb.append("</FORM>");
 		return sb.toString();
 	}
@@ -407,12 +409,13 @@ public class TimeReportGenerator {
 	public String showTimeReport(int reportId, int state) {		
 		ArrayList<Activity> activities = db.getActivities(reportId);
 		TimeReport tr = db.getTimeReport(reportId);
+		User usr = db.getUser(tr.getUserId());
 		ProjectGroup pg = db.getProjectGroup(tr.getProjectGroupId());
 		StringBuilder sb = new StringBuilder();
 		//Table setup
 		sb.append("<table class=\"table table-bordered table-hover\">");
 		sb.append("<tr>");
-		sb.append("<TD COLSPAN=2><B>Rapport:</B></TD><TD COLSPAN=2>" + reportId + "</TD>");
+		sb.append("<TD COLSPAN=2><B>Användarnamn:</B></TD><TD COLSPAN=2>" + usr.getUsername() + "</TD>");
 		sb.append("<TD><B>Week:</B></TD><TD COLSPAN=2>" + tr.getWeek() + "</TD>");
 		sb.append("</tr>");
 		sb.append("<tr>");
@@ -513,15 +516,15 @@ public class TimeReportGenerator {
 		StringBuilder sb = new StringBuilder();
 		switch(state) {
 		case REMOVE_REPORT:
-			sb.append("<form  method=\"post\" action=\"RemoveTimeReport\" onclick=\"return confirm('Är du säker på att du vill ta bort den här rapporten?')\">");
+			sb.append("<form  method=\"post\" action=\"RemoveTimeReport\" onclick=\"return confirm('��r du s��ker p�� att du vill ta bort den h��r rapporten?')\">");
 			sb.append("<input type=\"submit\" value=\"Radera tidrapport\" >");
 			break;
 		case SHOW_UNSIGNED:
-			sb.append("<form  method=\"post\" action=\"SignTimeReports\" onclick=\"return confirm('Är du säker på att du vill signera den hör rapporten?')\">");
+			sb.append("<form  method=\"post\" action=\"SignTimeReports\" onclick=\"return confirm('��r du s��ker p�� att du vill signera den h��r rapporten?')\">");
 			sb.append("<input type=\"submit\" value=\"Signera tidrapport\" >");
 			break;
 		case SHOW_SIGN:
-			sb.append("<form  method=\"post\" action=\"SignTimeReports\" onclick=\"return confirm('Är du säker på att du vill avsignera den hör rapporten')\">");
+			sb.append("<form  method=\"post\" action=\"SignTimeReports\" onclick=\"return confirm('��r du s��ker p�� att du vill avsignera den h��r rapporten')\">");
 			sb.append("<input type=\"submit\" value=\"Avsignera tidrapport\">");
 			break;
 		}
