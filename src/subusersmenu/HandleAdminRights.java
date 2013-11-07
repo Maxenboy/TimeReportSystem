@@ -50,7 +50,7 @@ public class HandleAdminRights extends UsersMenu {
 					}
 				} else {
 					out.print(users.showUsers(db.getUsers())
-							+ "<script>$(alert(\"Admin kan inte ta bort sina egna rättigheter! \"))</script>");
+							+ "<script>$(alert(\"Admin kan inte ta bort sina egna r\u00E4ttigheter! \"))</script>");
 				}
 			}
 			out.print(getPageOutro());

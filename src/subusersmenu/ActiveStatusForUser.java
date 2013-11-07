@@ -47,7 +47,7 @@ public class ActiveStatusForUser extends UsersMenu {
 						out.print(users.showUsers(db.getUsers()));
 					}
 				} else {
-					out.print("<script>$(alert(\"Du kan inte inaktivera dig själv!\"))</script>");
+					out.print("<script>$(alert(\"Du kan inte inaktivera dig sj\u00E4lv!\"))</script>");
 					out.print(users.showUsers(db.getUsers()));
 				}
 			}

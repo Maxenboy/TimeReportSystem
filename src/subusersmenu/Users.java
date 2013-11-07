@@ -24,10 +24,10 @@ public class Users {
 		String html;
 		html = "<p> <form name=" + formElement("input");
 		html += " method=" + formElement("POST");
-		html += "<p> Användarnamn : <input type=" + formElement("text")
+		html += "<p> Anv\u00E4ndarnamn : <input type=" + formElement("text")
 				+ " name=" + formElement("username") + '>';
 		html += "<input type=" + formElement("submit") + "value="
-				+ formElement("Skapa användare") + '>';
+				+ formElement("Skapa anv\u00E4ndare") + '>';
 		html += "</form>";
 		return html;
 
@@ -78,7 +78,7 @@ public class Users {
 		}
 		StringBuilder sb = new StringBuilder();
 		sb.append("<FORM METHOD=" + formElement("get")
-				+ "onsubmit=\"return confirm('Är du säker?')\"" + ">");
+				+ "onsubmit=\"return confirm('\u00C4r du s\u00E4ker?')\"" + ">");
 		sb.append(buildShowUsersTable());
 		for (User u : users) {
 			sb.append("<tr>");

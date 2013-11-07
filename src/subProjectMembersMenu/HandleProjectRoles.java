@@ -44,7 +44,7 @@ public class HandleProjectRoles extends ProjectMembersMenu {
 						ArrayList<User> users = db.getUsers(Integer
 								.parseInt(groupName));
 						if (users.isEmpty()) {
-							out.print("<script>$(alert(\"Finns inga användare i projektgruppen!\"))</script>");
+							out.print("<script>$(alert(\"Finns inga anv\u00E4ndare i projektgruppen!\"))</script>");
 						} else {
 							out.print(showProjectGroup(users, -1));
 							state = 2;
@@ -90,7 +90,7 @@ public class HandleProjectRoles extends ProjectMembersMenu {
 						(Integer) session.getAttribute("id")));
 			}
 			if(changed) {
-				out.print("<script>$(alert(\"Ändringar är sparade.\"))</script>");
+				out.print("<script>$(alert(\"\u00C4ndringar \u00E4r sparade.\"))</script>");
 			}
 			out.print(getPageOutro());
 		} else {
@@ -126,7 +126,7 @@ public class HandleProjectRoles extends ProjectMembersMenu {
 		}
 		sb.append("</table>");
 		sb.append("<input type=" + formElement("submit") + "value="
-				+ formElement("Välj grupp") + ">");
+				+ formElement("V\u00E4lj grupp") + ">");
 		sb.append("</form>");
 		return sb.toString();
 	}
@@ -260,7 +260,7 @@ public class HandleProjectRoles extends ProjectMembersMenu {
 	private String translateRole(int role) {
 		switch (role) {
 		case 1:
-			return ("Administratör");
+			return ("Administrat\u00F6r");
 		case 2:
 			return ("Projektledare");
 		case 4:
@@ -282,10 +282,10 @@ public class HandleProjectRoles extends ProjectMembersMenu {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<table class=\"table table-bordered table-hover\"");
 		sb.append("<tr>");
-		sb.append("<th>Användarnamn</th>");
+		sb.append("<th>Anv\u00E4ndarnamn</th>");
 		sb.append("<th>Projectgrupp</th>");
 		sb.append("<th>Roll</th>");
-		sb.append("<th>Välj roll</th>");
+		sb.append("<th>V\u00E4lj roll</th>");
 		sb.append("</tr>");
 		return sb.toString();
 	}

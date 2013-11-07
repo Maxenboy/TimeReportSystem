@@ -113,7 +113,7 @@ public class NewTimeReport extends TimeReportingMenu{
 							session.setAttribute("newReportState", FIRST);
 							doGet(request, response);
 						} else {
-							out.print("<script>alert('Tidrapporten kunde ej sparas. Kontrollera så att det ej finns en tidigare registrerad tidrapport för samma vecka') </script>");
+							out.print("<script>alert('Tidrapporten kunde ej sparas. Kontrollera s\u00E5 att det ej finns en tidigare registrerad tidrapport f\u00F6r samma vecka') </script>");
 							session.setAttribute("newReportState", FIRST);
 							doGet(request, response);
 						}

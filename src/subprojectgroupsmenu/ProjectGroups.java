@@ -43,7 +43,7 @@ public class ProjectGroups {
 		html += "<p> Grupp id: <input type=" + formElement("text")
 				+ " groupid=" + formElement("groupid") + '>';
 		html += "<input type=" + formElement("submit") + "value="
-				+ formElement("Lägg till användare") + '>';
+				+ formElement("L\u00E4gg till anv\u00E4ndare") + '>';
 		html += "</form>";
 		return html;
 	}
@@ -71,7 +71,7 @@ public class ProjectGroups {
 		}
 		sb.append("</table>");
 		sb.append("<INPUT TYPE=" + formElement("submit") + "VALUE="
-				+ formElement("Hämta användare") + ">");
+				+ formElement("H\u00E4mta anv\u00E4ndare") + ">");
 		sb.append("</form>");
 		return sb.toString();
 	}

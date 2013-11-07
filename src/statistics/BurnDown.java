@@ -50,7 +50,7 @@ public class BurnDown extends gui.StatisticsMenu {
 				out.append(printBurnDown(db.getTimePerWeek(projectGroupId), projectGroupId, db.getProjectGroup(projectGroupId)));
 				break;
 			default:
-				out.append("Oväntad anv\u00E4ndarrättighetsniv\u00E5.");
+				out.append("Ov\u00E4ntad anv\u00E4ndarr\u00E4ttighetsniv\u00E5.");
 			}		
 			out.append(getPageOutro());
 		} else {

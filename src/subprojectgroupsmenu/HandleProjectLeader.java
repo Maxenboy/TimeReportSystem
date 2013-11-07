@@ -41,7 +41,7 @@ public class HandleProjectLeader extends gui.ProjectGroupsMenu {
 					ArrayList<User> users = db.getUsers(Integer
 							.parseInt(groupName));
 					if (users.isEmpty()) {
-						out.print("<script>$(alert(\"Finns inga användare i projektgruppen!\"))</script>");
+						out.print("<script>$(alert(\"Finns inga anv\u00E4ndare i projektgruppen!\"))</script>");
 					} else {
 						out.print(showProjectGroup(users));
 					}
@@ -77,7 +77,7 @@ public class HandleProjectLeader extends gui.ProjectGroupsMenu {
 			return null;
 		}
 		StringBuilder sb = new StringBuilder();
-		sb.append("<FORM METHOD=" + formElement("get") + "onsubmit=\"return confirm('Är du säker?')\"" +">");
+		sb.append("<FORM METHOD=" + formElement("get") + "onsubmit=\"return confirm('\u00C4r du s\u00E4ker?')\"" +">");
 		sb.append(buildShowUsersInGroupTable());
 		for (User u : users) {
 			sb.append("<tr>");
@@ -96,7 +96,7 @@ public class HandleProjectLeader extends gui.ProjectGroupsMenu {
 	private String translateRole(int role) {
 		switch (role) {
 		case 1:
-			return ("Administratör");
+			return ("Administrat\u00F6r");
 		case 2:
 			return ("Projektledare");
 		case 4:
@@ -146,7 +146,7 @@ public class HandleProjectLeader extends gui.ProjectGroupsMenu {
 		}
 		sb.append("</table>");
 		sb.append("<input type=" + formElement("submit") + "value="
-				+ formElement("Välj grupp") + ">");
+				+ formElement("V\u00E4lj grupp") + ">");
 		sb.append("</form>");
 		return sb.toString();
 	}

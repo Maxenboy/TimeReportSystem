@@ -77,7 +77,7 @@ public class ShowProjectMembers extends ProjectMembersMenu {
 		}
 		sb.append("</table>");
 		sb.append("<input type=" + formElement("submit") + "value="
-				+ formElement("Välj grupp") + ">");
+				+ formElement("V\u00E4lj grupp") + ">");
 		sb.append("</form>");
 		return sb.toString();
 	}
@@ -108,7 +108,7 @@ public class ShowProjectMembers extends ProjectMembersMenu {
 		}
 		StringBuilder sb = new StringBuilder();
 		sb.append("<FORM METHOD=" + formElement("get")
-				+ "onsubmit=\"return confirm('Är du säker?')\"" + ">");
+				+ "onsubmit=\"return confirm('\u00C4r du s\u00E4ker?')\"" + ">");
 		sb.append(buildShowUsersInGroupTable());
 		for (User u : users) {
 			sb.append("<tr>");
@@ -129,7 +129,7 @@ public class ShowProjectMembers extends ProjectMembersMenu {
 	private String translateRole(int role) {
 		switch (role) {
 		case 1:
-			return ("Administratör");
+			return ("Administrat\u00F6r");
 		case 2:
 			return ("Projektledare");
 		case 4:
@@ -151,7 +151,7 @@ public class ShowProjectMembers extends ProjectMembersMenu {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<table class=\"table table-bordered table-hover\"");
 		sb.append("<tr>");
-		sb.append("<th>Användarnamn</th>");
+		sb.append("<th>Anv\u00E4ndarnamn</th>");
 		sb.append("<th>Projektgrupp</th>");
 		sb.append("<th>Roll</th>");
 		sb.append("<th>Aktiv</th>");

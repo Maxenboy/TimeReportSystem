@@ -39,7 +39,7 @@ public class ActiveStatusForProjectGroup extends gui.ProjectGroupsMenu {
 								+ showProjectGroups());
 					}
 				} else {
-					out.print("<script>$(alert(\"Du kan inte inaktivera en grupp med aktiva medlemmar. Dessa måste först inaktiveras eller tas bort från projektgrupp.\"))</script>"
+					out.print("<script>$(alert(\"Du kan inte inaktivera en grupp med aktiva medlemmar. Dessa m\u00E5ste f\u00F6rst inaktiveras eller tas bort fr\u00E5n projektgrupp.\"))</script>"
 							+ showProjectGroups());
 				}
 			}
@@ -84,7 +84,7 @@ public class ActiveStatusForProjectGroup extends gui.ProjectGroupsMenu {
 	private String showProjectGroups() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<FORM METHOD=" + formElement("get")
-				+ "onsubmit=\"return confirm('Är du säker?')\"" + ">");
+				+ "onsubmit=\"return confirm('\u00C4r du s\u00E4ker?')\"" + ">");
 		sb.append(buildProjectGroupsTable());
 		List<ProjectGroup> groups = db.getProjectGroups();
 		for (ProjectGroup g : groups) {

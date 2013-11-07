@@ -44,10 +44,10 @@ public class NewUser extends UsersMenu {
 							+ "\"))</script>");
 					out.print(users.showUsers(db.getUsers()));
 				} else if (request.getParameter("success").equals("false")) {
-					out.print("<script>$(alert(\"Ogiltigt användarnamn.\"))</script>"
+					out.print("<script>$(alert(\"Ogiltigt anv\u00E4ndarnamn.\"))</script>"
 							+ s);
 				} else {
-					out.print("<script>$(alert(\"En användare med detta namn existerar redan.\"))</script>"
+					out.print("<script>$(alert(\"En anv\u00E4ndare med detta namn existerar redan.\"))</script>"
 							+ s);
 				}
 

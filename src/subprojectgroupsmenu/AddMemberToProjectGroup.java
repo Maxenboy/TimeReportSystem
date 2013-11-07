@@ -39,7 +39,7 @@ public class AddMemberToProjectGroup extends gui.ProjectGroupsMenu {
 					ArrayList<User> users = getUsersWithoutProjectGroup();
 					
 					if (users.isEmpty()) {
-						out.print("<script>$(alert(\"Finns inga användare utan projektgrupp!\"))</script>");
+						out.print("<script>$(alert(\"Finns inga anv\u00E4ndare utan projektgrupp!\"))</script>");
 					} else {
 						out.print(groups.showProjectGroup(users));
 					}
@@ -63,7 +63,7 @@ public class AddMemberToProjectGroup extends gui.ProjectGroupsMenu {
 						}
 					} else {
 						ArrayList<User> users = getUsersWithoutProjectGroup();
-						out.print("<script>$(alert(\"Administratörer kan ej vara med i projektgrupper.\"))</script>"
+						out.print("<script>$(alert(\"Administrat\u00F6rer kan ej vara med i projektgrupper.\"))</script>"
 								+ groups.showProjectGroup(users));
 					}
 				}
@@ -110,7 +110,7 @@ public class AddMemberToProjectGroup extends gui.ProjectGroupsMenu {
 		}
 		sb.append("</table>");
 		sb.append("<input type=" + formElement("submit") + "value="
-				+ formElement("Välj grupp") + ">");
+				+ formElement("V\u00E4lj grupp") + ">");
 		sb.append("</form>");
 		return sb.toString();
 	}

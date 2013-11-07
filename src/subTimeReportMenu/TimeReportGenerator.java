@@ -40,7 +40,7 @@ public class TimeReportGenerator {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<table class=\"table table-bordered table-hover\">");
 		sb.append("<tr>");
-		sb.append("<th>Användarnamn</th>");
+		sb.append("<th>Anv\u00E4ndarnamn</th>");
 		sb.append("<th>Rapport ID</th>");
 		sb.append("<th>Vecka</th>");
 		sb.append("<th>Signerad</th>");
@@ -102,7 +102,7 @@ public class TimeReportGenerator {
 			sb.append("</tr>");
 		}
 		sb.append("</table>");
-		sb.append("<INPUT TYPE="+ formElement("submit") + "VALUE=" + formElement("Hämta rapport") +">");
+		sb.append("<INPUT TYPE="+ formElement("submit") + "VALUE=" + formElement("H\u00E4mta rapport") +">");
 		sb.append("</form>");
 		return sb.toString();
 	}
@@ -306,7 +306,7 @@ public class TimeReportGenerator {
 		ArrayList<Activity> activities = db.getActivities(reportId);
 		sb.append("<FORM METHOD=post ACTION=\"ChangeTimeReport\">");
 		sb.append("<TABLE class=\"table table-bordered table-hover\">");
-		sb.append("<TR><TD COLSPAN=1><B>Vecka:</B></TD><TD><INPUT TYPE=\"text\" NAME=\"week\" Value=" + formElement(Integer.toString(tr.getWeek())) + "SIZE=3></TD><TD COLSPAN=2><B>Användarnamn:</B></TD><TD COLSPAN=2>" + usr.getUsername() + "</TD></TR>");
+		sb.append("<TR><TD COLSPAN=1><B>Vecka:</B></TD><TD><INPUT TYPE=\"text\" NAME=\"week\" Value=" + formElement(Integer.toString(tr.getWeek())) + "SIZE=3></TD><TD COLSPAN=2><B>Anv\u00E4ndarnamn:</B></TD><TD COLSPAN=2>" + usr.getUsername() + "</TD></TR>");
 		sb.append("<TR><TH>Number</TH><TH>Aktivitet</TH><TH WIDTH=75>D</TH><TH WIDTH=75>I</TH><TH WIDTH=75>F</TH><TH WIDTH=75>R</TH></TR>");
 		int activityNbr = 11;
 		int formField = 0;
@@ -415,7 +415,7 @@ public class TimeReportGenerator {
 		//Table setup
 		sb.append("<table class=\"table table-bordered table-hover\">");
 		sb.append("<tr>");
-		sb.append("<TD COLSPAN=2><B>Användarnamn:</B></TD><TD COLSPAN=2>" + usr.getUsername() + "</TD>");
+		sb.append("<TD COLSPAN=2><B>Anv\u00E4ndarnamn:</B></TD><TD COLSPAN=2>" + usr.getUsername() + "</TD>");
 		sb.append("<TD><B>Week:</B></TD><TD COLSPAN=2>" + tr.getWeek() + "</TD>");
 		sb.append("</tr>");
 		sb.append("<tr>");

@@ -85,7 +85,7 @@ public class ChangeTimeReport extends TimeReportingMenu{
 			switch(state) {
 			case ADMINISTRATOR:
 				if(permission != PERMISSION_ADMIN) {
-					out.print("<script> alert('Otillåten handling. Du saknar administratörsrättigheter') </script>");
+					out.print("<script> alert('Otill\u00E5ten handling. Du saknar administrat\u00F6rsr\u00E4ttigheter') </script>");
 					session.setAttribute("changeReportState", FIRST);
 					doGet(request, response);
 				} else {

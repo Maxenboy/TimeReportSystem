@@ -38,7 +38,7 @@ public class NewProjectGroup extends gui.ProjectGroupsMenu {
 							estimatedHours)) {
 						out.print(showProjectGroups());
 					} else {
-						out.print("<script>$(alert(\"Kunde inte lägga till projektgrupp\"))</script>"
+						out.print("<script>$(alert(\"Kunde inte l\u00E4gga till projektgrupp\"))</script>"
 								+ addProjectGroupForm());
 					}
 				} else {
