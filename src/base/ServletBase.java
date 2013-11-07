@@ -42,6 +42,8 @@ public class ServletBase extends HttpServlet {
 	
 	protected Database db = new Database();
 	
+	private static final int MAX_INACTIVE_INTERVAL = 1200; // seconds
+	
 	/**
 	 * Constructs a servlet.
 	 */
@@ -63,6 +65,7 @@ public class ServletBase extends HttpServlet {
 	 */
 	protected boolean loggedIn(HttpServletRequest request) {
 		HttpSession session = request.getSession(true);
+		session.setMaxInactiveInterval(MAX_INACTIVE_INTERVAL);
 		Object objectState = session.getAttribute("state");
 		int state = LOGIN_FALSE;
 		if (objectState != null) {
