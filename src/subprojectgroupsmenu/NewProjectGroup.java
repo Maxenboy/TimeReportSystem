@@ -75,16 +75,16 @@ public class NewProjectGroup extends gui.ProjectGroupsMenu {
 		html = "<form name=" + formElement("input") + "action="
 				+ formElement("NewProjectGroup") + "method="
 				+ formElement("get") + ">";
-		html += "Name: <input type=" + formElement("text") + " name="
+		html += "Gruppnamn: <input type=" + formElement("text") + " name="
 				+ formElement("projectname") + "><br>";
-		html += "Start week: <input type=" + formElement("text")
+		html += "Startvecka: <input type=" + formElement("text")
 				+ " name=" + formElement("startweek") + "><br>";
-		html += "End week: <input type=" + formElement("text") + " name="
+		html += "Slutvecka: <input type=" + formElement("text") + " name="
 				+ formElement("endweek") + "><br>";
-		html += "Estimated hours: <input type=" + formElement("text")
+		html += "Estimerade timmar: <input type=" + formElement("text")
 				+ " name=" + formElement("estimatedhours") + "><br>";
 		html += "<input type=" + formElement("submit") + " value="
-				+ formElement("Submit") + ">";
+				+ formElement("Spara") + ">";
 		html += "</form>";
 		return html;
 	}
