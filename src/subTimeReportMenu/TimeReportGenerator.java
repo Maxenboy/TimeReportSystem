@@ -138,7 +138,7 @@ public class TimeReportGenerator {
 		html += "<table class=\"table table-bordered table-hover\">";
 		html += "<tr>";
 		html += "<th>Grupp ID</th>";
-		html += "<th>V��lj</th>";
+		html += "<th>V\u00E4lj</th>";
 		html += "</tr>";
 		for(ProjectGroup pg: prjGroups) {
 			html += "<tr>";
@@ -147,7 +147,7 @@ public class TimeReportGenerator {
 			html += "</tr>";
 		}
 		html += "</table>";
-		html += "<INPUT TYPE=\"submit\" VALUE=\"H��mta projektgrupp\">";
+		html += "<INPUT TYPE=\"submit\" VALUE=\"H\u00E4mta projektgrupp\">";
 		html += "</FORM>";
 		return html;
 	}
