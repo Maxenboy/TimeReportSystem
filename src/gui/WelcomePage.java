@@ -51,11 +51,16 @@ public class WelcomePage extends ServletBase {
 			if(session.getAttribute("user_permissions") != null) {
 				userPermission = (Integer) session.getAttribute("user_permissions");			
 			}
+			
+	
 			out.append(generateMainMenu(userPermission, request));
 			out.println("<div class='container'><div class='row'>");
 			out.println("<div class='col-lg-12'><h1>V\u00E4lkommen</h1><p>TidRapporteringsSystem av grupp 2 i Programvaruutveckling f\u00F6r stora system 2013</div>");
+			if(userPermission == User.ROLE_NO_ROLE) {
+				out.println("<div class='col-lg-12'><p style='color: red;'>Du är inte indelad i någon projektgrupp i TidRapporteringsSystemet. Kontakta administratör</p></div>");
+			}
 			out.println("</div></div>");
-				out.println(getPageOutro());
+			out.println(getPageOutro());
 		} else {
 			response.sendRedirect("LogIn");
 		}
