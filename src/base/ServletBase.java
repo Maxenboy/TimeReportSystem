@@ -143,10 +143,10 @@ public class ServletBase extends HttpServlet {
 				break;
 				
 			case PERMISSION_WITHOUT_ROLE:
-//				intro += ""
-//						+ "<li><a href=\"ShowProjectMembers\">Projektmedlemmar</a></li>"
-//						+ "<li><a href=\"ShowTimeReports\">Tidrapporter</a></li>"
-//						+ "<li><a href=\"Statistics\">Statistik</a></li>";
+				intro += ""
+						+ "<li><a href=\"ShowProjectMembers\">Projektmedlemmar</a></li>"
+						+ "<li><a href=\"ShowTimeReports\">Tidrapporter</a></li>"
+						+ "<li><a href=\"Statistics\">Statistik</a></li>";
 				break; 
 		}
 		
