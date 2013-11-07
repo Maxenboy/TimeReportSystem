@@ -24,8 +24,8 @@ public class Users {
 		String html;
 		html = "<p> <form name=" + formElement("input");
 		html += " method=" + formElement("POST");
-		html += "<p> Användarnamn : <input type=" + formElement("text") + " name="
-				+ formElement("username") + '>';
+		html += "<p> Användarnamn : <input type=" + formElement("text")
+				+ " name=" + formElement("username") + '>';
 		html += "<input type=" + formElement("submit") + "value="
 				+ formElement("Skapa användare") + '>';
 		html += "</form>";
@@ -40,13 +40,14 @@ public class Users {
 	 * @return
 	 */
 	public int checkNewName(String name) {
-		if(name.length() > 4 && name.length() < 11 && Pattern.matches("[a-zA-Z0-9]*", name)) {
-			return 3;
-		}
 		for (User u : db.getUsers()) {
 			if (u.getUsername().equals(name)) {
 				return 2;
 			}
+		}
+		if (name.length() > 4 && name.length() < 11
+				&& Pattern.matches("[a-zA-Z0-9]*", name)) {
+			return 3;
 		}
 		return 1;
 	}
@@ -76,7 +77,8 @@ public class Users {
 			return null;
 		}
 		StringBuilder sb = new StringBuilder();
-		sb.append("<FORM METHOD=" + formElement("get") + "onsubmit=\"return confirm('Är du säker?')\"" + ">");
+		sb.append("<FORM METHOD=" + formElement("get")
+				+ "onsubmit=\"return confirm('Är du säker?')\"" + ">");
 		sb.append(buildShowUsersTable());
 		for (User u : users) {
 			sb.append("<tr>");
@@ -90,7 +92,7 @@ public class Users {
 			}
 			sb.append("<td>" + translateRole(u.getRole()) + "</td>");
 			String active = u.isActive() ? "Aktiv" : "Inaktiv";
-			sb.append("<td>"+ active + "</td>");
+			sb.append("<td>" + active + "</td>");
 			sb.append("<td>" + createRadio(u.getId()) + "</td>");
 			sb.append("</tr>");
 		}
@@ -162,7 +164,7 @@ public class Users {
 	 * @return
 	 */
 	public boolean addUser(String name) {
-		if (checkNewName(name)==3) {
+		if (checkNewName(name) == 3) {
 			db.addUser(new User(name));
 			return true;
 		}
