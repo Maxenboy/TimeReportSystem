@@ -154,7 +154,7 @@ public class Statistics extends gui.StatisticsMenu {
 		while(itr.hasNext()) {
 			int projectgroup = itr.next().getId();
 			sb.append("<option value='"
-					+ projectgroup + "'>" + projectgroup +
+					+ projectgroup + "'>" + db.getProjectGroup(projectgroup).getProjectName() +
 					"</option>");
 		}
 		sb.append("</select> <br /><input type='SUBMIT' value='Visa' /> </form>");
