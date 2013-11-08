@@ -23,7 +23,7 @@ public class Users {
 	public String userForm() {
 		String html;
 		html = "<p> <form name=" + formElement("input");
-		html += " method=" + formElement("POST");
+		html += " method=" + formElement("POST") + "onsubmit=\"return confirm('\u00C4r du s\u00E4ker?')\"" + ">";
 		html += "<p> Anv\u00E4ndarnamn : <input type=" + formElement("text")
 				+ " name=" + formElement("username") + '>';
 		html += "<input type=" + formElement("submit") + "value="

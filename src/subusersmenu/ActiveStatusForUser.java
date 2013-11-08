@@ -4,6 +4,7 @@ import gui.UsersMenu;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -32,7 +33,7 @@ public class ActiveStatusForUser extends UsersMenu {
 			out.print(generateSubMenu(permission));
 
 			if (request.getParameter("username") == null) {
-				out.print(users.showUsers(db.getUsers()));
+				out.print(showUsers(db.getUsers()));
 				out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"\u00C4r du s\u00F6ker?\");if (confirmed) {$(this).submit();}});</script>");
 			} else {
 				User user = db.getUser(Integer.parseInt(request
@@ -41,14 +42,14 @@ public class ActiveStatusForUser extends UsersMenu {
 					if (user.isActive()) {
 						db.deactivateUser(user.getId());
 						out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"\u00C4r du s\u00F6ker?\");if (confirmed) {$(this).submit();}});</script>");
-						out.print(users.showUsers(db.getUsers()));
+						out.print(showUsers(db.getUsers()));
 					} else {
 						db.activateUser(user.getId());
-						out.print(users.showUsers(db.getUsers()));
+						out.print(showUsers(db.getUsers()));
 					}
 				} else {
 					out.print("<script>$(alert(\"Du kan inte inaktivera dig sj\u00E4lv!\"))</script>");
-					out.print(users.showUsers(db.getUsers()));
+					out.print(showUsers(db.getUsers()));
 				}
 			}
 			out.print(getPageOutro());
@@ -60,6 +61,82 @@ public class ActiveStatusForUser extends UsersMenu {
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
 
+	}
+
+	private String showUsers(ArrayList<User> users) {
+		if (users.isEmpty()) {
+			return null;
+		}
+		StringBuilder sb = new StringBuilder();
+		sb.append("<FORM METHOD=" + formElement("get")
+				+ "onsubmit=\"return confirm('\u00C4r du s\u00E4ker?')\"" + ">");
+		sb.append(buildShowUsersTable());
+		for (User u : users) {
+			sb.append("<tr>");
+			sb.append("<td>" + u.getUsername() + "</td>");
+			if (u.getProjectGroup() > 0) {
+				sb.append("<td>"
+						+ db.getProjectGroup(u.getProjectGroup())
+								.getProjectName() + "</td>");
+			} else {
+				sb.append("<td> Ingen projektgrupp </td>");
+			}
+			sb.append("<td>" + translateRole(u.getRole()) + "</td>");
+			String active = u.isActive() ? "Aktiv" : "Inaktiv";
+			sb.append("<td>" + active + "</td>");
+			if (u.getRole() != User.ROLE_ADMIN) {
+				sb.append("<td>" + createRadio(u.getId()) + "</td>");
+			} else {
+				sb.append("<td>" + "</td>");
+			}
+			sb.append("</tr>");
+		}
+		sb.append("</table>");
+		sb.append("<INPUT TYPE=" + formElement("submit") + "VALUE="
+				+ formElement("Spara") + ">");
+		sb.append("</form>");
+
+		return sb.toString();
+	}
+
+	private String translateRole(int role) {
+		switch (role) {
+		case 1:
+			return ("Administrat\u00F6r");
+		case 2:
+			return ("Projektledare");
+		case 4:
+			return ("Systemgrupp");
+		case 5:
+			return ("Systemgruppsledare");
+		case 6:
+			return ("Utvecklingsgrupp");
+		case 7:
+			return ("Testgrupp");
+		case 8:
+			return ("Testgruppsledare");
+		default:
+			return ("Utan roll");
+		}
+	}
+
+	private String createRadio(int id) {
+		return "<input type=" + formElement("radio") + "name="
+				+ formElement("username") + "value="
+				+ formElement(Integer.toString(id)) + ">";
+	}
+
+	private String buildShowUsersTable() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("<table class=\"table table-bordered table-hover\"");
+		sb.append("<tr>");
+		sb.append("<th>Anv\u00E4ndarnamn</th>");
+		sb.append("<th>Projektgrupp</th>");
+		sb.append("<th>Roll</th>");
+		sb.append("<th>Aktiv</th>");
+		sb.append("<th>V\u00E4lj</th>");
+		sb.append("</tr>");
+		return sb.toString();
 	}
 
 }
