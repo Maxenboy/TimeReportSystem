@@ -558,6 +558,9 @@ public class TimeReportGenerator {
 	 * @return true if successful update, false if e.g. there occured an internal error
 	 */
 	public boolean changeTimeReport(TimeReport timeReport, ArrayList<Activity> activities) {
+		//change to correct owner of timereport
+		TimeReport tr = db.getTimeReport(timeReport.getId());
+		timeReport.setUserId(tr.getUserId());
 		return db.updateTimeReport(timeReport, activities);
 	}
 
