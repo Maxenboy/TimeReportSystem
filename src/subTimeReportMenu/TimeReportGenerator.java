@@ -142,7 +142,7 @@ public class TimeReportGenerator {
 		html += "</tr>";
 		for(ProjectGroup pg: prjGroups) {
 			html += "<tr>";
-			html += "<td>" + pg.getId() + "</td>";
+			html += "<td>" + pg.getProjectName() + "</td>";
 			html += "<td> <input type=\"radio\" name=\"prjGroup\" value=" + formElement(Integer.toString(pg.getId())) + "> </td>"; 
 			html += "</tr>";
 		}
@@ -516,15 +516,15 @@ public class TimeReportGenerator {
 		StringBuilder sb = new StringBuilder();
 		switch(state) {
 		case REMOVE_REPORT:
-			sb.append("<form  method=\"post\" action=\"RemoveTimeReport\" onclick=\"return confirm('��r du s��ker p�� att du vill ta bort den h��r rapporten?')\">");
+			sb.append("<form  method=\"post\" action=\"RemoveTimeReport\" onclick=\"return confirm('\u00C4r du s\u00E4ker p\u00E5 att du vill ta bort den h\u00E4r rapporten?')\">");
 			sb.append("<input type=\"submit\" value=\"Radera tidrapport\" >");
 			break;
 		case SHOW_UNSIGNED:
-			sb.append("<form  method=\"post\" action=\"SignTimeReports\" onclick=\"return confirm('��r du s��ker p�� att du vill signera den h��r rapporten?')\">");
+			sb.append("<form  method=\"post\" action=\"SignTimeReports\" onclick=\"return confirm('\u00C4r du s\u00E4ker p\u00E5 att du vill signera den h\u00E4r rapporten?')\">");
 			sb.append("<input type=\"submit\" value=\"Signera tidrapport\" >");
 			break;
 		case SHOW_SIGN:
-			sb.append("<form  method=\"post\" action=\"SignTimeReports\" onclick=\"return confirm('��r du s��ker p�� att du vill avsignera den h��r rapporten')\">");
+			sb.append("<form  method=\"post\" action=\"SignTimeReports\" onclick=\"return confirm('\u00C4r du s\u00E4ker p\u00E5 att du vill avsignera den h\u00E4r rapporten')\">");
 			sb.append("<input type=\"submit\" value=\"Avsignera tidrapport\">");
 			break;
 		}

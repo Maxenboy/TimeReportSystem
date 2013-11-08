@@ -92,6 +92,7 @@ public class SignTimeReports extends TimeReportingMenu {
 			int permission = (Integer) session.getAttribute("user_permissions");
 			int state = (Integer) session.getAttribute("signState");
 			StringBuilder sb = new StringBuilder();
+			String s;
 			switch(permission) {
 			case PERMISSION_ADMIN:
 				String prjGroup;
@@ -115,16 +116,29 @@ public class SignTimeReports extends TimeReportingMenu {
 				case LIST:
 					prjGroup = request.getParameter("prjGroup");
 					if(request.getParameter("sign") != null) {
-						sb.append(trg.showAllTimeReports(Integer.valueOf(prjGroup), TimeReportGenerator.SHOW_SIGN));
+						s = trg.showAllTimeReports(Integer.valueOf(prjGroup), TimeReportGenerator.SHOW_SIGN);
+						out.print(getPageIntro());
+						out.print(generateMainMenu(permission, request));
+						out.print(generateSubMenu(permission));
+						if(s == null)
+							out.print("Det finns inga tidrapporter att visa.");
+						else 
+							out.print(s);
+						out.print(s);
+						out.print(getPageOutro());
 					} else if(request.getParameter("unsign") != null){
-						sb.append(trg.showAllTimeReports(Integer.valueOf(prjGroup), TimeReportGenerator.SHOW_UNSIGNED));
+						s = trg.showAllTimeReports(Integer.valueOf(prjGroup), TimeReportGenerator.SHOW_UNSIGNED);
+						out.print(getPageIntro());
+						out.print(generateMainMenu(permission, request));
+						out.print(generateSubMenu(permission));
+						if(s == null)
+							out.print("Det finns inga tidrapporter att visa.");
+						else 
+							out.print(s);
+						out.print(s);
+						out.print(getPageOutro());
 					}
 					session.setAttribute("signState", SHOW);
-					out.print(getPageIntro());
-					out.print(generateMainMenu(permission, request));
-					out.print(generateSubMenu(permission));
-					out.print(sb.toString());
-					out.print(getPageOutro());
 					break;
 				case SIGN:
 					reportId = (String) request.getParameter("reportId");
@@ -145,7 +159,7 @@ public class SignTimeReports extends TimeReportingMenu {
 						out.print(getPageIntro());
 						out.print(generateMainMenu(permission, request));
 						out.print(generateSubMenu(permission));
-						String s = trg.showTimeReport(Integer.valueOf(reportId), TimeReportGenerator.SHOW_SIGN);
+						s = trg.showTimeReport(Integer.valueOf(reportId), TimeReportGenerator.SHOW_SIGN);
 						out.print(s);
 						out.print(getPageOutro());
 						session.setAttribute("signState", SIGN);
@@ -162,15 +176,28 @@ public class SignTimeReports extends TimeReportingMenu {
 				case LIST:
 					int projGroup = (Integer) session.getAttribute("project_group_id");
 					if(request.getParameter("sign") != null) {
-						sb.append(trg.showAllTimeReports(projGroup, TimeReportGenerator.SHOW_SIGN));
+						out.print(getPageIntro());
+						out.print(generateMainMenu(permission, request));
+						out.print(generateSubMenu(permission));
+						s = trg.showAllTimeReports(projGroup, TimeReportGenerator.SHOW_SIGN);
+						if(s == null)
+							out.print("Det finns inga tidrapporter att visa");
+						else 
+							out.print(s);
+						out.print(getPageOutro());
 					} else if(request.getParameter("unsign") != null){
-						sb.append(trg.showAllTimeReports(projGroup, TimeReportGenerator.SHOW_UNSIGNED));
+						out.print(getPageIntro());
+						out.print(generateMainMenu(permission, request));
+						out.print(generateSubMenu(permission));
+						s = trg.showAllTimeReports(projGroup, TimeReportGenerator.SHOW_UNSIGNED);
+						if(s == null)
+							out.print("Det finns inga tidrapporter att visa");
+						else 
+							out.print(s);
+						out.print(getPageOutro());
 					}
 					session.setAttribute("signState", SHOW);
-					out.print(getPageIntro());
-					out.print(generateMainMenu(permission, request));
-					out.print(generateSubMenu(permission));
-					out.print(sb.toString());
+					
 					out.print(getPageOutro());
 					break;
 				case SHOW:
@@ -180,8 +207,11 @@ public class SignTimeReports extends TimeReportingMenu {
 						out.print(generateMainMenu(permission, request));
 						out.print(generateSubMenu(permission));
 						out.print(getPageIntro());
-						String s = trg.showTimeReport(Integer.valueOf(reportId), TimeReportGenerator.SHOW_SIGN);
-						out.print(s);
+						s = trg.showTimeReport(Integer.valueOf(reportId), TimeReportGenerator.SHOW_SIGN);
+						if(s == null)
+							out.print("Det finns ingen tidrapporter att visa");
+						else
+							out.print(s);
 						out.print(getPageOutro());
 						session.setAttribute("signState", SIGN);
 					} else {
