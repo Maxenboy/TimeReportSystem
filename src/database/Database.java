@@ -31,9 +31,9 @@ public class Database {
 				if (conn == null || !conn.isValid(15)) {
 					Class.forName("com.mysql.jdbc.Driver");
 					// Lokal databas:
-//					conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/puss1302?user=puss1302&password=jks78ww2");
+					conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/puss1302?user=puss1302&password=jks78ww2");
 					// Skolans databas:
-					conn = DriverManager.getConnection("jdbc:mysql://vm26.cs.lth.se/puss1302?user=puss1302&password=jks78ww2");
+//					conn = DriverManager.getConnection("jdbc:mysql://vm26.cs.lth.se/puss1302?user=puss1302&password=jks78ww2");
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
