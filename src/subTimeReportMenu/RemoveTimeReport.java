@@ -31,7 +31,6 @@ public class RemoveTimeReport extends TimeReportingMenu{
 			String s = null;
 			switch(permission) {
 			case PERMISSION_ADMIN:
-				System.out.println("in do admin");
 				s = trg.showAllTimeReports(projId, TimeReportGenerator.REMOVE_PRJ);
 				out.print(generateMainMenu(permission, request));
 				out.print(generateSubMenu(permission));

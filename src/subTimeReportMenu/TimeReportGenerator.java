@@ -561,6 +561,7 @@ public class TimeReportGenerator {
 		//change to correct owner of timereport
 		TimeReport tr = db.getTimeReport(timeReport.getId());
 		timeReport.setUserId(tr.getUserId());
+		timeReport.setProjectGroupId(tr.getProjectGroupId());
 		return db.updateTimeReport(timeReport, activities);
 	}
 
