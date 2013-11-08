@@ -124,7 +124,6 @@ public class SignTimeReports extends TimeReportingMenu {
 							out.print("Det finns inga tidrapporter att visa.");
 						else 
 							out.print(s);
-						out.print(s);
 						out.print(getPageOutro());
 					} else if(request.getParameter("unsign") != null){
 						s = trg.showAllTimeReports(Integer.valueOf(prjGroup), TimeReportGenerator.SHOW_UNSIGNED);
@@ -135,7 +134,6 @@ public class SignTimeReports extends TimeReportingMenu {
 							out.print("Det finns inga tidrapporter att visa.");
 						else 
 							out.print(s);
-						out.print(s);
 						out.print(getPageOutro());
 					}
 					session.setAttribute("signState", SHOW);
