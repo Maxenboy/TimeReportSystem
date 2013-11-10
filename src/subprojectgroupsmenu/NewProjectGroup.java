@@ -11,42 +11,43 @@ import database.*;
 
 @WebServlet("/NewProjectGroup")
 public class NewProjectGroup extends gui.ProjectGroupsMenu {
-
 	private static final long serialVersionUID = 1L;
 	private ProjectGroups group = new ProjectGroups(db);
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws IOException {
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
 			HttpSession session = request.getSession();
-			PrintWriter out = response.getWriter();
-			out.print(getPageIntro());
-			int userPermission = (Integer) session
-					.getAttribute("user_permissions");
-			out.append(generateMainMenu(userPermission, request));
-			out.print(generateSubMenu(userPermission));
-			String name = request.getParameter("projectname");
-			String startWeek = request.getParameter("startweek");
-			String endWeek = request.getParameter("endweek");
-			String estimatedHours = request.getParameter("estimatedhours");
-			if (name == null || startWeek == null || endWeek == null
-					|| estimatedHours == null) {
-				out.print(addProjectGroupForm());
-			} else {
-				if (validInput(name, startWeek, endWeek)) {
-					if (group.createProjectGroup(name, startWeek, endWeek,
-							estimatedHours)) {
-						out.print(showProjectGroups());
+			int userPermission = (Integer) session.getAttribute("user_permissions");
+			if (userPermission == PERMISSION_ADMIN) {
+				PrintWriter out = response.getWriter();
+				out.print(getPageIntro());
+				out.append(generateMainMenu(userPermission, request));
+				out.print(generateSubMenu(userPermission));
+				String name = request.getParameter("projectname");
+				String startWeek = request.getParameter("startweek");
+				String endWeek = request.getParameter("endweek");
+				String estimatedHours = request.getParameter("estimatedhours");
+				if (name == null || startWeek == null || endWeek == null
+						|| estimatedHours == null) {
+					out.print(addProjectGroupForm());
+				} else {
+					if (validInput(name, startWeek, endWeek)) {
+						if (group.createProjectGroup(name, startWeek, endWeek,
+								estimatedHours)) {
+							out.print(showProjectGroups());
+						} else {
+							out.print("<script>$(alert(\"Kunde inte l\u00E4gga till projektgrupp\"))</script>"
+									+ addProjectGroupForm());
+						}
 					} else {
-						out.print("<script>$(alert(\"Kunde inte l\u00E4gga till projektgrupp\"))</script>"
+						out.print("<script>$(alert(\"Information inkorrekt inmatad\"))</script>"
 								+ addProjectGroupForm());
 					}
-				} else {
-					out.print("<script>$(alert(\"Information inkorrekt inmatad\"))</script>"
-							+ addProjectGroupForm());
 				}
+				out.print(getPageOutro());
+			} else {
+				response.sendRedirect("");
 			}
-			out.print(getPageOutro());
 		} else {
 			response.sendRedirect("LogIn");
 		}

@@ -18,13 +18,16 @@ public class ShowProjectGroups extends ProjectGroupsMenu {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
 			HttpSession session = request.getSession();
-			PrintWriter out = response.getWriter();
-			
-			out.print(getPageIntro());
 			int userPermission = (Integer) session.getAttribute("user_permissions");
-			out.append(generateMainMenu(userPermission, request));
-			out.print(generateSubMenu(userPermission));
-			out.print(showProjectGroups() + getPageOutro());
+			if (userPermission == PERMISSION_ADMIN) {
+				PrintWriter out = response.getWriter();
+				out.print(getPageIntro());
+				out.append(generateMainMenu(userPermission, request));
+				out.print(generateSubMenu(userPermission));
+				out.print(showProjectGroups() + getPageOutro());
+			} else {
+				response.sendRedirect("");
+			}
 		} else {
 			response.sendRedirect("LogIn");
 		}

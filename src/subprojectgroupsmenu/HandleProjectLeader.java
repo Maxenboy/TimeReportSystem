@@ -20,49 +20,51 @@ public class HandleProjectLeader extends gui.ProjectGroupsMenu {
 	private static final long serialVersionUID = 2692792293983643296L;
 	private String groupName = "";
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws IOException {
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
 			HttpSession session = request.getSession();
-			PrintWriter out = response.getWriter();
-			out.print(getPageIntro());
-			int userPermission = (Integer) session
-					.getAttribute("user_permissions");
-			out.append(generateMainMenu(userPermission, request));
-			out.print(generateSubMenu(userPermission));
-			if (request.getParameter("thegroup") == null
-					&& groupName.equals("")) {
-				out.print(showProjectGroups());
-			} else {
-				if (request.getParameter("reportId") == null) {
-					if (groupName.equals("")) {
-						groupName = request.getParameter("thegroup");
-					}
-					ArrayList<User> users = db.getUsers(Integer
-							.parseInt(groupName));
-					if (users.isEmpty()) {
-						out.print("<script>$(alert(\"Finns inga anv\u00E4ndare i projektgruppen!\"))</script>");
-					} else {
-						out.print(showProjectGroup(users));
-					}
-				} else {
-					HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
-					if (db.getUser(
-							Integer.parseInt(request.getParameter("reportId")))
-							.getRole() == User.ROLE_PROJECT_LEADER) {
-						map.put(Integer.parseInt(request
-								.getParameter("reportId")), User.ROLE_NO_ROLE);
-					} else {
-						map.put(Integer.parseInt(request
-								.getParameter("reportId")),
-								User.ROLE_PROJECT_LEADER);
-					}
-					db.setUserRoles(map);
-					groupName = "";
+			int userPermission = (Integer) session.getAttribute("user_permissions");
+			if (userPermission == PERMISSION_ADMIN) {
+				PrintWriter out = response.getWriter();
+				out.print(getPageIntro());
+				out.append(generateMainMenu(userPermission, request));
+				out.print(generateSubMenu(userPermission));
+				if (request.getParameter("thegroup") == null
+						&& groupName.equals("")) {
 					out.print(showProjectGroups());
+				} else {
+					if (request.getParameter("reportId") == null) {
+						if (groupName.equals("")) {
+							groupName = request.getParameter("thegroup");
+						}
+						ArrayList<User> users = db.getUsers(Integer
+								.parseInt(groupName));
+						if (users.isEmpty()) {
+							out.print("<script>$(alert(\"Finns inga anv\u00E4ndare i projektgruppen!\"))</script>");
+						} else {
+							out.print(showProjectGroup(users));
+						}
+					} else {
+						HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+						if (db.getUser(
+								Integer.parseInt(request.getParameter("reportId")))
+								.getRole() == User.ROLE_PROJECT_LEADER) {
+							map.put(Integer.parseInt(request
+									.getParameter("reportId")), User.ROLE_NO_ROLE);
+						} else {
+							map.put(Integer.parseInt(request
+									.getParameter("reportId")),
+									User.ROLE_PROJECT_LEADER);
+						}
+						db.setUserRoles(map);
+						groupName = "";
+						out.print(showProjectGroups());
+					}
 				}
+				out.print(getPageOutro());
+			} else {
+				response.sendRedirect("");
 			}
-			out.print(getPageOutro());
 		} else {
 			response.sendRedirect("LogIn");
 		}

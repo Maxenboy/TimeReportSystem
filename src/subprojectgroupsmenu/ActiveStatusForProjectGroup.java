@@ -16,34 +16,36 @@ public class ActiveStatusForProjectGroup extends gui.ProjectGroupsMenu {
 	private static final long serialVersionUID = -2713701817050035720L;
 	private ProjectGroups group = new ProjectGroups(db);
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws IOException {
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
 			HttpSession session = request.getSession(true);
-			PrintWriter out = response.getWriter();
-			int userPermission = (Integer) session
-					.getAttribute("user_permissions");
-			out.print(getPageIntro());
-			out.append(generateMainMenu(userPermission, request));
-			out.print(generateSubMenu(userPermission));
-			if (request.getParameter("thegroup") == null) {
-				out.print("<script>$('#Activate/Inactivategroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"\u00C4r du s\u00E4ker?\");if (confirmed) {$(this).submit();}});</script>"
-						+ showProjectGroups());
-			} else {
-				if (!hasActiveMembers(request.getParameter("thegroup"))) {
-					if (checkGroup(request.getParameter("thegroup"))) {
-						out.print(showProjectGroups());
+			int userPermission = (Integer) session.getAttribute("user_permissions");
+			if (userPermission == PERMISSION_ADMIN) {
+				PrintWriter out = response.getWriter();
+				out.print(getPageIntro());
+				out.append(generateMainMenu(userPermission, request));
+				out.print(generateSubMenu(userPermission));
+				if (request.getParameter("thegroup") == null) {
+					out.print("<script>$('#Activate/Inactivategroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"\u00C4r du s\u00E4ker?\");if (confirmed) {$(this).submit();}});</script>"
+							+ showProjectGroups());
+				} else {
+					if (!hasActiveMembers(request.getParameter("thegroup"))) {
+						if (checkGroup(request.getParameter("thegroup"))) {
+							out.print(showProjectGroups());
+						} else {
+							out.print("<script>$(alert(\"Inkorrekt input.\"))</script>"
+									+ "<script>$('#Activate/Inactivategroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"\u00C4r du s\u00E4ker?\");if (confirmed) {$(this).submit();}});</script>"
+									+ showProjectGroups());
+						}
 					} else {
-						out.print("<script>$(alert(\"Inkorrekt input.\"))</script>"
-								+ "<script>$('#Activate/Inactivategroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"\u00C4r du s\u00E4ker?\");if (confirmed) {$(this).submit();}});</script>"
+						out.print("<script>$(alert(\"Du kan inte inaktivera en grupp med aktiva medlemmar. Dessa m\u00E5ste f\u00F6rst inaktiveras eller tas bort fr\u00E5n projektgrupp.\"))</script>"
 								+ showProjectGroups());
 					}
-				} else {
-					out.print("<script>$(alert(\"Du kan inte inaktivera en grupp med aktiva medlemmar. Dessa m\u00E5ste f\u00F6rst inaktiveras eller tas bort fr\u00E5n projektgrupp.\"))</script>"
-							+ showProjectGroups());
 				}
+				out.print(getPageOutro());
+			} else {
+				response.sendRedirect("");
 			}
-			out.print(getPageOutro());
 		} else {
 			response.sendRedirect("LogIn");
 		}
