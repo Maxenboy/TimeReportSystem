@@ -31,7 +31,6 @@ public class UsersMenu extends ServletBase {
 		case PERMISSION_OTHER_USERS: 
 		case PERMISSION_WITHOUT_ROLE: 
 		case PERMISSION_PROJ_LEADER: 	
-			// f��r inte se :v h��h��h��
 			break; 	
 		}
 		

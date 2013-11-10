@@ -715,7 +715,6 @@ public class Database {
 			if(result.next())
 				return false;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if (removeTimeReport(timeReport.getId())) {

@@ -85,14 +85,13 @@ public class BurnDown extends gui.StatisticsMenu {
 	}
 	
 	/**
-	 * Genererar HTML-kod d�r admin f�r v�lja projektgrupp att se BurnDown f�r.
+	 * Genererar HTML-kod d\u00E4r admin f\u00F6r v\u00E4lja projektgrupp att se BurnDown f\u00F6r.
 	 * 
 	 * 
-	 * @return Str�ng med HTML-kod som inneh�ller formul�ret
+	 * @return Str\u00E4ng med HTML-kod som inneh\u00E5ller formul\u00E4ret
 	 */
 	private String projectGroupForm() {
 		StringBuilder sb = new StringBuilder();
-		//Database db = new Database();
 		ArrayList<ProjectGroup> pg = db.getProjectGroups();
 		Iterator<ProjectGroup> itr = pg.iterator();
 
@@ -116,7 +115,7 @@ public class BurnDown extends gui.StatisticsMenu {
 	 * @param timePerWeek. A HashMap with week as key and time as value. There is also the key "totalProjectTime" which contains the total project time.
 	 * projectGroupId. Int.
 	 * projectGroup. ProjectGroup.
-	 * @return A string containing html and javascript that creates the burndown graph when printed out. If the total project time is 0, it returns the string "F�rv�ntad projekttid �r satt till noll."
+	 * @return A string containing html and javascript that creates the burndown graph when printed out. If the total project time is 0, it returns the string "F\u00F6rv\u00E4ntad projekttid \u00E4r satt till noll."
 	 */	
 	private String printBurnDown(HashMap<String, Integer> timePerWeek, int projectGroupId, ProjectGroup projectGroup) {
 		if(timePerWeek.get("totalProjectTime") == 0) {

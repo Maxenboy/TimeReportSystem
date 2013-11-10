@@ -17,14 +17,6 @@ public class ProjectGroupsMenu extends ServletBase {
 		
 		switch(role) {
 			case PERMISSION_ADMIN: 
-				/*
-				 * Visa projektgrupper
-				 * Ny projektgrupp
-				 * Aktivera/inaktivera
-				 * L������������������gg till anv������������������ndare i projektgrupp
-				 * Ta bort anv������������������ndare i projektgrupp
-				 * Hantera projektledare
-				 */
 				
 				html += ""
 						+ "<li><a href=\"ShowProjectGroups\">Visa projektgrupper</a></li>"
