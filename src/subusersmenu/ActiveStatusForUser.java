@@ -95,7 +95,7 @@ public class ActiveStatusForUser extends UsersMenu {
 		}
 		sb.append("</table>");
 		sb.append("<INPUT TYPE=" + formElement("submit") + "VALUE="
-				+ formElement("Aktivera/Inaktivera anv\u00E4ndare") + ">");
+				+ formElement("Spara") + ">");
 		sb.append("</form>");
 
 		return sb.toString();
