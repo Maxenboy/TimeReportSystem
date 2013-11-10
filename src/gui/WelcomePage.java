@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import base.ServletBase;
-import database.ProjectGroup;
 import database.User;
 
 
