@@ -28,13 +28,14 @@ public class HandleProjectRoles extends ProjectMembersMenu {
 			PrintWriter out = response.getWriter();
 			out.print(getPageIntro());
 			boolean changed = false;
-			int userPermission = (Integer) session
-					.getAttribute("user_permissions");
+			int userPermission = (Integer) session.getAttribute("user_permissions");
 			out.append(generateMainMenu(userPermission, request));
 			out.print(generateSubMenu(userPermission));
-			if ((Integer) session.getAttribute("role") == 1) {
-				if (request.getParameter("thegroup") == null
-						&& groupName.equals("")) {
+			switch (userPermission) {
+			case PERMISSION_WITHOUT_ROLE:
+				break;
+			case PERMISSION_ADMIN:
+				if (request.getParameter("thegroup") == null && groupName.equals("")) {
 					out.print(showProjectGroups());
 				} else {
 					if (state == 1) {
@@ -60,7 +61,7 @@ public class HandleProjectRoles extends ProjectMembersMenu {
 								map.put(u.getId(), Integer.parseInt(request
 										.getParameter("" + u.getId())));
 								changed = true;
-								
+
 							}
 						}
 						db.setUserRoles(map);
@@ -68,7 +69,8 @@ public class HandleProjectRoles extends ProjectMembersMenu {
 						out.print(showProjectGroups());
 					}
 				}
-			} else {
+				break;
+			default:
 				ArrayList<User> users = db.getUsers((Integer) session
 						.getAttribute("project_group_id"));
 				HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
@@ -84,10 +86,8 @@ public class HandleProjectRoles extends ProjectMembersMenu {
 					}
 				}
 				db.setUserRoles(map);
-				users = db.getUsers((Integer) session
-						.getAttribute("project_group_id"));
-				out.print(showProjectGroup(users,
-						(Integer) session.getAttribute("id")));
+				users = db.getUsers((Integer) session.getAttribute("project_group_id"));
+				out.print(showProjectGroup(users, (Integer) session.getAttribute("id")));
 			}
 			if(changed) {
 				out.print("<script>$(alert(\"\u00C4ndringar \u00E4r sparade.\"))</script>");

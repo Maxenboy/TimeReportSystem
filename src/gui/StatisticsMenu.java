@@ -15,21 +15,16 @@ public class StatisticsMenu extends ServletBase {
 				+ "<div class=\"col-lg-3\">"
 				+ "<ul class=\"nav nav-pills nav-stacked\">"; 
 		
-		
 		switch(role) {
 		case PERMISSION_ADMIN: 
 		case PERMISSION_PROJ_LEADER: 	
 		case PERMISSION_OTHER_USERS: 
+		case PERMISSION_WITHOUT_ROLE: 
 			html += ""
 					+ "<li><a href=\"Statistics\">Visa statistik</a></li>"
-					+ "<li><a href=\"BurnDown\">Visa Burn-down diagram</a></li>"; 			
-			break; 
-		
-		case PERMISSION_WITHOUT_ROLE: 
-			// f��r inte se :v
+					+ "<li><a href=\"BurnDown\">Visa burn-down-diagram</a></li>"; 			
 			break; 	
 		}
-		
 		
 		String outro = ""
 				+ "</div>"

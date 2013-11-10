@@ -93,7 +93,7 @@ public class ServletBase extends HttpServlet {
 	protected String getPageIntro() {
 		String intro = "<html>"
 				+ "<head>"
-				+ "<title> The Base Block System </title>"
+				+ "<title> TidRapporteringsSystemet </title>"
 				+ "<script src=\"//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js\"></script>"
 				+ "<link href=\"bootstrap.min.css\" type=\"text/css\" rel=\"stylesheet\">"
 				+ "</head>"
@@ -133,7 +133,7 @@ public class ServletBase extends HttpServlet {
 						+ "<li><a href=\"ShowProjectGroups\">Projektgrupper</a></li>"
 						+ "<li><a href=\"ShowUsers\">Anv\u00E4ndare</a></li>"
 						+ "<li><a href=\"ShowProjectMembers\">Projektmedlemmar</a></li>"
-						+ "<li><a href=\"ShowTimeReports\">Tidrapporter</a></li>"
+						+ "<li><a href=\"ShowTimeReports\">Tidrapportering</a></li>"
 						+ "<li><a href=\"Statistics\">Statistik</a></li>"; 
 				break; 
 				
@@ -141,19 +141,19 @@ public class ServletBase extends HttpServlet {
 			case PERMISSION_OTHER_USERS: 
 				intro += ""
 						+ "<li><a href=\"ShowProjectMembers\">Projektmedlemmar</a></li>"
-						+ "<li><a href=\"ShowTimeReports\">Tidrapporter</a></li>"
+						+ "<li><a href=\"ShowTimeReports\">Tidrapportering</a></li>"
 						+ "<li><a href=\"Statistics\">Statistik</a></li>"; 				
 				break;
 				
 			case PERMISSION_WITHOUT_ROLE:
 				intro += ""
 						+ "<li><a href=\"ShowProjectMembers\">Projektmedlemmar</a></li>"
-						+ "<li><a href=\"ShowTimeReports\">Tidrapporter</a></li>"
+						+ "<li><a href=\"ShowTimeReports\">Tidrapportering</a></li>"
 						+ "<li><a href=\"Statistics\">Statistik</a></li>";
 				break; 
 		}
 		
-		HttpSession session = request.getSession();;
+		HttpSession session = request.getSession();
 		
 		String closure = ""
 				+ "</ul>"

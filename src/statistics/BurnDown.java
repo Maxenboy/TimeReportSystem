@@ -40,17 +40,20 @@ public class BurnDown extends gui.StatisticsMenu {
 			out.append(generateSubMenu(userPermission));
 			
 			switch(userPermission) {
-			case 1: // Administrator gets to choose project group.
+			case PERMISSION_ADMIN: // Administrator gets to choose project group.
 				out.append(projectGroupForm());
 				break;
-			case 2:
+			case PERMISSION_PROJ_LEADER:
 				out.append(printBurnDown(db.getTimePerWeek(projectGroupId), projectGroupId, db.getProjectGroup(projectGroupId)));
 				break;
-			case 4:
+			case PERMISSION_OTHER_USERS:
 				out.append(printBurnDown(db.getTimePerWeek(projectGroupId), projectGroupId, db.getProjectGroup(projectGroupId)));
+				break;
+			case PERMISSION_WITHOUT_ROLE:
+				out.append("<p style='color: red;'>Du \u00E4r inte tilldelad n\u00E5gon roll i projektet och har d\u00E4rf\u00F6r inte tillg\u00E5ng till den h\u00E4r funktionen. Kontakta din projektledare.</p>");
 				break;
 			default:
-				out.append("Ov\u00E4ntad anv\u00E4ndarr\u00E4ttighetsniv\u00E5.");
+				out.append("<p style='color: red;'>Ov\u00E4ntad anv\u00E4ndarr\u00E4ttighetsniv\u00E5.</p>");
 			}		
 			out.append(getPageOutro());
 		} else {

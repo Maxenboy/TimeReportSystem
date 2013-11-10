@@ -23,9 +23,7 @@ public class ProjectMembersMenu extends ServletBase {
 					+ "<li><a href=\"ShowProjectMembers\">Visa projektmedlemmar</a></li>"
 					+ "<li><a href=\"HandleProjectRoles\">Hantera projektroller</a></li>"; 			
 			break; 
-		case PERMISSION_WITHOUT_ROLE: 
-			// f��r inte se :v
-			break;
+		case PERMISSION_WITHOUT_ROLE:
 		case PERMISSION_OTHER_USERS: 
 			html += ""
 					+ "<li><a href=\"ShowProjectMembers\">Visa projektmedlemmar</a></li>"; 	

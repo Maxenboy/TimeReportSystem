@@ -25,17 +25,19 @@ public class ShowProjectMembers extends ProjectMembersMenu {
 
 	}
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws IOException {
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
 			HttpSession session = request.getSession(true);
 			PrintWriter out = response.getWriter();
 			out.print(getPageIntro());
-			int userPermission = (Integer) session
-					.getAttribute("user_permissions");
+			int userPermission = (Integer) session.getAttribute("user_permissions");
 			out.append(generateMainMenu(userPermission, request));
 			out.print(generateSubMenu(userPermission));
-			if ((Integer) session.getAttribute("role") == 1) {
+			switch (userPermission) {
+			case PERMISSION_WITHOUT_ROLE:
+				out.println("<p style='color: red;'>Du \u00E4r inte tilldelad n\u00E5gon roll i projektet och har d\u00E4rf\u00F6r inte tillg\u00E5ng till den h\u00E4r funktionen. Kontakta din projektledare.</p>");
+				break;
+			case PERMISSION_ADMIN:
 				if (request.getParameter("thegroup") == null) {
 					out.print(showProjectGroups());
 				} else {
@@ -43,10 +45,12 @@ public class ShowProjectMembers extends ProjectMembersMenu {
 							.parseInt(request.getParameter("thegroup")));
 					out.print("<H1> Projektgrupp: " + db.getProjectGroup(Integer.parseInt(request.getParameter("thegroup"))).getProjectName() + "</H1><br>" +showProjectGroup(users));
 				}
-			} else {
+				break;
+			default:
 				ArrayList<User> users = db.getUsers((Integer) session.getAttribute("project_group_id"));
 				out.print(db.getProjectGroup((Integer) session.getAttribute("project_group_id")).getProjectName() + "<br>" +showProjectGroup(users));
 			}
+			out.print(getPageOutro());
 		} else {
 			response.sendRedirect("LogIn");
 		}
