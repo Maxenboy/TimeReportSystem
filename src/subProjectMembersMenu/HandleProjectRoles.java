@@ -21,8 +21,7 @@ public class HandleProjectRoles extends ProjectMembersMenu {
 	private String groupName = "";
 	private int state = 1;
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws IOException {
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
 			HttpSession session = request.getSession();
 			PrintWriter out = response.getWriter();
@@ -33,7 +32,9 @@ public class HandleProjectRoles extends ProjectMembersMenu {
 			out.print(generateSubMenu(userPermission));
 			switch (userPermission) {
 			case PERMISSION_WITHOUT_ROLE:
-				break;
+			case PERMISSION_OTHER_USERS:
+				response.sendRedirect("");
+				return;
 			case PERMISSION_ADMIN:
 				if (request.getParameter("thegroup") == null && groupName.equals("")) {
 					out.print(showProjectGroups());
@@ -70,7 +71,7 @@ public class HandleProjectRoles extends ProjectMembersMenu {
 					}
 				}
 				break;
-			default:
+			case PERMISSION_PROJ_LEADER:
 				ArrayList<User> users = db.getUsers((Integer) session
 						.getAttribute("project_group_id"));
 				HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
@@ -88,6 +89,7 @@ public class HandleProjectRoles extends ProjectMembersMenu {
 				db.setUserRoles(map);
 				users = db.getUsers((Integer) session.getAttribute("project_group_id"));
 				out.print(showProjectGroup(users, (Integer) session.getAttribute("id")));
+				break;
 			}
 			if(changed) {
 				out.print("<script>$(alert(\"\u00C4ndringar \u00E4r sparade.\"))</script>");
@@ -98,8 +100,7 @@ public class HandleProjectRoles extends ProjectMembersMenu {
 		}
 	}
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (groupName != "") {
 			response.sendRedirect(request.getRequestURI() + "&changed=true");
 		}
