@@ -22,37 +22,41 @@ public class NewUser extends UsersMenu {
 			throws IOException {
 		if (loggedIn(request)) {
 			HttpSession session = request.getSession(true);
-			PrintWriter out = response.getWriter();
 			int permission = (Integer) session.getAttribute("user_permissions");
-			out.print(getPageIntro());
-			out.print(generateMainMenu(permission, request));
-			out.print(generateSubMenu(permission));
-			String s = users.userForm();
-			out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"\u00C4r du s\u00F6ker?\");if (confirmed) {$(this).submit();}});</script>");
-			if (s == null) {
-				out.print("<p> Inget att visa </p>");
-			} else {
-				if (request.getParameter("success") == null) {
-					out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"\u00C4r du s\u00F6ker?\");if (confirmed) {$(this).submit();}});</script>");
-					out.print(s);
-				} else if (request.getParameter("success").equals("true")) {
-					out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"\u00C4r du s\u00F6ker?\");if (confirmed) {$(this).submit();}});</script>");
-					String name = request.getParameter("user");
-					String pass = db.getUser(name).getPassword();
-					out.print("<script>$(alert(\"Lyckades! Anv\u00E4ndarnamn: "
-							+ name + " L\u00F6senord: " + pass
-							+ "\"))</script>");
-					out.print(users.showUsers(db.getUsers()));
-				} else if (request.getParameter("success").equals("false")) {
-					out.print("<script>$(alert(\"Ogiltigt anv\u00E4ndarnamn.\"))</script>"
-							+ s);
+			if (permission == PERMISSION_ADMIN) {
+				PrintWriter out = response.getWriter();
+				out.print(getPageIntro());
+				out.print(generateMainMenu(permission, request));
+				out.print(generateSubMenu(permission));
+				String s = users.userForm();
+				out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"\u00C4r du s\u00F6ker?\");if (confirmed) {$(this).submit();}});</script>");
+				if (s == null) {
+					out.print("<p> Inget att visa </p>");
 				} else {
-					out.print("<script>$(alert(\"En anv\u00E4ndare med detta namn existerar redan.\"))</script>"
-							+ s);
+					if (request.getParameter("success") == null) {
+						out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"\u00C4r du s\u00F6ker?\");if (confirmed) {$(this).submit();}});</script>");
+						out.print(s);
+					} else if (request.getParameter("success").equals("true")) {
+						out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"\u00C4r du s\u00F6ker?\");if (confirmed) {$(this).submit();}});</script>");
+						String name = request.getParameter("user");
+						String pass = db.getUser(name).getPassword();
+						out.print("<script>$(alert(\"Lyckades! Anv\u00E4ndarnamn: "
+								+ name + " L\u00F6senord: " + pass
+								+ "\"))</script>");
+						out.print(users.showUsers(db.getUsers()));
+					} else if (request.getParameter("success").equals("false")) {
+						out.print("<script>$(alert(\"Ogiltigt anv\u00E4ndarnamn.\"))</script>"
+								+ s);
+					} else {
+						out.print("<script>$(alert(\"En anv\u00E4ndare med detta namn existerar redan.\"))</script>"
+								+ s);
+					}
+					
 				}
-
+				out.print(getPageOutro());
+			} else {
+				response.sendRedirect("");
 			}
-			out.print(getPageOutro());
 		} else {
 			response.sendRedirect("LogIn");
 		}

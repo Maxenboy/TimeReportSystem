@@ -22,44 +22,46 @@ public class ActiveStatusForUser extends UsersMenu {
 		super();
 	}
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws IOException {
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
 			HttpSession session = request.getSession(true);
-			PrintWriter out = response.getWriter();
 			int permission = (Integer) session.getAttribute("user_permissions");
-			out.print(getPageIntro());
-			out.print(generateMainMenu(permission, request));
-			out.print(generateSubMenu(permission));
-
-			if (request.getParameter("username") == null) {
-				out.print(showUsers(db.getUsers(), (Integer) session.getAttribute("id")));
-				out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"\u00C4r du s\u00F6ker?\");if (confirmed) {$(this).submit();}});</script>");
-			} else {
-				User user = db.getUser(Integer.parseInt(request
-						.getParameter("username")));
-				if (!session.getAttribute("name").equals(user.getUsername())) {
-					if (user.isActive()) {
-						db.deactivateUser(user.getId());
-						out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"\u00C4r du s\u00F6ker?\");if (confirmed) {$(this).submit();}});</script>");
-						out.print(showUsers(db.getUsers(), (Integer) session.getAttribute("id")));
+			if (permission == PERMISSION_ADMIN) {
+				PrintWriter out = response.getWriter();
+				out.print(getPageIntro());
+				out.print(generateMainMenu(permission, request));
+				out.print(generateSubMenu(permission));
+				
+				if (request.getParameter("username") == null) {
+					out.print(showUsers(db.getUsers(), (Integer) session.getAttribute("id")));
+					out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"\u00C4r du s\u00F6ker?\");if (confirmed) {$(this).submit();}});</script>");
+				} else {
+					User user = db.getUser(Integer.parseInt(request
+							.getParameter("username")));
+					if (!session.getAttribute("name").equals(user.getUsername())) {
+						if (user.isActive()) {
+							db.deactivateUser(user.getId());
+							out.print("<script>$('#addusertogroup').submit(function (e) { e.preventDefault(); var confirmed = confirm(\"\u00C4r du s\u00F6ker?\");if (confirmed) {$(this).submit();}});</script>");
+							out.print(showUsers(db.getUsers(), (Integer) session.getAttribute("id")));
+						} else {
+							db.activateUser(user.getId());
+							out.print(showUsers(db.getUsers(), (Integer) session.getAttribute("id")));
+						}
 					} else {
-						db.activateUser(user.getId());
+						out.print("<script>$(alert(\"Du kan inte inaktivera dig sj\u00E4lv!\"))</script>");
 						out.print(showUsers(db.getUsers(), (Integer) session.getAttribute("id")));
 					}
-				} else {
-					out.print("<script>$(alert(\"Du kan inte inaktivera dig sj\u00E4lv!\"))</script>");
-					out.print(showUsers(db.getUsers(), (Integer) session.getAttribute("id")));
 				}
+				out.print(getPageOutro());
+			} else {
+				response.sendRedirect("");
 			}
-			out.print(getPageOutro());
 		} else {
 			response.sendRedirect("LogIn");
 		}
 	}
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 	}
 

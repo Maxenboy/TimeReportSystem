@@ -25,23 +25,26 @@ public class ShowUsers extends UsersMenu {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
 			HttpSession session = request.getSession(true);
-			PrintWriter out = response.getWriter();
-			
 			int permission = (Integer) session.getAttribute("user_permissions");
-			out.print(getPageIntro());
-			out.print(generateMainMenu(permission, request));
-			out.print(generateSubMenu(permission));
-			String s = users.showUsers(db.getUsers());
-			if (s == null)
-				out.print("<p> Inget att visa </p>");
-			else {
-				if ((Integer) session.getAttribute("user_permissions") == 1) {
-					out.print(adminShowUsers(db.getUsers()));
-				} else {
-					out.print(s);
+			if (permission == PERMISSION_ADMIN) {
+				PrintWriter out = response.getWriter();
+				out.print(getPageIntro());
+				out.print(generateMainMenu(permission, request));
+				out.print(generateSubMenu(permission));
+				String s = users.showUsers(db.getUsers());
+				if (s == null)
+					out.print("<p> Inget att visa </p>");
+				else {
+					if ((Integer) session.getAttribute("user_permissions") == 1) {
+						out.print(adminShowUsers(db.getUsers()));
+					} else {
+						out.print(s);
+					}
 				}
+				out.print(getPageOutro());
+			} else {
+				response.sendRedirect("");
 			}
-			out.print(getPageOutro());
 		} else {
 			response.sendRedirect("LogIn");
 		}
