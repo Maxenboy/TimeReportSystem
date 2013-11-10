@@ -101,7 +101,7 @@ public class HandleProjectRoles extends ProjectMembersMenu {
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		if (groupName != "") {
+		if (!groupName.equals("")) {
 			response.sendRedirect(request.getRequestURI() + "&changed=true");
 		}
 	}
