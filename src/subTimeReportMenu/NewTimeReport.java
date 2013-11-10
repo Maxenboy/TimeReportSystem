@@ -30,13 +30,13 @@ public class NewTimeReport extends TimeReportingMenu{
 				out.print(getPageIntro());
 				out.print(generateMainMenu(permission, request));
 				out.print(generateSubMenu(permission));
-				out.print("<script> alert('Du har inte blivit tilldelad n\u00E5gon roll och kan d\u00E4rf\u00F6r inte skapa en ny tidrapport. Var v\u00E4nlig kontakta din projektledare') </script>");
+				out.println("<p style='color: red;'>Du \u00E4r inte tilldelad n\u00E5gon roll i projektet och kan d\u00E4rf\u00F6r inte skapa n\u00E5gon tidrapport. Kontakta din projektledare.</p>");
 				out.print(getPageOutro());
 			} else if(permission == PERMISSION_ADMIN) {
 				out.print(getPageIntro());
 				out.print(generateMainMenu(permission, request));
 				out.print(generateSubMenu(permission));
-				out.print("<script> alert('Du \u00E4r systemadministrat\u00F6r och \u00E4r d\u00E4rf\u00F6r ej till\u00E5ten att skapa en ny tidrapport') </script>");
+				out.println("<p style='color: red;'>Du \u00E4r systemadministrat\u00F6r och \u00E4r d\u00E4rf\u00F6r ej till\u00E5ten att skapa en ny tidrapport.</p>");
 				out.print(getPageOutro());
 			} else {
 				String s;
@@ -45,7 +45,7 @@ public class NewTimeReport extends TimeReportingMenu{
 				out.print(generateSubMenu(permission));
 				s = trg.showNewTimeForm();
 				if(s == null) {
-					out.print("500 internt fel");
+					out.print("<p style='color: red;'>500 internt fel</p>");
 				} else { 
 					out.print(s);
 				}
