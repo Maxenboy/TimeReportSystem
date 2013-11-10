@@ -48,7 +48,6 @@ public class ShowTimeReports extends TimeReportingMenu {
 				session.setAttribute("showReportState", FIRST);
 				break;
 			case PERMISSION_OTHER_USERS:
-			case PERMISSION_WITHOUT_ROLE:
 				s = trg.showAllTimeReports(userId,TimeReportGenerator.SHOW_USER_REPORT);
 				if(s == null)
 					out.print("<script> alert('Det finns inga tidrapporter att visa')");
@@ -56,6 +55,10 @@ public class ShowTimeReports extends TimeReportingMenu {
 					out.print(s);
 				out.print(getPageOutro());
 				session.setAttribute("showReportState", FIRST);
+				break;
+			case PERMISSION_WITHOUT_ROLE:
+				out.println("<p style='color: red;'>Du \u00E4r inte tilldelad n\u00E5gon roll i projektet och har d\u00E4rf\u00F6r inte tillg\u00E5ng till den h\u00E4r funktionen. Kontakta din projektledare.</p>");
+				out.print(getPageOutro());
 				break;
 			}
 		} else {

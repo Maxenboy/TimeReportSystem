@@ -30,6 +30,13 @@ public class RemoveTimeReport extends TimeReportingMenu{
 			int projId = (Integer) session.getAttribute("project_group_id");
 			String s = null;
 			switch(permission) {
+			case PERMISSION_WITHOUT_ROLE:
+				out.print(getPageIntro());
+				out.print(generateMainMenu(permission, request));
+				out.print(generateSubMenu(permission));
+				out.println("<p style='color: red;'>Du \u00E4r inte tilldelad n\u00E5gon roll i projektet och har d\u00E4rf\u00F6r inte tillg\u00E5ng till den h\u00E4r funktionen. Kontakta din projektledare.</p>");
+				out.print(getPageOutro());
+				break;
 			case PERMISSION_ADMIN:
 				s = trg.showAllTimeReports(projId, TimeReportGenerator.REMOVE_PRJ);
 				out.print(generateMainMenu(permission, request));

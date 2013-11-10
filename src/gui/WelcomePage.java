@@ -52,7 +52,6 @@ public class WelcomePage extends ServletBase {
 			if(session.getAttribute("user_permissions") != null) {
 				userPermission = (Integer) session.getAttribute("user_permissions");			
 			}
-			
 	
 			out.append(generateMainMenu(userPermission, request));
 			out.println("<div class='container'><div class='row'>");
