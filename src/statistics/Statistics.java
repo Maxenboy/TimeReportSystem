@@ -23,10 +23,10 @@ public class Statistics extends gui.StatisticsMenu {
 	}
 
 	/**
-	 * doGet-metoden anropas då användaren försöker nå statistics-sidan.
-	 * Om användaren är en administratör så visas ett formulär där användaren kan välja projektgrupp som man vill se data för.
-	 * Om användaren är en projektledare, då visas fyra mulitple-select-lådor.
-	 * Om användaren är en vanlig användare, en multiple-select-box för att välja vecka visas.
+	 * doGet-metoden anropas d\u00E5 anv\u00E4ndaren f\u00E5rs\u00E5ker n\u00E5 statistics-sidan.
+	 * Om anv\u00E4ndaren \u00E4r en administrat\u00E5r s\u00E5 visas ett formul\u00E4r d\u00E4r anv\u00E4ndaren kan v\u00E4lja projektgrupp som man vill se data f\u00E5r.
+	 * Om anv\u00E4ndaren \u00E4r en projektledare, d\u00E5 visas fyra mulitple-select-l\u00E5dor.
+	 * Om anv\u00E4ndaren \u00E4r en vanlig anv\u00E4ndare, en multiple-select-box f\u00E5r att v\u00E4lja vecka visas.
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
@@ -66,7 +66,7 @@ public class Statistics extends gui.StatisticsMenu {
 
 
 	/**
-	 * doPost-metoden nås efter att man har skickat data via formulär från statistics-sidan.
+	 * doPost-metoden n\u00E5s efter att man har skickat data via formul\u00E4r fr\u00E5n statistics-sidan.
 	 * 
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -143,7 +143,7 @@ public class Statistics extends gui.StatisticsMenu {
 	}
 
 	/**
-	 * Metoden skriver ut ett formulär där administratören får välja vilken projektgrupp denne vill se statistik för.
+	 * Metoden skriver ut ett formul\u00E4r d\u00E4r administrat\u00E5ren f\u00E5r v\u00E4lja vilken projektgrupp denne vill se statistik f\u00E5r.
 	 * 
 	 * @return
 	 */
@@ -166,10 +166,10 @@ public class Statistics extends gui.StatisticsMenu {
 	}
 
 	/**
-	 * Genererar en sträng med html- och javaskriptkod som skapar en graf när denna skrivs ut.
+	 * Genererar en str\u00E4ng med html- och javaskriptkod som skapar en graf n\u00E4r denna skrivs ut.
 	 * @param stats HashMap med nycklarna  "user", "role", "activity", "week" och "time". 
-	 * och ArrayList som värde.
-	 * @return Sträng innehållandes html- och javaskriptkod som skapar en graf då denna skrivs ut. Om stats är null returneras en felsträng.
+	 * och ArrayList som v\u00E4rde.
+	 * @return Str\u00E4ng inneh\u00E5llandes html- och javaskriptkod som skapar en graf d\u00E5 denna skrivs ut. Om stats \u00E4r null returneras en felstr\u00E4ng.
 	 */	
 	private String printGraph(HashMap<String, ArrayList<String>> stats) {		
 		if(stats.get("time").isEmpty()) {
@@ -231,10 +231,10 @@ public class Statistics extends gui.StatisticsMenu {
 	}
 
 	/**
-	 * Skriver ut ett fomrulär där användaren kan välja hur man vill filtrera statistik-datan.
-	 * @param table Tar emot möjliga filter.
-	 * @param userPermission Access-nivån som användaren har.
-	 * @return html-sträng som skapar formulär där användarne kan filtrera statstik-datan..
+	 * Skriver ut ett fomrul\u00E4r d\u00E4r anv\u00E4ndaren kan v\u00E4lja hur man vill filtrera statistik-datan.
+	 * @param table Tar emot m\u00E5jliga filter.
+	 * @param userPermission Access-niv\u00E5n som anv\u00E4ndaren har.
+	 * @return html-str\u00E4ng som skapar formul\u00E4r d\u00E4r anv\u00E4ndarne kan filtrera statstik-datan..
 	 */
 	private String printFilter(HashMap<String, ArrayList<String>> table, int userPermission) {
 		StringBuilder sb = new StringBuilder();
@@ -324,7 +324,7 @@ public class Statistics extends gui.StatisticsMenu {
 
 
 	/**
-	 * Metod som gör om en array till en arraylist.
+	 * Metod som g\u00E5r om en array till en arraylist.
 	 * @param array
 	 * @return arraylist.
 	 */
@@ -344,7 +344,7 @@ public class Statistics extends gui.StatisticsMenu {
 	}
 	/**
 	* @param listOfWeeks. ArrayLista med alla veckonummer.
-	* @return int största elementet i arrayen. 
+	* @return int st\u00E5rsta elementet i arrayen. 
 	*/
 	private int getLastWeek(ArrayList<String> listOfWeeks) {
 		int lastWeek = 0;
@@ -360,7 +360,7 @@ public class Statistics extends gui.StatisticsMenu {
 
 
 	/**
-	 * Gör om Array till ArrayList
+	 * G\u00E5r om Array till ArrayList
 	 * 
 	 * @param string-array 
 	 * @return arraylist
@@ -381,7 +381,7 @@ public class Statistics extends gui.StatisticsMenu {
 	}
 
 	/**
-	 * Söker efter en cookie med namnet "projectGroup". Returnerar värdet av cookien om denna finns, annars null.
+	 * S\u00E5ker efter en cookie med namnet "projectGroup". Returnerar v\u00E4rdet av cookien om denna finns, annars null.
 	 * @param request
 	 * @return
 	 */
@@ -398,10 +398,10 @@ public class Statistics extends gui.StatisticsMenu {
 	}
 
 	/**
-	 * Skapar en sträng med html- och javaskriptkod som skapar en tabell då denna skrivs ut.
+	 * Skapar en str\u00E4ng med html- och javaskriptkod som skapar en tabell d\u00E5 denna skrivs ut.
 	 * @param stats HashMap med nycklarna  "user", "role", "activity", "week" och "time" 
-	 * och ArrayList som värde.
-	 * @return String innehållandes html- och javascriptkod som skapar en tabell då denna skrivs ut.
+	 * och ArrayList som v\u00E4rde.
+	 * @return String inneh\u00E5llandes html- och javascriptkod som skapar en tabell d\u00E5 denna skrivs ut.
 	 */	
 	private String printTable(HashMap<String, ArrayList<String>> stats) {
 		if(stats.get("time").isEmpty()) {
@@ -456,9 +456,9 @@ public class Statistics extends gui.StatisticsMenu {
 	}	
 	
 	/**
-	 * Översätter rollnummer till sträng.
+	 * \u00E5vers\u00E4tter rollnummer till str\u00E4ng.
 	 * @param role
-	 * @return rollen som sträng.
+	 * @return rollen som str\u00E4ng.
 	 */
 	private String translateRole(int role) {
 		switch(role) {

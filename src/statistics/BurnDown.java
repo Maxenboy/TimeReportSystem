@@ -111,11 +111,11 @@ public class BurnDown extends gui.StatisticsMenu {
 	
 	
 	/**
-	 * Skapar en sträng med HTML och javaskriptkod som skapar en BurnDowngraf när denna skrivs ut.
-	 * @param timePerWeek. En HashMap med vecka som nyckel och tid som värde. Nyckeln totalProjektTime finns också som innehåller uppskattad total projekttid.
+	 * Skapar en str\u00E4ng med HTML och javaskriptkod som skapar en BurnDowngraf n\u00E4r denna skrivs ut.
+	 * @param timePerWeek. En HashMap med vecka som nyckel och tid som v\u00E4rde. Nyckeln totalProjektTime finns ocks\u00E5 som inneh\u00E5ller uppskattad total projekttid.
 	 * projectGroupId. Int.
 	 * projectGroup. ProjectGroup.
-	 * @return Returnerar en sträng html- och javascriptkod som skapar en BurnDown-graf när strängen skrivs ut. Om total förväntad projekttid är satt till noll så returnerar den strängen "Förväntad projekttid satt till noll."
+	 * @return Returnerar en str\u00E4ng html- och javascriptkod som skapar en BurnDown-graf n\u00E4r str\u00E4ngen skrivs ut. Om total f\u00E5rv\u00E4ntad projekttid \u00E4r satt till noll s\u00E5 returnerar den str\u00E4ngen "F\u00E5rv\u00E4ntad projekttid satt till noll."
 	 */	
 	private String printBurnDown(HashMap<String, Integer> timePerWeek, int projectGroupId, ProjectGroup projectGroup) {
 		if(timePerWeek.get("totalProjectTime") == 0) {
