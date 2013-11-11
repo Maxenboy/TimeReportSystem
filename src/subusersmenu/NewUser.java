@@ -14,10 +14,17 @@ import javax.servlet.http.HttpSession;
 public class NewUser extends UsersMenu {
 	private static final long serialVersionUID = 3336226905706349638L;
 
+	/**
+	 * Konstruktor
+	 */
 	public NewUser() {
 		super();
 	}
 
+	/**
+	 * doGet-metoden anropas alla g\u00E5nger d\u00E5 en adminstrat\u00F6r vill l\u00E4gga till en anv\u00E4ndare i systemet.
+	 * 
+	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
 		if (loggedIn(request)) {
@@ -61,7 +68,9 @@ public class NewUser extends UsersMenu {
 			response.sendRedirect("LogIn");
 		}
 	}
-
+	/**
+	 * doPost-metoden anropas alla g\u00E5nger d\u00E5 en adminstrat\u00F6r vill l\u00E4gga till en anv\u00E4ndare i systemet och validerar anv\u00E4ndarens angivna namn	 * 
+	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
 		if (loggedIn(request)) {

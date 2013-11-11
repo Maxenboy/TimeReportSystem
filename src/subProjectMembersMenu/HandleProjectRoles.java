@@ -20,7 +20,12 @@ public class HandleProjectRoles extends ProjectMembersMenu {
 	private static final long serialVersionUID = 1L;
 	private String groupName = "";
 	private int state = 1;
-
+	/**
+	 * doGet-metoden anropas d\u00E5 anv\u00E4ndaren vill \u00E4ndra roller på anv\u00E4ndare i en grupp.
+	 * Om anv\u00E4ndaren \u00E4r en administrat\u00E5r s\u00E5 visas först alla grupper, sedan alla medlemmar i den valda gruppen där det är möjligt att \u00E4ndra roller f\u00F6r projektmedlemmar.
+	 * Om anv\u00E4ndaren \u00E4r en projektledare, \u00E4r det endast m\u00F6jligt att \u00E4ndra roller i ens egna projektgrupp.
+	 * F\u00F6r andra anv\u00E4ndare \u00E4r det inte m\u00F6jligt att g\u00F6ra n\u00E5got.
+	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
 			HttpSession session = request.getSession();

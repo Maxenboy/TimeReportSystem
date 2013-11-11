@@ -16,7 +16,10 @@ import database.User;
 public class HandleAdminRights extends UsersMenu {
 
 	private static final long serialVersionUID = 1859483135166153038L;
-
+	/**
+	 * doGet-metoden anropas alla g\u00E5nger d\u00E5 en adminstrat\u00F6r vill ge/ta bort rollen administrat\u00F6r f\u00F6r an\u00E4ndare i systemet
+	 * 
+	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
 			HttpSession session = request.getSession();
