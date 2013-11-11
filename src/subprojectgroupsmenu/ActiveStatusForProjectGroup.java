@@ -15,7 +15,10 @@ public class ActiveStatusForProjectGroup extends gui.ProjectGroupsMenu {
 
 	private static final long serialVersionUID = -2713701817050035720L;
 	private ProjectGroups group = new ProjectGroups(db);
-
+	/**
+	 * doGet-metoden anropas alla g\u00E5nger d\u00E5 en adminstrat\u00F6r vill aktivera/deaktivera en projektgrupp.
+	 * 
+	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
 			HttpSession session = request.getSession(true);

@@ -19,7 +19,10 @@ public class HandleProjectLeader extends gui.ProjectGroupsMenu {
 
 	private static final long serialVersionUID = 2692792293983643296L;
 	private String groupName = "";
-
+	/**
+	 * doGet-metoden anropas alla g\u00E5nger d\u00E5 en adminstrat\u00F6r vill ta bort eller tilldela anv\u00E4ndare rollen projektledare i en grupp.
+	 * 
+	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
 			HttpSession session = request.getSession();

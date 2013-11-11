@@ -14,7 +14,10 @@ import database.ProjectGroup;
 public class ShowProjectGroups extends ProjectGroupsMenu {
 	
 	private static final long serialVersionUID = -6869459061396740611L;
-
+	/**
+	 * doGet-metoden anropas alla g\u00E5nger d\u00E5 en adminstrat\u00F6r blir presenterad med en lista av alla projektgrupper i systemet.
+	 * 
+	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
 			HttpSession session = request.getSession();
