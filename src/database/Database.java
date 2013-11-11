@@ -23,7 +23,7 @@ public class Database {
 	}
 	
 	/**
-	 * Kontrollerar att anslutningen till databasen fortfarande fugnerar och om inte s\u00E5 f\u00E5rs\u00E5ker den \u00E5teransluta.
+	 * Kontrollerar att anslutningen till databasen fortfarande fugnerar och om inte s\u00E5 f\u00F6rs\u00F6ker den \u00E5teransluta.
 	 */
 	private void checkConnection() {
 			try {
@@ -43,7 +43,7 @@ public class Database {
 	
 	/**
 	 * St\u00E4nger detta Database-objekts anslutning till databasen. Den h\u00E4r metoden ska kallas
-	 * n\u00E4r database-objektet inte ska anv\u00E4ndas mer f\u00E5r att sl\u00E4ppa resurser.
+	 * n\u00E4r database-objektet inte ska anv\u00E4ndas mer f\u00F6r att sl\u00E4ppa resurser.
 	 */
 	public void closeConnection() {
 		try {
@@ -269,7 +269,7 @@ public class Database {
 	}
 
 	/**
-	 * S\u00E4tter rollerna f\u00E5r userId som \u00E4r satt som nyckel till v\u00E4rdet f\u00E5r nyckeln som roll f\u00E5r anv\u00E4ndaren med id userId
+	 * S\u00E4tter rollerna f\u00F6r de userId som \u00E4r satt som nyckel till v\u00E4rdet f\u00F6r nyckeln som roll.
 	 * @param roles
 	 * @return true om det lyckas, false annars
 	 */
@@ -393,7 +393,6 @@ public class Database {
 	}
 
 	/**
-	 * Adds a user with id userId to the project group with id projectGroupId
 	 * L\u00E4gger till anv\u00E4ndaren med id userId till projektgruppen med id projectGroupId
 	 * @param userId
 	 * @param projectGroupId
@@ -526,7 +525,7 @@ public class Database {
 
 	// TimeReport-metoder
 	/**
-	 * H\u00E4mtar alla tidrapporter f\u00E5r projektgruppen med id projectGroupId.
+	 * H\u00E4mtar alla tidrapporter f\u00F6r projektgruppen med id projectGroupId.
 	 * @param projectGroupId
 	 * @return ArrayList med TimeReports
 	 */
@@ -552,7 +551,7 @@ public class Database {
 	}
 
 	/**
-	 * Get all unsigned reports for the project group with id projectGroupId
+	 * H\u00E4mta alla osignerade tidrapporter för projektgruppen med id projectGroupId
 	 * @param projectGroupId
 	 * @return ArrayList with the TimeReports
 	 */
@@ -577,7 +576,7 @@ public class Database {
 	}
 
 	/**
-	 * Get all signed time reports for project group with id projectGroupId
+	 * H\u00E4mta alla signerade tidrapporter för projektgruppen med id projectGroupId
 	 * @param projectGroupId
 	 * @return ArrayList with the TimeReports
 	 */
@@ -662,7 +661,7 @@ public class Database {
 	}
 
 	/**
-	 * Tar bort tidrapporten med id timeReportId och de dith\u00E5rande aktiviteterna
+	 * Tar bort tidrapporten med id timeReportId och de dith\u00F6rande aktiviteterna
 	 * @param timeReportId
 	 * @return true om det lyckas, false annars
 	 */
@@ -696,7 +695,7 @@ public class Database {
 	}
 
 	/**
-	 * Uppdaterar tidrapporten med de dith\u00E5rande aktiviteterna
+	 * Uppdaterar tidrapporten med de dith\u00F6rande aktiviteterna
 	 * @param timeReport
 	 * @param activities
 	 * @return true om det lyckas, false annars
@@ -723,7 +722,7 @@ public class Database {
 	}
 
 	/**
-	 * H\u00E4mta alla tidrapporter f\u00E5r anv\u00E4ndaren med id userId
+	 * H\u00E4mta alla tidrapporter f\u00F6r anv\u00E4ndaren med id userId
 	 * @param userId
 	 * @return ArrayList med TimeReports
 	 */
@@ -749,7 +748,7 @@ public class Database {
 
 	/**
 	 * L\u00E4gger till en ny tidrapport och dess aktiviteter till databasen. Tidrapport- och aktivitetsid
-	 * genereras och kommer \u00E4ndras i User- och Activity-objekten. Tidrapport-id f\u00E5r aktiviteterna 
+	 * genereras och kommer \u00E4ndras i User- och Activity-objekten. Tidrapport-id f\u00F6r aktiviteterna 
 	 * s\u00E4tts till id fr\u00E5n tidrapporten.
 	 * @param timeReport Tidrapporten.
 	 * @param activities En lista med aktiviteter.
@@ -978,18 +977,18 @@ public class Database {
 	
 	/**
 	 * H\u00E4mta statistik genom att h\u00E4mta aktiviteterna som matchar de givna parametrarna. 
-	 * Parametrarna fungerar som filter f\u00E5r statistiken. 
+	 * Parametrarna fungerar som filter f\u00F6r statistiken. 
 	 * Om en parameter \u00E4r null eller en tom lista s\u00E5 betyder det 
-	 * att detta filter inte \u00E4r satt och att alla v\u00E4rde f\u00E5r den 
+	 * att detta filter inte \u00E4r satt och att alla v\u00E4rde f\u00F6r den 
 	 * h\u00E4r parametern ska accepteras i matchningen. 
 	 * @param projectGroupId Projektgruppsid
-	 * @param usernames Lista med anv\u00E4ndarnamn att samla statistik f\u00E5r.
-	 * @param roles Lista med roller att samla statistik f\u00E5r.
-	 * @param activities Lista med aktiviteter att h\u00E4mta statistik f\u00E5r.
-	 * @param weeks Lista med veckor att h\u00E4mta statistik f\u00E5r.
+	 * @param usernames Lista med anv\u00E4ndarnamn att samla statistik f\u00F6r.
+	 * @param roles Lista med roller att samla statistik f\u00F6r.
+	 * @param activities Lista med aktiviteter att h\u00E4mta statistik f\u00F6r.
+	 * @param weeks Lista med veckor att h\u00E4mta statistik f\u00F6r.
 	 * @return HashMap med nycklar "user", "role", "activity", "week" och "time" och ArrayList som v\u00E4rde. 
 	 * HashMapen bildar en tabell d\u00E4r nycklarna \u00E4r kolumner och ArrayListorna p\u00E5 samma index \u00E4r rader.
-	 * Detta betyder att alla v\u00E4rden f\u00E5r ett specifikt index i Arraylistorna matchar en aktivitet 
+	 * Detta betyder att alla v\u00E4rden f\u00F6r ett specifikt index i Arraylistorna matchar en aktivitet 
 	 * i det givna filtret.
 	 */
 	public HashMap<String, ArrayList<String>> getStatistics(int projectGroupId,
@@ -1137,8 +1136,8 @@ public class Database {
 	}
 	
 	/**
-	 * Ber\u00E4knar total spenderad tid per vecka samtidigt som total tid spenderat f\u00E5r 
-	 * alla veckor f\u00E5r projektgruppen med id projectGroupId.
+	 * Ber\u00E4knar total spenderad tid per vecka samtidigt som total tid spenderat f\u00F6r 
+	 * alla veckor f\u00F6r projektgruppen med id projectGroupId.
 	 * @param projectGroupId Projektgruppsid.
 	 * @return En HashMap med "week" som nyckel och tid som v\u00E4rde. Nyckeln 
 	 * "totalProjectTime" finns ocks\u00E5 vars v\u00E4rde \u00E4r den totala tiden spenderad i projektet. 
