@@ -193,7 +193,7 @@ public class Activity {
 	}
 	
 	/**
-	 * Mappar aktivitetstyp till heltal.
+	 * Mappar aktivitetstyp till motsvarande heltal.
 	 * @return Heltal
 	 */
 	public int mapActivityTypeToInt() {
@@ -211,7 +211,7 @@ public class Activity {
 	}
 	
 	/**
-	 * Mappar heltal till aktivitetstyp.
+	 * Mappar heltal till motsvarande aktivitetstyp.
 	 * @param typeInteger Heltal
 	 * @return Aktivitetstyp. Null om den inte hittades.
 	 */
@@ -230,7 +230,7 @@ public class Activity {
 	}
 	
 	/**
-	 * Mappar aktivitetsnummer till motsvarande str\u00E4ng.
+	 * Mappar aktivitetsnummer till motsvarande dokumentnamn.
 	 * @param activityNbr Aktivitetsnummer
 	 * @return Aktivitetsstr\u00E4ng. Null om den inte hittades.
 	 */
