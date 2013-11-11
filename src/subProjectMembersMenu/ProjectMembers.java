@@ -31,7 +31,7 @@ public class ProjectMembers {
 		for (User u : users) {
 			sb.append("<tr>");
 			sb.append("<td>" + u.getUsername() + "</td>");
-			sb.append("<td>" + u.getProjectGroup() + "</td>");
+			sb.append("<td>" + u.getProjectGroupId() + "</td>");
 			sb.append("<td>" + u.getRole() + "</td>");
 			sb.append("<td>" + createRadio(u.getId()) + "</td>");
 			sb.append("</tr>");

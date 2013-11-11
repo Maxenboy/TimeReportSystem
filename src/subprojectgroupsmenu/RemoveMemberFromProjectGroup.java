@@ -34,17 +34,17 @@ public class RemoveMemberFromProjectGroup extends gui.ProjectGroupsMenu {
 				} else {
 					User user = db.getUser(Integer.parseInt(request
 							.getParameter("username")));
-					if (user.getProjectGroup() != 0) {
+					if (user.getProjectGroupId() != 0) {
 						HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
 						map.put(user.getId(), User.ROLE_NO_ROLE);
 						db.setUserRoles(map);
 						db.removeUserFromProjectGroup(user.getId(),
-								user.getProjectGroup());
-						if (db.getUsers(user.getProjectGroup()).isEmpty()) {
-							out.print(db.getProjectGroup(user.getProjectGroup()).getProjectName() + " \u00E4r tom.");
+								user.getProjectGroupId());
+						if (db.getUsers(user.getProjectGroupId()).isEmpty()) {
+							out.print(db.getProjectGroup(user.getProjectGroupId()).getProjectName() + " \u00E4r tom.");
 						} else {
 							out.print(group.showProjectGroup(db.getUsers(user
-									.getProjectGroup())));
+									.getProjectGroupId())));
 						}
 					} else {
 						out.print("<script>$(alert(\"Anv\u00E4ndaren har ingen projektgrupp och kan d\u00E4rf\u00F6r inte tas bort ur en\"))</script>");

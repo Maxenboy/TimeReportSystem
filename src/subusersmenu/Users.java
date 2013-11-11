@@ -83,9 +83,9 @@ public class Users {
 		for (User u : users) {
 			sb.append("<tr>");
 			sb.append("<td>" + u.getUsername() + "</td>");
-			if (u.getProjectGroup() > 0) {
+			if (u.getProjectGroupId() > 0) {
 				sb.append("<td>"
-						+ db.getProjectGroup(u.getProjectGroup())
+						+ db.getProjectGroup(u.getProjectGroupId())
 								.getProjectName() + "</td>");
 			} else {
 				sb.append("<td> Ingen projektgrupp </td>");

@@ -243,7 +243,7 @@ public class HandleProjectRoles extends ProjectMembersMenu {
 		for (User u : users) {
 			sb.append("<tr>");
 			sb.append("<td>" + u.getUsername() + "</td>");
-			sb.append("<td>" + db.getProjectGroup(u.getProjectGroup()).getProjectName() + "</td>");
+			sb.append("<td>" + db.getProjectGroup(u.getProjectGroupId()).getProjectName() + "</td>");
 			sb.append("<td>" + translateRole(u.getRole()) + "</td>");
 			if (id != u.getId()) {
 				sb.append("<td>" + createDropDown(u.getRole(), u.getId())

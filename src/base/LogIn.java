@@ -127,7 +127,7 @@ public class LogIn extends ServletBase {
        			session.setAttribute("name", name);  // save the name in the session
        			session.setAttribute("id", u.getId());
        			session.setAttribute("role", u.getRole());
-       			session.setAttribute("project_group_id", u.getProjectGroup());
+       			session.setAttribute("project_group_id", u.getProjectGroupId());
        			session.setAttribute("active", u.isActive());
        			session.setAttribute("signState", SignTimeReports.FIRST);
        			session.setAttribute("newReportState", NewTimeReport.FIRST);

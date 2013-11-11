@@ -75,7 +75,7 @@ public class TestUserMethods {
 		assertNotNull(u.getPassword());
 		assertNotNull(u.isActive());
 		assertNotNull(u.getRole());
-		assertEquals(u.getProjectGroup(), 0);
+		assertEquals(u.getProjectGroupId(), 0);
 	}
 	
 	@Test
