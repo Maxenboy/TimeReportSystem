@@ -13,13 +13,23 @@ import javax.servlet.http.HttpSession;
 
 import database.Activity;
 import database.TimeReport;
-
+/**
+ * Den här klassen är WebServlet för sidan som visas då en användare vill skapa en ny tidrapport.
+ * Sidan ska ej vara tillgänglig för administratörer.
+ * @author martin
+ *
+ */
 @WebServlet("/NewTimeReport")
 public class NewTimeReport extends TimeReportingMenu{
 	private static final long serialVersionUID = 6091270182349510225L;
 	public static final int FIRST = 1;
 	TimeReportGenerator trg = new TimeReportGenerator(db);
-	
+	/**
+	 * Denna metod används när användaren besöker sidan första gången. 
+	 * Den ritar upp inmatningsfält som användaren kan mata med information om vad den 
+	 * har jobbat med under en specifik vecka
+	 * @param HttpServletRequest request, HttpServletResponse response
+	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
 			HttpSession session = request.getSession(true);
@@ -55,7 +65,11 @@ public class NewTimeReport extends TimeReportingMenu{
 			response.sendRedirect("LogIn");
 		}
 	}
-	
+	/**
+	 * Denna metod samlar in de data som användaren matade in i inmatningsfälten i doGet. Skickar dessa data till databasen
+	 * genom TimeReportGenerator, och på så sätt skapas en ny tidrapport.
+	 * @param HttpServletRequest request, HttpServletResponse response
+	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
 			HttpSession session = request.getSession(true);

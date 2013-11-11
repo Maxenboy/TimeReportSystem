@@ -3,10 +3,14 @@ package subTimeReportMenu;
 import java.util.ArrayList;
 import java.util.HashMap;
 import database.*;
-
+/**
+ * Denna klass hanterar skapandet av HTML-kod samt har kontakt med databasen för att hantera Tidrapporter.
+ * @author martin
+ *
+ */
 public class TimeReportGenerator {
 	private Database db;
-	public static final int SHOW_ALL = 1;
+	public static final int SHOW_ALL_FOR_PRJ = 1;
 	public static final int SHOW_USER_REPORT = 2;
 	public static final int SHOW_SIGN = 3;
 	public static final int SHOW_UNSIGNED = 4;
@@ -21,8 +25,8 @@ public class TimeReportGenerator {
 	public static final int CHANGE_PRJ = 13;
 	
 	/**
-	 * Constructor
-	 * @param dataBase The database that the TimeReportGenerator communicates with
+	 * Konstruktor
+	 * @param dataBase Databasen som den här klassen kommunicerar med
 	 */
 	public TimeReportGenerator(Database dataBase) {
 		this.db = dataBase;
@@ -61,7 +65,7 @@ public class TimeReportGenerator {
 			return null;
 		}
 		switch(state) {
-		case SHOW_ALL:
+		case SHOW_ALL_FOR_PRJ:
 			sb.append("<FORM METHOD=post ACTION="+formElement("ShowTimeReports")+">");
 			break;
 		case REMOVE_REPORT:
@@ -153,16 +157,22 @@ public class TimeReportGenerator {
 	}
 	
 	/**
-	 * Lists all time reports belonging to a specific ID
-	 * @param ID could be project_group_ID or userId
-	 * @param state use these different values
-	 * SHOW_USER_REPORT show all of one users time reports
-	 * SHOW_UNSIGNED show all UNsigned time reports for a project (admin/prj_leader only)
-	 * SHOW_SIGNED show all SIGNED time reports for a project (admin/prj_leader only)
-	 * REMOVE_PRJ_REPORTS show all UNsigned time reports for a project and wants to REMOVE one of them (admin/prj_leader only)
-	 * REMOVE_USER_REPORT show all UNsigned time reports and user wants to REMOVE a time report
-	 * CHANGE_USER_REPORT show all UNsigned time reports and user wants to  CHANGE a time report
-	 * CHANGE_PRJ_REPORT  show all UNsigned time reports for a project and wants to CHANGE one of them (admin/prj_leader only)
+	 * Listar projektgrupper eller tidrapporter, beroende på inparameter
+	 * @param ID, kan vara användarID eller projektgruppsID
+	 * @param state följande parametrar finns att välja på
+	 * SHOW_ALL_FOR_PRJ visar alla tidrapporter för en projektgrupp
+	 * SHOW_USER_REPORT visar alla tidrapporter för en användare
+	 * SHOW_SIGN visar alla SIGNERADE tidrapporter för en projektgrupp
+ 	 * SHOW_UNSIGNED visar alla OSIGNERADE tidrapporter för en projektgrupp
+ 	 * REMOVE_USER_REPORT visar alla tidrapporter för en användare, för borttagning
+ 	 * REMOVE_PRJ_REPORT visar alla tidrapporter för en projektgrupp, för borttagning
+ 	 * REMOVE_REPORT visar en tidrapport, för borttagning
+ 	 * CHANGE_USER_REPORT visar alla tidrapporter för en användare, vid förändring av tidrapport
+ 	 * CHANGE_PRJ_REPORT visar alla tidrapporter för en användare, vid förändring av tidrapport
+ 	 * SHOW_PRJ visa alla projektgrupper
+ 	 * SIGN_PRJ visa alla projektgrupper, när tidrapporter ska signeras
+ 	 * REMOVE_PRJ visa alla projektgrupper, när tidrapporter ska tas bort
+ 	 * CHANGE_PRJ visa alla projektgrupper, när tidrapporter ska ändras
 	 * @return html-code 
 	 */
 	public String showAllTimeReports(int ID, int state) {
@@ -181,7 +191,7 @@ public class TimeReportGenerator {
 		case CHANGE_PRJ:
 			html = showPrj(state);
 			break;
-		case SHOW_ALL:
+		case SHOW_ALL_FOR_PRJ:
 			timeReports = db.getTimeReportsForProjectGroupId(ID);
 			html = listReports(timeReports,state);
 			break;
@@ -232,8 +242,8 @@ public class TimeReportGenerator {
 	}
 	
 	/**
-	 * Creates the form where user can fill in an new TimeReport
-	 * @return returns a form for the PrintWriter to print.
+	 * Skapar ett formulär där användaren kan fylla i en ny tidrapport
+	 * @return returns HTML-kod till PrintWriter
 	 */
 	public String showNewTimeForm() {
 		StringBuilder sb = new StringBuilder();
@@ -283,19 +293,19 @@ public class TimeReportGenerator {
 	}
 	
 	/**
-	 * Adds a new timeReport to the database
-	 * @param timeReport the new timeReport to be added
-	 * @param activities the activities connected to the new time report
-	 * @return True if database added the time report, false if e.g. an error occured  
+	 * Lägger till en ny tidrapport i databasen
+	 * @param timeReport tidrapporten som ska läggas till
+	 * @param activities aktiviteterna som är kopplade till tidrapportern
+	 * @return True om databasen lyckades lägga till tidrapporten, false om den misslyckades (t.ex. vid internt fel)  
 	 */
 	public boolean addNewTimeReport(TimeReport timeReport, ArrayList<Activity> activities) {
 		return db.addTimeReport(timeReport, activities); 
 	}
 	
 	/**
-	 * Returns a form containing the values of a report the user wants to change
-	 * @param reportId, the report the user wants to change
-	 * @return a form for PrintWriter to print
+	 * Returnerar ett formulär som innehåller värden från den tidrapport som användaren vill ändra.
+	 * @param reportId, rapporten som användaren vill ändra på
+	 * @return HTML-kod som PrintWriter sedan kan skriva ut.
 	 */
 	public String showChangeTimeReport(int reportId) {
 		TimeReport tr = db.getTimeReport(reportId);
@@ -400,10 +410,12 @@ public class TimeReportGenerator {
 	}
 	
 	/**
-	 * Shows all the information associated with a certain time report
-	 * @param reportId The ID of the time report the user wants to view
-	 * @param state If the user is about to remove the time report use
-	 * REMOVE_REPORT else use SHOW_USER_REPORT
+	 * Visar all information associerad med en tidrapport
+	 * @param reportId ID på den tidrapport som användaren vill visa
+	 * @param state Olika states finns att tillgå
+	 * REMOVE_REPORT om användaren vill ta bort tidrapporten
+	 * SHOW_USER_REPORT om användaren bara vill se tidrapporten
+	 * SHOW_SIGN om användaren vill signera/avsignera tidrapporten (enbart för admin/projektledare)
 	 * @return
 	 */
 	public String showTimeReport(int reportId, int state) {		
@@ -470,11 +482,7 @@ public class TimeReportGenerator {
 		}
 		return sb.toString();
 	}
-	/**
-	 * Helper method for showTimeReport
-	 * @param activities
-	 * @return
-	 */
+	
 	private HashMap<Integer,int[]> createTimeReportPresentationTable(ArrayList<Activity> activities) {
 		HashMap<Integer,int[]> table = new HashMap<Integer,int[]>();
 		for (int i = 0; i < activities.size(); i++) {
@@ -491,11 +499,7 @@ public class TimeReportGenerator {
 		return table;
 	}
 	
-	/**
-	 * Helper method for showTimeReport
-	 * @param activities
-	 * @return
-	 */
+	
 	private ArrayList<Activity> removePrintedActivities(ArrayList<Activity> activities) {
 		ArrayList<Activity> nonPrintedActivities = new ArrayList<Activity>();
 		for(int i = 0; i < activities.size(); i++) {
@@ -506,12 +510,7 @@ public class TimeReportGenerator {
 		return nonPrintedActivities;
 	}
 	
-	/**
-	 * Helper method for showTimeReport
-	 * @param state
-	 * @param reportId
-	 * @return
-	 */
+	
 	private String confirmationButton(int state, int reportId) {
 		StringBuilder sb = new StringBuilder();
 		switch(state) {
@@ -534,9 +533,9 @@ public class TimeReportGenerator {
 	}
 	
 	/**
-	 * Signs or unsigns a report.
-	 * @param reportId the report that the user wants to sign/unsign
-	 * @return true if success, false if e.g. there occurred an internal error 
+	 * Signerar eller avsignerar en tidrapport, genom att kontakta datbasen
+	 * @param reportId ID på den tidrapport som användaren vill signera/avsignera
+	 * @return true om signeringen lyckas, false om signeringen misslyckas, t.ex. vid internt fel.
 	 */
 	public boolean signOrUnsignReport(String reportId) {
 		//Create dummy TimeReports
@@ -552,10 +551,10 @@ public class TimeReportGenerator {
 		return success;
 	}
 	/**
-	 * Tells the database to change a time report
-	 * @param timeReport the time report the user wants to update
-	 * @param activities the activities connected to the time report the user wants to update.
-	 * @return true if successful update, false if e.g. there occured an internal error
+	 * Talar om för databasen att den ska ändra en tidrapport
+	 * @param timeReport tidrapporten som ska ändras
+	 * @param activities Aktiviterna som är kopplade till tidrapporten
+	 * @return true om det lyckas att ändra tidrapporten, false om den misslyckas.
 	 */
 	public boolean changeTimeReport(TimeReport timeReport, ArrayList<Activity> activities) {
 		//change to correct owner of timereport
@@ -566,9 +565,9 @@ public class TimeReportGenerator {
 	}
 
 	/**
-	 * Tells the database to remove a time report
-	 * @param reportId the report the user wants to remove
-	 * @return true if successful removal, false if e.g. there occurred an internal error.
+	 * Kontaktar databasen och ber den ta bort en tidrapport
+	 * @param reportId tidrapporten som ska tas bort
+	 * @return true om borttagningen lyckades, false om det ej lyckades (t.ex. vid internt fel.)
 	 */
 	public boolean removeTimeReport(String reportId) {
 		return db.removeTimeReport(Integer.valueOf(reportId));
