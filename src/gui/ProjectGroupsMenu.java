@@ -7,7 +7,11 @@ public class ProjectGroupsMenu extends ServletBase {
 	public ProjectGroupsMenu() {
 		super(); 
 	}
-
+	/**
+	 * Genererar undermeny f\u00F6r Projektgrupper
+	 * @param role
+	 * @return String med html-kod f\u00F6r undermeny.
+	 */
 	public String generateSubMenu(int role) {
 		String html = ""
 				+ "<section class=\"main-content container\">"

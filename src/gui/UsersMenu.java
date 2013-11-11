@@ -11,7 +11,12 @@ public class UsersMenu extends ServletBase {
 		super(); 
 		users = new Users(db);
 	}
-
+	
+	/**
+	 * Genererar undermeny f\u00F6r Användare
+	 * @param role
+	 * @return String med html-kod f\u00F6r undermeny.
+	 */
 	public String generateSubMenu(int role) {
 		String html = ""
 				+ "<section class=\"main-content container\">"
