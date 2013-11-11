@@ -9,15 +9,14 @@ public class TimeReport {
 
 	/**
 	 * Konstruktor som ska anv\u00E4ndas av databasklassen f\u00F6r att skapa ett 
-	 * object av en befintlig tidrapport.
+	 * objekt av en befintlig tidrapport.
 	 * @param id
 	 * @param week
 	 * @param signed
 	 * @param userId
 	 * @param projectGroupId
 	 */
-	public TimeReport(int id, int week, boolean signed, int userId,
-			int projectGroupId) {
+	public TimeReport(int id, int week, boolean signed, int userId, int projectGroupId) {
 		this.id = id;
 		this.week = week;
 		this.signed = signed;

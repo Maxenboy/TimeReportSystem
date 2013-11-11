@@ -9,7 +9,8 @@ public class ProjectGroup {
 	private int estimatedTime;
 
 	/**
-	 * Constructor used by database
+	 * Konstruktor som ska anv\u00E4ndas av databasklassen f\u00F6r att skapa ett 
+	 * objekt av en befintlig projektgrupp.
 	 * @param id
 	 * @param projectName
 	 * @param active
@@ -17,8 +18,7 @@ public class ProjectGroup {
 	 * @param endWeek
 	 * @param estimatedTime
 	 */
-	public ProjectGroup(int id, String projectName, boolean active,
-			int startWeek, int endWeek, int estimatedTime) {
+	public ProjectGroup(int id, String projectName, boolean active, int startWeek, int endWeek, int estimatedTime) {
 		this.id = id;
 		this.projectName = projectName;
 		this.active = active;
@@ -28,14 +28,13 @@ public class ProjectGroup {
 	}
 
 	/**
-	 * Constructor used for creating a new record in the database
+	 * Konstruktor f\u00F6r att skapa en ny aktiv projektgrupp.
 	 * @param projectName
 	 * @param startWeek
 	 * @param endWeek
 	 * @param estimatedTime
 	 */
-	public ProjectGroup(String projectName, int startWeek, int endWeek,
-			int estimatedTime) {
+	public ProjectGroup(String projectName, int startWeek, int endWeek, int estimatedTime) {
 		this.projectName = projectName;
 		this.startWeek = startWeek;
 		this.endWeek = endWeek;
@@ -44,13 +43,14 @@ public class ProjectGroup {
 	}
 
 	/**
-	 * @return
+	 * Returnerar projektgruppens id.
 	 */
 	public int getId() {
 		return id;
 	}
 
 	/**
+	 * S\u00E4tter projektgruppens id.
 	 * @param id
 	 */
 	public void setId(int id) {
@@ -58,13 +58,14 @@ public class ProjectGroup {
 	}
 
 	/**
-	 * @return
+	 * Returnerar projekgruppens namn.
 	 */
 	public String getProjectName() {
 		return projectName;
 	}
 
 	/**
+	 * S\u00E4tter projektgruppens namn.
 	 * @param projectName
 	 */
 	public void setProjectName(String projectName) {
@@ -72,13 +73,14 @@ public class ProjectGroup {
 	}
 
 	/**
-	 * @return
+	 * Returnerar huruvida projektgruppen \u00E4r aktiv eller inte. 
 	 */
 	public boolean isActive() {
 		return active;
 	}
 
 	/**
+	 * S\u00E4tter projektgruppen till aktiv eller inaktiv.
 	 * @param active
 	 */
 	public void setActive(boolean active) {
@@ -86,13 +88,14 @@ public class ProjectGroup {
 	}
 
 	/**
-	 * @return
+	 * Returnerar projektgruppens startvecka.
 	 */
 	public int getStartWeek() {
 		return startWeek;
 	}
 
 	/**
+	 * S\u00E4tter projektgruppens startvecka.
 	 * @param startWeek
 	 */
 	public void setStartWeek(int startWeek) {
@@ -100,13 +103,14 @@ public class ProjectGroup {
 	}
 
 	/**
-	 * @return
+	 * Returnerar projektgruppens slutvecka.
 	 */
 	public int getEndWeek() {
 		return endWeek;
 	}
 
 	/**
+	 * S\u00E4tter projektgruppens slutvecka.
 	 * @param endWeek
 	 */
 	public void setEndWeek(int endWeek) {
@@ -114,13 +118,14 @@ public class ProjectGroup {
 	}
 
 	/**
-	 * @return
+	 * Returnerar projektgruppens estimerade tid.
 	 */
 	public int getEstimatedTime() {
 		return estimatedTime;
 	}
 
 	/**
+	 * S\u00E4tter projektgruppens estimerade tid.
 	 * @param estimatedTime
 	 */
 	public void setEstimatedTime(int estimatedTime) {
@@ -184,6 +189,5 @@ public class ProjectGroup {
 				+ ", endWeek=" + endWeek + ", estimatedTime=" + estimatedTime
 				+ "]";
 	}
-
 	
 }
