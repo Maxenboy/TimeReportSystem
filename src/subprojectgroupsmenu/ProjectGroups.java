@@ -64,7 +64,7 @@ public class ProjectGroups {
 		for (User u : users) {
 			sb.append("<tr>");
 			sb.append("<td>" + u.getUsername() + "</td>");
-			sb.append("<td>" + u.getProjectGroup() + "</td>");
+			sb.append("<td>" + u.getProjectGroupId() + "</td>");
 			sb.append("<td>" + translateRole(u.getRole()) + "</td>");
 			sb.append("<td>" + createRadio(u.getId()) + "</td>");
 			sb.append("</tr>");
@@ -142,7 +142,7 @@ public class ProjectGroups {
 	 */
 	public void makeProjectLeader(String name, int id) {
 		db.getUser(name).setRole(2);
-		db.getUser(name).setProjectGroup(id);
+		db.getUser(name).setProjectGroupId(id);
 	}
 
 	/**
@@ -153,7 +153,7 @@ public class ProjectGroups {
 	 */
 	public void removeProjectLeader(String name, int id) {
 		db.getUser(name).setRole(3);
-		db.getUser(name).setProjectGroup(id);
+		db.getUser(name).setProjectGroupId(id);
 
 	}
 

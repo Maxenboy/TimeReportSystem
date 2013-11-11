@@ -17,48 +17,49 @@ public class User {
 	private String password;
 	private boolean active;
 	private int role;
-	private int projectGroup;
+	private int projectGroupId;
 
 	/**
-	 * Constructor used by database
+	 * Konstruktor som ska anv\u00E4ndas av databasen f\u00F6r att skapa object av 
+	 * befintliga anv\u00E4ndare.
 	 * @param id
 	 * @param username
 	 * @param password
 	 * @param active
 	 * @param role
-	 * @param projectGroup
+	 * @param projectGroupId
 	 */
-	public User(int id, String username, String password, boolean active,
-			int role, int projectGroup) {
+	public User(int id, String username, String password, boolean active, int role, int projectGroupId) {
 		this.id = id;
 		this.username = username;
 		this.password = password;
 		this.active = active;
 		this.role = role;
-		this.projectGroup = projectGroup;
+		this.projectGroupId = projectGroupId;
 	}
 
 	/**
-	 * Constructor used for creating a new record.
-	 * Auto generates password, sets role to ROLE_NO_ROLE, active to true and projectGroup to 0
+	 * Konstruktor f\u00F6r att skapa en ny aktiv anv\u00E4ndare. L\u00F6senordet autogenereras, 
+	 * rollen s\u00E4tts till ROLE_NO_ROLE och projectgruppsid s\u00E4tts till 0.
 	 * @param username
 	 */
 	public User(String username) {
 		this.username = username;
 		this.role = ROLE_NO_ROLE;
 		this.active = true;
-		this.projectGroup = 0;
+		this.projectGroupId = 0;
 		password = generatePassword();
 	}
 
 	/**
-	 * @return
+	 * Returnerar anv\u00E4ndarens id.
 	 */
 	public int getId() {
 		return id;
 	}
 
 	/**
+	 * S\u00E4tter anv\u00E4ndarens id.
 	 * @param id
 	 */
 	public void setId(int id) {
@@ -66,13 +67,14 @@ public class User {
 	}
 
 	/**
-	 * @return
+	 * Returnerar anv\u00E4ndarens anv\u00E4ndarnamn.
 	 */
 	public String getUsername() {
 		return username;
 	}
 
 	/**
+	 * S\u00E4tter anv\u00E4ndarens anv\u00E4ndarnamn.
 	 * @param username
 	 */
 	public void setUsername(String username) {
@@ -80,13 +82,14 @@ public class User {
 	}
 
 	/**
-	 * @return
+	 * Returnerar anv\u00E4ndarens l\u00F6senord.
 	 */
 	public String getPassword() {
 		return password;
 	}
 
 	/**
+	 * S\u00E4tter anv\u00E4ndarens l\u00F6senord.
 	 * @param password
 	 */
 	public void setPassword(String password) {
@@ -94,13 +97,14 @@ public class User {
 	}
 
 	/**
-	 * @return
+	 * Returnerar huruvida anv\u00E4ndaren \u00E4r aktiv eller inte.
 	 */
 	public boolean isActive() {
 		return active;
 	}
 
 	/**
+	 * S\u00E4tter anv\u00E4ndaren till aktiv eller inaktiv.
 	 * @param active
 	 */
 	public void setActive(boolean active) {
@@ -108,13 +112,14 @@ public class User {
 	}
 
 	/**
-	 * @return
+	 * Returnerar anv\u00E4ndarens roll.
 	 */
 	public int getRole() {
 		return role;
 	}
 
 	/**
+	 * S\u00E4tter anv\u00E4ndarens roll.
 	 * @param role
 	 */
 	public void setRole(int role) {
@@ -122,21 +127,22 @@ public class User {
 	}
 
 	/**
-	 * @return
+	 * Returnerar anv\u00E4ndarens projektgruppsid.
 	 */
-	public int getProjectGroup() {
-		return projectGroup;
+	public int getProjectGroupId() {
+		return projectGroupId;
 	}
 
 	/**
-	 * @param projectGroup
+	 * S\u00E4tter anv\u00E4ndarens projektgruppsid.
+	 * @param projectGroupId
 	 */
-	public void setProjectGroup(int projectGroup) {
-		this.projectGroup = projectGroup;
+	public void setProjectGroupId(int projectGroupId) {
+		this.projectGroupId = projectGroupId;
 	}
 	
 	/**
-	 * @return
+	 * Genererar l\u00F6senord.
 	 */
 	private String generatePassword() {
 		Random ran = new Random();
@@ -163,7 +169,7 @@ public class User {
 		result = prime * result + id;
 		result = prime * result
 				+ ((password == null) ? 0 : password.hashCode());
-		result = prime * result + projectGroup;
+		result = prime * result + projectGroupId;
 		result = prime * result + role;
 		result = prime * result
 				+ ((username == null) ? 0 : username.hashCode());
@@ -191,7 +197,7 @@ public class User {
 				return false;
 		} else if (!password.equals(other.password))
 			return false;
-		if (projectGroup != other.projectGroup)
+		if (projectGroupId != other.projectGroupId)
 			return false;
 		if (role != other.role)
 			return false;
@@ -210,10 +216,6 @@ public class User {
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", password="
 				+ password + ", active=" + active + ", role=" + role
-				+ ", projectGroup=" + projectGroup + "]";
+				+ ", projectGroupId=" + projectGroupId + "]";
 	}
-	
-	
-
-	
 }

@@ -94,16 +94,16 @@ public class TestUser {
 
 	@Test
 	public void testGetProjectGroup() {
-		assertEquals(0, user1.getProjectGroup());
-		assertEquals(1, user2.getProjectGroup());
+		assertEquals(0, user1.getProjectGroupId());
+		assertEquals(1, user2.getProjectGroupId());
 	}
 
 	@Test
 	public void testSetProjectGroup() {
-		user1.setProjectGroup(2);
-		user2.setProjectGroup(3);
-		assertEquals(2, user1.getProjectGroup());
-		assertEquals(3, user2.getProjectGroup());
+		user1.setProjectGroupId(2);
+		user2.setProjectGroupId(3);
+		assertEquals(2, user1.getProjectGroupId());
+		assertEquals(3, user2.getProjectGroupId());
 	}
 
 }

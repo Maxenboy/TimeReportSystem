@@ -32,7 +32,7 @@ public class HandleAdminRights extends UsersMenu {
 				} else {
 					User user = db.getUser(Integer.parseInt(request
 							.getParameter("username")));
-					if (user.getProjectGroup() == 0) {
+					if (user.getProjectGroupId() == 0) {
 						if (user.getId() != (Integer) session.getAttribute("id")) {
 							if (user.getRole() == User.ROLE_ADMIN) {
 								users.unmakeAdministrator(user.getUsername());

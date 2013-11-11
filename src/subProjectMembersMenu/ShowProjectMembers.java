@@ -117,7 +117,7 @@ public class ShowProjectMembers extends ProjectMembersMenu {
 		for (User u : users) {
 			sb.append("<tr>");
 			sb.append("<td>" + u.getUsername() + "</td>");
-			sb.append("<td>" + db.getProjectGroup(u.getProjectGroup()).getProjectName() + "</td>");
+			sb.append("<td>" + db.getProjectGroup(u.getProjectGroupId()).getProjectName() + "</td>");
 			sb.append("<td>" + translateRole(u.getRole()) + "</td>");
 			String active = u.isActive() ? "Aktiv" : "Inaktiv";
 			sb.append("<td>" + active + "</td>");

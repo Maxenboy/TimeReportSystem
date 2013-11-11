@@ -84,7 +84,7 @@ public class AddMemberToProjectGroup extends gui.ProjectGroupsMenu {
 	private ArrayList<User> getUsersWithoutProjectGroup() {
 		ArrayList<User> users = new ArrayList<User>();
 		for (User u : db.getUsers()) {
-			if (u.getProjectGroup() == 0) {
+			if (u.getProjectGroupId() == 0) {
 				users.add(u);
 			}
 		}

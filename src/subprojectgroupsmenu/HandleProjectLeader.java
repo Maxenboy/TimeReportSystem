@@ -84,7 +84,7 @@ public class HandleProjectLeader extends gui.ProjectGroupsMenu {
 		for (User u : users) {
 			sb.append("<tr>");
 			sb.append("<td>" + u.getUsername() + "</td>");
-			sb.append("<td>" + db.getProjectGroup(u.getProjectGroup()).getProjectName() + "</td>");
+			sb.append("<td>" + db.getProjectGroup(u.getProjectGroupId()).getProjectName() + "</td>");
 			sb.append("<td>" + translateRole(u.getRole()) + "</td>");
 			sb.append("<td>" + createRadio2(u.getId()) + "</td>");
 			sb.append("</tr>");

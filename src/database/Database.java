@@ -112,7 +112,7 @@ public class Database {
 				user.setId(res.getInt(1));
 				user.setActive(res.getBoolean(4));
 				user.setRole(res.getInt(5));
-				user.setProjectGroup(res.getInt(6));
+				user.setProjectGroupId(res.getInt(6));
 			}
 			res.close();
 			preparedStatement.close();
