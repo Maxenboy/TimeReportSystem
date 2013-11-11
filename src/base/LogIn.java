@@ -17,13 +17,9 @@ import subTimeReportMenu.SignTimeReports;
 import database.User;
 
 /**
- * Servlet implementation class LogIn
+ * Servlet implementering av LogIn
  * 
- * A log-in page. 
- * 
- * The first thing that happens is that the user is logged out if he/she is logged in. 
- * Then the user is asked for name and password. 
- * If the user is logged in he/she is directed to the functionality page. 
+ * En login sida.
  * 
  */
 @WebServlet("/LogIn")
@@ -38,8 +34,8 @@ public class LogIn extends ServletBase {
     }
     
     /**
-     * Generates a form for login. 
-     * @return HTML code for the form
+     * Genererar login-formul\u00E4ret. 
+     * @return HTML-kod f\u00F6r fomul\u00E4ret. 
      */
     protected String loginRequestForm() {
     	String html = "<p>Ange anv\u00E4ndarnamn och l\u00F6senord:</p>";
@@ -51,47 +47,10 @@ public class LogIn extends ServletBase {
     	return html;
     }
     
-//    /**
-//     * Checks with the database if the user should be accepted
-//     * @param name The name of the user
-//     * @param password The password of the user
-//     * @return true if the user should be accepted
-//     */
-//    private boolean checkUser(String name, String password) {
-//		
-//		boolean userOk = false;
-//		boolean userChecked = false;
-//		
-//		try{
-//			
-//			Statement stmt = conn.createStatement();		    
-//		    ResultSet rs = stmt.executeQuery("select * from users"); 
-//		    while (rs.next( ) && !userChecked) {
-//		    	String nameSaved = rs.getString("username"); 
-//		    	String passwordSaved = rs.getString("password");
-//		    	if (name.equals(nameSaved)) {
-//		    		userChecked = true;
-//		    		userOk = password.equals(passwordSaved);
-//		    	}
-//		    }
-//		    stmt.close();
-//		} catch (SQLException ex) {
-//		    System.out.println("SQLException: " + ex.getMessage());
-//		    System.out.println("SQLState: " + ex.getSQLState());
-//		    System.out.println("VendorError: " + ex.getErrorCode());
-//		}
-//		return userOk;
-//	}
-
-    
-    
 	/**
-	 * Implementation of all input to the servlet. All post-messages are forwarded to this method. 
-	 * 
-	 * First logout the user, then check if he/she has provided a username and a password. 
-	 * If he/she has, it is checked with the database and if it matches then the session state is 
-	 * changed to login, the username that is saved in the session is updated, and the user is 
-	 * relocated to the functionality page. 
+	 * Loggar ut anv\u00E4ndaren om anv\u00E4ndaren om anv\u00E4ndaren inte \u00E4r inloggad. Kollar sedan om anv\u00E4ndarnamn
+	 *  och l\u00F6senord \u00E4r korrekt. \u00E4r det korrekt s\u00E5 sparas information om anv\u00E4ndaren i sessioner och 
+	 *  anv\u00E4ndaren skickas vidare till v\u00E4lkomstsidan. \u00E4r anv\u00E4ndaren inaktiv s\u00E5 presenteras ett meddelande om detta.
 	 * 
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -165,7 +124,7 @@ public class LogIn extends ServletBase {
 	}
 
 	/**
-	 * All requests are forwarded to the doGet method. 
+	 * Alla f\u00F6rfr\u00E5gningar skickas vidare till doGet
 	 * 
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */

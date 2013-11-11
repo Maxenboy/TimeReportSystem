@@ -13,16 +13,6 @@ import base.ServletBase;
 import database.User;
 
 
-/**
- * Servlet implementation class LogIn
- * 
- * A log-in page. 
- * 
- * The first thing that happens is that the user is logged out if he/she is logged in. 
- * Then the user is asked for name and password. 
- * If the user is logged in he/she is directed to the functionality page. 
- * 
- */
 @WebServlet("")
 public class WelcomePage extends ServletBase {
 	private static final long serialVersionUID = 1L;
@@ -35,8 +25,7 @@ public class WelcomePage extends ServletBase {
     }
     
 	/**
-	 * Implementation of all input to the servlet. All post-messages are forwarded to this method. 
-	 * 
+	 * Implementering av all input till servleten. Alla post-meddelanden skickas vidare till den h\u00E4r metoden.
 	 * 
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */

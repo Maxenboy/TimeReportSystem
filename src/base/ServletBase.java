@@ -8,22 +8,10 @@ import database.Database;
 import database.ProjectGroup;
 
 /**
- * This class is the superclass for all servlets in the application. It includes
- * basic functionality required by many servlets, like for example a page head
- * written by all servlets, and the connection to the database.
+ * Det h\u00E4r \u00E4r superklassen f\u00F6r alla servlets i systemet. Den inkluderar 
+ * grundl\u00E4ggande funktionalitet som beh\u00F6vs i de flesta servlets. 
  * 
- * This application requires a database. For username and password, see the
- * constructor in this class.
- * 
- * <p>
- * The database can be created with the following SQL command: mysql> create
- * database base;
- * <p>
- * The required table can be created with created with: mysql> create table
- * users(name varchar(10), password varchar(10), primary key (name));
- * <p>
- * The administrator can be added with: mysql> insert into users (name,
- * password) values('admin', 'adminp');
+ * Det h\u00E4r systemet kr\u00E4ver en databas. F\u00F6r anv\u00E4ndarnamn och l\u00F6senord, se database/Database.java.
  * 
  */
 public class ServletBase extends HttpServlet {
@@ -57,11 +45,10 @@ public class ServletBase extends HttpServlet {
 	}
 
 	/**
-	 * Checks if a user is logged in or not.
+	 * Kontrollerar om en anv\u00E4ndare \u00E4r inloggad eller inte.
 	 * 
 	 * @param request
-	 *            The HTTP Servlet request (so that the session can be found)
-	 * @return true if the user is logged in, otherwise false.
+	 * @return true om anv\u00E4ndaren \u00E4r inloggad, annars false.
 	 */
 	protected boolean loggedIn(HttpServletRequest request) {
 		HttpSession session = request.getSession(true);
@@ -75,20 +62,19 @@ public class ServletBase extends HttpServlet {
 	}
 	
 	/**
-	 * Can be used to construct form elements.
+	 * Kan anv\u00E4ndas f\u00F6r att skapa form-element.
 	 * 
 	 * @param par
-	 *            Input string
-	 * @return output string = "par"
+	 * @return "par"
 	 */
 	protected String formElement(String par) {
 		return '"' + par + '"';
 	}
 
 	/**
-	 * Constructs the header of all servlets.
+	 * Skapar headern f\u00F6r alla servlets
 	 * 
-	 * @return String with html code for the header.
+	 * @return String med html-kod f\u00F6r headern.
 	 */
 	protected String getPageIntro() {
 		String intro = "<html>"
@@ -100,7 +86,12 @@ public class ServletBase extends HttpServlet {
 				+ "<body style=\"padding-top: 80px\">";
 		return intro;
 	}
-		
+	
+	/**
+	 * Skapar avslutningen f\u00F6r alla servlets
+	 * 
+	 * @return String med hmtl-kod f\u00F6r avslutningen
+	 */
 	protected String getPageOutro() {
 		String html = ""
 				+ "</section>"
@@ -115,10 +106,10 @@ public class ServletBase extends HttpServlet {
 	}
 	
 	/** 
-	 * Constructs a main menu based on the current page
-	 * and the permission of the user
-	 * @param userPermission Check the final ints above
-	 * @return HTML code for the menu
+	 * Genererar huvudmenyn baserat av den nuvarande sidan
+	 * och r\u00E4ttigheterna f\u00F6r anv\u00E4ndaren
+	 * @param userPermission
+	 * @return String med html-kod f\u00F6r huvudmenyn
 	 */
 	protected String generateMainMenu(int userPermission, HttpServletRequest request) {
 		String intro = ""
