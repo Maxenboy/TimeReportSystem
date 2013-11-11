@@ -32,7 +32,8 @@ public class Activity {
 	private int timeReportId;
 	
 	/**
-	 * Constructor used by database
+	 * Konstruktor som ska anv\u00E4ndas av databasklassen f\u00F6r att skapa ett 
+	 * objekt av en befintlig aktivitet.
 	 * @param id
 	 * @param activityNr
 	 * @param activityType
@@ -48,7 +49,7 @@ public class Activity {
 	}
 
 	/**
-	 * Constructor used for adding a new record to the database
+	 * Konstruktor f\u00F6r att skapa en ny aktivitet.
 	 * @param activityNr
 	 * @param activityType
 	 * @param time
@@ -63,13 +64,14 @@ public class Activity {
 	}
 
 	/**
-	 * @return
+	 * Returnerar aktivitetens id.
 	 */
 	public int getId() {
 		return id;
 	}
 
 	/**
+	 * S\u00E4tter aktivitetens id.
 	 * @param id
 	 */
 	public void setId(int id) {
@@ -77,13 +79,14 @@ public class Activity {
 	}
 
 	/**
-	 * @return
+	 * Returnerar aktivitetens aktivitetsnummer.
 	 */
 	public int getActivityNr() {
 		return activityNr;
 	}
 
 	/**
+	 * S\u00E4tter atkvitetens aktivitetsnummer.
 	 * @param activityNr
 	 */
 	public void setActivityNr(int activityNr) {
@@ -91,13 +94,14 @@ public class Activity {
 	}
 
 	/**
-	 * @return
+	 * Returnerar aktivitetens aktivitetstyp.
 	 */
 	public String getActivityType() {
 		return activityType;
 	}
 
 	/**
+	 * S\u00E4tter aktivitetens aktivitetstyp.
 	 * @param activityType
 	 */
 	public void setActivityType(String activityType) {
@@ -105,13 +109,14 @@ public class Activity {
 	}
 
 	/**
-	 * @return
+	 * Returnerar aktivitetens tid.
 	 */
 	public int getTime() {
 		return time;
 	}
 
 	/**
+	 * S\u00E4tter aktivitetens tid.
 	 * @param time
 	 */
 	public void setTime(int time) {
@@ -119,13 +124,14 @@ public class Activity {
 	}
 
 	/**
-	 * @return
+	 * Returnerar aktivitetens tidrapportsid.
 	 */
 	public int getTimeReportId() {
 		return timeReportId;
 	}
 
 	/**
+	 * S\u00E4tter aktivitetens tidrapportid.
 	 * @param timeReportId
 	 */
 	public void setTimeReportId(int timeReportId) {
@@ -186,6 +192,10 @@ public class Activity {
 				+ ", timeReportId=" + timeReportId + "]";
 	}
 	
+	/**
+	 * Mappar aktivitetstyp till heltal.
+	 * @return Heltal
+	 */
 	public int mapActivityTypeToInt() {
 		switch(activityType) {
 		case ACTIVITY_TYPE_DEVELOPMENT:
@@ -197,10 +207,14 @@ public class Activity {
 		case ACTIVITY_TYPE_REWORK:
 			return 3;
 		}
-		
 		return 0;
 	}
 	
+	/**
+	 * Mappar heltal till aktivitetstyp.
+	 * @param typeInteger Heltal
+	 * @return Aktivitetstyp. Null om den inte hittades.
+	 */
 	public static String mapIntToActivityType(int typeInteger) {
 		switch(typeInteger) {
 		case 0:
@@ -215,6 +229,11 @@ public class Activity {
 		return null;
 	}
 	
+	/**
+	 * Mappar aktivitetsnummer till motsvarande str\u00E4ng.
+	 * @param activityNbr Aktivitetsnummer
+	 * @return Aktivitetsstr\u00E4ng. Null om den inte hittades.
+	 */
 	public static String mapActivityNrToString(int activityNbr) {
 		switch(activityNbr) {
 		case ACTIVITY_NR_SDP:
