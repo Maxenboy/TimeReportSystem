@@ -23,10 +23,10 @@ public class Statistics extends gui.StatisticsMenu {
 	}
 
 	/**
-	 * The doGet method is called when the user gets directed to the statistics-page. 
-	 * If the user is an administrator a form is shown where the user selects which project group to get data from.
-	 * If the user is project-leader, four multiple-select-boxes are shown.
-	 * If the user is just an ordinary user, a multiple-select-box to select week is shown.
+	 * doGet-metoden anropas då användaren försöker nå statistics-sidan.
+	 * Om användaren är en administratör så visas ett formulär där användaren kan välja projektgrupp som man vill se data för.
+	 * Om användaren är en projektledare, då visas fyra mulitple-select-lådor.
+	 * Om användaren är en vanlig användare, en multiple-select-box för att välja vecka visas.
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
@@ -66,16 +66,19 @@ public class Statistics extends gui.StatisticsMenu {
 
 
 	/**
-	 * You reach the doPost method after submitting data from the statistics page.
-	 * There are a few different scenarios that need to be handled depending on which data was submitted.
+	 * doPost-metoden nås efter att man har skickat data via formulär från statistics-sidan.
 	 * 
-	 * Administrator could have submitted project group or requested filters. 
-	 * Project leader could have submitted requested filters.
-	 * User could have submitted weeks.
-	 * 
-	 * If filters/weeks have been submitted the statistics will be shown in table- and graphical form.
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	// There are a few different scenarios that need to be handled depending on which data was submitted.
+	// 
+	// Administrator could have submitted project group or requested filters. 
+	// Project leader could have submitted requested filters.
+	// User could have submitted weeks.
+	// 
+	// If filters/weeks have been submitted the statistics will be shown in table- and graphical form.
+	 
+	
 		if (loggedIn(request)) {
 			PrintWriter out = response.getWriter();
 			HttpSession session = request.getSession(true);
@@ -140,7 +143,7 @@ public class Statistics extends gui.StatisticsMenu {
 	}
 
 	/**
-	 * This method prints the form where the administrator gets to choose project group to show statistics for.
+	 * Metoden skriver ut ett formulär där administratören får välja vilken projektgrupp denne vill se statistik för.
 	 * 
 	 * @return
 	 */
@@ -163,10 +166,10 @@ public class Statistics extends gui.StatisticsMenu {
 	}
 
 	/**
-	 * Creates a string with html and javascript code that creates a graph when printed out.
-	 * @param stats HashMap with keys "user", "role", "activity", "week" and "time". 
-	 * and ArrayList as value.
-	 * @return String containing html and javascript that creates the graph when printed out. If stats is equal to null, it returns the string "No, graph to show. Using another filer might solve this.".
+	 * Genererar en sträng med html- och javaskriptkod som skapar en graf när denna skrivs ut.
+	 * @param stats HashMap med nycklarna  "user", "role", "activity", "week" och "time". 
+	 * och ArrayList som värde.
+	 * @return Sträng innehållandes html- och javaskriptkod som skapar en graf då denna skrivs ut. Om stats är null returneras en felsträng.
 	 */	
 	private String printGraph(HashMap<String, ArrayList<String>> stats) {		
 		if(stats.get("time").isEmpty()) {
@@ -228,10 +231,10 @@ public class Statistics extends gui.StatisticsMenu {
 	}
 
 	/**
-	 * Prints the form from where the user can choose how to filter the statistics-data.
-	 * @param table Receives available filters. 
-	 * @param userPermission The permission level of the user.
-	 * @return
+	 * Skriver ut ett fomrulär där användaren kan välja hur man vill filtrera statistik-datan.
+	 * @param table Tar emot möjliga filter.
+	 * @param userPermission Access-nivån som användaren har.
+	 * @return html-sträng som skapar formulär där användarne kan filtrera statstik-datan..
 	 */
 	private String printFilter(HashMap<String, ArrayList<String>> table, int userPermission) {
 		StringBuilder sb = new StringBuilder();
@@ -321,9 +324,9 @@ public class Statistics extends gui.StatisticsMenu {
 
 
 	/**
-	 * Converts array into an arraylist
+	 * Metod som gör om en array till en arraylist.
 	 * @param array
-	 * @return
+	 * @return arraylist.
 	 */
 	private ArrayList<String> toStringArrayList(String[] array) {
 		if(array == null) {
@@ -340,8 +343,8 @@ public class Statistics extends gui.StatisticsMenu {
 		return arrayList;
 	}
 	/**
-	* @param listOfWeeks. ArrayList of all weeks numbers.
-	* @return int The biggest week number listOfWeeks contains.
+	* @param listOfWeeks. ArrayLista med alla veckonummer.
+	* @return int största elementet i arrayen. 
 	*/
 	private int getLastWeek(ArrayList<String> listOfWeeks) {
 		int lastWeek = 0;
@@ -357,7 +360,7 @@ public class Statistics extends gui.StatisticsMenu {
 
 
 	/**
-	 * Converts array into an arraylist
+	 * Gör om Array till ArrayList
 	 * 
 	 * @param string-array 
 	 * @return arraylist
@@ -378,7 +381,7 @@ public class Statistics extends gui.StatisticsMenu {
 	}
 
 	/**
-	 * Searches for a cookie with the name "projectGroup". Returns the value of this cookie if found, otherwise null.
+	 * Söker efter en cookie med namnet "projectGroup". Returnerar värdet av cookien om denna finns, annars null.
 	 * @param request
 	 * @return
 	 */
@@ -395,10 +398,10 @@ public class Statistics extends gui.StatisticsMenu {
 	}
 
 	/**
-	 * Creates a string with html and javascript code that creates a table when printed out.
-	 * @param stats HashMap with keys "user", "role", "activity", "week" and "time" 
-	 * and ArrayList as value.
-	 * @return String containing html and javascript that creates the table when printed out.
+	 * Skapar en sträng med html- och javaskriptkod som skapar en tabell då denna skrivs ut.
+	 * @param stats HashMap med nycklarna  "user", "role", "activity", "week" och "time" 
+	 * och ArrayList som värde.
+	 * @return String innehållandes html- och javascriptkod som skapar en tabell då denna skrivs ut.
 	 */	
 	private String printTable(HashMap<String, ArrayList<String>> stats) {
 		if(stats.get("time").isEmpty()) {
@@ -453,9 +456,9 @@ public class Statistics extends gui.StatisticsMenu {
 	}	
 	
 	/**
-	 * Translates a rolenumber into the corresponding string.
+	 * Översätter rollnummer till sträng.
 	 * @param role
-	 * @return
+	 * @return rollen som sträng.
 	 */
 	private String translateRole(int role) {
 		switch(role) {
