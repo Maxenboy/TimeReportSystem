@@ -9,14 +9,22 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
+/**
+ * Denna WebServlet används för att visa tidrapporter som ligger inmatade i systemet.
+ * @author martin
+ *
+ */
 @WebServlet("/ShowTimeReports")
 public class ShowTimeReports extends TimeReportingMenu {
 	private static final long serialVersionUID = -1933766080948920247L;
 	public static final int FIRST = 0;
 	public static final int ADMINISTRATOR = 1;
 	TimeReportGenerator trg = new TimeReportGenerator(db);
-	
+/**
+ * Denna metod används första gången användaren besöker sidan. Visar antingen en lista över projektgrupper eller 
+ * tidrapporter
+ * @param HttpServletRequest request, HttpServletResponse response
+ */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
 			HttpSession session = request.getSession(true);
@@ -39,7 +47,7 @@ public class ShowTimeReports extends TimeReportingMenu {
 				session.setAttribute("showReportState", ADMINISTRATOR);
 				break;
 			case PERMISSION_PROJ_LEADER:
-				s = trg.showAllTimeReports(projId, TimeReportGenerator.SHOW_ALL);
+				s = trg.showAllTimeReports(projId, TimeReportGenerator.SHOW_ALL_FOR_PRJ);
 				if(s == null)
 					out.print("Det finns inga tidrapporter att visa");
 				else 
@@ -65,7 +73,10 @@ public class ShowTimeReports extends TimeReportingMenu {
 			response.sendRedirect("LogIn");
 		}
 	}
-	
+/**
+ * Denna metod visar en vald tidrapport, den används även för att kontakta TimeReportGenerator för att ta bort tidrapporten.
+ * @param HttpServletRequest request, HttpServletResponse response
+ */
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
 			HttpSession session = request.getSession(true);
@@ -80,7 +91,7 @@ public class ShowTimeReports extends TimeReportingMenu {
 					out.print(generateMainMenu(permission, request));
 					out.print(generateSubMenu(permission));
 					out.print(getPageIntro());
-					String s = trg.showAllTimeReports(Integer.valueOf(prjGroup), TimeReportGenerator.SHOW_ALL);
+					String s = trg.showAllTimeReports(Integer.valueOf(prjGroup), TimeReportGenerator.SHOW_ALL_FOR_PRJ);
 					if(s == null)
 						out.print("Det finns inga tidrapporter att visa");
 					else 

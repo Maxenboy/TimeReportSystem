@@ -16,7 +16,10 @@ public class AddMemberToProjectGroup extends gui.ProjectGroupsMenu {
 
 	private String groupName = "";
 	private static final long serialVersionUID = -1961915720341016655L;
-
+	/**
+	 * doGet-metoden anropas alla g\u00E5nger d\u00E5 en adminstrat\u00F6r vill l\u00E4gga till en anv\u00E4ndare i en projektgrupp.
+	 * 
+	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
 			HttpSession session = request.getSession(true);

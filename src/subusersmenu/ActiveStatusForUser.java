@@ -17,11 +17,16 @@ import database.User;
 public class ActiveStatusForUser extends UsersMenu {
 
 	private static final long serialVersionUID = -3023954127569399790L;
-
+	/**
+	 * Konstruktor
+	 */
 	public ActiveStatusForUser() {
 		super();
 	}
-
+	/**
+	 * doGet-metoden anropas alla g\u00E5nger d\u00E5 en adminstrat\u00F6r vill aktivera/deaktivera en anv\u00E4ndare i systemet
+	 * 
+	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
 			HttpSession session = request.getSession(true);

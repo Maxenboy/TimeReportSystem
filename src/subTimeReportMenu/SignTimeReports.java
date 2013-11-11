@@ -10,7 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
+/**
+ * Denna WebServlet används för att signera eller avsignera tidrapporter i systemet
+ * @author martin
+ *
+ */
 @WebServlet("/SignTimeReports")
 public class SignTimeReports extends TimeReportingMenu {
 	public static final int FIRST = 0;
@@ -20,7 +24,11 @@ public class SignTimeReports extends TimeReportingMenu {
 	public static final int SHOW = 4;
 	private static final long serialVersionUID = -4213845458306512233L;
 	TimeReportGenerator trg = new TimeReportGenerator(db);
-	
+	/**
+	 * Denna metod används första gången användaren besöker sidan, visar antingen två knappar 
+	 * (välja att visa signerade eller osignerade tidrapporter), eller en lista med projektgrupper. 
+	 * @param HttpServletRequest request, HttpServletResponse response
+	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
 			HttpSession session = request.getSession(true);
@@ -82,7 +90,10 @@ public class SignTimeReports extends TimeReportingMenu {
 			response.sendRedirect("LogIn");
 		}
 	}
-		
+	/**	
+	 * Denna metod används för att signera/avsignera tidrapporter, kontaktar TimeReportGenerator för att signera/avsignera.
+	 * @param HttpServletRequest request, HttpServletResponse response
+	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
 			//Signing/unsigning of time reports

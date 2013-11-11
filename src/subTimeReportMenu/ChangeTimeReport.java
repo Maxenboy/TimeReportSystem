@@ -13,7 +13,11 @@ import javax.servlet.http.HttpSession;
 
 import database.Activity;
 import database.TimeReport;
-
+/**
+ * Den här klassen är WebServlet för sidan som användaren besöker när den vill ändra i tidrapporter.
+ * @author martin
+ *
+ */
 @WebServlet("/ChangeTimeReport")
 public class ChangeTimeReport extends TimeReportingMenu{
 	
@@ -23,7 +27,11 @@ public class ChangeTimeReport extends TimeReportingMenu{
 	public static final int SHOW_REPORT = 1;
 	public static final int CHANGE_REPORT = 2;
 	public static final int ADMINISTRATOR = 3;
-	
+/**
+ * Den här metoden används första gången då användaren besöker sidan. 
+ * Kontaktar TimeReportGenerator för att hämta data som visas på skärm 
+ * @param HttpServletRequest request, HttpServletResponse response
+ */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
 			HttpSession session = request.getSession(true);
@@ -80,7 +88,11 @@ public class ChangeTimeReport extends TimeReportingMenu{
 			response.sendRedirect("LogIn");
 		}
 	}
-	
+/**
+ * Den här metoden används då användaren börjar ändra i en tidrapport, eller vill ha tillgång till en speciell 
+ * projektgrupps tidrapporter.
+ * @param HttpServletRequest request, HttpServletResponse response
+ */
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
 			HttpSession session = request.getSession(true);

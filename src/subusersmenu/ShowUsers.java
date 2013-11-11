@@ -18,9 +18,16 @@ public class ShowUsers extends UsersMenu {
 
 	private static final long serialVersionUID = -2190552005706112015L;
 
+	/**
+	 * Konstruktor
+	 */
 	public ShowUsers() {
 		super();
 	}
+	/**
+	 * doGet-metoden anropas alla g\u00E5nger d\u00E5 en adminstrat\u00F6r blir presenterad med en lista av alla anv\u00E4ndare i systemet.
+	 * 
+	 */
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {

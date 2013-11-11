@@ -9,16 +9,16 @@ public class Users {
 	private Database db;
 
 	/**
-	 * Constructor
+	 * Konstruktor
 	 */
 	public Users(Database database) {
 		this.db = database;
 	}
 
 	/**
-	 * Generates a form where it is possible to specify a new user.
+	 * Generar ett html formul\u00E4r d\u00E4r det \u00E4r m\u00F6jligt att ange en ny anv\u00E4ndares namn 
 	 * 
-	 * @return
+	 * @return html kod f\u00F6r formul\u00E4ret
 	 */
 	public String userForm() {
 		String html;
@@ -34,10 +34,10 @@ public class Users {
 	}
 
 	/**
-	 * Checks if the name is acceptable
+	 * Verifierar om namnet \u00E4r mellan 5 och 10 tecken, inte redan finns i systemet och best\u00E5r av endast alfanumeriska tecken
 	 * 
-	 * @param name
-	 * @return
+	 * @param name namnet som ska verifieras
+	 * @return en siffra som avser vilka kriterier som godkäns. 1 f\u00F6r alla kriterier godkända, 2 returneras om ett s\u00E5dant namn redan finns i systemet och 3 om namnet inte \u00E4r mellan 5-10 tecken eller inte alfanumeriskt
 	 */
 	public int checkNewName(String name) {
 		for (User u : db.getUsers()) {
@@ -53,9 +53,9 @@ public class Users {
 	}
 
 	/**
-	 * Creates a random password
+	 * Skapar ett slumpm\u00E4ssigt l\u00F6senord
 	 * 
-	 * @return
+	 * @return ett l\u00F6senord
 	 */
 	public String createPassword() {
 		Random rand = new Random();
@@ -67,10 +67,10 @@ public class Users {
 	}
 
 	/**
-	 * Shows all the users
+	 * Visar alla anv\u00E4ndare i systemet i tabellform
 	 * 
-	 * @param users
-	 * @return
+	 * @param users en lista på anv\u00E4ndare
+	 * @return html kod i tabellform inneh\u00E5llade alla an\u00E4ndare
 	 */
 	public String showUsers(ArrayList<User> users) {
 		if (users.isEmpty()) {
@@ -126,9 +126,9 @@ public class Users {
 	}
 
 	/**
-	 * Makes a user administrator
+	 * G\u00F6r en an\u00E4ndare till administrat\u00F6r i systemet
 	 * 
-	 * @param name
+	 * @param name namnet p\u00E5 anv\u00E4ndaren som ska bli administrat\u00F6r
 	 */
 	public void makeAdministrator(String name) {
 		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
@@ -137,9 +137,9 @@ public class Users {
 	}
 
 	/**
-	 * Removes the role administrator from a user
+	 * Tar bort rollen som administra\u00F6r från en administra\u00F6r
 	 * 
-	 * @param name
+	 * @param name namnet p\u00E5 anv\u00E4ndaren vars administrat\u00F6rs roll ska tas bort
 	 */
 	public void unmakeAdministrator(String name) {
 		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
@@ -148,20 +148,20 @@ public class Users {
 	}
 
 	/**
-	 * Deactivates a user
+	 * Deaktiverar en anv\u00E4ndare från systemet
 	 * 
-	 * @param name
-	 * @return
+	 * @param name namnet p\u00E5 anv\u00E4ndaren som ska deaktiveras
+	 * @return true om anv\u00E4ndaren lyckades deaktiveras, annars false
 	 */
 	public boolean deactivateUser(String name) {
 		return db.deactivateUser(db.getUser(name).getId());
 	}
 
 	/**
-	 * Adds a user to the system
+	 * L\u00E4gger till en ny anv\u00E4ndare till systemet
 	 * 
-	 * @param name
-	 * @return
+	 * @param name namnet p\u00E5 anv\u00E4ndaren som ska l\u00E4ggas till i systemet
+	 * @return true om anv\u00E4ndaren las till, anars false
 	 */
 	public boolean addUser(String name) {
 		if (checkNewName(name) == 3) {
@@ -172,10 +172,10 @@ public class Users {
 	}
 
 	/**
-	 * Activates a user
+	 * Aktiverar en anv\u00E4ndare i systemet
 	 * 
-	 * @param name
-	 * @return
+	 * @param name namnet p\u00E5 anv\u00E4ndaren som ska aktiveras
+	 * @return true om anv\u00E4ndaren lyckades aktiveras, annars false
 	 */
 	public boolean activateUser(String name) {
 		return db.activateUser(db.getUser(name).getId());

@@ -19,11 +19,18 @@ import database.User;
 public class ShowProjectMembers extends ProjectMembersMenu {
 
 	private static final long serialVersionUID = -6458493959837089759L;
-	private ProjectMembers pm;
-
+	/**
+	 * Konstruktor
+	 */
 	public ShowProjectMembers() {
 
 	}
+	/**
+	 * doGet-metoden anropas d\u00E5 anv\u00E4ndaren vill se projektmedlemmar i en grupp.
+	 * Om anv\u00E4ndaren \u00E4r en administrat\u00E5r s\u00E5 visas tabell inneh\u00E5llande alla medlemmar i en grupp.
+	 * Om anv\u00E4ndaren \u00E4r utan en roll visas en varningstext.
+	 * Annars visas en tabell med de projektmedlemmar som finns i anv\u00E4ndarens grupp.
+	 */
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {

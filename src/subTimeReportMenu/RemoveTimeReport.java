@@ -9,7 +9,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
+/**
+ * Denna klass är WebServlet för sidan som visas när användaren vill ta bort en tidrapport.
+ * @author martin
+ *
+ */
 @WebServlet("/RemoveTimeReport")
 public class RemoveTimeReport extends TimeReportingMenu{
 	
@@ -19,7 +23,11 @@ public class RemoveTimeReport extends TimeReportingMenu{
 	public static final int REMOVE_REPORT = 1;
 	public static final int SHOW_REPORT = 2;
 	public static final int ADMINISTRATOR = 3;
-	
+	/**
+	 * Denna metod används när användaren först besöker sidan. Visar antingen upp alla de rapporter som användaren kan ta bort,
+	 * alternativt alla projektgrupper (användaren kan sedan se alla tidrapporter för den projektgruppen.
+	 * @param HttpServletRequest request, HttpServletResponse response
+	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
 			HttpSession session = request.getSession(true);
@@ -77,7 +85,10 @@ public class RemoveTimeReport extends TimeReportingMenu{
 			response.sendRedirect("LogIn");
 		}
 	}
-	
+	/**
+	 * Denna metod används bla. för att kontakta TimeReportGenerator för att ta bort en tidrapport. 
+	 * @param HttpServletRequest request, HttpServletResponse response
+	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
 			HttpSession session = request.getSession(true);

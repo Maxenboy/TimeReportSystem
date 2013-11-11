@@ -18,7 +18,10 @@ public class RemoveMemberFromProjectGroup extends gui.ProjectGroupsMenu {
 	private static final long serialVersionUID = 4921473121575805469L;
 	private ProjectGroups group = new ProjectGroups(db);
 	private Users users = new Users(db);
-
+	/**
+	 * doGet-metoden anropas alla g\u00E5nger d\u00E5 en adminstrat\u00F6r vill ta bort en anv\u00E4ndare fr\u00E5n en projektgrupp.
+	 * 
+	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (loggedIn(request)) {
 			HttpSession session = request.getSession();
