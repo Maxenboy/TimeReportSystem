@@ -16,15 +16,14 @@ public class Database {
 	private Connection conn = null;
 
 	/**
-	 * Creates a new Database object with a new connection to the database.
+	 * Skapar ett nytt Database-objekt med en ny anslutning till databasen
 	 */
 	public Database() {
 		checkConnection();
 	}
 	
 	/**
-	 * Checks that the connection to the database is still valid and if it is
-	 * not it tries to reconnect.
+	 * Kontrollerar att anslutningen till databasen fortfarande fugnerar och om inte s\u00E5 f\u00E5rs\u00E5ker den \u00E5teransluta.
 	 */
 	private void checkConnection() {
 			try {
@@ -43,9 +42,8 @@ public class Database {
 	}
 	
 	/**
-	 * Closes this database object's connection to the database. This method 
-	 * should be called when the database object is not going to be used anymore
-	 * to release resources.
+	 * St\u00E4nger detta Database-objekts anslutning till databasen. Den h\u00E4r metoden ska kallas
+	 * n\u00E4r database-objektet inte ska anv\u00E4ndas mer f\u00E5r att sl\u00E4ppa resurser.
 	 */
 	public void closeConnection() {
 		try {
@@ -57,12 +55,11 @@ public class Database {
 		}
 	}
 
-	// User-metoder
 	/**
-	 * Logins a user with the specified username and password. 
+	 * Loggar in en anv\u00E4ndare med det specificerade anv\u00E4ndarnamnet och l\u00E5senordet.
 	 * @param username
 	 * @param password
-	 * @return null if username/password is wrong, the User-object otherwise
+	 * @return null om anv\u00E4ndarnamn/l\u00E5senord \u00E4r fel, User-objektet annars.
 	 */
 	public User loginUser(String username, String password) {
 		User u = null;
@@ -89,9 +86,9 @@ public class Database {
 	}
 
 	/**
-	 * Adds the user.
+	 * L\u00E4gger till anv\u00E4ndaren i databasen
 	 * @param user
-	 * @return true if successful, false otherwise
+	 * @return true om det lyckas, false annars
 	 */
 	public boolean addUser(User user) {
 		boolean resultOK = true;
@@ -124,9 +121,9 @@ public class Database {
 	}
 
 	/**
-	 * Gets the user with the username
+	 * H\u00E4mtar anv\u00E4ndare med det specificerade anv\u00E4ndarnamnet
 	 * @param username
-	 * @return User-object if successful, null otherwise
+	 * @return User-objektet om det lyckas, null annars
 	 */
 	public User getUser(String username) {
 		User u = null;
@@ -150,8 +147,8 @@ public class Database {
 	}
 
 	/**
-	 * Gets all users
-	 * @return ArrayList with all users
+	 * H\u00E4mta alla anv\u00E4ndare
+	 * @return ArrayList med alla anv\u00E4ndare
 	 */
 	public ArrayList<User> getUsers() {
 		ArrayList<User> list = new ArrayList<User>();
@@ -176,9 +173,9 @@ public class Database {
 	}
 
 	/**
-	 * Gets all users in a projectGroup with the id projectGroupId
+	 * H\u00E4mtar alla anv\u00E4ndare i projektgruppen med id projectGroupId
 	 * @param projectGroupId
-	 * @return ArrayList with all users
+	 * @return ArrayList med alla anv\u00E4ndare
 	 */
 	public ArrayList<User> getUsers(int projectGroupId) {
 		ArrayList<User> list = new ArrayList<User>();
@@ -203,9 +200,9 @@ public class Database {
 	}
 
 	/**
-	 * Get a user by userId
+	 * H\u00E4mtar anv\u00E4ndaren med id userId
 	 * @param userId
-	 * @return User-object if successful, null otherwise
+	 * @return User-objekt om det lyckas, null annars
 	 */
 	public User getUser(int userId) {
 		User u = null;
@@ -228,18 +225,18 @@ public class Database {
 	}
 
 	/**
-	 * Activates the user with the id userId
+	 * Aktiverar anv\u00E4ndaren med id userId
 	 * @param userId
-	 * @return true if successful, false otherwise
+	 * @return true om det lyckas, false annars
 	 */
 	public boolean activateUser(int userId) {
 		return activateUserHelpMethod(userId, 1);
 	}
 
 	/**
-	 * Deactivates the user with the id userId
+	 * Inaktiverar anv\u00E4ndaren med id userId
 	 * @param userId
-	 * @return true if successful, false otherwise
+	 * @return true om det lyckas, false annars
 	 */
 	public boolean deactivateUser(int userId) {
 		return activateUserHelpMethod(userId, 0);
@@ -272,9 +269,9 @@ public class Database {
 	}
 
 	/**
-	 * Set the roles for the userIds specified as keys and the values for that key is the role to set for the user
+	 * S\u00E4tter rollerna f\u00E5r userId som \u00E4r satt som nyckel till v\u00E4rdet f\u00E5r nyckeln som roll f\u00E5r anv\u00E4ndaren med id userId
 	 * @param roles
-	 * @return true if successful, false otherwise
+	 * @return true om det lyckas, false annars
 	 */
 	public boolean setUserRoles(HashMap<Integer, Integer> roles) {
 		boolean resultOk = true;
@@ -315,18 +312,18 @@ public class Database {
 
 	// ProjectGroup-metoder
 	/**
-	 * Activates the project group with id projectGroupId
+	 * Aktiverar projektgruppen med id projectGroupId
 	 * @param projectGroupId
-	 * @return true if successful, false otherwise
+	 * @return true om det lyckas, false annars
 	 */
 	public boolean activateProjectGroup(int projectGroupId) {
 		return activateProjectGroupHelpMethod(projectGroupId, 1);
 	}
 
 	/**
-	 * Deactivates the project group with id projectGroupId
+	 * Inaktiverar projektgruppen med id projectGroupId
 	 * @param projectGroupId
-	 * @return true if successful, false otherwise
+	 * @return true om det lyckas, false annars
 	 */
 	public boolean deactivateProjectGroup(int projectGroupId) {
 		return activateProjectGroupHelpMethod(projectGroupId, 0);
@@ -360,9 +357,9 @@ public class Database {
 	}
 
 	/**
-	 * Adds a project group
+	 * L\u00E4gger till en projektgrupp
 	 * @param projectGroup
-	 * @return true if successful, false otherwise
+	 * @return true om det lyckas, false annars
 	 */
 	public boolean addProjectGroup(ProjectGroup projectGroup) {
 		boolean resultOK = true;
@@ -397,9 +394,10 @@ public class Database {
 
 	/**
 	 * Adds a user with id userId to the project group with id projectGroupId
+	 * L\u00E4gger till anv\u00E4ndaren med id userId till projektgruppen med id projectGroupId
 	 * @param userId
 	 * @param projectGroupId
-	 * @return true if successful, false otherwise
+	 * @return true om det lyckas, false annars
 	 */
 	public boolean addUserToProjectGroup(int userId, int projectGroupId) {
 		boolean resultOk = true;
@@ -437,10 +435,10 @@ public class Database {
 	}
 
 	/**
-	 * Removes the user with id userId from the project group with id projectGroupId
+	 * Tar bort anv\u00E4ndaren med id userId fr\u00E5n projektgruppen med id projectGroupId
 	 * @param userId
 	 * @param projectGroupId
-	 * @return true if successful, false otherwise
+	 * @return true om det lyckas, false annars
 	 */
 	public boolean removeUserFromProjectGroup(int userId, int projectGroupId) {
 		boolean resultOk = true;
@@ -477,9 +475,9 @@ public class Database {
 	}
 
 	/**
-	 * Get project group with id projectGroupId
+	 * H\u00E4mtar projektgruppen med id projectGroupId.
 	 * @param projectGroupId
-	 * @return the ProjectGroup if successful, null otherwise
+	 * @return ProjectGroup om det lyckas, null annars
 	 */
 	public ProjectGroup getProjectGroup(int projectGroupId) {
 		ProjectGroup pg = null;
@@ -503,8 +501,8 @@ public class Database {
 	}
 
 	/**
-	 * Get all project groups
-	 * @return ArrayList with all project groups
+	 * H\u00E4mtar alla projektgrupper
+	 * @return ArrayList med ProjectGroups
 	 */
 	public ArrayList<ProjectGroup> getProjectGroups() {
 		ArrayList<ProjectGroup> list = new ArrayList<ProjectGroup>();
@@ -528,9 +526,9 @@ public class Database {
 
 	// TimeReport-metoder
 	/**
-	 * Get all time reports for project group with id projectGroupId
+	 * H\u00E4mtar alla tidrapporter f\u00E5r projektgruppen med id projectGroupId.
 	 * @param projectGroupId
-	 * @return ArrayList with time reports
+	 * @return ArrayList med TimeReports
 	 */
 	public ArrayList<TimeReport> getTimeReportsForProjectGroupId(
 			int projectGroupId) {
@@ -604,9 +602,9 @@ public class Database {
 	}
 
 	/**
-	 * Sign time reports
+	 * Signera tidrapporterna
 	 * @param timeReports
-	 * @return true if successful, false otherwise
+	 * @return true om det lyckas, false annars
 	 */
 	public boolean signTimeReports(ArrayList<TimeReport> timeReports) {
 		boolean resultOk = true;
@@ -648,9 +646,9 @@ public class Database {
 	}
 
 	/**
-	 * Unsign timeReports
+	 * Ta bort signering av tidrapporter
 	 * @param timeReports
-	 * @return true if successful, false otherwise
+	 * @return true om det lyckas, false annars
 	 */
 	public boolean unsignTimeReports(ArrayList<TimeReport> timeReports) {
 		boolean resultOk = true;
@@ -664,9 +662,9 @@ public class Database {
 	}
 
 	/**
-	 * Removes the time report with id timeReportId and the associated activities
+	 * Tar bort tidrapporten med id timeReportId och de dith\u00E5rande aktiviteterna
 	 * @param timeReportId
-	 * @return true if successful, false otherwise
+	 * @return true om det lyckas, false annars
 	 */
 	public boolean removeTimeReport(int timeReportId) {
 		boolean resultOk = true;
@@ -698,10 +696,10 @@ public class Database {
 	}
 
 	/**
-	 * Updates the time report with the associating activities
+	 * Uppdaterar tidrapporten med de dith\u00E5rande aktiviteterna
 	 * @param timeReport
 	 * @param activities
-	 * @return true if successful, false otherwise
+	 * @return true om det lyckas, false annars
 	 */
 	public boolean updateTimeReport(TimeReport timeReport, ArrayList<Activity> activities) {
 		try {
@@ -725,9 +723,9 @@ public class Database {
 	}
 
 	/**
-	 * Get all time reports for the user with id userId
+	 * H\u00E4mta alla tidrapporter f\u00E5r anv\u00E4ndaren med id userId
 	 * @param userId
-	 * @return ArrayList with TimeReports
+	 * @return ArrayList med TimeReports
 	 */
 	public ArrayList<TimeReport> getTimeReportsForUserId(int userId) {
 		ArrayList<TimeReport> list = new ArrayList<TimeReport>();
@@ -750,14 +748,12 @@ public class Database {
 	}
 
 	/**
-	 * Adds a new time report and its activities to the database. The time report
-	 * and activity ids will be generated and will be changed in the User and 
-	 * Activity objects. The time report id of the activities will be set to
-	 * the id of the time report.
-	 * @param timeReport The time report.
-	 * @param activities A list containing the activities.
-	 * @return true if the time report and the activities was added successfully,
-	 * false otherwise.
+	 * L\u00E4gger till en ny tidrapport och dess aktiviteter till databasen. Tidrapport- och aktivitetsid
+	 * genereras och kommer \u00E4ndras i User- och Activity-objekten. Tidrapport-id f\u00E5r aktiviteterna 
+	 * s\u00E4tts till id fr\u00E5n tidrapporten.
+	 * @param timeReport Tidrapporten.
+	 * @param activities En lista med aktiviteter.
+	 * @return true om tidrapporten och aktiviteterna las till korrekt, false annars
 	 */
 	public boolean addTimeReport(TimeReport timeReport,
 			ArrayList<Activity> activities) {
@@ -827,9 +823,9 @@ public class Database {
 	}
 
 	/**
-	 * Get the time report with id timeReportId
+	 * H\u00E4mta tidrapport med id timeReportId
 	 * @param timeReportId
-	 * @return the TimeReport, null if not found
+	 * @return TimeReport, null om den inte hittas
 	 */
 	public TimeReport getTimeReport(int timeReportId) {
 		TimeReport report = null;
@@ -853,9 +849,9 @@ public class Database {
 
 	// Activity-metoder
 	/**
-	 * Get the activities associated with the time report with id timeReportId
+	 * H\u00E4mta aktiviteterna associerade med tidrapporten med id timeReportId
 	 * @param timeReportId
-	 * @return ArrayList with activities.
+	 * @return ArrayList med aktiviteter.
 	 */
 	public ArrayList<Activity> getActivities(int timeReportId) {
 		ArrayList<Activity> list = new ArrayList<Activity>();
@@ -881,9 +877,9 @@ public class Database {
 	}
 
 	/**
-	 * Get activity with id activityId
+	 * H\u00E4mta aktiviteten med id activityId
 	 * @param activityId
-	 * @return the Activity
+	 * @return aktiviteten
 	 */
 	public Activity getActivity(int activityId) {
 		Activity activity;
@@ -906,9 +902,9 @@ public class Database {
 	}
 
 	/**
-	 * Gets all unique roles, users, activities and weeks. 
+	 * H\u00E4mta alla unika roller, anv\u00E4ndare, aktiviteter och veckor 
 	 * @param projectGroupId
-	 * @return HashMap with keys "user", "role", "activity" and "week". Values are Arraylists.
+	 * @return HashMap med nycklar "user", "role", "activity" and "week". V\u00E4rden \u00E4r Arraylists.
 	 */
 	public HashMap<String, ArrayList<String>> getStatisticsFilter(int projectGroupId) {
 		ArrayList<String> users = new ArrayList<String>();
@@ -981,20 +977,20 @@ public class Database {
 	}
 	
 	/**
-	 * Gets statistics by fetching the activities that matches the given 
-	 * parameters. The parameters act as a filter for the statistics. If a 
-	 * parameter is null or an empty list means that this filter is not set
-	 * and all values for this property will be accepted during the matching.
-	 * @param projectGroupId The project group id.
-	 * @param usernames The list of usernames to collect statistics for.
-	 * @param roles The list of roles to collect statistics for.
-	 * @param activities The list of activities to collect statistics for.
-	 * @param weeks The list of weeks to collect statistics for.
-	 * @return HashMap with keys "user", "role", "activity", "week" and "time" 
-	 * and ArrayList as value. The HashMap forms a table where the keys are
-	 * the columns and all the ArrayLists at equal indices are the rows. 
-	 * That means that all the values for a specific index in the ArrayLists 
-	 * corresponds to a matching activity for the given filter. 
+	 * H\u00E4mta statistik genom att h\u00E4mta aktiviteterna som matchar de givna parametrarna. 
+	 * Parametrarna fungerar som filter f\u00E5r statistiken. 
+	 * Om en parameter \u00E4r null eller en tom lista s\u00E5 betyder det 
+	 * att detta filter inte \u00E4r satt och att alla v\u00E4rde f\u00E5r den 
+	 * h\u00E4r parametern ska accepteras i matchningen. 
+	 * @param projectGroupId Projektgruppsid
+	 * @param usernames Lista med anv\u00E4ndarnamn att samla statistik f\u00E5r.
+	 * @param roles Lista med roller att samla statistik f\u00E5r.
+	 * @param activities Lista med aktiviteter att h\u00E4mta statistik f\u00E5r.
+	 * @param weeks Lista med veckor att h\u00E4mta statistik f\u00E5r.
+	 * @return HashMap med nycklar "user", "role", "activity", "week" och "time" och ArrayList som v\u00E4rde. 
+	 * HashMapen bildar en tabell d\u00E4r nycklarna \u00E4r kolumner och ArrayListorna p\u00E5 samma index \u00E4r rader.
+	 * Detta betyder att alla v\u00E4rden f\u00E5r ett specifikt index i Arraylistorna matchar en aktivitet 
+	 * i det givna filtret.
 	 */
 	public HashMap<String, ArrayList<String>> getStatistics(int projectGroupId,
 			ArrayList<String> usernames, ArrayList<Integer> roles,
@@ -1141,14 +1137,13 @@ public class Database {
 	}
 	
 	/**
-	 * Calculates the total spend time per week as well as the total spend time 
-	 * for all weeks for a project group.
-	 * @param projectGroupId The id of the project group.
-	 * @return A HashMap with week as key and time as value. There is also the 
-	 * key "totalProjectTime" which contains the total project time. If the 
-	 * project group did not contain any time reports and activities, or the 
-	 * project group was not found, the map will only contain the 
-	 * "totalProjectTime" key with value 0. 
+	 * Ber\u00E4knar total spenderad tid per vecka samtidigt som total tid spenderat f\u00E5r 
+	 * alla veckor f\u00E5r projektgruppen med id projectGroupId.
+	 * @param projectGroupId Projektgruppsid.
+	 * @return En HashMap med "week" som nyckel och tid som v\u00E4rde. Nyckeln 
+	 * "totalProjectTime" finns ocks\u00E5 vars v\u00E4rde \u00E4r den totala tiden spenderad i projektet. 
+	 * Om projektgruppen med id projectGroupId inte inneh\u00E5ller n\u00E5gra tidrapporter, eller om 
+	 * projektgruppen inte finns, s\u00E5 kommer HashMapen endast inneh\u00E5lla "totalProjectTime" med v\u00E4rde 0.
 	 */
 	public HashMap<String, Integer> getTimePerWeek(int projectGroupId) {
 		HashMap<String, Integer> timePerWeek = new HashMap<String, Integer>();
