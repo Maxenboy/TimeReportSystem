@@ -8,7 +8,8 @@ public class TimeReport {
 	private int projectGroupId;
 
 	/**
-	 * Constructor used by database
+	 * Konstruktor som ska anv\u00E4ndas av databasklassen f\u00F6r att skapa ett 
+	 * object av en befintlig tidrapport.
 	 * @param id
 	 * @param week
 	 * @param signed
@@ -25,7 +26,7 @@ public class TimeReport {
 	}
 
 	/**
-	 * Constructor used for creating a new record
+	 * Konstruktor f\u00F6r att skapa en ny osignerad tidrapport.
 	 * @param week
 	 * @param userId
 	 * @param projectGroupId
@@ -39,13 +40,14 @@ public class TimeReport {
 	}
 
 	/**
-	 * @return
+	 * Returnerar tidrapportens id.
 	 */
 	public int getId() {
 		return id;
 	}
 
 	/**
+	 * S\u00E4tter tidrapportens id.
 	 * @param id
 	 */
 	public void setId(int id) {
@@ -53,13 +55,14 @@ public class TimeReport {
 	}
 
 	/**
-	 * @return
+	 * Returnerar tidrapportens vecka.
 	 */
 	public int getWeek() {
 		return week;
 	}
 
 	/**
+	 * S\u00E4tter tidrapportens vecka.
 	 * @param week
 	 */
 	public void setWeek(int week) {
@@ -67,13 +70,14 @@ public class TimeReport {
 	}
 
 	/**
-	 * @return
+	 * Returnerar huruvida tidrapporten \u00E4r signerad eller inte.
 	 */
 	public boolean isSigned() {
 		return signed;
 	}
 
 	/**
+	 * S\u00E4tter tidrapporten till signerad eller osignerad.
 	 * @param signed
 	 */
 	public void setSigned(boolean signed) {
@@ -81,13 +85,14 @@ public class TimeReport {
 	}
 
 	/**
-	 * @return
+	 * Returnerar tidrapportens anv\u00E4ndarid.
 	 */
 	public int getUserId() {
 		return userId;
 	}
 
 	/**
+	 * S\u00E4tter tidrapportens anv\u00E4ndarid.
 	 * @param userId
 	 */
 	public void setUserId(int userId) {
@@ -95,13 +100,14 @@ public class TimeReport {
 	}
 
 	/**
-	 * @return
+	 * Returnerar tidrapportens projektgruppsid.
 	 */
 	public int getProjectGroupId() {
 		return projectGroupId;
 	}
 
 	/**
+	 * S\u00E4tter tidrapportens projektgruppsid.
 	 * @param projectGroupId
 	 */
 	public void setProjectGroupId(int projectGroupId) {
@@ -157,6 +163,5 @@ public class TimeReport {
 				+ ", userId=" + userId + ", projectGroupId=" + projectGroupId
 				+ "]";
 	}
-	
 	
 }

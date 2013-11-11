@@ -20,8 +20,8 @@ public class User {
 	private int projectGroupId;
 
 	/**
-	 * Konstruktor som ska anv\u00E4ndas av databasen f\u00F6r att skapa object av 
-	 * befintliga anv\u00E4ndare.
+	 * Konstruktor som ska anv\u00E4ndas av databasklassen f\u00F6r att skapa ett 
+	 * objekt av en befintlig anv\u00E4ndare.
 	 * @param id
 	 * @param username
 	 * @param password
