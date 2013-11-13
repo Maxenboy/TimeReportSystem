@@ -13,7 +13,7 @@ import base.ServletBase;
 import database.User;
 
 
-@WebServlet("")
+@WebServlet("/Welcome")
 public class WelcomePage extends ServletBase {
 	private static final long serialVersionUID = 1L;
        
