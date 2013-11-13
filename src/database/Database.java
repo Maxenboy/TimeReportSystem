@@ -709,8 +709,13 @@ public class Database {
 			preparedStatement.setInt(2,timeReport.getWeek());
 			preparedStatement.setInt(3,timeReport.getId());
 			ResultSet result = preparedStatement.executeQuery();
-			if(result.next())
+			if(result.next()) {
+				result.close();
+				preparedStatement.close();
 				return false;
+			}
+			result.close();
+			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
